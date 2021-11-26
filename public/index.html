@@ -1,33 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Global Load Dispatch Action System</title>
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Meta -->
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
     <meta
-      name="description"
-      content="Web site created using create-react-app"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <!-- prism css -->
+    <link rel="stylesheet" href="assets/css/plugins/prism-coy.css" />
+    <!-- vendor css -->
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+    <!-- <nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
+      <div class="navbar-wrapper container">
+        <div class="navbar-content sidenav-horizontal" id="layout-sidenav">
+          <ul class="nav pcoded-inner-navbar sidenav-inner">
+            <li class="nav-item pcoded-menu-caption">
+              <label>Navigation</label>
+            </li>
+            <li class="nav-item">
+              <a href="/dashboard" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-home"></i></span
+                ><span class="pcoded-mtext">Dashboard</span></a
+              >
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-layout"></i></span
+                ><span class="pcoded-mtext">Page layouts</span></a
+              >
+              <ul class="pcoded-submenu">
+                <li>
+                  <a href="layout-vertical.html" target="_blank">Vertical</a>
+                </li>
+                <li>
+                  <a href="layout-horizontal.html" target="_blank"
+                    >Horizontal</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item pcoded-menu-caption">
+              <label>UI Element</label>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-box"></i></span
+                ><span class="pcoded-mtext">Ship Vehicles</span></a
+              >
+              <ul class="pcoded-submenu">
+                <li><a href="/shipper/add-vehicle">Post a Vehicle</a></li>
+                <li><a href="/shipper/my-vehicles">My Vehicles</a></li>
+                <li><a href="/shipper/truck-listing">Search Truck Space</a></li>
+              </ul>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-book"></i></span
+                ><span class="pcoded-mtext">Resources</span></a
+              >
+              <ul class="pcoded-submenu">
+                <li>
+                  <a href="/protected/classifieds/" label="Resources"
+                    >Classifieds</a
+                  >
+                </li>
+                <li>
+                  <a href="/protected/services/" label="Resources"
+                    >Transporter Services</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="http://www.mapquest.com/"
+                    label="Resources"
+                    id="navMaps"
+                    target="_blank"
+                    >Maps</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="http://www.mapquest.com/directions"
+                    label="Resources"
+                    id="navDirections"
+                    target="_blank"
+                    >Directions</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="http://www.nws.noaa.gov/"
+                    label="Resources"
+                    id="navWeather"
+                    target="_blank"
+                    >Weather</a
+                  >
+                </li>
+                <li>
+                  <a href="/contact-us/" label="resources" id="navContactUs"
+                    >Contact Us</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-aperture"></i></span
+                ><span class="pcoded-mtext">Carrier</span></a
+              >
+              <ul class="pcoded-submenu">
+                <li>
+                  <a href="/protected/classifieds/" label="Resources"
+                    >Create Truck Info</a
+                  >
+                </li>
+                <li>
+                  <a href="/protected/classifieds/" label="Resources"
+                    >Create Truck Space</a
+                  >
+                </li>
+                <li>
+                  <a href="/protected/services/" label="Resources"
+                    >View Requests</a
+                  >
+                </li>
+                <li>
+                  <a href="/protected/services/" label="Resources"
+                    >Connect to Shippers</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item pcoded-menu-caption">
+              <label>Forms &amp; table</label>
+            </li>
+            <li class="nav-item">
+              <a href="form_elements.html" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-file-text"></i></span
+                ><span class="pcoded-mtext">Forms</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="tbl_bootstrap.html" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-align-justify"></i></span
+                ><span class="pcoded-mtext">Bootstrap table</span></a
+              >
+            </li>
+            <li class="nav-item pcoded-menu-caption">
+              <label>Chart & Maps</label>
+            </li>
+            <li class="nav-item">
+              <a href="chart-apex.html" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-pie-chart"></i></span
+                ><span class="pcoded-mtext">Chart</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="map-google.html" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-map"></i></span
+                ><span class="pcoded-mtext">Maps</span></a
+              >
+            </li>
+            <li class="nav-item pcoded-menu-caption">
+              <label>Pages</label>
+            </li>
+            <li class="nav-item pcoded-hasmenu">
+              <a href="#!" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-lock"></i></span
+                ><span class="pcoded-mtext">Authentication</span></a
+              >
+              <ul class="pcoded-submenu">
+                <li><a href="auth-signup.html" target="_blank">Sign up</a></li>
+                <li><a href="auth-signin.html" target="_blank">Sign in</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="sample-page.html" class="nav-link"
+                ><span class="pcoded-micon"
+                  ><i class="feather icon-sidebar"></i></span
+                ><span class="pcoded-mtext">Sample page</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav> -->
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -39,5 +230,60 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <script src="assets/js/vendor-all.min.js"></script>
+    <script src="assets/js/plugins/bootstrap.min.js"></script>
+    <script src="assets/js/pcoded.js"></script>
+    <script src="assets/js/ripple.js"></script>
+
+    <!-- prism Js -->
+    <script src="assets/js/plugins/prism.js"></script>
+
+    <script src="assets/js/horizontal-menu.js"></script>
+    <script>
+      (function () {
+        if (
+          $("#layout-sidenav").hasClass("sidenav-horizontal") ||
+          window.layoutHelpers.isSmallScreen()
+        ) {
+          return;
+        }
+        try {
+          window.layoutHelpers._getSetting("Rtl");
+          window.layoutHelpers.setCollapsed(
+            localStorage.getItem("layoutCollapsed") === "true",
+            false
+          );
+        } catch (e) {}
+      })();
+      $(function () {
+        $("#layout-sidenav").each(function () {
+          new SideNav(this, {
+            orientation: $(this).hasClass("sidenav-horizontal")
+              ? "horizontal"
+              : "vertical",
+          });
+        });
+        $("body").on("click", ".layout-sidenav-toggle", function (e) {
+          e.preventDefault();
+          window.layoutHelpers.toggleCollapsed();
+          if (!window.layoutHelpers.isSmallScreen()) {
+            try {
+              localStorage.setItem(
+                "layoutCollapsed",
+                String(window.layoutHelpers.isCollapsed())
+              );
+            } catch (e) {}
+          }
+        });
+      });
+      $(document).ready(function () {
+        $("#pcoded").pcodedmenu({
+          themelayout: "horizontal",
+          MenuTrigger: "hover",
+          SubMenuTrigger: "hover",
+        });
+      });
+    </script>
   </body>
 </html>
