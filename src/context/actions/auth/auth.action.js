@@ -26,16 +26,16 @@ export const register = (form) => async (dispatch) => {
     PicUrl: form.PicUrl || null,
   };
 
-  dispatch({ type: REGISTER_REQUEST, payload: { email, password } });
+  dispatch({ type: REGISTER_REQUEST, payload: { requestPayload } });
   try {
-    const { data } = await axios.post("/auth/register", {
-      name,
-      email,
-      password,
+    const { res } = await axios.post("/auth/register", {
+      requestPayload,
     });
-    dispatch({ type: REGISTER_SUCCESS, payload: data });
+    dispatch({ type: REGISTER_SUCCESS, payload: res.data });
     // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    await AsyncLocalStorage.setItem("userInfo", JSON.stringify(data));
+    await AsyncLocalStorage.setItem("user", JSON.stringify(res.data));
+    localStorage.setItem("token", res.data.Token);
+    localStorage.setItem("user", JSON.stringify(res.data));
   } catch (error) {
     dispatch({
       type: REGISTER_FAIL,
@@ -48,18 +48,26 @@ export const register = (form) => async (dispatch) => {
 };
 
 export const signin = (email, password) => async (dispatch) => {
-  dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
+  dispatch({ type: LOGIN_REQUEST, payload: { email, password } });
   try {
-    const { data } = await Axios.post("/api/users/signin", { email, password });
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    const { res } = await axios.post("/api/users/signin", { email, password });
+    dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+    localStorage.setItem("token", res.data.Token);
+    localStorage.setItem("user", JSON.stringify(res.data));
   } catch (error) {
     dispatch({
-      type: USER_SIGNIN_FAIL,
+      type: LOGIN_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
     });
   }
+};
+
+export const signout = () => (dispatch) => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  dispatch({ type: CLEAR_AUTH_STATE });
+  document.location.href = "/signin";
 };

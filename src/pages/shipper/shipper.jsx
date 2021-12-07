@@ -1,15 +1,26 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY } from "../../constants/enum";
+import { createShipment } from "../../context/actions/shipment/shipment.action";
 
 function Shipper() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { shipmentform, handleSubmit } = useForm();
+  // const onSubmit = (data) => console.log(data);
   const {
-    authDispatch,
-    authState: { error, loading, data },
+    shipmentDispatch,
+    shipperState: { error, loading, data },
   } = useContext(GlobalContext);
+  const SubmitForm = (e) => {
+    e.preventDefault();
 
+    shipmentDispatch(createShipment(shipmentform));
+    // if (password !== confirmPassword) {
+    //   alert('Password and confirm password are not match');
+    // } else {
+    //   shipmentDispatch(createShipment(shipmentform));
+    // }
+  };
   return (
     <>
       <div class="row">
@@ -29,7 +40,7 @@ function Shipper() {
                 to edit, assign and remove listings, and to track your
                 dispatched vehicles.
               </p>
-              <form>
+              <form onSubmit={handleSubmit(SubmitForm)}>
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="inputEmail4">Shipment Category</label>
