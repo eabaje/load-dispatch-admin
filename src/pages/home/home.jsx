@@ -305,7 +305,7 @@ function Home() {
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header">
-              <h5>Horizontal layout</h5>
+              <h5>Recent Request for Load Boarding</h5>
             </div>
             <div class="card-body">
               <p>

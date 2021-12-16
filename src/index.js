@@ -1,14 +1,33 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { SnackbarProvider } from "notistack";
 import "./index.css";
 import App from "./App";
 import GlobalProvider from "./context/Provider";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
 import reportWebVitals from "./reportWebVitals";
+import Slide from "@material-ui/core/Slide";
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalProvider>
-      <App />
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        iconVariant={{
+          success: "✅",
+          error: "✖️",
+          warning: "⚠️",
+          info: "ℹ️",
+        }}
+        TransitionComponent={Slide}
+        maxSnack={3}
+      >
+        <App />
+      </SnackbarProvider>
     </GlobalProvider>
   </React.StrictMode>,
   document.getElementById("root")

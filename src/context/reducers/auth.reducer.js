@@ -29,7 +29,7 @@ const auth = (state, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        data: payload,
+        user: payload,
         isLoggedIn: true,
       };
 
@@ -37,7 +37,7 @@ const auth = (state, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        data: null,
+        user: null,
         isLoggedIn: false,
       };
 

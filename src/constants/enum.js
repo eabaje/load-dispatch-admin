@@ -20,10 +20,10 @@ export const LOAD_UNIT = [
 ];
 
 export const TRIP_STATUS = [
-  { NotStarted: "Not Started" },
-  { InTransit: "In Transit" },
-  { Arrived: "Arrived Destination" },
-  { Delivered: "Delivered Shipment" },
+  { value: "NotStarted", text: "Not Started" },
+  { value: "In Transit", text: "In Transit" },
+  { value: "Arrived", text: "Arrived Destination" },
+  { value: "Delivered", text: "Delivered Shipment" },
 ];
 export const LOAD_CAPACITY = [
   { value: "LowCapacity", text: "Low Capacity 2000" },
@@ -31,12 +31,16 @@ export const LOAD_CAPACITY = [
   { value: "HighCapacity", text: "High Capacity >24000" },
 ];
 
-export const CARRIER_TYPE = [{ Air: "Air" }, { Sea: "Sea" }, { Road: "Road" }];
+export const CARRIER_TYPE = [
+  { value: "Air", text: "Air" },
+  { value: "Sea", text: "Sea" },
+  { value: "Road", text: "Road" },
+];
 
 export const FLEET_TYPE = [
-  { Vessel: "Vessel" },
-  { Truck: "Truck" },
-  { Plane: "Plane" },
+  { value: "Vessel", text: "Vessel" },
+  { value: "Truck", text: "Truck" },
+  { value: "Plane", text: "Plane" },
 ];
 
 export const PAYMENT_METHOD = [
@@ -47,26 +51,26 @@ export const PAYMENT_METHOD = [
 ];
 
 export const ORDER_STATUS = [
-  { OrderMade: "Order Made" },
-  { Processed: "Processed" },
-  { Delivered: "Delivered" },
+  { value: "OrderMade", text: "Order Made" },
+  { value: "Processed", text: "Processed" },
+  { value: "Delivered", text: "Delivered" },
 ];
 
 export const CARGO_TYPE = [
-  { RoRo: "RoRo" },
-  { Container: "Container" },
-  { LiquidBulk: "Liquid Bulk" },
-  { BreakBulk: "Break Bulk" },
-  { DryBulk: "Dry Bulk" },
+  { value: "RoRo", text: "RoRo" },
+  { value: "Container", text: " Container " },
+  { value: "LiquidBulk", text: "Liquid Bulk" },
+  { value: "BreakBulk", text: "Break Bulk" },
+  { value: "DryBulk", text: "Dry Bulk" },
 ];
 
 export const ROLES = [
-  { admin: "Administrator" },
-  { auditor: "Auditor" },
-  { carrier: "Carrier" },
-  { shipper: "Shipper" },
-  { driver: "Driver" },
-  { broker: "Broker" },
+  { value: "admin", text: "Administrator" },
+  { value: "auditor", text: "Auditor" },
+  { value: "carrier", text: "Carrier" },
+  { value: "shipper", text: "Shipper" },
+  { value: "driver", text: "driver " },
+  { value: "broker", text: "Broker" },
 ];
 
 export const API_URL = "http://localhost:8000/api/";

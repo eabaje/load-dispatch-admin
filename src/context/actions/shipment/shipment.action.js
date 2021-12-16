@@ -144,7 +144,7 @@ export const createShipment = (form) => async (dispatch) => {
     DeliveryContactPhone: form.DeliveryContactPhone,
     DeliveryEmail: form.DeliveryEmail,
     AssignedShipment: form.AssignedShipment,
-    ShipmentDate: form.ShipmentDate || "",
+    ShipmentDate: form.ShipmentDate,
     ShipmentDocs: form.ShipmentDocs || "",
     ShipmentStatus: form.ShipmentStatus || "",
     // contact_picture: form.contactPicture || null,

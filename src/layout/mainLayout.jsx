@@ -5,24 +5,17 @@ const MainLayout = ({ children }) => {
   return (
     <>
       <Header />
-      {/* <div class="pcoded-main-container"> */}
-      <div className="pcoded-wrapper container">
-        <div className="pcoded-content">
-          <div className="pcoded-inner-content">
-            <div className="main-body">
-              {/* <div class="page-wrapper">
-                  <div class="page-header">
-                    <div class="page-block">
-                      <div class="row align-items-center"> </div>
-                    </div>
-                  </div>
-                </div> */}
-              {children}
+      <div class="pcoded-main-container">
+        <div class="pcoded-wrapper container">
+          <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+              <div class="main-body">
+                <div class="page-wrapper">{children}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 };

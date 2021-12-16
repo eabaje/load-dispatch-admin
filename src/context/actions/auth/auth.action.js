@@ -8,7 +8,6 @@ import {
   CLEAR_AUTH_STATE,
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
-import AsyncLocalStorage from "@createnextapp/async-local-storage";
 
 export const register = (form) => async (dispatch) => {
   const requestPayload = {
@@ -28,12 +27,13 @@ export const register = (form) => async (dispatch) => {
 
   dispatch({ type: REGISTER_REQUEST, payload: { requestPayload } });
   try {
-    const { res } = await axios.post("/auth/register", {
+    const { res } = await axios.post("auth/register", {
       requestPayload,
     });
+
     dispatch({ type: REGISTER_SUCCESS, payload: res.data });
     // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    await AsyncLocalStorage.setItem("user", JSON.stringify(res.data));
+
     localStorage.setItem("token", res.data.Token);
     localStorage.setItem("user", JSON.stringify(res.data));
   } catch (error) {
@@ -47,20 +47,25 @@ export const register = (form) => async (dispatch) => {
   }
 };
 
-export const signin = (email, password) => async (dispatch) => {
-  dispatch({ type: LOGIN_REQUEST, payload: { email, password } });
+export const signin = (form) => (dispatch) => {
+  const requestPayload = {
+    Email: form.Email,
+    Password: form.Password,
+  };
+  dispatch({ type: LOGIN_REQUEST, payload: requestPayload });
   try {
-    const { res } = await axios.post("/api/users/signin", { email, password });
+    const { res } = axios.post("auth/signin", requestPayload);
+    console.log("From action Method:", res.data);
     dispatch({ type: LOGIN_SUCCESS, payload: res.data });
-    localStorage.setItem("token", res.data.Token);
+
+    localStorage.setItem("token", res.data.token);
     localStorage.setItem("user", JSON.stringify(res.data));
   } catch (error) {
     dispatch({
       type: LOGIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response
+        ? error.response.data
+        : { error: "Something went wrong, try agin" },
     });
   }
 };

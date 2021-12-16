@@ -127,16 +127,6 @@ const shipments = (state, { type, payload }) => {
         },
       };
 
-    case CREATE_SHIPMENT_FAIL:
-      return {
-        ...state,
-        createShipment: {
-          ...state.createShipment,
-          loading: false,
-          error: payload,
-        },
-      };
-
     case GET_SHIPMENTS_REQUEST:
       return {
         ...state,

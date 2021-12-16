@@ -1,7 +1,7 @@
 import React from "react";
 
-function EditCarrier() {
+function EditTrip() {
   return <div></div>;
 }
 
-export default EditCarrier;
+export default EditTrip;

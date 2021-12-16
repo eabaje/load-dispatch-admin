@@ -1,5 +1,5 @@
 import axios from "axios";
-import AsyncLocalStorage from '@createnextapp/async-local-storage'
+//import AsyncLocalStorage from '@createnextapp/async-local-storage'
 //import envs from "../config/env";
 import { API_URL } from "../constants";
 
@@ -11,8 +11,8 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  async (config) => {
-    const token = await AsyncLocalStorage.getItem("token");
+  (config) => {
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 403) {
       // history.push(`/${LOGOUT}`);
 
-      AsyncLocalStorage.removeItem("token");
+      localStorage.removeItem("token");
       //  navigate(LOGOUT, { tokenExpired: true });
     } else {
       return new Promise((resolve, reject) => {

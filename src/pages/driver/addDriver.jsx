@@ -10,9 +10,11 @@ import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 import { createShipment } from "../../context/actions/shipment/shipment.action";
+import ImageUpload from "../../components/upload/uploadImage";
 
-function AddVehicle() {
+function AddDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [IsEdit, setEdit] = useState(false);
   const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
@@ -73,7 +75,9 @@ function AddVehicle() {
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h2 class="alert alert-info">Shipment Information</h2>
+              <h2 class="alert alert-tertiary">
+                Driver Information Collection Form
+              </h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
@@ -96,167 +100,210 @@ function AddVehicle() {
                     value="CarrierType"
                     class="form-control"
                   />
+
                   <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info"> Vehicle Info </h5>
+                    <div class="col-md-12 ">
+                      <ImageUpload />
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Vehicle Type</label>
-                    <div class="col-md-4">
-                      <select
-                        id="VehicleType"
+                    <div class="col-md-12">
+                      <h5 class="alert alert-tertiary"> </h5>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Company Name</label>
+
+                    <div class="col-sm-4">
+                      <input
+                        name="CompanyName"
                         class="form-control"
-                        {...shipmentform("VehicleType", {
+                        placeholder="Company Name"
+                        {...shipmentform("CompanyName", {
                           required: true,
                         })}
+                      />
+                    </div>
+                    <label class="col-sm-2 col-form-label">Driver Name</label>
+
+                    <div class="col-sm-4">
+                      <input
+                        name="DriverName"
+                        class="form-control"
+                        placeholder="Driver Name"
+                        {...shipmentform("DriverName", {
+                          required: true,
+                        })}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-4">
+                      <input
+                        name="Email"
+                        class="form-control"
+                        placeholder="Email"
+                        {...shipmentform("Email", {
+                          required: true,
+                        })}
+                        required
+                      />
+                    </div>
+
+                    <label class="col-sm-2 col-form-label">Phone</label>
+                    <div class="col-sm-4">
+                      <input
+                        name="Phone"
+                        class="form-control"
+                        placeholder="Phone"
+                        {...shipmentform("Phone", {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">DOB</label>
+                    <div class="col-sm-4">
+                      <input
+                        name="DOB"
+                        class="form-control"
+                        placeholder="Date of Birth"
+                        {...shipmentform("DOB", {
+                          required: true,
+                        })}
+                      />
+                    </div>
+
+                    <label class="col-sm-2 col-form-label">Phone</label>
+                    <div class="col-sm-4">
+                      <input
+                        name="Phone"
+                        class="form-control"
+                        placeholder="Phone"
+                        {...shipmentform("Phone", {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-form-label col-md-2">Country</label>
+                    <div class="col-md-4">
+                      <select
+                        name="Country"
+                        class="form-control"
+                        {...shipmentform("Country")}
+                        onChange={selectPickUpCountry}
                       >
-                        <option selected>Select Vehicle Type</option>
-                        {LOAD_TYPE.map((item) => (
-                          <option key={item.value} value={item.value}>
-                            {item.text}
+                        <option value="">Select Country</option>
+                        {countries.map((item) => (
+                          <option key={item.isoCode} value={item.isoCode}>
+                            {item.name}
                           </option>
                         ))}
                       </select>
                     </div>
 
-                    <label class="col-sm-2 col-form-label">
-                      Vehicle License Number(VIN)
-                    </label>
-                    <div class="col-sm-4">
-                      <input
-                        name="VehicleNumber"
+                    <label class="col-form-label col-md-2">Region/State</label>
+                    <div class="col-md-4">
+                      <select
+                        name="Region"
                         class="form-control"
-                        placeholder="VehicleNumber"
-                        {...shipmentform("VehicleNumber", {
+                        id="Region"
+                        {...shipmentform("Region", {
                           required: true,
                         })}
-                      />
+                      >
+                        <option value=""> Select Region/State </option>
+                        {pickUpRegion.map((item) => (
+                          <option value={item.isoCode}>{item.name}</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Serial Number</label>
-
-                    <div class="col-sm-4">
-                      <input
-                        name="SerialNumber"
-                        class="form-control"
-                        placeholder="Serial Number"
-                        {...shipmentform("SerialNumber", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                    <label class="col-sm-2 col-form-label">Vehicle Make</label>
-                    <div class="col-sm-4">
-                      <input
-                        name="VehicleMake"
-                        class="form-control"
-                        placeholder="Vehicle Make"
-                        {...shipmentform("VehicleMake", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Description</label>
+                    <label class="col-form-label col-md-2">Address</label>
                     <div class="col-md-10">
                       <input
-                        name="Description"
+                        name="Address"
                         class="form-control"
-                        {...shipmentform("Description", {
+                        placeholder="Address"
+                        {...shipmentform("Address", {
                           required: true,
                         })}
                       />
                     </div>
                   </div>
+
+                  <div class="form-group row">
+                    <div class="col-sm-2"> Drivers License?</div>
+
+                    <div class="col-md-4">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          name="DriverLicense"
+                          type="checkbox"
+                          id="gridCheck1"
+                          {...shipmentform("DriverLicense", {
+                            required: true,
+                          })}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <label class="col-form-label col-md-2">
+                      Attach Drivers License
+                    </label>
+                    <div class="col-md-4">
+                      <input
+                        type="file"
+                        name="LicenseUrl"
+                        class="form-control"
+                        {...shipmentform("LicenseUrl", {
+                          required: true,
+                        })}
+                      />
+                    </div>
+                  </div>
+
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-info"> Pick Up Information </h5>
+                      <h5 class="alert alert-tertiary"> </h5>
                     </div>
                   </div>
+                  <div class="form-group"></div>
 
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Vehicle Color</label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="VehicleColor"
-                        class="form-control"
-                        {...shipmentform("VehicleColor", {
-                          required: true,
-                        })}
-                      />
+                  <div class="form-row">
+                    <div class="col-sm-10 ">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="invalidCheck"
+                          required
+                        />
+                        <label class="form-check-label" for="invalidCheck">
+                          Agree to terms and conditions
+                        </label>
+                        <div class="invalid-feedback">
+                          You must agree before submitting.
+                        </div>
+                      </div>
                     </div>
-                    <label class="col-form-label col-md-2">Vehicle Model</label>
-                    <div class="col-md-4">
-                      <input
-                        name="VehicleModel"
-                        class="form-control"
-                        {...shipmentform("VehicleModel", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">
-                      Vehicle License Plate
-                    </label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="LicensePlate"
-                        class="form-control"
-                        {...shipmentform("LicensePlate", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-
-                    <label class="col-form-label col-md-2">
-                      Vehicle Model Year
-                    </label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="VehicleModelYear"
-                        class="form-control"
-                        {...shipmentform("VehicleModelYear", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info">
-                        {" "}
-                        Request for Proposal Information{" "}
-                      </h5>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Purchase Year</label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="PurchaseYear"
-                        class="form-control"
-                        placeholder=" State your requirement expectations"
-                        {...shipmentform("PurchaseYear")}
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-sm-10">
-                      <button type="submit" class="btn  btn-primary">
-                        Submit
+                    <div class="right" style={{ float: "right" }}>
+                      <button
+                        type="submit"
+                        class="btn  btn-primary"
+                        style={{ float: "right" }}
+                      >
+                        <i class="feather mr-2 icon-check-circle"></i> Submit
                       </button>
                     </div>
                   </div>
@@ -270,4 +317,4 @@ function AddVehicle() {
   );
 }
 
-export default AddVehicle;
+export default AddDriver;

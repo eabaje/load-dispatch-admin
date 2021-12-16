@@ -1,6 +1,6 @@
 export default {
   isLoggedIn: false,
-  data: {},
+  user: JSON.parse(localStorage.getItem("user")) || null,
   error: null,
   loading: false,
 };

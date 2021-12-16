@@ -2,12 +2,12 @@ import React from "react";
 
 const AuthLayout = ({ children }) => (
   <div>
-    <div class="auth-wrapper">
+    <div class="auth-wrapper auth-background">
       <div class="auth-content">
         <div class="card">
           <div class="row align-items-center text-center">
             <div class="col-md-12">
-              <div class="card-body">
+              <div class=" card-body">
                 <img
                   src="assets/images/logo-small-prod.png"
                   alt=""

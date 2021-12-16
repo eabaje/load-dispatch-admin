@@ -9,7 +9,7 @@ function Shipper() {
   // const onSubmit = (data) => console.log(data);
   const {
     shipmentDispatch,
-    shipperState: { error, loading, data },
+    shipmentState: { error, loading, data },
   } = useContext(GlobalContext);
   const SubmitForm = (e) => {
     e.preventDefault();
@@ -41,6 +41,680 @@ function Shipper() {
                 dispatched vehicles.
               </p>
               <form onSubmit={handleSubmit(SubmitForm)}>
+                <div class="row">
+                  <div class="col-xs-12 col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4>Origin</h4>
+                      </div>
+                      <div class="panel-body">
+                        <div class="dispatchOnly postStore hidden">
+                          <input
+                            type="hidden"
+                            class="addressId"
+                            id="origin_addressId"
+                            name="origin_addressId"
+                          />
+                          <div class="form-group">
+                            <div class="checkbox-inline">
+                              <label for="origin_isTerminal">
+                                <input
+                                  type="checkbox"
+                                  id="origin_isTerminal"
+                                  name="origin[terminal]"
+                                  value="1"
+                                />
+                                <b>This is a Terminal</b>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="origin_companyName">
+                              Terminal, Dealer, or Auction{" "}
+                              <span
+                                class="glyphicon glyphicon-info-sign"
+                                data-title="Start typing a name in your address book and select from the drop down."
+                              ></span>
+                            </label>
+                            <input
+                              class="form-control companyName"
+                              name="origin[company]"
+                              id="origin_companyName"
+                              maxlength="150"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="origin_contact">Contact</label>
+                            <input
+                              class="form-control"
+                              name="origin[contact]"
+                              id="origin_contact"
+                              maxlength="150"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="origin_buyerNumber">Buyer Number</label>
+                            <input
+                              class="form-control"
+                              name="origin[buyernum]"
+                              id="origin_buyerNumber"
+                              maxlength="150"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="origin_phone1">Phone 1</label>
+                              <input
+                                class="form-control"
+                                name="origin[phone1]"
+                                id="origin_phone1"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="origin_phone2">Phone 2</label>
+                              <input
+                                class="form-control"
+                                name="origin[phone2]"
+                                id="origin_phone2"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="origin_phone3">Phone 3</label>
+                              <input
+                                class="form-control"
+                                name="origin[phone3]"
+                                id="origin_phone3"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="origin_phone4">Cell</label>
+                              <input
+                                class="form-control"
+                                name="origin[phone4]"
+                                id="origin_phone4"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="origin_address1">Address</label>
+                            <input
+                              class="form-control"
+                              name="origin[address1]"
+                              id="origin_address1"
+                              maxlength="54"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <input
+                              class="form-control"
+                              name="origin[address2]"
+                              id="origin_address2"
+                              maxlength="54"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div
+                            class="col-xs-12"
+                            style={{ position: "relative" }}
+                          >
+                            <div class="form-group has-feedback">
+                              <label for="originCity">City</label>
+                              <div class="input-group">
+                                <input
+                                  class="form-control waypointCity"
+                                  type="text"
+                                  name="origin[city]"
+                                  id="originCity"
+                                  data-location="origin"
+                                  required="required"
+                                  data-native-error="Valid city is required."
+                                />
+                                <div class="input-group-btn">
+                                  <span
+                                    id="originResetWaypoint"
+                                    type="button"
+                                    class="btn btn-default editVehicleType"
+                                  >
+                                    &nbsp;
+                                    <i
+                                      class="fa fa-undo"
+                                      aria-hidden="true"
+                                    ></i>
+                                  </span>
+                                </div>
+                              </div>
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <div class="help-block with-errors text-right small"></div>
+                              <div class="FatMetro"></div>
+                              <input
+                                type="hidden"
+                                class="waypointValid"
+                                id="originValid"
+                                name="origin[valid]"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="form-group col-xs-12 hidden"
+                            id="originSuggestions"
+                          >
+                            <label>Suggestions</label>
+                            <div class="originFatSuggestions">
+                              <span>No Suggestions Available</span>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6">
+                            <div class="form-group has-feedback">
+                              <label for="originState">State</label>
+                              <select
+                                class="form-control waypointState originState"
+                                name="origin[state]"
+                                id="originState"
+                                required="required"
+                                data-native-error="Valid state is required."
+                              >
+                                <option></option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="DC">Washington DC</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                                <option value="AB">Canada-Alberta</option>
+                                <option value="BC">
+                                  Canada-British Columbia
+                                </option>
+                                <option value="MB">Canada-Manitoba</option>
+                                <option value="NB">Canada-New Brunswick</option>
+                                <option value="NL">Canada-Newfoundland</option>
+                                <option value="NT">
+                                  Canada-Northwest Territories
+                                </option>
+                                <option value="NS">Canada-Nova Scotia</option>
+                                <option value="NU">Canada-Nunavut</option>
+                                <option value="ON">Canada-Ontario</option>
+                                <option value="PE">
+                                  Canada-Prince Edward Island
+                                </option>
+                                <option value="QC">Canada-Quebec</option>
+                                <option value="SK">Canada-Saskatchewan</option>
+                                <option value="YT">Canada-Yukon</option>
+                              </select>
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <div class="help-block with-errors text-right small"></div>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6">
+                            <div class="form-group has-feedback">
+                              <label for="originZip">Postal Code</label>
+                              <input
+                                class="form-control waypointZip"
+                                type="text"
+                                name="origin[zip]"
+                                id="originZip"
+                                data-location="origin"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <div class="help-block with-errors text-right small"></div>
+                            </div>
+                          </div>
+
+                          <div class="dispatchOnly postStore hidden text-right">
+                            <button
+                              type="button"
+                              class="btn btn-default saveContact"
+                            >
+                              Save This Contact
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4>Destination</h4>
+                      </div>
+                      <div class="panel-body">
+                        <div class="dispatchOnly postStore hidden">
+                          <input
+                            type="hidden"
+                            class="addressId"
+                            id="destination_addressId"
+                            name="destination_addressId"
+                          />
+                          <div class="form-group">
+                            <div class="checkbox-inline">
+                              <label for="destination_isTerminal">
+                                <input
+                                  type="checkbox"
+                                  id="destination_isTerminal"
+                                  name="destination[terminal]"
+                                  value="1"
+                                />
+                                <b>This is a Terminal</b>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="destination_companyName">
+                              Terminal, Dealer, or Auction{" "}
+                              <span
+                                class="glyphicon glyphicon-info-sign"
+                                data-title="Start typing a name in your address book and select from the drop down."
+                              ></span>
+                            </label>
+                            <input
+                              class="form-control companyName"
+                              name="destination[company]"
+                              id="destination_companyName"
+                              maxlength="150"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="destination_contact">Contact</label>
+                            <input
+                              class="form-control"
+                              name="destination[contact]"
+                              id="destination_contact"
+                              maxlength="150"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="destination_buyerNumber">
+                              Buyer Number
+                            </label>
+                            <input
+                              class="form-control"
+                              name="destination[buyernum]"
+                              id="destination_buyerNumber"
+                              maxlength="150"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="destination_phone1">Phone 1</label>
+                              <input
+                                class="form-control"
+                                name="destination[phone1]"
+                                id="destination_phone1"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="destination_phone2">Phone 2</label>
+                              <input
+                                class="form-control"
+                                name="destination[phone2]"
+                                id="destination_phone2"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="destination_phone3">Phone 3</label>
+                              <input
+                                class="form-control"
+                                name="destination[phone3]"
+                                id="destination_phone3"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                            <div class="col-xs-12 col-md-6 form-group has-feedback">
+                              <label for="destination_phone4">Cell</label>
+                              <input
+                                class="form-control"
+                                name="destination[phone4]"
+                                id="destination_phone4"
+                                maxlength="22"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="help-block with-errors text-right small"></span>
+                            </div>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <label for="destination_address1">Address</label>
+                            <input
+                              class="form-control"
+                              name="destination[address1]"
+                              id="destination_address1"
+                              maxlength="54"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                          <div class="form-group has-feedback">
+                            <input
+                              class="form-control"
+                              name="destination[address2]"
+                              id="destination_address2"
+                              maxlength="54"
+                            />
+                            <span
+                              class="glyphicon form-control-feedback"
+                              aria-hidden="true"
+                            ></span>
+                            <span class="help-block with-errors text-right small"></span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div
+                            class="col-xs-12"
+                            style={{ position: "relative" }}
+                          >
+                            <div class="form-group has-feedback">
+                              <label for="destinationCity">City</label>
+                              <div class="input-group">
+                                <input
+                                  class="form-control waypointCity"
+                                  type="text"
+                                  name="destination[city]"
+                                  id="destinationCity"
+                                  data-location="destination"
+                                  required="required"
+                                  data-native-error="Valid city is required."
+                                />
+                                <div class="input-group-btn">
+                                  <span
+                                    id="destinationResetWaypoint"
+                                    type="button"
+                                    class="btn btn-default editVehicleType"
+                                  >
+                                    &nbsp;
+                                    <i
+                                      class="fa fa-undo"
+                                      aria-hidden="true"
+                                    ></i>
+                                  </span>
+                                </div>
+                              </div>
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <div class="help-block with-errors text-right small"></div>
+                              <div class="FatMetro"></div>
+                              <input
+                                type="hidden"
+                                class="waypointValid"
+                                id="destinationValid"
+                                name="destination[valid]"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="form-group col-xs-12 hidden"
+                            id="destinationSuggestions"
+                          >
+                            <label>Suggestions</label>
+                            <div class="destinationFatSuggestions">
+                              <span>No Suggestions Available</span>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6">
+                            <div class="form-group has-feedback">
+                              <label for="destinationState">State</label>
+                              <select
+                                class="form-control waypointState destinationState"
+                                name="destination[state]"
+                                id="destinationState"
+                                required="required"
+                                data-native-error="Valid state is required."
+                              >
+                                <option></option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="DC">Washington DC</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                                <option value="AB">Canada-Alberta</option>
+                                <option value="BC">
+                                  Canada-British Columbia
+                                </option>
+                                <option value="MB">Canada-Manitoba</option>
+                                <option value="NB">Canada-New Brunswick</option>
+                                <option value="NL">Canada-Newfoundland</option>
+                                <option value="NT">
+                                  Canada-Northwest Territories
+                                </option>
+                                <option value="NS">Canada-Nova Scotia</option>
+                                <option value="NU">Canada-Nunavut</option>
+                                <option value="ON">Canada-Ontario</option>
+                                <option value="PE">
+                                  Canada-Prince Edward Island
+                                </option>
+                                <option value="QC">Canada-Quebec</option>
+                                <option value="SK">Canada-Saskatchewan</option>
+                                <option value="YT">Canada-Yukon</option>
+                              </select>
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <div class="help-block with-errors text-right small"></div>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6">
+                            <div class="form-group has-feedback">
+                              <label for="destinationZip">Postal Code</label>
+                              <input
+                                class="form-control waypointZip"
+                                type="text"
+                                name="destination[zip]"
+                                id="destinationZip"
+                                data-location="destination"
+                              />
+                              <span
+                                class="glyphicon form-control-feedback"
+                                aria-hidden="true"
+                              ></span>
+                              <div class="help-block with-errors text-right small"></div>
+                            </div>
+                          </div>
+
+                          <div class="dispatchOnly postStore hidden text-right">
+                            <button
+                              type="button"
+                              class="btn btn-default saveContact"
+                            >
+                              Save This Contact
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="inputEmail4">Shipment Category</label>
@@ -57,7 +731,7 @@ function Shipper() {
                     <label for="LoadType">Load Type</label>
                     <select id="LoadType" class="form-control">
                       <option selected>select</option>
-                      <option value="" selected="selected"></option>
+                      <option selected="selected"></option>
                       {LOAD_CAPACITY.map((item) => (
                         <option key={item.value} value={item.value}>
                           {item.text}
@@ -210,13 +884,11 @@ function Shipper() {
                               required="required"
                               name="carrier[companyName]"
                               id="carrier_companyName"
-                              value=""
                             />
                             <input
                               type="hidden"
                               name="carrier[id]"
                               id="carrier_id"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -232,7 +904,6 @@ function Shipper() {
                               name="carrier[mcnum]"
                               id="carrier_mcnum"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -247,7 +918,6 @@ function Shipper() {
                               name="carrier[contact]"
                               id="carrier_contact"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -262,7 +932,6 @@ function Shipper() {
                               name="carrier[address1]"
                               id="carrier_address1"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -276,7 +945,6 @@ function Shipper() {
                               name="carrier[address2]"
                               id="carrier_address2"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -295,7 +963,6 @@ function Shipper() {
                                 <input
                                   class="form-control waypointCity"
                                   type="text"
-                                  value=""
                                   name="carrier[city]"
                                   id="carrierCity"
                                   readonly="readonly"
@@ -337,7 +1004,7 @@ function Shipper() {
                                 required="required"
                                 data-native-error="Valid state is required."
                               >
-                                <option value=""></option>
+                                <option></option>
                                 <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
                                 <option value="AZ">Arizona</option>
@@ -427,7 +1094,6 @@ function Shipper() {
                               <input
                                 class="form-control waypointZip"
                                 type="text"
-                                value=""
                                 name="carrier[zip]"
                                 id="carrierZip"
                                 readonly="readonly"
@@ -449,7 +1115,6 @@ function Shipper() {
                                 name="carrier[phone1]"
                                 id="carrier_phone1"
                                 readonly="readonly"
-                                value=""
                               />
                               <span
                                 class="glyphicon form-control-feedback"
@@ -464,7 +1129,6 @@ function Shipper() {
                                 name="carrier[phone2]"
                                 id="carrier_phone2"
                                 readonly="readonly"
-                                value=""
                               />
                               <span
                                 class="glyphicon form-control-feedback"
@@ -481,7 +1145,6 @@ function Shipper() {
                                 name="carrier[cell]"
                                 id="carrier_cell"
                                 readonly="readonly"
-                                value=""
                               />
                               <span
                                 class="glyphicon form-control-feedback"
@@ -496,7 +1159,6 @@ function Shipper() {
                                 name="carrier[fax]"
                                 id="carrier_fax"
                                 readonly="readonly"
-                                value=""
                               />
                               <span
                                 class="glyphicon form-control-feedback"
@@ -513,7 +1175,6 @@ function Shipper() {
                               class="form-control"
                               name="carrier[driverFirstName]"
                               id="carrier_driver_first_name"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -529,7 +1190,6 @@ function Shipper() {
                               class="form-control"
                               name="carrier[driverLastName]"
                               id="carrier_driver_last_name"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -545,7 +1205,6 @@ function Shipper() {
                               class="form-control"
                               name="carrier[driverCell]"
                               id="carrier_driver_cell"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -597,7 +1256,6 @@ function Shipper() {
                               name="dispatcher[mcnum]"
                               id="dispatcher_mcnum"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -641,7 +1299,6 @@ function Shipper() {
                               name="dispatcher[address2]"
                               id="dispatcher_address2"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -702,7 +1359,7 @@ function Shipper() {
                                 required="required"
                                 data-native-error="Valid state is required."
                               >
-                                <option value=""></option>
+                                <option></option>
                                 <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
                                 <option value="AZ">Arizona</option>
@@ -852,7 +1509,6 @@ function Shipper() {
                               name="dispatcher[fax]"
                               id="dispatcher_fax"
                               readonly="readonly"
-                              value=""
                             />
                             <span
                               class="glyphicon form-control-feedback"
@@ -886,7 +1542,6 @@ function Shipper() {
                               class="addressId"
                               id="origin_addressId"
                               name="origin_addressId"
-                              value=""
                             />
                             <div class="form-group">
                               <div class="checkbox-inline">
@@ -913,7 +1568,6 @@ function Shipper() {
                                 class="form-control companyName"
                                 name="origin[company]"
                                 id="origin_companyName"
-                                value=""
                                 maxlength="150"
                               />
                               <span
@@ -928,7 +1582,6 @@ function Shipper() {
                                 class="form-control"
                                 name="origin[contact]"
                                 id="origin_contact"
-                                value=""
                                 maxlength="150"
                               />
                               <span
@@ -945,7 +1598,6 @@ function Shipper() {
                                 class="form-control"
                                 name="origin[buyernum]"
                                 id="origin_buyerNumber"
-                                value=""
                                 maxlength="150"
                               />
                               <span
@@ -961,7 +1613,6 @@ function Shipper() {
                                   class="form-control"
                                   name="origin[phone1]"
                                   id="origin_phone1"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -976,7 +1627,6 @@ function Shipper() {
                                   class="form-control"
                                   name="origin[phone2]"
                                   id="origin_phone2"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -993,7 +1643,6 @@ function Shipper() {
                                   class="form-control"
                                   name="origin[phone3]"
                                   id="origin_phone3"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -1008,7 +1657,6 @@ function Shipper() {
                                   class="form-control"
                                   name="origin[phone4]"
                                   id="origin_phone4"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -1024,7 +1672,6 @@ function Shipper() {
                                 class="form-control"
                                 name="origin[address1]"
                                 id="origin_address1"
-                                value=""
                                 maxlength="54"
                               />
                               <span
@@ -1038,7 +1685,6 @@ function Shipper() {
                                 class="form-control"
                                 name="origin[address2]"
                                 id="origin_address2"
-                                value=""
                                 maxlength="54"
                               />
                               <span
@@ -1059,7 +1705,6 @@ function Shipper() {
                                   <input
                                     class="form-control waypointCity"
                                     type="text"
-                                    value=""
                                     name="origin[city]"
                                     id="originCity"
                                     data-location="origin"
@@ -1091,7 +1736,6 @@ function Shipper() {
                                   class="waypointValid"
                                   id="originValid"
                                   name="origin[valid]"
-                                  value=""
                                 />
                               </div>
                             </div>
@@ -1114,7 +1758,7 @@ function Shipper() {
                                   required="required"
                                   data-native-error="Valid state is required."
                                 >
-                                  <option value=""></option>
+                                  <option></option>
                                   <option value="AL">Alabama</option>
                                   <option value="AK">Alaska</option>
                                   <option value="AZ">Arizona</option>
@@ -1205,7 +1849,6 @@ function Shipper() {
                                 <input
                                   class="form-control waypointZip"
                                   type="text"
-                                  value=""
                                   name="origin[zip]"
                                   id="originZip"
                                   data-location="origin"
@@ -1242,7 +1885,6 @@ function Shipper() {
                               class="addressId"
                               id="destination_addressId"
                               name="destination_addressId"
-                              value=""
                             />
                             <div class="form-group">
                               <div class="checkbox-inline">
@@ -1269,7 +1911,6 @@ function Shipper() {
                                 class="form-control companyName"
                                 name="destination[company]"
                                 id="destination_companyName"
-                                value=""
                                 maxlength="150"
                               />
                               <span
@@ -1284,7 +1925,6 @@ function Shipper() {
                                 class="form-control"
                                 name="destination[contact]"
                                 id="destination_contact"
-                                value=""
                                 maxlength="150"
                               />
                               <span
@@ -1301,7 +1941,6 @@ function Shipper() {
                                 class="form-control"
                                 name="destination[buyernum]"
                                 id="destination_buyerNumber"
-                                value=""
                                 maxlength="150"
                               />
                               <span
@@ -1317,7 +1956,6 @@ function Shipper() {
                                   class="form-control"
                                   name="destination[phone1]"
                                   id="destination_phone1"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -1332,7 +1970,6 @@ function Shipper() {
                                   class="form-control"
                                   name="destination[phone2]"
                                   id="destination_phone2"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -1349,7 +1986,6 @@ function Shipper() {
                                   class="form-control"
                                   name="destination[phone3]"
                                   id="destination_phone3"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -1364,7 +2000,6 @@ function Shipper() {
                                   class="form-control"
                                   name="destination[phone4]"
                                   id="destination_phone4"
-                                  value=""
                                   maxlength="22"
                                 />
                                 <span
@@ -1380,7 +2015,6 @@ function Shipper() {
                                 class="form-control"
                                 name="destination[address1]"
                                 id="destination_address1"
-                                value=""
                                 maxlength="54"
                               />
                               <span
@@ -1394,7 +2028,6 @@ function Shipper() {
                                 class="form-control"
                                 name="destination[address2]"
                                 id="destination_address2"
-                                value=""
                                 maxlength="54"
                               />
                               <span
@@ -1415,7 +2048,6 @@ function Shipper() {
                                   <input
                                     class="form-control waypointCity"
                                     type="text"
-                                    value=""
                                     name="destination[city]"
                                     id="destinationCity"
                                     data-location="destination"
@@ -1447,7 +2079,6 @@ function Shipper() {
                                   class="waypointValid"
                                   id="destinationValid"
                                   name="destination[valid]"
-                                  value=""
                                 />
                               </div>
                             </div>
@@ -1470,7 +2101,7 @@ function Shipper() {
                                   required="required"
                                   data-native-error="Valid state is required."
                                 >
-                                  <option value=""></option>
+                                  <option></option>
                                   <option value="AL">Alabama</option>
                                   <option value="AK">Alaska</option>
                                   <option value="AZ">Arizona</option>
@@ -1561,7 +2192,6 @@ function Shipper() {
                                 <input
                                   class="form-control waypointZip"
                                   type="text"
-                                  value=""
                                   name="destination[zip]"
                                   id="destinationZip"
                                   data-location="destination"
@@ -1628,7 +2258,7 @@ function Shipper() {
                           class="form-control"
                           required="required"
                         >
-                          <option value=""></option>
+                          <option></option>
                           <option value="Open" selected="selected">
                             Open
                           </option>
@@ -1662,14 +2292,12 @@ function Shipper() {
                                 type="hidden"
                                 name="vehicles[vehicleDetail][0][id]"
                                 id="vehicleId0"
-                                value=""
                               />
                               <input
                                 class="vehicleRemoved"
                                 type="hidden"
                                 name="vehicles[vehicleDetail][0][removed]"
                                 id="vehicleRemoved0"
-                                value=""
                               />
                               <div class="form-group">
                                 <div class="radio-inline">
@@ -1726,7 +2354,6 @@ function Shipper() {
                                       data-minlength="10"
                                       maxlength="17"
                                       name="vehicles[vehicleDetail][0][vin]"
-                                      value=""
                                       id="vin0"
                                       required="required"
                                     />
@@ -1752,7 +2379,6 @@ function Shipper() {
                                     <input
                                       class="form-control"
                                       name="vehicles[vehicleDetail][0][vehicle_year]"
-                                      value=""
                                       id="vehicle_year0"
                                       readonly="readonly"
                                       data-readonly="readonly"
@@ -1765,7 +2391,6 @@ function Shipper() {
                                     <input
                                       class="form-control"
                                       name="vehicles[vehicleDetail][0][make]"
-                                      value=""
                                       id="make0"
                                       readonly="readonly"
                                       data-readonly="readonly"
@@ -1778,7 +2403,6 @@ function Shipper() {
                                     <input
                                       class="form-control"
                                       name="vehicles[vehicleDetail][0][model]"
-                                      value=""
                                       id="model0"
                                       readonly="readonly"
                                       data-readonly="readonly"
@@ -1796,10 +2420,7 @@ function Shipper() {
                                       class="form-control vehicleType"
                                       required="required"
                                     >
-                                      <option
-                                        value=""
-                                        selected="selected"
-                                      ></option>
+                                      <option selected="selected"></option>
                                       <option value="ATV">ATV</option>
                                       <option value="Boat">Boat</option>
                                       <option value="Car">Car</option>
@@ -1840,7 +2461,6 @@ function Shipper() {
                                         class="form-control vehicleType vehicleTypeOther"
                                         disabled="disabled"
                                         required="required"
-                                        value=""
                                       />
                                       <div class="input-group-btn">
                                         <button
@@ -1875,7 +2495,6 @@ function Shipper() {
                                       min="1900"
                                       max="2031"
                                       name="vehicles[vehicleDetail][0][vehicle_year]"
-                                      value=""
                                       id="ymmVehicleYear0"
                                       required="required"
                                     />
@@ -1893,7 +2512,6 @@ function Shipper() {
                                       class="form-control ymmMake"
                                       type="text"
                                       name="vehicles[vehicleDetail][0][make]"
-                                      value=""
                                       id="ymmMake0"
                                       required="required"
                                       maxlength="24"
@@ -1912,7 +2530,6 @@ function Shipper() {
                                       class="form-control ymmModel"
                                       type="text"
                                       name="vehicles[vehicleDetail][0][model]"
-                                      value=""
                                       id="ymmModel0"
                                       required="required"
                                     />
@@ -1934,10 +2551,7 @@ function Shipper() {
                                       class="form-control ymmVehicleType vehicleType"
                                       required="required"
                                     >
-                                      <option
-                                        value=""
-                                        selected="selected"
-                                      ></option>
+                                      <option selected="selected"></option>
                                       <option value="ATV">ATV</option>
                                       <option value="Boat">Boat</option>
                                       <option value="Car">Car</option>
@@ -1978,7 +2592,6 @@ function Shipper() {
                                         class="form-control vehicleType vehicleTypeOther"
                                         disabled="disabled"
                                         required="required"
-                                        value=""
                                       />
                                       <div class="input-group-btn">
                                         <button
@@ -2007,7 +2620,6 @@ function Shipper() {
                                       class="form-control vehicleQty"
                                       name="vehicles[vehicleDetail][0][qty]"
                                       id="qty0"
-                                      value=""
                                       type="number"
                                       min="1"
                                     />
@@ -2025,7 +2637,6 @@ function Shipper() {
                                     id="vehicleColor0"
                                     type="text"
                                     name="vehicles[vehicleDetail][0][color]"
-                                    value=""
                                     class="form-control"
                                   />
                                   <span
@@ -2042,7 +2653,6 @@ function Shipper() {
                                     id="plate0"
                                     type="text"
                                     name="vehicles[vehicleDetail][0][plate]"
-                                    value=""
                                     class="form-control"
                                     maxlength="25"
                                   />
@@ -2062,7 +2672,6 @@ function Shipper() {
                                     id="vehicleLotNumber0"
                                     type="text"
                                     name="vehicles[vehicleDetail][0][lotNumber]"
-                                    value=""
                                     class="form-control"
                                   />
                                   <span
@@ -2082,10 +2691,7 @@ function Shipper() {
                                     name="vehicles[vehicleDetail][0][state]"
                                     class="form-control"
                                   >
-                                    <option
-                                      value=""
-                                      selected="selected"
-                                    ></option>
+                                    <option selected="selected"></option>
                                     <option value="AL">Alabama</option>
                                     <option value="AK">Alaska</option>
                                     <option value="AZ">Arizona</option>
@@ -2249,7 +2855,6 @@ function Shipper() {
                               data-mintoday="true"
                               id="dateAvailable"
                               name="dates[available]"
-                              value=""
                               readonly="readonly"
                               data-readonly="readonly"
                             />
@@ -2262,7 +2867,6 @@ function Shipper() {
                         class="form-control"
                         id="desireddeliverydate"
                         name="dates[desiredDelivery]"
-                        value=""
                       />
                       <div class="dispatchOnly hidden">
                         <p class="alert alert-danger hidden dateWarning">
@@ -2280,7 +2884,7 @@ function Shipper() {
                                 name="dates[pickup][type]"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="Estimated">Estimated</option>
                                 <option value="Exactly">Exactly</option>
                                 <option value="No Earlier Than">
@@ -2316,7 +2920,6 @@ function Shipper() {
                                   class="form-control"
                                   id="datePickup"
                                   name="dates[pickup][date]"
-                                  value=""
                                   readonly="readonly"
                                   data-readonly="readonly"
                                 />
@@ -2337,7 +2940,7 @@ function Shipper() {
                                 name="dates[delivery][type]"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="Estimated">Estimated</option>
                                 <option value="Exactly">Exactly</option>
                                 <option value="No Earlier Than">
@@ -2373,7 +2976,6 @@ function Shipper() {
                                   class="form-control"
                                   id="dateDelivery"
                                   name="dates[delivery][date]"
-                                  value=""
                                   readonly="readonly"
                                   data-readonly="readonly"
                                 />
@@ -2420,7 +3022,6 @@ function Shipper() {
                             class="form-control"
                             id="minPayPrice"
                             name="price[total]"
-                            value=""
                             required="required"
                             min="1"
                           />
@@ -2443,7 +3044,6 @@ function Shipper() {
                                 class="form-control"
                                 id="codAmount"
                                 name="price[cod][amount]"
-                                value=""
                                 required="required"
                               />
                             </div>
@@ -2464,7 +3064,7 @@ function Shipper() {
                                 id="cod_payment_method"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="Cash/Certified Funds">
                                   Cash/Certified Funds
                                 </option>
@@ -2484,7 +3084,7 @@ function Shipper() {
                                 id="cod_where"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="D">Delivery</option>
                                 <option value="P">Pickup</option>
                               </select>
@@ -2506,7 +3106,6 @@ function Shipper() {
                                 class="form-control"
                                 id="balanceAmount"
                                 name="price[balance][amount]"
-                                value=""
                                 readonly="readonly"
                               />
                             </div>
@@ -2527,7 +3126,7 @@ function Shipper() {
                                 id="balancePaymentMethod"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="Cash">Cash</option>
                                 <option value="Certified Funds">
                                   Certified Funds
@@ -2554,7 +3153,7 @@ function Shipper() {
                                 id="balanceTime"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="immediately">Immediately</option>
                                 <option value="2 business days (Quick Pay)">
                                   2 Business Days (Quick Pay)
@@ -2588,7 +3187,7 @@ function Shipper() {
                                 id="balanceWhere"
                                 required="required"
                               >
-                                <option value="" selected="selected"></option>
+                                <option selected="selected"></option>
                                 <option value="pickup">Pickup</option>
                                 <option value="delivery">Delivery</option>
                                 <option value="receiving a signed Bill of Lading">
@@ -2634,7 +3233,6 @@ function Shipper() {
                           id="txtOrderId"
                           placeholder="Order ID"
                           type="text"
-                          value=""
                         />
                         <span
                           class="glyphicon form-control-feedback"
@@ -2656,7 +3254,6 @@ function Shipper() {
                           name="userDefined[additionalInfo]"
                           maxlength="60"
                           type="text"
-                          value=""
                         />
                         <span
                           class="glyphicon form-control-feedback"
