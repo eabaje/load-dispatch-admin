@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createShipment } from "../../context/actions/shipment/shipment.action";
+import { createVehicle } from "../../context/actions/vehicle/vehicle.action";
 
 function AddVehicle() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -44,26 +44,24 @@ function AddVehicle() {
     );
   };
   const {
-    register: shipmentform,
+    register,
     formState: { errors },
     handleSubmit: handleShipment,
   } = useForm();
 
   const {
-    shipmentDispatch,
-    shipmentState: { error, loading, data },
+    vehicleDispatch,
+    vehicleState: { error, loading, data },
   } = useContext(GlobalContext);
   const SubmitForm = () => {
     //  e.preventDefault();
 
-    createShipment(shipmentform)(shipmentDispatch)({
-      //  enqueueSnackbar('', { variant: "info" });
-    });
+    createVehicle(register)(vehicleDispatch);
 
     // if (password !== confirmPassword) {
     //   alert('Password and confirm password are not match');
     // } else {
-    //   shipmentDispatch(createShipment(shipmentform));
+    //   shipmentDispatch(createShipment(register));
     // }
   };
 
@@ -107,7 +105,7 @@ function AddVehicle() {
                       <select
                         id="VehicleType"
                         class="form-control"
-                        {...shipmentform("VehicleType", {
+                        {...register("VehicleType", {
                           required: true,
                         })}
                       >
@@ -128,7 +126,7 @@ function AddVehicle() {
                         name="VehicleNumber"
                         class="form-control"
                         placeholder="VehicleNumber"
-                        {...shipmentform("VehicleNumber", {
+                        {...register("VehicleNumber", {
                           required: true,
                         })}
                       />
@@ -143,7 +141,7 @@ function AddVehicle() {
                         name="SerialNumber"
                         class="form-control"
                         placeholder="Serial Number"
-                        {...shipmentform("SerialNumber", {
+                        {...register("SerialNumber", {
                           required: true,
                         })}
                       />
@@ -154,7 +152,7 @@ function AddVehicle() {
                         name="VehicleMake"
                         class="form-control"
                         placeholder="Vehicle Make"
-                        {...shipmentform("VehicleMake", {
+                        {...register("VehicleMake", {
                           required: true,
                         })}
                       />
@@ -167,7 +165,7 @@ function AddVehicle() {
                       <input
                         name="Description"
                         class="form-control"
-                        {...shipmentform("Description", {
+                        {...register("Description", {
                           required: true,
                         })}
                       />
@@ -175,7 +173,7 @@ function AddVehicle() {
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-info"> Pick Up Information </h5>
+                      <h5 class="alert alert-info"> Vehicle Information </h5>
                     </div>
                   </div>
 
@@ -186,7 +184,7 @@ function AddVehicle() {
                       <input
                         name="VehicleColor"
                         class="form-control"
-                        {...shipmentform("VehicleColor", {
+                        {...register("VehicleColor", {
                           required: true,
                         })}
                       />
@@ -196,7 +194,7 @@ function AddVehicle() {
                       <input
                         name="VehicleModel"
                         class="form-control"
-                        {...shipmentform("VehicleModel", {
+                        {...register("VehicleModel", {
                           required: true,
                         })}
                       />
@@ -212,7 +210,7 @@ function AddVehicle() {
                       <input
                         name="LicensePlate"
                         class="form-control"
-                        {...shipmentform("LicensePlate", {
+                        {...register("LicensePlate", {
                           required: true,
                         })}
                       />
@@ -226,7 +224,7 @@ function AddVehicle() {
                       <input
                         name="VehicleModelYear"
                         class="form-control"
-                        {...shipmentform("VehicleModelYear", {
+                        {...register("VehicleModelYear", {
                           required: true,
                         })}
                       />
@@ -249,7 +247,7 @@ function AddVehicle() {
                         name="PurchaseYear"
                         class="form-control"
                         placeholder=" State your requirement expectations"
-                        {...shipmentform("PurchaseYear")}
+                        {...register("PurchaseYear")}
                       />
                     </div>
                   </div>
