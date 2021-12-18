@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
@@ -17,12 +17,16 @@ import {
 import { createShipment } from "../../context/actions/shipment/shipment.action";
 import $ from "jquery";
 import "bootstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 function AddShipment() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   // const onSubmit = (data) => console.log(data);
 
@@ -50,18 +54,12 @@ function AddShipment() {
     );
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     $(".datepicker").datepicker({
-  //       format: "mm/dd/yyyy",
-  //     });
-  //   }, 1000);
-  // }, []);
-
   const {
     register: shipmentform,
     formState: { errors },
     handleSubmit: handleShipment,
+    setValue,
+    control,
   } = useForm();
 
   const {
@@ -74,6 +72,12 @@ function AddShipment() {
   } = useContext(GlobalContext);
 
   console.log(`isLoggedIn`, isLoggedIn);
+
+  // useEffect(() => {
+  //   shipmentform({ name: "PickUpDate" }, { required: true });
+  //   shipmentform({ name: "DeliveryDate" }, { required: true });
+  // }, [shipmentform]);
+
   const SubmitForm = (formdata) => {
     //  e.preventDefault();
     //  console.log("state:", formdata);
@@ -90,6 +94,7 @@ function AddShipment() {
       enqueueSnackbar("An Error occurred", { variant: "error" });
     }
   };
+
   return (
     <>
       <div class="row">
@@ -226,21 +231,28 @@ function AddShipment() {
                   </div>
                   <div class="form-group row">
                     <label class="col-form-label col-md-2">PickUp Date</label>
-
                     <div class="col-md-2">
-                      <div class="input-group date">
-                        <div class="input-group-addon">
-                          <i class="fa fa-calendar"></i>
-                        </div>
-                        <input
-                          type="date"
-                          name="ExpectedPickUpDate"
-                          class="form-control datepicker"
-                          {...shipmentform("ExpectedPickUpDate", {
-                            required: true,
-                          })}
-                          required
+                      <div class="input-group mb-3">
+                        <Controller
+                          name={"birthDate"}
+                          control={control}
+                          defaultValue={new Date()}
+                          render={({ field: { onChange, value } }) => {
+                            return (
+                              <DatePicker
+                                className="form-control datepicker"
+                                onChange={onChange}
+                                selected={value}
+                                placeholderText="Enter your birth date"
+                              />
+                            );
+                          }}
                         />
+                        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </span>
+                        </div>
                       </div>
                     </div>
 
@@ -304,14 +316,20 @@ function AddShipment() {
                     <label class="col-form-label col-md-2">Delivery Date</label>
                     <div class="col-md-2">
                       <div class="input-group mb-3">
-                        <input
-                          type="text"
+                        <DatePicker
+                          isClearable
+                          // innerRef={shipmentform({ required: true })}
                           name="ExpectedDeliveryDate"
-                          class="form-control datepicker"
+                          className={"form-control datepicker"}
+                          selected={endDate}
+                          onChange={(val) => {
+                            setEndDate(val);
+                            setValue("DeliveryDate", val);
+                          }}
+                          dateFormat="MM-dd-yyyy"
                           {...shipmentform("ExpectedDeliveryDate", {
                             required: true,
                           })}
-                          required
                         />
                         <div class="input-group-append">
                           <span class="input-group-text">

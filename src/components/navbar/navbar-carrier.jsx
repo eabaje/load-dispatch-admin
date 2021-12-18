@@ -16,11 +16,11 @@ const NavBarCarrier = () => {
   //assigning location variable
   const location = useLocation();
 
-  //destructuring pathname from location
-  const { pathname } = location;
+  // //destructuring pathname from location
+  // const { pathname } = location;
 
-  //Javascript split method to get the name of the path in array
-  const splitLocation = pathname.split("/");
+  // //Javascript split method to get the name of the path in array
+  // const splitLocation = pathname.split("/");
 
   const handleMenu = () => {
     $(document).ready(function () {
