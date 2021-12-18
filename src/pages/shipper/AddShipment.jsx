@@ -68,6 +68,12 @@ function AddShipment() {
     shipmentDispatch,
     shipmentState: { error, loading, data },
   } = useContext(GlobalContext);
+
+  const {
+    authState: { error: error2, loading: loading2, user, isLoggedIn },
+  } = useContext(GlobalContext);
+
+  console.log(`isLoggedIn`, isLoggedIn);
   const SubmitForm = (formdata) => {
     //  e.preventDefault();
     //  console.log("state:", formdata);

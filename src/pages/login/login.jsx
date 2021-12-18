@@ -15,11 +15,14 @@ import {
   TRIP_STATUS,
   API_URL,
 } from "../../constants/enum";
-import { signin } from "../../context/actions/auth/auth.action";
+import { signin2 } from "../../context/actions/auth/auth.action";
 import { getError } from "../../utils/error";
+
 function Login() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const history = useHistory();
+
   const {
     register,
     formState: { errors },
@@ -28,29 +31,32 @@ function Login() {
 
   const {
     authDispatch,
-    authState: { error, user, IsLoggedIn },
+    authState: { error, user, isLoggedIn },
   } = useContext(GlobalContext);
 
-  const SubmitForm = async (formdata) => {
+  const [isAuthenticated, setIsAuthenticated] = React.useState(isLoggedIn);
+  // , authState: { error, user, IsLoggedIn },
+
+  // console.log(`authState`, error);
+
+  console.log(`isAuthenticated`, isLoggedIn);
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      history.push("/dashboard");
+    }
+    if (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
+  }, [isLoggedIn, history]);
+
+  const SubmitForm = (formdata) => {
     //  e.preventDefault();
     //  console.log("state:", formdata);
 
-    // try {
-    //   const res = await axios.post(`${API_URL}auth/signin`, formdata);
+    signin2(formdata)(authDispatch);
 
-    //   if (res) {
-    //     console.log("state:", res);
-    //   }
-    // } catch (err) {
-    //   enqueueSnackbar(getError(err), { variant: "error" });
-    // }
-
-    signin(formdata)(authDispatch);
-    // console.log("state:", localStorage.getItem("user"));
-
-    // if (IsLoggedIn) {
-    //   history.push("/");
-    // } else {
+    //else {
     //   if (error) {
     //     enqueueSnackbar(error, { variant: "error" });
     //   }
@@ -106,7 +112,7 @@ function Login() {
         </p>
         <p class="mb-0 text-muted">
           Don’t have an account?{" "}
-          <a href="auth-signup.html" class="f-w-400">
+          <a href="   `" class="f-w-400">
             Signup
           </a>
         </p>

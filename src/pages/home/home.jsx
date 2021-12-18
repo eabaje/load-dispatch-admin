@@ -1,6 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+import { GlobalContext } from "../../context/Provider";
+import { useSnackbar } from "notistack";
+import { useHistory } from "react-router-dom";
 
 function Home() {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const history = useHistory();
+  const {
+    authDispatch,
+    authState: { error, user, isLoggedIn },
+  } = useContext(GlobalContext);
+  React.useEffect(() => {
+    if (isLoggedIn === false) {
+      history.push("/signin");
+    }
+    if (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
+  }, [isLoggedIn, history]);
   return (
     <div>
       <div class="row">
@@ -53,7 +71,7 @@ function Home() {
         <div class="col-md-4">
           <div class="card">
             <div class="card-header">
-              <h5>Learning center videos</h5>
+              <h5>Quick Links</h5>
             </div>
             <div class="card-body">
               <ul

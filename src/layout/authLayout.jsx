@@ -2,7 +2,7 @@ import React from "react";
 
 const AuthLayout = ({ children }) => (
   <div>
-    <div class="auth-wrapper auth-background">
+    <div class="auth-wrapper">
       <div class="auth-content">
         <div class="card">
           <div class="row align-items-center text-center">

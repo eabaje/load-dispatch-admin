@@ -11772,7 +11772,10 @@ a.text-dark:hover, a.text-dark:focus {
 .icon-triangle:before {
     content: "\e8de";
 }
-
+.icon-truck:before {
+   content:"\f0d1";
+   
+}
 .icon-type:before {
     content: "\e8df";
 }

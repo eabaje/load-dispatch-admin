@@ -8,6 +8,8 @@ import {
   CLEAR_AUTH_STATE,
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
+import Axios from "axios";
+import { API_URL } from "../../../constants";
 
 export const register = (form) => async (dispatch) => {
   const requestPayload = {
@@ -47,15 +49,15 @@ export const register = (form) => async (dispatch) => {
   }
 };
 
-export const signin = (form) => (dispatch) => {
+export const signin = (form, dispatch) => {
   const requestPayload = {
     Email: form.Email,
     Password: form.Password,
   };
   dispatch({ type: LOGIN_REQUEST, payload: requestPayload });
   try {
-    const { res } = axios.post("auth/signin", requestPayload);
-    console.log("From action Method:", res.data);
+    const res = Axios.post(`${API_URL}auth/signin`, requestPayload);
+
     dispatch({ type: LOGIN_SUCCESS, payload: res.data });
 
     localStorage.setItem("token", res.data.token);
@@ -68,6 +70,34 @@ export const signin = (form) => (dispatch) => {
         : { error: "Something went wrong, try agin" },
     });
   }
+};
+
+export const signin2 = (form) => (dispatch) => {
+  const requestPayload = {
+    Email: form.Email,
+    Password: form.Password,
+  };
+
+  dispatch({
+    type: LOGIN_REQUEST,
+  });
+  axios
+    .post(`auth/signin`, requestPayload)
+    .then((res) => {
+      console.log(`res`, res);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: err.message
+          ? err.response
+          : { error: "Something went wrong, try agin" },
+      });
+    });
 };
 
 export const signout = () => (dispatch) => {

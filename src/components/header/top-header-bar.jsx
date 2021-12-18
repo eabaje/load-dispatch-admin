@@ -1,7 +1,29 @@
 import React from "react";
 import { LOG_IN } from "../../constants";
+import { useContext, useState } from "react";
+import { GlobalContext } from "../../context/Provider";
+import { signout } from "../../context/actions/auth/auth.action";
 
 function TopHeaderBar() {
+  const {
+    authDispatch,
+    authState: { error, user, isLoggedIn },
+  } = useContext(GlobalContext);
+  console.log(`User`, user);
+
+  // React.useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.push("/dashboard");
+  //   }
+  //   if (error) {
+  //     enqueueSnackbar(error.message, { variant: "error" });
+  //   }
+  // }, [isLoggedIn, history]);
+
+  const LogOut = () => {
+    signout()(authDispatch);
+  };
+
   return (
     <header class="navbar pcoded-header navbar-expand-lg navbar-light header-blue">
       <div class="container">
@@ -146,45 +168,58 @@ function TopHeaderBar() {
               </div>
             </li>
             <li>
-              <div class="dropdown drp-user">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="feather icon-user"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right profile-notification">
-                  <div class="pro-head">
-                    <img
-                      src="assets/images/user/avatar-1.jpg"
-                      class="img-radius"
-                      alt="User-Profile-Image"
-                    />
-                    <span>John Doe</span>
-                    <a
-                      href="auth-signin.html"
-                      class="dud-logout"
-                      title="Logout"
-                    >
-                      <i class="feather icon-log-out"></i>
-                    </a>
+              {isLoggedIn && (
+                <div class="dropdown drp-user">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="feather icon-user"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right profile-notification">
+                    <div class="pro-head">
+                      <img
+                        src="assets/images/user/avatar-1.jpg"
+                        class="img-radius"
+                        alt="User-Profile-Image"
+                      />
+                      <span>{user.data.FullName}</span>
+                      <a
+                        href="auth-signin.html"
+                        class="dud-logout"
+                        title="Logout"
+                      >
+                        <i class="feather icon-log-out"></i>
+                      </a>
+                    </div>
+                    <ul class="pro-body">
+                      <li>
+                        <a href="/user-profile" class="dropdown-item">
+                          <i class="feather icon-user"></i> Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href={`/user-subscription/?userId=${user.data.UserId}`}
+                          class="dropdown-item"
+                        >
+                          <i class="feather icon-box"></i> My Subscription
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href={`/my-messages/?userId=${user.data.UserId}`}
+                          class="dropdown-item"
+                        >
+                          <i class="feather icon-mail"></i> My Messages
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="dropdown-item" onClick={LogOut}>
+                          <i class="feather icon-lock"></i> Lock Screen
+                        </a>
+                      </li>
+                    </ul>
                   </div>
-                  <ul class="pro-body">
-                    <li>
-                      <a href="user-profile.html" class="dropdown-item">
-                        <i class="feather icon-user"></i> Profile
-                      </a>
-                    </li>
-                    <li>
-                      <a href="email_inbox.html" class="dropdown-item">
-                        <i class="feather icon-mail"></i> My Messages
-                      </a>
-                    </li>
-                    <li>
-                      <a href="auth-signin.html" class="dropdown-item">
-                        <i class="feather icon-lock"></i> Lock Screen
-                      </a>
-                    </li>
-                  </ul>
                 </div>
-              </div>
+              )}
             </li>
           </ul>
         </div>

@@ -13,6 +13,7 @@ const auth = (state, { type, payload }) => {
   switch (type) {
     case LOGIN_REQUEST:
     case REGISTER_REQUEST:
+      console.log(`state`, state);
       return {
         ...state,
         loading: true,
@@ -26,6 +27,10 @@ const auth = (state, { type, payload }) => {
       };
 
     case LOGIN_SUCCESS:
+      localStorage.setItem("token", payload.token);
+      localStorage.setItem("user", JSON.stringify(payload.data));
+      console.log("localStorage:", localStorage.getItem("user"));
+      console.log(`payload`, payload);
       return {
         ...state,
         loading: false,

@@ -6,21 +6,14 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "./contexts/authContext/AuthContext";
-import Header from "./components/header/header";
-import Footer from "./components/footer/footer";
-import Carrier from "./pages/carrier/carrier";
-import About from "./pages/about/about";
+
 import Shipper from "./pages/shipper/shipper";
 import AddShipment from "./pages/shipper/AddShipment";
 import ListShipment from "./pages/shipper/ListShipment";
 import EditShipment from "./pages/shipper/EditShipment";
 
-import Contact from "./pages/contact/contact";
-import Register from "./pages/register/register";
-import Term from "./pages/contact/term";
-import history from "./helpers/history";
 import AuthLayout from "./layout/authLayout";
 import MainLayout from "./layout/mainLayout";
 import Login from "./pages/login/login";
@@ -44,9 +37,23 @@ import { GlobalContext } from "./context/Provider";
 
 const App = () => {
   const {
-    authDispatch,
-    authState: { error, loading, user, IsloggedIn },
+    authState: { user, isLoggedIn },
   } = useContext(GlobalContext);
+  console.log(`isLoggedIn`, isLoggedIn);
+  // const getUser = () => {
+  //   try {
+  //     console.log(`users`, user);
+  //     if (!user) {
+  //       document.location.href = "/signin";
+  //     }
+  //   } catch (error) {}
+  // };
+
+  // React.useEffect(() => {
+  //   if (isLoggedIn === false) {
+  //     document.location.href = "/signin";
+  //   }
+  // }, [isLoggedIn]);
 
   function RouteWithLayout({ layout, component, ...rest }) {
     return (
@@ -92,22 +99,17 @@ const App = () => {
   return (
     <Router>
       <Switch>
+        <LoginLayoutRoute path="/signin" component={Login} />
         <Route exact path="/">
-          {user ? (
+          {isLoggedIn ? (
             <AppLayoutRoute path="/dashboard" component={Home} />
           ) : (
             <Redirect to="/signin" />
           )}
         </Route>
-        <Route path="/register">
-          {!user ? <Register /> : <Redirect to="/" />}
-        </Route>
-
-        <LoginLayoutRoute path="/signin" component={Login} />
 
         {user && (
           <>
-            <AppLayoutRoute path="/" component={Home} />
             <AppLayoutRoute exact path="/shipper" component={Shipper} />
             <AppLayoutRoute path="/dashboard" component={Home} />
             <AppLayoutRoute path="/add-shipment" component={AddShipment} />
@@ -142,7 +144,6 @@ const App = () => {
             <AppLayoutRoute path="/edit-trip" component={EditTrip} />
             <AppLayoutRoute path="/list-trip" component={ListTrip} />
 
-            <AppLayoutRoute path="/edit-driver-info" component={EditDriver} />
             <AppLayoutRoute
               path="/add-subscription"
               component={AddSubscription}
