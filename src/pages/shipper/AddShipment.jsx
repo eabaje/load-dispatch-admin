@@ -95,6 +95,33 @@ function AddShipment() {
     }
   };
 
+  const CustomInput = React.forwardRef(({value,onClick}, ref) => {
+    return (
+      <div class="input-group mb-3"> 
+       <input
+                          ref={ref}
+                          type="text"
+                         class="form-control datepicker"
+                         value={value}
+                         onClick={onClick}
+                         placeholder="Click to enter date"
+                         
+                          required
+                        />
+        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </span>
+                        </div>
+      </div>
+    );
+  });
+
+
+                       
+
+
+
   return (
     <>
       <div class="row">
@@ -131,8 +158,8 @@ function AddShipment() {
                         {...shipmentform("LoadCategory", {
                           required: true,
                         })}
-                      >
-                        <option selected>Select Load Categories</option>
+                     required >
+                        <option value="" selected>Select Load Categories</option>
                         {LOAD_TYPE.map((item) => (
                           <option key={item.value} value={item.value}>
                             {item.text}
@@ -217,6 +244,7 @@ function AddShipment() {
                       <input
                         name="Description"
                         class="form-control"
+                        placeholder="Give your detailed description of expected delivery"
                         {...shipmentform("Description", {
                           required: true,
                         })}
@@ -230,34 +258,10 @@ function AddShipment() {
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-form-label col-md-2">PickUp Date</label>
-                    <div class="col-md-2">
-                      <div class="input-group mb-3">
-                        <Controller
-                          name={"birthDate"}
-                          control={control}
-                          defaultValue={new Date()}
-                          render={({ field: { onChange, value } }) => {
-                            return (
-                              <DatePicker
-                                className="form-control datepicker"
-                                onChange={onChange}
-                                selected={value}
-                                placeholderText="Enter your birth date"
-                              />
-                            );
-                          }}
-                        />
-                        <div class="input-group-append">
-                          <span class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                   
 
                     <label class="col-form-label col-md-2">Country</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="PickUpCountry"
                         class="form-control"
@@ -274,7 +278,7 @@ function AddShipment() {
                     </div>
 
                     <label class="col-form-label col-md-2">Region/State</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="PickUpRegion"
                         class="form-control"
@@ -295,16 +299,43 @@ function AddShipment() {
                       PickUp Address
                     </label>
 
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                       <input
                         name="PickUpLocation"
                         class="form-control"
+                        placeholder="Pick Up location"
                         {...shipmentform("PickUpLocation", {
                           required: true,
                         })}
                         required
                       />
                     </div>
+
+                    <label class="col-form-label col-md-2">PickUp Date</label>
+                    <div class="col-md-4">
+                      
+                        <Controller
+                          name={"ExpectedPickUpDate"}
+                          control={control}
+                          // defaultValue={new Date()}
+                          render={({ field: { onChange, value } }) => {
+                            return (
+                              <DatePicker
+                              wrapperClassName="datePicker"
+                              className="form-control datepicker"
+                                onChange={onChange}
+                                selected={value}
+                                placeholderText="Enter date"
+                                customInput={<CustomInput/>}
+                              />
+                            );
+                          }}
+                        />
+                       
+
+                    </div>
+
+
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
@@ -313,34 +344,10 @@ function AddShipment() {
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-form-label col-md-2">Delivery Date</label>
-                    <div class="col-md-2">
-                      <div class="input-group mb-3">
-                        <DatePicker
-                          isClearable
-                          // innerRef={shipmentform({ required: true })}
-                          name="ExpectedDeliveryDate"
-                          className={"form-control datepicker"}
-                          selected={endDate}
-                          onChange={(val) => {
-                            setEndDate(val);
-                            setValue("DeliveryDate", val);
-                          }}
-                          dateFormat="MM-dd-yyyy"
-                          {...shipmentform("ExpectedDeliveryDate", {
-                            required: true,
-                          })}
-                        />
-                        <div class="input-group-append">
-                          <span class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                   
                     <label class="col-form-label col-md-2">Country</label>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="DeliveryCountry"
                         class="form-control"
@@ -356,7 +363,7 @@ function AddShipment() {
                       </select>
                     </div>
                     <label class="col-form-label col-md-2">Region/State</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="DeliveryRegion"
                         class="form-control"
@@ -378,16 +385,47 @@ function AddShipment() {
                       Location/Address
                     </label>
 
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                       <input
                         name="DeliveryLocation"
                         class="form-control"
+                        placeholder="Delivery location"
                         {...shipmentform("DeliveryLocation", {
                           required: true,
                         })}
                         required
                       />
                     </div>
+
+                    <label class="col-form-label col-md-2">Delivery Date</label>
+                    <div class="col-md-4">
+                     
+                        <Controller
+                          name={"ExpectedDeliveryDate"}
+                          control={control}
+                          // defaultValue={new Date()}
+                          render={({ field: { onChange, value } }) => {
+                            return (
+                              <DatePicker
+                              wrapperClassName="datePicker"
+                              className="form-control datepicker"
+                                onChange={onChange}
+                                selected={value}
+                                placeholderText="Enter date"
+                                customInput={<CustomInput/>}
+                              />
+                            );
+                          }}
+                        />
+                        
+                      
+                    </div>
+
+
+
+
+
+
                   </div>
 
                   <div class="form-group row">
@@ -397,6 +435,7 @@ function AddShipment() {
                       <input
                         name="DeliveryContactName"
                         class="form-control"
+                        placeholder="Contact Name"
                         {...shipmentform("DeliveryContactName", {
                           required: true,
                         })}
@@ -407,6 +446,7 @@ function AddShipment() {
                     <div class="col-md-4">
                       <input
                         name="DeliveryContactPhone"
+                        placeholder="Contact Phone"
                         class="form-control"
                         {...shipmentform("DeliveryContactPhone", {
                           required: true,
@@ -423,6 +463,7 @@ function AddShipment() {
                       <input
                         name="DeliveryEmail"
                         class="form-control"
+                        placeholder="Email"
                         {...shipmentform("DeliveryEmail", {
                           required: true,
                         })}
@@ -433,20 +474,24 @@ function AddShipment() {
 
                     <label class="col-form-label col-md-2">Shipment Date</label>
                     <div class="col-md-4">
-                      <div class="input-group mb-3">
-                        <input
-                          type="text"
-                          name="ShipmentDate"
-                          class="form-control datepicker"
-                          {...shipmentform("ShipmentDate")}
-                          required
+                    <Controller
+                          name={"ShipmentupDate"}
+                          control={control}
+                          // defaultValue={new Date()}
+                          render={({ field: { onChange, value } }) => {
+                            return (
+                              <DatePicker
+                              wrapperClassName="datePicker"
+                              className="form-control datepicker"
+                                onChange={onChange}
+                                selected={value}
+                                placeholderText="Enter date"
+                                customInput={<CustomInput/>}
+                              />
+                            );
+                          }}
                         />
-                        <div class="input-group-append">
-                          <span class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </span>
-                        </div>
-                      </div>
+                       
                     </div>
                   </div>
                   <div class="form-group row">

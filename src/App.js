@@ -20,7 +20,7 @@ import Login from "./pages/login/login";
 import AddCarrier from "./pages/carrier/AddCarrier";
 import ListCarrier from "./pages/carrier/ListCarrier";
 import EditCarrier from "./pages/carrier/EditCarrier";
-import Addvehicle from "./pages/vehicle/AddVehicle";
+//import AddVehicle from "./pages/Vehicle/AddVehicle";
 import ListVehicle from "./pages/vehicle/ListVehicle";
 import EditVehicle from "./pages/vehicle/EditVehicle";
 import AddDriver from "./pages/driver/addDriver";
@@ -34,6 +34,8 @@ import EditSubscription from "./pages/subscribe/EditSubscription";
 import ListSubscription from "./pages/subscribe/ListSubscription";
 
 import { GlobalContext } from "./context/Provider";
+import AddVehicle from "./pages/vehicle/AddVehicle";
+
 
 const App = () => {
   const {
@@ -126,7 +128,7 @@ const App = () => {
               component={ListCarrier}
             />
             <AppLayoutRoute path="/edit-carrier" component={EditCarrier} />
-            <AppLayoutRoute path="/add-vehicle" component={Addvehicle} />
+            <AppLayoutRoute path="/add-vehicle" component={AddVehicle} />
             <AppLayoutRoute
               exact
               path="/list-vehicles"
