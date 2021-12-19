@@ -9,9 +9,12 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createVehicle } from "../../context/actions/vehicle/vehicle.action";
+import { createVehicle,listVehiclesByVehicleId } from "../../context/actions/vehicle/vehicle.action";
 
-function AddVehicle() {
+function AddVehicle({ history, match }) {
+
+  const { id } = match.params;
+  const isAddMode = !id;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
@@ -53,6 +56,14 @@ function AddVehicle() {
     vehicleDispatch,
     vehicleState: { error, loading, data },
   } = useContext(GlobalContext);
+
+  const getVehicleById = (vehicleId) => {
+    //  e.preventDefault();
+
+    listVehiclesByVehicleId(vehicleId)(vehicleDispatch);
+
+    
+  };
   const SubmitForm = () => {
     //  e.preventDefault();
 
