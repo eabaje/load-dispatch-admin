@@ -22,10 +22,12 @@ function AddDriver() {
   const [deliveryRegion, setdeliveryRegion] = useState([]);
   const [picFile, setpicFile] = useState(null);
   const [docFile, setdocFile] = useState(null);
+  const [user, setUser] = useState({});
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const selectPickUpCountry = async (e) => {
@@ -50,20 +52,14 @@ function AddDriver() {
 
   const onChangePicHandler = async (e) => {
     setpicFile((picFile) => e.target.files[0]);
-    
-   
   };
   console.log(`picFile`, picFile);
- 
-  const onChangeDocHandler = async (e) => {
-   
-    alert(e)
-    setdocFile((docFile) => e.target.files[0]);
 
-   
+  const onChangeDocHandler = async (e) => {
+    setdocFile((docFile) => e.target.files[0]);
   };
-  
-  console.log(`docFile`, docFile)
+
+  console.log(`docFile`, docFile);
 
   const {
     register,
@@ -72,48 +68,43 @@ function AddDriver() {
   } = useForm();
 
   const {
-  driverDispatch,
+    driverDispatch,
     driverState: { error, loading },
   } = useContext(GlobalContext);
   const SubmitForm = (data) => {
     //  e.preventDefault();
-  
 
- 
-    uploadImage(picFile)(url=>{
-      data.PicUrl=url;
-    })(err=>{
-
+    uploadImage(picFile)((url) => {
+      data.PicUrl = url;
+      alert(url);
+    })((err) => {
       enqueueSnackbar(`Error:-${err.message} `, {
         variant: "error",
       });
-
     });
 
-    uploadDocuments(docFile)(url=>{
-      data.LicenseUrl=url;
-    })(err=>{
-
+    uploadDocuments(docFile)((url) => {
+      data.LicenseUrl = url;
+    })((err) => {
       enqueueSnackbar(`Error:-${err.message} `, {
         variant: "error",
       });
-
     });
-    createDriver(data)(driverDispatch)(res=>{
-
+    createDriver(data)(driverDispatch)((res) => {
       if (res.message === "Success") {
-        enqueueSnackbar(`Created New Driver-${res.data.DriverName} successfully`, {
-          variant: "success",
-        });
+        enqueueSnackbar(
+          `Created New Driver-${res.data.DriverName} successfully`,
+          {
+            variant: "success",
+          }
+        );
       }
     });
 
     if (error) {
-          enqueueSnackbar(error, { variant: "error" });
-        }
-
-
- };
+      enqueueSnackbar(error, { variant: "error" });
+    }
+  };
 
   return (
     <>
@@ -121,13 +112,11 @@ function AddDriver() {
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
-              <h2 >
-                Driver Information Collection Form
-              </h2>
+              <h2>Driver Information Collection Form</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form  onSubmit={handleSubmit(SubmitForm)}>
+                <form onSubmit={handleSubmit(SubmitForm)}>
                   <input
                     type="hidden"
                     name="UserId"
@@ -149,7 +138,7 @@ function AddDriver() {
 
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload  onChangePicHandler={onChangePicHandler}/>
+                      <ImageUpload onChangePicHandler={onChangePicHandler} />
                     </div>
                   </div>
                   <div class="form-group row">
@@ -307,17 +296,14 @@ function AddDriver() {
                       Attach Drivers License
                     </label>
                     <div class="col-md-4">
-                    <input
-          className="form-control"
-          type="file"
-          id="LicenseUrl"
-          name="LicenseUrl"
-          {...register("LicenseUrl")}
-          onChange={(e) => onChangeDocHandler(e)}
-
-        
-        />
-                    
+                      <input
+                        className="form-control"
+                        type="file"
+                        id="LicenseUrl1"
+                        name="LicenseUrl1"
+                        {...register("LicenseUrl1")}
+                        onChange={(e) => onChangeDocHandler(e)}
+                      />
                     </div>
                   </div>
 
@@ -339,7 +325,7 @@ function AddDriver() {
                           required
                         />
                         <label class="form-check-label" for="invalidCheck">
-                        I confirm all information entered are accurate
+                          I confirm all information entered are accurate
                         </label>
                         <div class="invalid-feedback">
                           You must agree before submitting.

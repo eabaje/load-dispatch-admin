@@ -9,6 +9,7 @@ import $ from "jquery";
 function ListSubscription() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
 
   // GET request function to your Mock API
   const fetchShipment = async () => {
@@ -29,6 +30,7 @@ function ListSubscription() {
   // Calling the function on component mount
   useEffect(() => {
     fetchShipment();
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   useEffect(() => {

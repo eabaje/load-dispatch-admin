@@ -20,7 +20,6 @@ import Login from "./pages/login/login";
 import AddCarrier from "./pages/carrier/AddCarrier";
 import ListCarrier from "./pages/carrier/ListCarrier";
 import EditCarrier from "./pages/carrier/EditCarrier";
-//import AddVehicle from "./pages/Vehicle/AddVehicle";
 import ListVehicle from "./pages/vehicle/ListVehicle";
 import EditVehicle from "./pages/vehicle/EditVehicle";
 import AddDriver from "./pages/driver/addDriver";
@@ -34,8 +33,7 @@ import EditSubscription from "./pages/subscribe/EditSubscription";
 import ListSubscription from "./pages/subscribe/ListSubscription";
 
 import { GlobalContext } from "./context/Provider";
-import AddVehicle from "./pages/vehicle/AddVehicle";
-
+import AddVehicle from "./pages/vehicle/Addvehicle";
 
 const App = () => {
   const {

@@ -2277,7 +2277,7 @@ function Shipper() {
                           <div class="pull-right">
                             <a
                               href={{ javascript: "void(0)" }}
-                              class="addVehicle btn btn-default btn-lg"
+                              class=" btn btn-default btn-lg"
                             >
                               Add Vehicle
                             </a>

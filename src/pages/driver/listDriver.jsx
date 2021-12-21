@@ -9,6 +9,7 @@ import { getError } from "../../utils/error";
 function ListDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
 
   // GET request function to your Mock API
   const fetchShipment = async () => {
@@ -28,6 +29,7 @@ function ListDriver() {
   // Calling the function on component mount
   useEffect(() => {
     fetchShipment();
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   return (
     <>

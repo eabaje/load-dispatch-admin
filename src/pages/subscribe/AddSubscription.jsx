@@ -19,11 +19,13 @@ function AddSubscription() {
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
+  const [user, setUser] = useState({});
 
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const selectPickUpCountry = async (e) => {
@@ -60,19 +62,13 @@ function AddSubscription() {
   const SubmitForm = (formdata) => {
     //  e.preventDefault();
     console.log("state:", formdata);
-    createSubscription(formdata)(subscribeDispatch)(res=>{
+    createSubscription(formdata)(subscribeDispatch)((res) => {
       if (res.message === "Success") {
-          enqueueSnackbar("Created Subscrition Type successfully", {
-            variant: "success",
-          });
-        }
-
-
-    }
-      
-  
-      
-      );
+        enqueueSnackbar("Created Subscrition Type successfully", {
+          variant: "success",
+        });
+      }
+    });
     // console.log("data:", data.data);
     // if (data.message === "Success") {
     //   enqueueSnackbar("Created Subscrition Type successfully", {
@@ -92,7 +88,7 @@ function AddSubscription() {
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
-              <h2 >Subscription Form</h2>
+              <h2>Subscription Form</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
@@ -220,7 +216,7 @@ function AddSubscription() {
                           required
                         />
                         <label class="form-check-label" for="invalidCheck">
-                        I confirm all information entered are accurate
+                          I confirm all information entered are accurate
                         </label>
                         <div class="invalid-feedback">
                           You must agree before submitting.

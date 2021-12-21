@@ -25,13 +25,16 @@ function AddShipment() {
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
+
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [user, setUser] = useState({});
 
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const selectPickUpCountry = async (e) => {
@@ -67,11 +70,11 @@ function AddShipment() {
     shipmentState: { error, loading, data },
   } = useContext(GlobalContext);
 
-  const {
-    authState: { error: error2, loading: loading2, user, isLoggedIn },
-  } = useContext(GlobalContext);
+  // const {
+  //   authState: { error: error2, loading: loading2, user, isLoggedIn },
+  // } = useContext(GlobalContext);
 
-  console.log(`isLoggedIn`, isLoggedIn);
+  // console.log(`isLoggedIn`, isLoggedIn);
 
   // useEffect(() => {
   //   shipmentform({ name: "PickUpDate" }, { required: true });
@@ -95,32 +98,26 @@ function AddShipment() {
     }
   };
 
-  const CustomInput = React.forwardRef(({value,onClick}, ref) => {
+  const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
-      <div class="input-group mb-3"> 
-       <input
-                          ref={ref}
-                          type="text"
-                         class="form-control datepicker"
-                         value={value}
-                         onClick={onClick}
-                         placeholder="Click to enter date"
-                         
-                          required
-                        />
+      <div class="input-group mb-3">
+        <input
+          ref={ref}
+          type="text"
+          class="form-control datepicker"
+          value={value}
+          onClick={onClick}
+          placeholder="Click to enter date"
+          required
+        />
         <div class="input-group-append">
-                          <span class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </span>
-                        </div>
+          <span class="input-group-text">
+            <i class="fa fa-calendar"></i>
+          </span>
+        </div>
       </div>
     );
   });
-
-
-                       
-
-
 
   return (
     <>
@@ -158,8 +155,11 @@ function AddShipment() {
                         {...shipmentform("LoadCategory", {
                           required: true,
                         })}
-                     required >
-                        <option value="" selected>Select Load Categories</option>
+                        required
+                      >
+                        <option value="" selected>
+                          Select Load Categories
+                        </option>
                         {LOAD_TYPE.map((item) => (
                           <option key={item.value} value={item.value}>
                             {item.text}
@@ -258,8 +258,6 @@ function AddShipment() {
                     </div>
                   </div>
                   <div class="form-group row">
-                   
-
                     <label class="col-form-label col-md-2">Country</label>
                     <div class="col-md-4">
                       <select
@@ -313,29 +311,24 @@ function AddShipment() {
 
                     <label class="col-form-label col-md-2">PickUp Date</label>
                     <div class="col-md-4">
-                      
-                        <Controller
-                          name={"ExpectedPickUpDate"}
-                          control={control}
-                          // defaultValue={new Date()}
-                          render={({ field: { onChange, value } }) => {
-                            return (
-                              <DatePicker
+                      <Controller
+                        name={"ExpectedPickUpDate"}
+                        control={control}
+                        // defaultValue={new Date()}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <DatePicker
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
-                                onChange={onChange}
-                                selected={value}
-                                placeholderText="Enter date"
-                                customInput={<CustomInput/>}
-                              />
-                            );
-                          }}
-                        />
-                       
-
+                              onChange={onChange}
+                              selected={value}
+                              placeholderText="Enter date"
+                              customInput={<CustomInput />}
+                            />
+                          );
+                        }}
+                      />
                     </div>
-
-
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
@@ -344,7 +337,6 @@ function AddShipment() {
                   </div>
 
                   <div class="form-group row">
-                   
                     <label class="col-form-label col-md-2">Country</label>
 
                     <div class="col-md-4">
@@ -399,33 +391,24 @@ function AddShipment() {
 
                     <label class="col-form-label col-md-2">Delivery Date</label>
                     <div class="col-md-4">
-                     
-                        <Controller
-                          name={"ExpectedDeliveryDate"}
-                          control={control}
-                          // defaultValue={new Date()}
-                          render={({ field: { onChange, value } }) => {
-                            return (
-                              <DatePicker
+                      <Controller
+                        name={"ExpectedDeliveryDate"}
+                        control={control}
+                        // defaultValue={new Date()}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <DatePicker
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
-                                onChange={onChange}
-                                selected={value}
-                                placeholderText="Enter date"
-                                customInput={<CustomInput/>}
-                              />
-                            );
-                          }}
-                        />
-                        
-                      
+                              onChange={onChange}
+                              selected={value}
+                              placeholderText="Enter date"
+                              customInput={<CustomInput />}
+                            />
+                          );
+                        }}
+                      />
                     </div>
-
-
-
-
-
-
                   </div>
 
                   <div class="form-group row">
@@ -474,24 +457,23 @@ function AddShipment() {
 
                     <label class="col-form-label col-md-2">Shipment Date</label>
                     <div class="col-md-4">
-                    <Controller
-                          name={"ShipmentupDate"}
-                          control={control}
-                          // defaultValue={new Date()}
-                          render={({ field: { onChange, value } }) => {
-                            return (
-                              <DatePicker
+                      <Controller
+                        name={"ShipmentupDate"}
+                        control={control}
+                        // defaultValue={new Date()}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <DatePicker
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
-                                onChange={onChange}
-                                selected={value}
-                                placeholderText="Enter date"
-                                customInput={<CustomInput/>}
-                              />
-                            );
-                          }}
-                        />
-                       
+                              onChange={onChange}
+                              selected={value}
+                              placeholderText="Enter date"
+                              customInput={<CustomInput />}
+                            />
+                          );
+                        }}
+                      />
                     </div>
                   </div>
                   <div class="form-group row">

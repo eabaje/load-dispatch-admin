@@ -9,10 +9,13 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createVehicle,listVehiclesByVehicleId,editVehicle } from "../../context/actions/vehicle/vehicle.action";
+import {
+  createVehicle,
+  listVehiclesByVehicleId,
+  editVehicle,
+} from "../../context/actions/vehicle/vehicle.action";
 
 function AddVehicle({ history, match }) {
-
   const { id } = match.params;
   const { carrierId } = match.params;
   const isAddMode = !id;
@@ -26,6 +29,7 @@ function AddVehicle({ history, match }) {
 
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const selectPickUpCountry = async (e) => {
@@ -62,64 +66,55 @@ function AddVehicle({ history, match }) {
     //  e.preventDefault();
 
     listVehiclesByVehicleId(id)(vehicleDispatch);
-
-    
   };
- 
 
   function SubmitForm(data) {
-    return isAddMode
-        ?  CreateVehicle(data)
-        : EditVehicle(data,id );
-}
-
-function CreateVehicle(data) {
-  createVehicle(data)(vehicleDispatch);
-  if (data.message === "success") {
-    enqueueSnackbar("Added New Record succesfully", {
-      variant: "success",
-    });
-  } else {
-    if (error) {
-      enqueueSnackbar(error, { variant: "error" });
-    }
-    enqueueSnackbar("An Error occurred", { variant: "error" });
+    return isAddMode ? CreateVehicle(data) : EditVehicle(data, id);
   }
 
-}
-
-function EditVehicle(data,id) {
-  editVehicle(data,id )(vehicleDispatch);
-  if (data.message === "success") {
-    enqueueSnackbar("Updated Record(s) succesfully", {
-      variant: "success",
-    });
-  } else {
-    if (error) {
-      enqueueSnackbar(error, { variant: "error" });
+  function CreateVehicle(data) {
+    createVehicle(data)(vehicleDispatch);
+    if (data.message === "success") {
+      enqueueSnackbar("Added New Record succesfully", {
+        variant: "success",
+      });
+    } else {
+      if (error) {
+        enqueueSnackbar(error, { variant: "error" });
+      }
+      enqueueSnackbar("An Error occurred", { variant: "error" });
     }
-    enqueueSnackbar("An Error occurred", { variant: "error" });
   }
 
-}
+  function EditVehicle(data, id) {
+    editVehicle(data, id)(vehicleDispatch);
+    if (data.message === "success") {
+      enqueueSnackbar("Updated Record(s) succesfully", {
+        variant: "success",
+      });
+    } else {
+      if (error) {
+        enqueueSnackbar(error, { variant: "error" });
+      }
+      enqueueSnackbar("An Error occurred", { variant: "error" });
+    }
+  }
 
+  const [user, setUser] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
-const [user, setUser] = useState({});
-const [showPassword, setShowPassword] = useState(false);
-
-useEffect(() => {
+  useEffect(() => {
     if (!isAddMode) {
-        // get user and set form fields
-        listVehiclesByVehicleId(id)(vehicleDispatch);
-        const dmap=JSON.stringify(data.data);
-        console.log(`dmap`, dmap);
-        
-            // const fields = ['title', 'firstName', 'lastName', 'email', 'role'];
-            // fields.forEach(field => setValue(field,  dmap[field]));
-            // setUser(user);
-        
+      // get user and set form fields
+      listVehiclesByVehicleId(id)(vehicleDispatch);
+      const dmap = JSON.stringify(data.data);
+      console.log(`dmap`, dmap);
+
+      // const fields = ['title', 'firstName', 'lastName', 'email', 'role'];
+      // fields.forEach(field => setValue(field,  dmap[field]));
+      // setUser(user);
     }
-}, []);
+  }, []);
 
   return (
     <>
@@ -245,7 +240,8 @@ useEffect(() => {
                         {...register("VehicleColor", {
                           required: true,
                         })}
-                      required/>
+                        required
+                      />
                     </div>
                     <label class="col-form-label col-md-2">Vehicle Model</label>
                     <div class="col-md-4">
@@ -291,7 +287,6 @@ useEffect(() => {
                       />
                     </div>
                   </div>
-                 
 
                   <div class="form-group row">
                     <label class="col-form-label col-md-2">Purchase Year</label>
@@ -308,9 +303,7 @@ useEffect(() => {
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-info">
-                      
-                      </h5>
+                      <h5 class="alert alert-info"></h5>
                     </div>
                   </div>
                   <div class="form-row">
@@ -325,7 +318,7 @@ useEffect(() => {
                           required
                         />
                         <label class="form-check-label" for="invalidCheck">
-                        I confirm all information entered are accurate
+                          I confirm all information entered are accurate
                         </label>
                         <div class="invalid-feedback">
                           You must agree before submitting.
