@@ -24,7 +24,7 @@ class ImageUpload extends React.Component {
         imagePreviewUrl: reader.result,
       });
     };
-
+    this.props.onChangePicHandler(e);
     reader.readAsDataURL(file);
   }
 

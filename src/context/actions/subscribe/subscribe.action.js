@@ -68,11 +68,12 @@ export const listSubscriptionByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const createSubscription = (form) => async (dispatch) => {
+export const createSubscription1 = (form) => async (dispatch) => {
   const requestPayload = {
     SubscriptionType: form.SubscriptionType || "",
     SubscriptionName: form.SubscriptionName || "",
     Amount: form.Amount || "",
+    Active: form.Active || false,
     Description: form.Description || "",
     Duration: form.Duration || null,
   };
@@ -86,13 +87,46 @@ export const createSubscription = (form) => async (dispatch) => {
       type: CREATE_SUBSCRIBE_SUCCESS,
       payload: res.data,
     });
+    
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message? error.message
+        : error.data.message;
     dispatch({ type: CREATE_SUBSCRIBE_FAIL, payload: message });
   }
+};
+
+export const createSubscription= (form) => (dispatch) => (onSuccess) => {
+  const requestPayload = {
+    SubscriptionType: form.SubscriptionType || "",
+    SubscriptionName: form.SubscriptionName || "",
+    Amount: form.Amount || "",
+    Description: form.Description || "",
+    Duration: form.Duration || null,
+  };
+
+  dispatch({
+    type: CREATE_SUBSCRIBE_REQUEST,
+  });
+
+  axios
+    .post("/subscription/create", form)
+    .then((res) => {
+      dispatch({
+        type: CREATE_SUBSCRIBE_SUCCESS,
+        payload: res.data,
+      });
+
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      dispatch({
+        type: CREATE_SUBSCRIBE_FAIL,
+        payload: err.message
+          ? err.response.data
+          : { error: "Something went wrong, try again" },
+      });
+    });
 };
 
 export const editSubscription = (form, subscriptionId) => async (dispatch) => {
@@ -110,7 +144,7 @@ export const editSubscription = (form, subscriptionId) => async (dispatch) => {
   try {
     const { res } = await axios.put(
       `/subscription/update/subscriptionId`,
-      requestPayload
+      form
     );
 
     dispatch({
@@ -119,9 +153,9 @@ export const editSubscription = (form, subscriptionId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+    error.response && error.response.data.message
+    ? error.response.data.message
+    : error.message;
     dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
   }
 };

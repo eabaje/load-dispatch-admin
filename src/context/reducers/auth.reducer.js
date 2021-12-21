@@ -28,13 +28,13 @@ const auth = (state, { type, payload }) => {
 
     case LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
-      localStorage.setItem("user", JSON.stringify(payload.data));
+      localStorage.setItem("user", JSON.stringify(payload.user));
       console.log("localStorage:", localStorage.getItem("user"));
       console.log(`payload`, payload);
       return {
         ...state,
         loading: false,
-        user: payload,
+        user: payload.user,
         isLoggedIn: true,
       };
 

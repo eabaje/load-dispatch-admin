@@ -46,7 +46,7 @@ function Login() {
       history.push("/dashboard");
     }
     if (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
+      enqueueSnackbar(error.data.message, { variant: "error" });
     }
   }, [isLoggedIn, history]);
 

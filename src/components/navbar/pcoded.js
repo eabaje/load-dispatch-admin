@@ -488,7 +488,7 @@ $.fn.pcodedmenu = function (settings) {
                         var temp = $(".sidenav-inner").attr("style");
                         $(".sidenav-inner").css({
                           "margin-left":
-                            parseInt(temp.slice(12, temp.length - 3)) - 80,
+                            parseInt(temp.slice(11, temp.length - 3)) - 80,
                         });
                         $(".sidenav-horizontal-prev").removeClass("disabled");
                       } else {

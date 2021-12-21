@@ -1,41 +1,35 @@
-//import storage from '@react-native-firebase/storage';
-//import { uploadFiles, DocumentDirectoryPath } from "react-native-fs";
+import axios from "./axiosInstance";
 
-// export default (file) => (onSuccess) => (onError) => {
-//   const path = 'contact-pictures/user/777/' + file.creationDate || file.path;
-//   const ref = storage().ref(path);
+export const uploadImage= (file) => (onSuccess) => (onError) => {
+  const data = new FormData()
+  data.append('file', file)
+  axios.post("/upload/uploadImage", data, { 
+      // receive two parameter endpoint url ,form data 
+})
+.then(res => {
+     // then print response status
+  console.log(res.statusText);
+  onSuccess(res.file);
+})
+.catch((error) => {
+      onError(error.message);
+    });
+};
 
-//   const task = ref.putFile(file.path);
 
-//   task
-//     .then(async () => {
-//       const url = await ref.getDownloadURL();
-//       onSuccess(url);
-//       console.log('url', url);
-//     })
-//     .then((error) => {
-//       onError(error);
-//     });
-// };
+export const uploadDocuments= (file) => (onSuccess) => (onError) => {
 
-// var files = [
-//   {
-//     name: "file",
-//     filename: "file.jpg",
-//     filepath: DocumentDirectoryPath + "/file.jpg",
-//     filetype: "image/jpeg",
-//   },
-// ];
-
-// uploadFiles({
-//   toUrl: "https://upload-service-url",
-//   files: files,
-//   method: "POST",
-//   headers: {
-//     Accept: "application/json",
-//   },
-//   //invoked when the uploading starts.
-//   begin: () => {},
-//   // You can use this callback to show a progress indicator.
-//   progress: ({ totalBytesSent, totalBytesExpectedToSend }) => {},
-// });
+  const data = new FormData()
+  data.append('file', file)
+    axios.post("/upload/uploadDocument", data, { 
+        // receive two parameter endpoint url ,form data 
+  })
+  .then(res => {
+       // then print response status
+    console.log(res.statusText);
+    onSuccess(res.file);
+  })
+  .catch((error) => {
+        onError(error.message);
+      });
+  };

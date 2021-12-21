@@ -36,13 +36,13 @@ export const register = (form) => async (dispatch) => {
     dispatch({ type: REGISTER_SUCCESS, payload: res.data });
     // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
 
-    localStorage.setItem("token", res.data.Token);
-    localStorage.setItem("user", JSON.stringify(res.data));
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
   } catch (error) {
     dispatch({
       type: REGISTER_FAIL,
       payload:
-        error.response && error.response.data.message
+        error.message
           ? error.response.message
           : error.message,
     });

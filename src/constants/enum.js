@@ -15,8 +15,9 @@ export const LOAD_TYPE = [
 ];
 
 export const LOAD_UNIT = [
-  { value: "Kilo", text: "Kilo" },
-  { value: "Tonnes", text: "Tonnes" },
+  { value: "Kg", text: "Kg" },
+  { value: "Tons", text: "Tons" },
+ 
 ];
 
 export const TRIP_STATUS = [

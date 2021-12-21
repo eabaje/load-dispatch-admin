@@ -14,14 +14,21 @@ import { createCarrier } from "../../context/actions/carrier/carrier.action";
 function AddCarrier() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [country, setCountry] = useState("");
+  const [user, setUser] = useState({});
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
 
   // const onSubmit = (data) => console.log(data);
+  //console.log(`companyId`, localStorage.getItem('user'));
+  //setUser(JSON.parse(localStorage.getItem('user')));
 
   useEffect(() => {
+
     setCountries((countries) => (countries = Country.getAllCountries()));
+
+    setUser(JSON.parse(localStorage.getItem('user')));
+
   }, []);
 
   const selectPickUpCountry = async (e) => {
@@ -44,26 +51,38 @@ function AddCarrier() {
     );
   };
   const {
-    register: shipmentform,
+    register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
   const {
     carrierDispatch,
-    carrierState: { error, loading, data },
+    carrierState: { error, loading},
   } = useContext(GlobalContext);
-  const SubmitForm = () => {
+  const SubmitForm = (formdata) => {
     //  e.preventDefault();
+    
+   
+    formdata.CompanyId=user.CompanyId;
 
-    createCarrier(shipmentform)(carrierDispatch)({
-      //  enqueueSnackbar('', { variant: "info" });
-    });
+    createCarrier(formdata)(carrierDispatch)(res=>{
+      if (res.message === "Success") {
+          enqueueSnackbar("Created Carrier Record Successfully", {
+            variant: "success",
+          });
+        }
 
+
+    }
+      
+  
+      
+      );
     // if (password !== confirmPassword) {
     //   alert('Password and confirm password are not match');
     // } else {
-    //   shipmentDispatch(createShipment(shipmentform));
+    //   registerDispatch(createShipment(register));
     // }
   };
   return (
@@ -71,14 +90,14 @@ function AddCarrier() {
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
-              <h2 class="alert alert-info">Carrier Information</h2>
+            <div class="card-header alert alert-info">
+              <h2 >Carrier Information</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
                 <form onSubmit={handleSubmit(SubmitForm)}>
                   <input type="hidden" value="UserId" class="form-control" />
-                  <input type="hidden" value="CompanyId" class="form-control" />
+                  <input type="hidden" value={user.CompanyId} name="CompanyId" class="form-control" {...register("CompanyId")}/>
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> Basic Info </h5>
@@ -92,7 +111,7 @@ function AddCarrier() {
                       <select
                         id="CarrierType"
                         class="form-control"
-                        {...shipmentform("CarrierType", {
+                        {...register("CarrierType", {
                           required: true,
                         })}
                       >
@@ -110,7 +129,7 @@ function AddCarrier() {
                       <select
                         id="FleetType"
                         class="form-control"
-                        {...shipmentform("FleetType", {
+                        {...register("FleetType", {
                           required: true,
                         })}
                       >
@@ -133,23 +152,25 @@ function AddCarrier() {
                         name="FleetNumber"
                         class="form-control"
                         placeholder="Fleet Number"
-                        {...shipmentform("FleetNumber", {
+                        {...register("FleetNumber", {
                           required: true,
                         })}
                       />
                     </div>
                     <label class="col-sm-2 col-form-label">Licensed?</label>
                     <div class="col-sm-4">
+                    <div class="form-check">
                       <input
                         type="checkbox"
                         name="Licensed"
-                        class="form-check"
-                        placeholder="Fleet Number"
-                        {...shipmentform("Licensed", {
+                        class="form-check-input-custom-2"
+                        
+                        {...register("Licensed", {
                           required: true,
                         })}
                       />
                     </div>
+                  </div>
                   </div>
 
                   <div class="form-group row">
@@ -159,7 +180,7 @@ function AddCarrier() {
                         name="Description"
                         class="form-control"
                         placeholder="About Us"
-                        {...shipmentform("Description", {
+                        {...register("Description", {
                           required: true,
                         })}
                       />
@@ -174,7 +195,7 @@ function AddCarrier() {
                         name="ServiceDescription"
                         class="form-control"
                         placeholder="Service Description"
-                        {...shipmentform("ServiceDescription", {
+                        {...register("ServiceDescription", {
                           required: true,
                         })}
                       />
@@ -186,10 +207,10 @@ function AddCarrier() {
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h6 class="alert alert-info">
-                        {" "}
+                       
                         After posting the basic information about your
                         service.kindly go to <b>List Carrier info</b> and add
-                        your fleet.{" "}
+                        your fleet.
                       </h6>
                     </div>
                   </div>

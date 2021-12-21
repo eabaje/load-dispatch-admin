@@ -110,6 +110,9 @@ const subscribe = (state, { type, payload }) => {
         },
       };
     case CREATE_SUBSCRIBE_SUCCESS:
+
+      console.log(`payload`, payload)
+      
       return {
         ...state,
         createSubscribe: {

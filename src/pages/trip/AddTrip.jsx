@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
@@ -10,6 +10,9 @@ import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 import { createTrip } from "../../context/actions/trip/trip.action";
+import "bootstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function AddTrip() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -46,7 +49,7 @@ function AddTrip() {
   const {
     register: tripform,
     formState: { errors },
-    handleSubmit,
+    handleSubmit,control,
   } = useForm();
 
   const {
@@ -66,13 +69,36 @@ function AddTrip() {
     //   shipmentDispatch(createShipment(tripform));
     // }
   };
+
+
+  const CustomInput = React.forwardRef(({value,onClick}, ref) => {
+    return (
+      <div class="input-group mb-3"> 
+       <input
+                          ref={ref}
+                          type="text"
+                         class="form-control datepicker"
+                         value={value}
+                         onClick={onClick}
+                         placeholder="Click to enter date"
+                         
+                          required
+                        />
+        <div class="input-group-append">
+                          <span class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </span>
+                        </div>
+      </div>
+    );
+  });
   return (
     <>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
-              <h2 class="alert alert-info"> Trip Entry Information</h2>
+            <div class="card-header alert alert-info">
+              <h2> Trip Entry Information</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
@@ -101,9 +127,7 @@ function AddTrip() {
                         name="ShipmentId"
                         class="form-control"
                         placeholder="Shipment Reference Number"
-                        {...tripform("ShipmentId", {
-                          required: true,
-                        })}
+                        {...tripform("ShipmentId")}
                         required
                       />
                     </div>
@@ -115,9 +139,7 @@ function AddTrip() {
                         name="VehicleId"
                         class="form-control"
                         placeholder="Vehicle Id"
-                        {...tripform("VehicleId", {
-                          required: true,
-                        })}
+                        {...tripform("VehicleId")}
                         required
                       />
                     </div>
@@ -129,6 +151,7 @@ function AddTrip() {
                       <input
                         name="DriverNote"
                         class="form-control"
+                        placeholder="Driver Note"
                         {...tripform("DriverNote", {
                           required: true,
                         })}
@@ -142,26 +165,10 @@ function AddTrip() {
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-form-label col-md-2">PickUp Date</label>
-
-                    <div class="col-md-2">
-                      <div class="input-group date">
-                        <div class="input-group-addon">
-                          <i class="fa fa-calendar"></i>
-                        </div>
-                        <input
-                          name="ExpectedPickUpDate"
-                          class="form-control datepicker"
-                          {...tripform("ExpectedPickUpDate", {
-                            required: true,
-                          })}
-                          required
-                        />
-                      </div>
-                    </div>
+                   
 
                     <label class="col-form-label col-md-2">Country</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="PickUpCountry"
                         class="form-control"
@@ -178,15 +185,13 @@ function AddTrip() {
                     </div>
 
                     <label class="col-form-label col-md-2">Region/State</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="PickUpRegion"
                         class="form-control"
                         id="PickUpRegion"
-                        {...tripform("PickUpRegion", {
-                          required: true,
-                        })}
-                      >
+                        {...tripform("PickUpRegion")}
+                      required>
                         <option value=""> Select Region/State </option>
                         {pickUpRegion.map((item) => (
                           <option value={item.isoCode}>{item.name}</option>
@@ -199,16 +204,43 @@ function AddTrip() {
                       PickUp Address
                     </label>
 
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                       <input
                         name="PickUpLocation"
                         class="form-control"
+                        placeholder="Pick Up Location"
                         {...tripform("PickUpLocation", {
                           required: true,
                         })}
                         required
                       />
                     </div>
+                    <label class="col-form-label col-md-2">PickUp Date</label>
+                    <div class="col-md-4">
+                      
+                      <Controller
+                        name={"ExpectedPickUpDate"}
+                        control={control}
+                        // defaultValue={new Date()}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <DatePicker
+                            wrapperClassName="datePicker"
+                            className="form-control datepicker"
+                              onChange={onChange}
+                              selected={value}
+                              placeholderText="Enter date"
+                              customInput={<CustomInput/>}
+                            />
+                          );
+                        }}
+                      />
+                     
+
+                  </div>
+
+
+
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
@@ -217,28 +249,10 @@ function AddTrip() {
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-form-label col-md-2">Delivery Date</label>
-                    <div class="col-md-2">
-                      <div class="input-group mb-3">
-                        <input
-                          type="text"
-                          name="ExpectedDeliveryDate"
-                          class="form-control datepicker"
-                          {...tripform("ExpectedDeliveryDate", {
-                            required: true,
-                          })}
-                          required
-                        />
-                        <div class="input-group-append">
-                          <span class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                   
                     <label class="col-form-label col-md-2">Country</label>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="DeliveryCountry"
                         class="form-control"
@@ -254,7 +268,7 @@ function AddTrip() {
                       </select>
                     </div>
                     <label class="col-form-label col-md-2">Region/State</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                       <select
                         name="DeliveryRegion"
                         class="form-control"
@@ -280,9 +294,8 @@ function AddTrip() {
                       <input
                         name="DeliveryLocation"
                         class="form-control"
-                        {...tripform("DeliveryLocation", {
-                          required: true,
-                        })}
+                        placeholder="Delivery Location"
+                        {...tripform("DeliveryLocation")}
                         required
                       />
                     </div>
@@ -296,12 +309,38 @@ function AddTrip() {
                         type="number"
                         name="Duration"
                         class="form-control"
-                        {...tripform("Duration", {
-                          required: true,
-                        })}
+                        placeholder="Trip Duration"
+                        {...tripform("Duration")}
                         required
                       />
                     </div>
+                    
+                    <label class="col-form-label col-md-2">Delivery Date</label>
+                    <div class="col-md-4">
+                     
+                        <Controller
+                          name={"ExpectedDeliveryDate"}
+                          control={control}
+                          // defaultValue={new Date()}
+                          render={({ field: { onChange, value } }) => {
+                            return (
+                              <DatePicker
+                              wrapperClassName="datePicker"
+                              className="form-control datepicker"
+                                onChange={onChange}
+                                selected={value}
+                                placeholderText="Enter date"
+                                customInput={<CustomInput/>}
+                              />
+                            );
+                          }}
+                        />
+                        
+                      
+                    </div>
+
+
+
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
@@ -337,7 +376,7 @@ function AddTrip() {
                           required
                         />
                         <label class="form-check-label" for="invalidCheck">
-                          Agree to terms and conditions
+                          I confirm all information entered are accurate
                         </label>
                         <div class="invalid-feedback">
                           You must agree before submitting.

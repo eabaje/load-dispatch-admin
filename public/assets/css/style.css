@@ -2540,6 +2540,12 @@ textarea.form-control {
     margin-left: -80px;
 }
 
+.form-check-input-custom-2 {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: -30px;
+}
+
 .form-check-input[disabled] ~ .form-check-label,
   .form-check-input:disabled ~ .form-check-label {
     color: #868e96;

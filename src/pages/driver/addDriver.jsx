@@ -9,8 +9,9 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createShipment } from "../../context/actions/shipment/shipment.action";
+import { createDriver } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
+import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
 
 function AddDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -19,7 +20,8 @@ function AddDriver() {
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
-
+  const [picFile, setpicFile] = useState(null);
+  const [docFile, setdocFile] = useState(null);
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
@@ -45,43 +47,87 @@ function AddDriver() {
         (deliveryRegion = State.getStatesOfCountry(e.target.value))
     );
   };
+
+  const onChangePicHandler = async (e) => {
+    setpicFile((picFile) => e.target.files[0]);
+    
+   
+  };
+  console.log(`picFile`, picFile);
+ 
+  const onChangeDocHandler = async (e) => {
+   
+    alert(e)
+    setdocFile((docFile) => e.target.files[0]);
+
+   
+  };
+  
+  console.log(`docFile`, docFile)
+
   const {
-    register: shipmentform,
+    register,
     formState: { errors },
-    handleSubmit: handleShipment,
+    handleSubmit,
   } = useForm();
 
   const {
-    shipmentDispatch,
-    shipmentState: { error, loading, data },
+  driverDispatch,
+    driverState: { error, loading },
   } = useContext(GlobalContext);
-  const SubmitForm = () => {
+  const SubmitForm = (data) => {
     //  e.preventDefault();
+  
 
-    createShipment(shipmentform)(shipmentDispatch)({
-      //  enqueueSnackbar('', { variant: "info" });
+ 
+    uploadImage(picFile)(url=>{
+      data.PicUrl=url;
+    })(err=>{
+
+      enqueueSnackbar(`Error:-${err.message} `, {
+        variant: "error",
+      });
+
     });
 
-    // if (password !== confirmPassword) {
-    //   alert('Password and confirm password are not match');
-    // } else {
-    //   shipmentDispatch(createShipment(shipmentform));
-    // }
-  };
+    uploadDocuments(docFile)(url=>{
+      data.LicenseUrl=url;
+    })(err=>{
+
+      enqueueSnackbar(`Error:-${err.message} `, {
+        variant: "error",
+      });
+
+    });
+    createDriver(data)(driverDispatch)(res=>{
+
+      if (res.message === "Success") {
+        enqueueSnackbar(`Created New Driver-${res.data.DriverName} successfully`, {
+          variant: "success",
+        });
+      }
+    });
+
+    if (error) {
+          enqueueSnackbar(error, { variant: "error" });
+        }
+
+
+ };
 
   return (
     <>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
-              <h2 class="alert alert-tertiary">
+            <div class="card-header alert alert-info">
+              <h2 >
                 Driver Information Collection Form
               </h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleShipment(SubmitForm)}>
+                <form  onSubmit={handleSubmit(SubmitForm)}>
                   <input
                     type="hidden"
                     name="UserId"
@@ -103,12 +149,12 @@ function AddDriver() {
 
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload />
+                      <ImageUpload  onChangePicHandler={onChangePicHandler}/>
                     </div>
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-tertiary"> </h5>
+                      <h5 class="alert alert-info"> </h5>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -119,7 +165,7 @@ function AddDriver() {
                         name="CompanyName"
                         class="form-control"
                         placeholder="Company Name"
-                        {...shipmentform("CompanyName", {
+                        {...register("CompanyName", {
                           required: true,
                         })}
                       />
@@ -131,7 +177,7 @@ function AddDriver() {
                         name="DriverName"
                         class="form-control"
                         placeholder="Driver Name"
-                        {...shipmentform("DriverName", {
+                        {...register("DriverName", {
                           required: true,
                         })}
                         required
@@ -146,7 +192,7 @@ function AddDriver() {
                         name="Email"
                         class="form-control"
                         placeholder="Email"
-                        {...shipmentform("Email", {
+                        {...register("Email", {
                           required: true,
                         })}
                         required
@@ -159,7 +205,7 @@ function AddDriver() {
                         name="Phone"
                         class="form-control"
                         placeholder="Phone"
-                        {...shipmentform("Phone", {
+                        {...register("Phone", {
                           required: true,
                         })}
                       />
@@ -172,7 +218,7 @@ function AddDriver() {
                         name="DOB"
                         class="form-control"
                         placeholder="Date of Birth"
-                        {...shipmentform("DOB", {
+                        {...register("DOB", {
                           required: true,
                         })}
                       />
@@ -184,7 +230,7 @@ function AddDriver() {
                         name="Phone"
                         class="form-control"
                         placeholder="Phone"
-                        {...shipmentform("Phone", {
+                        {...register("Phone", {
                           required: true,
                         })}
                       />
@@ -196,7 +242,7 @@ function AddDriver() {
                       <select
                         name="Country"
                         class="form-control"
-                        {...shipmentform("Country")}
+                        {...register("Country")}
                         onChange={selectPickUpCountry}
                       >
                         <option value="">Select Country</option>
@@ -214,7 +260,7 @@ function AddDriver() {
                         name="Region"
                         class="form-control"
                         id="Region"
-                        {...shipmentform("Region", {
+                        {...register("Region", {
                           required: true,
                         })}
                       >
@@ -233,7 +279,7 @@ function AddDriver() {
                         name="Address"
                         class="form-control"
                         placeholder="Address"
-                        {...shipmentform("Address", {
+                        {...register("Address", {
                           required: true,
                         })}
                       />
@@ -250,7 +296,7 @@ function AddDriver() {
                           name="DriverLicense"
                           type="checkbox"
                           id="gridCheck1"
-                          {...shipmentform("DriverLicense", {
+                          {...register("DriverLicense", {
                             required: true,
                           })}
                           required
@@ -261,20 +307,23 @@ function AddDriver() {
                       Attach Drivers License
                     </label>
                     <div class="col-md-4">
-                      <input
-                        type="file"
-                        name="LicenseUrl"
-                        class="form-control"
-                        {...shipmentform("LicenseUrl", {
-                          required: true,
-                        })}
-                      />
+                    <input
+          className="form-control"
+          type="file"
+          id="LicenseUrl"
+          name="LicenseUrl"
+          {...register("LicenseUrl")}
+          onChange={(e) => onChangeDocHandler(e)}
+
+        
+        />
+                    
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-tertiary"> </h5>
+                      <h5 class="alert alert-info"> </h5>
                     </div>
                   </div>
                   <div class="form-group"></div>
@@ -290,7 +339,7 @@ function AddDriver() {
                           required
                         />
                         <label class="form-check-label" for="invalidCheck">
-                          Agree to terms and conditions
+                        I confirm all information entered are accurate
                         </label>
                         <div class="invalid-feedback">
                           You must agree before submitting.

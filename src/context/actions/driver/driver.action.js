@@ -92,7 +92,7 @@ export const listDriverByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const createDriver = (form) => async (dispatch) => {
+export const createDriver1 = (form) => async (dispatch) => {
   const requestPayload = {
     CompanyId: form.CompanyId || "",
     DriverName: form.DriverName || "",
@@ -110,8 +110,10 @@ export const createDriver = (form) => async (dispatch) => {
 
   dispatch({ type: CREATE_DRIVER_REQUEST });
 
+
+
   try {
-    const { res } = await axios.post(`/driver/create/`, requestPayload);
+    const { res } = await axios.post(`/driver/create/`, form);
 
     dispatch({
       type: CREATE_DRIVER_SUCCESS,
@@ -126,7 +128,7 @@ export const createDriver = (form) => async (dispatch) => {
   }
 };
 
-export const editDriver = (form, driverId) => async (dispatch) => {
+export const createDriver = (form) => (dispatch) => (onSuccess) => {
   const requestPayload = {
     CompanyId: form.CompanyId || "",
     DriverName: form.DriverName || "",
@@ -142,22 +144,71 @@ export const editDriver = (form, driverId) => async (dispatch) => {
     PicUrl: form.PicUrl || null,
   };
 
-  dispatch({ type: EDIT_DRIVER_REQUEST });
+  dispatch({
+    type: CREATE_DRIVER_REQUEST,
+  });
 
-  try {
-    const { res } = await axios.put(`/driver/update/`, requestPayload);
+  axios
+    .post("/driver/create", form)
+    .then((res) => {
+      dispatch({
+        type: CREATE_DRIVER_SUCCESS,
+        payload: res.data,
+      });
 
-    dispatch({
-      type: EDIT_DRIVER_SUCCESS,
-      payload: res.data,
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      dispatch({
+        type: CREATE_DRIVER_FAIL,
+        payload: err.message
+          ? err.response.data
+          : { error: "Something went wrong, try again" },
+      });
     });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: EDIT_DRIVER_FAIL, payload: message });
-  }
+};
+
+
+export const editDriver = (form, id) => (dispatch) => (onSuccess) => {
+  const requestPayload = {
+    CompanyId: form.CompanyId || "",
+    DriverName: form.DriverName || "",
+    Email: form.Email || "",
+    Phone: form.Phone || "",
+    Address: form.Address || "",
+    City: form.City || "",
+    Country: form.Country || "",
+    Licensed: form.Licensed || "",
+    LicenseUrl: form.LicenseUrl || "",
+    Rating: form.Rating || "",
+    DriverDocs: form.DriverDocs || "",
+    PicUrl: form.PicUrl || null,
+  };
+
+  console.log("requestPayload :>> ", requestPayload);
+  dispatch({
+    type: EDIT_DRIVER_REQUEST,
+  });
+
+  axios
+    .put(`/driver/update/${id}`, form)
+    .then((res) => {
+      dispatch({
+        type: EDIT_DRIVER_SUCCESS,
+        payload: res.data,
+      });
+
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      console.log("err", err.response);
+      dispatch({
+        type: EDIT_DRIVER_FAIL,
+        payload: err.message
+          ? err.response.data
+          : { error: "Something went wrong, try again" },
+      });
+    });
 };
 
 export const deleteDriver = (driverId) => async (dispatch) => {

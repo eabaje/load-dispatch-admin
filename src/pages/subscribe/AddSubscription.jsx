@@ -55,21 +55,35 @@ function AddSubscription() {
     subscribeDispatch,
     subscribeState: { error, loading, data },
   } = useContext(GlobalContext);
-  const SubmitForm = (data) => {
-    //  e.preventDefault();
-    console.log("state:", data);
-    createSubscription(data)(subscribeDispatch);
 
-    if (data.message === "success") {
-      enqueueSnackbar("Created Subscrition Type successfully", {
-        variant: "success",
-      });
-    } else {
-      if (error) {
-        enqueueSnackbar(error, { variant: "error" });
-      }
-      enqueueSnackbar("An Error occurred", { variant: "error" });
+  console.log("data:", data);
+  const SubmitForm = (formdata) => {
+    //  e.preventDefault();
+    console.log("state:", formdata);
+    createSubscription(formdata)(subscribeDispatch)(res=>{
+      if (res.message === "Success") {
+          enqueueSnackbar("Created Subscrition Type successfully", {
+            variant: "success",
+          });
+        }
+
+
     }
+      
+  
+      
+      );
+    // console.log("data:", data.data);
+    // if (data.message === "Success") {
+    //   enqueueSnackbar("Created Subscrition Type successfully", {
+    //     variant: "success",
+    //   });
+    // } else {
+    //   if (error) {
+    //     enqueueSnackbar(error, { variant: "error" });
+    //   }
+    //   enqueueSnackbar("An Error occurred", { variant: "error" });
+    // }
   };
 
   return (
@@ -77,8 +91,8 @@ function AddSubscription() {
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
-              <h2 class="alert alert-tertiary">Subscription Form</h2>
+            <div class="card-header alert alert-info">
+              <h2 >Subscription Form</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
@@ -189,7 +203,7 @@ function AddSubscription() {
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-tertiary"> </h5>
+                      <h5 class="alert alert-info"> </h5>
                     </div>
                   </div>
                   <div class="form-group"></div>
@@ -206,7 +220,7 @@ function AddSubscription() {
                           required
                         />
                         <label class="form-check-label" for="invalidCheck">
-                          All data filled to the best of my ability
+                        I confirm all information entered are accurate
                         </label>
                         <div class="invalid-feedback">
                           You must agree before submitting.

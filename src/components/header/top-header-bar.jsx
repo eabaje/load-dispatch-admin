@@ -180,7 +180,7 @@ function TopHeaderBar() {
                         class="img-radius"
                         alt="User-Profile-Image"
                       />
-                      <span>{user.data.FullName}</span>
+                      <span>{user.FullName}</span>
                       <a
                         href="auth-signin.html"
                         class="dud-logout"
@@ -197,7 +197,7 @@ function TopHeaderBar() {
                       </li>
                       <li>
                         <a
-                          href={`/user-subscription/?userId=${user.data.UserId}`}
+                          href={`/user-subscription/?userId=${user.UserId}`}
                           class="dropdown-item"
                         >
                           <i class="feather icon-box"></i> My Subscription
@@ -205,7 +205,7 @@ function TopHeaderBar() {
                       </li>
                       <li>
                         <a
-                          href={`/my-messages/?userId=${user.data.UserId}`}
+                          href={`/my-messages/?userId=${user.UserId}`}
                           class="dropdown-item"
                         >
                           <i class="feather icon-mail"></i> My Messages

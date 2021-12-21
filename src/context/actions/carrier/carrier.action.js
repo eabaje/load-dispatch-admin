@@ -78,38 +78,79 @@ export const listCarrierByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const createCarrier = (form) => async (dispatch) => {
-  const requestPayload = {
-    CompanyId: form.CompanyId || "",
-    CarrierName: form.CarrierName || "",
-    Email: form.Email || "",
-    Phone: form.Phone || "",
-    Address: form.Address || "",
-    City: form.City || "",
-    Country: form.Country || "",
-    Licensed: form.Licensed || "",
-    LicenseUrl: form.LicenseUrl || "",
-    Rating: form.Rating || "",
-    CarrierDocs: form.CarrierDocs || "",
-    PicUrl: form.PicUrl || null,
-  };
+export const createCarrier1 = (form) => async (dispatch) => {
+  // const requestPayload = {
+  //   CompanyId: form.CompanyId ,
+  //   CarrierName: form.CarrierName ,
+  //   Email: form.Email || "",
+  //   Phone: form.Phone || "",
+  //   Address: form.Address || "",
+  //   City: form.City || "",
+  //   Country: form.Country || "",
+  //   Licensed: form.Licensed || "",
+  //   LicenseUrl: form.LicenseUrl || "",
+  //   Rating: form.Rating ,
+  //   CarrierDocs: form.CarrierDocs || "",
+  //   PicUrl: form.PicUrl || null,
+  // };
 
   dispatch({ type: CREATE_CARRIER_REQUEST });
 
   try {
-    const { res } = await axios.post(`/carrier/create/`, requestPayload);
+    const { res } = await axios.post(`/carrier/create/`, form);
 
     dispatch({
       type: CREATE_CARRIER_SUCCESS,
       payload: res.data,
     });
+
+    return res.data;
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+    error.message && error.message
+    ? error.message
+    : error.message;
     dispatch({ type: CREATE_CARRIER_FAIL, payload: message });
   }
+};
+export const createCarrier= (form) => (dispatch) => (onSuccess) => {
+ // const requestPayload = {
+  //   CompanyId: form.CompanyId ,
+  //   CarrierName: form.CarrierName ,
+  //   Email: form.Email || "",
+  //   Phone: form.Phone || "",
+  //   Address: form.Address || "",
+  //   City: form.City || "",
+  //   Country: form.Country || "",
+  //   Licensed: form.Licensed || "",
+  //   LicenseUrl: form.LicenseUrl || "",
+  //   Rating: form.Rating ,
+  //   CarrierDocs: form.CarrierDocs || "",
+  //   PicUrl: form.PicUrl || null,
+  // };
+
+  dispatch({
+    type: CREATE_CARRIER_REQUEST,
+  });
+
+  axios
+    .post("/carrier/create", form)
+    .then((res) => {
+      dispatch({
+        type: CREATE_CARRIER_SUCCESS,
+        payload: res.data,
+      });
+
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      dispatch({
+        type: CREATE_CARRIER_FAIL,
+        payload: err.message
+          ? err.response.data
+          : { error: "Something went wrong, try again" },
+      });
+    });
 };
 
 export const editCarrier = (form, carrierId) => async (dispatch) => {

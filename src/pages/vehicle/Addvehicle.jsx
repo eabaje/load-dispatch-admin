@@ -9,11 +9,12 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createVehicle,listVehiclesByVehicleId } from "../../context/actions/vehicle/vehicle.action";
+import { createVehicle,listVehiclesByVehicleId,editVehicle } from "../../context/actions/vehicle/vehicle.action";
 
 function AddVehicle({ history, match }) {
 
   const { id } = match.params;
+  const { carrierId } = match.params;
   const isAddMode = !id;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [country, setCountry] = useState("");
@@ -49,7 +50,7 @@ function AddVehicle({ history, match }) {
   const {
     register,
     formState: { errors },
-    handleSubmit: handleShipment,
+    handleSubmit,
   } = useForm();
 
   const {
@@ -57,36 +58,80 @@ function AddVehicle({ history, match }) {
     vehicleState: { error, loading, data },
   } = useContext(GlobalContext);
 
-  const getVehicleById = (vehicleId) => {
+  const getVehicleById = (id) => {
     //  e.preventDefault();
 
-    listVehiclesByVehicleId(vehicleId)(vehicleDispatch);
+    listVehiclesByVehicleId(id)(vehicleDispatch);
 
     
   };
-  const SubmitForm = () => {
-    //  e.preventDefault();
+ 
 
-    createVehicle(register)(vehicleDispatch);
+  function SubmitForm(data) {
+    return isAddMode
+        ?  CreateVehicle(data)
+        : EditVehicle(data,id );
+}
 
-    // if (password !== confirmPassword) {
-    //   alert('Password and confirm password are not match');
-    // } else {
-    //   shipmentDispatch(createShipment(register));
-    // }
-  };
+function CreateVehicle(data) {
+  createVehicle(data)(vehicleDispatch);
+  if (data.message === "success") {
+    enqueueSnackbar("Added New Record succesfully", {
+      variant: "success",
+    });
+  } else {
+    if (error) {
+      enqueueSnackbar(error, { variant: "error" });
+    }
+    enqueueSnackbar("An Error occurred", { variant: "error" });
+  }
+
+}
+
+function EditVehicle(data,id) {
+  editVehicle(data,id )(vehicleDispatch);
+  if (data.message === "success") {
+    enqueueSnackbar("Updated Record(s) succesfully", {
+      variant: "success",
+    });
+  } else {
+    if (error) {
+      enqueueSnackbar(error, { variant: "error" });
+    }
+    enqueueSnackbar("An Error occurred", { variant: "error" });
+  }
+
+}
+
+
+const [user, setUser] = useState({});
+const [showPassword, setShowPassword] = useState(false);
+
+useEffect(() => {
+    if (!isAddMode) {
+        // get user and set form fields
+        listVehiclesByVehicleId(id)(vehicleDispatch);
+        const dmap=JSON.stringify(data.data);
+        console.log(`dmap`, dmap);
+        
+            // const fields = ['title', 'firstName', 'lastName', 'email', 'role'];
+            // fields.forEach(field => setValue(field,  dmap[field]));
+            // setUser(user);
+        
+    }
+}, []);
 
   return (
     <>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
-              <h2 class="alert alert-info">Shipment Information</h2>
+            <div class="card-header alert alert-info">
+              <h2 class="alert alert-info">Vehicle Information</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleShipment(SubmitForm)}>
+                <form onSubmit={handleSubmit(SubmitForm)}>
                   <input
                     type="hidden"
                     name="UserId"
@@ -136,7 +181,7 @@ function AddVehicle({ history, match }) {
                       <input
                         name="VehicleNumber"
                         class="form-control"
-                        placeholder="VehicleNumber"
+                        placeholder="Vehicle Number"
                         {...register("VehicleNumber", {
                           required: true,
                         })}
@@ -176,6 +221,7 @@ function AddVehicle({ history, match }) {
                       <input
                         name="Description"
                         class="form-control"
+                        placeholder="Description"
                         {...register("Description", {
                           required: true,
                         })}
@@ -195,16 +241,18 @@ function AddVehicle({ history, match }) {
                       <input
                         name="VehicleColor"
                         class="form-control"
+                        placeholder="Vehicle Color"
                         {...register("VehicleColor", {
                           required: true,
                         })}
-                      />
+                      required/>
                     </div>
                     <label class="col-form-label col-md-2">Vehicle Model</label>
                     <div class="col-md-4">
                       <input
                         name="VehicleModel"
                         class="form-control"
+                        placeholder="Vehicle Model"
                         {...register("VehicleModel", {
                           required: true,
                         })}
@@ -221,6 +269,7 @@ function AddVehicle({ history, match }) {
                       <input
                         name="LicensePlate"
                         class="form-control"
+                        placeholder="License Plate"
                         {...register("LicensePlate", {
                           required: true,
                         })}
@@ -234,6 +283,7 @@ function AddVehicle({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="VehicleModelYear"
+                        placeholder="Vehicle Model Year"
                         class="form-control"
                         {...register("VehicleModelYear", {
                           required: true,
@@ -241,14 +291,7 @@ function AddVehicle({ history, match }) {
                       />
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info">
-                        {" "}
-                        Request for Proposal Information{" "}
-                      </h5>
-                    </div>
-                  </div>
+                 
 
                   <div class="form-group row">
                     <label class="col-form-label col-md-2">Purchase Year</label>
@@ -256,16 +299,46 @@ function AddVehicle({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="PurchaseYear"
+                        placeholder="Purchase Year"
                         class="form-control"
-                        placeholder=" State your requirement expectations"
+                        placeholder=" Enter Purchase year"
                         {...register("PurchaseYear")}
                       />
                     </div>
                   </div>
                   <div class="form-group row">
-                    <div class="col-sm-10">
-                      <button type="submit" class="btn  btn-primary">
-                        Submit
+                    <div class="col-md-12">
+                      <h5 class="alert alert-info">
+                      
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-sm-10 ">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="IsValid"
+                          value=""
+                          id="invalidCheck"
+                          required
+                        />
+                        <label class="form-check-label" for="invalidCheck">
+                        I confirm all information entered are accurate
+                        </label>
+                        <div class="invalid-feedback">
+                          You must agree before submitting.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="right" style={{ float: "right" }}>
+                      <button
+                        type="submit"
+                        class="btn  btn-primary"
+                        style={{ float: "right" }}
+                      >
+                        <i class="feather mr-2 icon-check-circle"></i> Submit
                       </button>
                     </div>
                   </div>

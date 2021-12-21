@@ -162,9 +162,9 @@ export const createShipment = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+    error.response && error.response.data.message
+    ? error.response.data.message
+    : error.message;
     dispatch({ type: CREATE_SHIPMENT_FAIL, payload: message });
   }
 };
