@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
@@ -12,6 +12,10 @@ import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 import { createDriver } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
 import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
+import $ from "jquery";
+import "bootstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function AddDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -64,7 +68,7 @@ function AddDriver() {
   const {
     register,
     formState: { errors },
-    handleSubmit,
+    handleSubmit,control
   } = useForm();
 
   const {
@@ -74,23 +78,23 @@ function AddDriver() {
   const SubmitForm = (data) => {
     //  e.preventDefault();
 
-    uploadImage(picFile)((url) => {
-      data.PicUrl = url;
-      alert(url);
-    })((err) => {
-      enqueueSnackbar(`Error:-${err.message} `, {
-        variant: "error",
-      });
-    });
+    // uploadImage(picFile)((url) => {
+    //   data.PicUrl = url;
+    //   alert(url);
+    // })((err) => {
+    //   enqueueSnackbar(`Error:-${err.message} `, {
+    //     variant: "error",
+    //   });
+    // });
 
-    uploadDocuments(docFile)((url) => {
-      data.LicenseUrl = url;
-    })((err) => {
-      enqueueSnackbar(`Error:-${err.message} `, {
-        variant: "error",
-      });
-    });
-    createDriver(data)(driverDispatch)((res) => {
+    // uploadDocuments(docFile)((url) => {
+    //   data.LicenseUrl = url;
+    // })((err) => {
+    //   enqueueSnackbar(`Error:-${err.message} `, {
+    //     variant: "error",
+    //   });
+    // });
+    createDriver(data,picFile,docFile)(driverDispatch)((res) => {
       if (res.message === "Success") {
         enqueueSnackbar(
           `Created New Driver-${res.data.DriverName} successfully`,
@@ -106,6 +110,26 @@ function AddDriver() {
     }
   };
 
+  const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
+    return (
+      <div class="input-group mb-3">
+        <input
+          ref={ref}
+          type="text"
+          class="form-control datepicker"
+          value={value}
+          onClick={onClick}
+          placeholder="Click to enter date"
+          required
+        />
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fa fa-calendar"></i>
+          </span>
+        </div>
+      </div>
+    );
+  });
   return (
     <>
       <div class="row">
@@ -116,7 +140,7 @@ function AddDriver() {
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleSubmit(SubmitForm)}>
+                <form enctype="multipart/form-data" onSubmit={handleSubmit(SubmitForm)}>
                   <input
                     type="hidden"
                     name="UserId"
@@ -203,25 +227,39 @@ function AddDriver() {
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label">DOB</label>
                     <div class="col-sm-4">
-                      <input
-                        name="DOB"
-                        class="form-control"
-                        placeholder="Date of Birth"
-                        {...register("DOB", {
-                          required: true,
-                        })}
+                     
+
+                      <Controller
+                        name={"DOB"}
+                        control={control}
+                        // defaultValue={new Date()}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <DatePicker
+                              wrapperClassName="datePicker"
+                              className="form-control datepicker"
+                              onChange={onChange}
+                              selected={value}
+                              yearDropdownItemNumber={100}
+                              // dateFormat="dd-MM-yyyy"
+                              scrollableYearDropdown={true}
+                              showYearDropdown
+                              showMonthDropdown
+                              placeholderText="Enter date"
+                              customInput={<CustomInput />}
+                            />
+                          );
+                        }}
                       />
                     </div>
 
-                    <label class="col-sm-2 col-form-label">Phone</label>
+                    <label class="col-sm-2 col-form-label">City</label>
                     <div class="col-sm-4">
                       <input
                         name="Phone"
                         class="form-control"
-                        placeholder="Phone"
-                        {...register("Phone", {
-                          required: true,
-                        })}
+                        placeholder="City"
+                        {...register("City")}
                       />
                     </div>
                   </div>
@@ -282,10 +320,10 @@ function AddDriver() {
                       <div class="form-check">
                         <input
                           class="form-check-input"
-                          name="DriverLicense"
+                          name="Licensed"
                           type="checkbox"
                           id="gridCheck1"
-                          {...register("DriverLicense", {
+                          {...register("Licensed", {
                             required: true,
                           })}
                           required
