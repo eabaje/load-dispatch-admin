@@ -40,7 +40,7 @@ function AddSubscription({ history, match }) {
   const getSubscriptionById = (id) => {
     //  e.preventDefault();
 
-    listSubscriptionsBySubscriptionId(id)(subscribeDispatch);
+  return  listSubscriptionsBySubscriptionId(id)(subscribeDispatch);
   };
 
   function onSubmit(formdata) {

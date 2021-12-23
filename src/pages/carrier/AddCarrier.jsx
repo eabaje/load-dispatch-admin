@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
+import axios from "axios";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
-import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
+import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT, API_URL } from "../../constants/enum";
 import {
   createCarrier,
   editCarrier,
@@ -16,16 +18,16 @@ import {
 } from "../../context/actions/carrier/carrier.action";
 
 function AddCarrier({ history, match }) {
-  const { id } = match.params;
+  const { carrierId } = match.params;
   // const { SubscribeId } = match.params;
-  const isAddMode = !id;
+  const isAddMode = !carrierId;
+  console.log(`params`, match.params)
+  console.log(`isAddMode`, isAddMode)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [user, setUser] = useState({});
 
-  // const onSubmit = (data) => console.log(data);
-  //console.log(`companyId`, localStorage.getItem('user'));
-  //setUser(JSON.parse(localStorage.getItem('user')));
+  
 
   const {
     register,
@@ -39,17 +41,31 @@ function AddCarrier({ history, match }) {
     carrierState: { error, loading },
   } = useContext(GlobalContext);
 
-  const getCarrierById = (id) => {
-    //  e.preventDefault();
+  // const getCarrierById = (id) => {
+  //   //  e.preventDefault();
 
-    listCarriersById(id)(carrierDispatch);
+  // return  listCarriersById(id)(carrierDispatch);
+  // };
+
+  const fetchData = async (carrierId) => {
+   
+    try {
+      const res = await axios.get(`${API_URL}carrier/findOne/${carrierId}`);
+      if (res) {
+       return res.data.data;
+      }
+    } catch (err) {
+      enqueueSnackbar(err, { variant: "error" });
+    }
   };
 
   function onSubmit(formdata) {
-    return isAddMode ? createCarrier(formdata) : updateCarrier(id, formdata);
+    return isAddMode ? CreateCarrier(formdata) : updateCarrier(carrierId, formdata);
   }
-
-  function createCarrier(formdata) {
+  
+  function CreateCarrier(formdata) {
+    console.log(`form`, formdata)
+    formdata.CompanyId = user.CompanyId;
     createCarrier(formdata)(carrierDispatch)((res) => {
       if (res.message === "Success") {
         enqueueSnackbar("Created new Carrier successfully", {
@@ -57,6 +73,15 @@ function AddCarrier({ history, match }) {
         });
       }
     });
+    
+    if(error){
+
+      enqueueSnackbar(error, {
+        variant: "error",
+      });
+
+    }
+
   }
 
   function updateCarrier(id, formdata) {
@@ -68,39 +93,33 @@ function AddCarrier({ history, match }) {
       }
     });
   }
-  const SubmitForm = (formdata) => {
-    //  e.preventDefault();
-
-    formdata.CompanyId = user.CompanyId;
-
-    createCarrier(formdata)(carrierDispatch)((res) => {
-      if (res.message === "Success") {
-        enqueueSnackbar("Created Carrier Record Successfully", {
-          variant: "success",
-        });
-      }
-    });
-  };
-
+ 
+  console.log(`carrierUser`, user)
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
-      getCarrierById(id).then((carrier) => {
-        const fields = [
-          "CarrierType",
-          "FleetType",
-          "FleetNumber",
-          "Licensed",
-          "AboutUs",
-          "ServiceDescription",
-          "Rating",
-          "Company.CompanyId",
-        ];
-        fields.forEach((field) => setValue(field, carrier[field]));
-      });
+
+    console.log(`object`,  fetchData(carrierId)) ;
+     // listCarriersById(carrierId)(carrierDispatch)()
+     fetchData(carrierId).then
     }
   }, []);
+
+  // (carrier => {
+  //   console.log(`carrier`, carrier)
+  //   // const fields = [
+  //   //   "CarrierType",
+  //   //   "FleetType",
+  //   //   "FleetNumber",
+  //   //   "Licensed",
+  //   //   "AboutUs",
+  //   //   "ServiceDescription",
+  //   //   "Rating",
+  //   //   "CompanyId",
+  //   // ];
+  //   // fields.forEach((field) => setValue(field, carrier[field]));
+  // });
 
   return (
     <>

@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createDriver } from "../../context/actions/driver/driver.action";
+import { createDriver, editDriver, listDriversByDriverName, listDriversById } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
 import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
 import $ from "jquery";
@@ -17,7 +17,11 @@ import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function AddDriver() {
+function AddDriver({ history, match }) {
+  
+  const { driverId } = match.params;
+  const isAddMode = !driverId;
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [IsEdit, setEdit] = useState(false);
   const [country, setCountry] = useState("");
@@ -29,10 +33,7 @@ function AddDriver() {
   const [user, setUser] = useState({});
   // const onSubmit = (data) => console.log(data);
 
-  useEffect(() => {
-    setCountries((countries) => (countries = Country.getAllCountries()));
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
+  
 
   const selectPickUpCountry = async (e) => {
     setCountry((country) => e.target.value);
@@ -69,6 +70,7 @@ function AddDriver() {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
     control,
   } = useForm();
 
@@ -76,7 +78,22 @@ function AddDriver() {
     driverDispatch,
     driverState: { error, loading },
   } = useContext(GlobalContext);
-  const SubmitForm = (data) => {
+
+
+  const getDriverById = (id) => {
+    //  e.preventDefault();
+
+   return listDriversById(id)(driverDispatch);
+  };
+
+  function onSubmit(formdata) {
+    return isAddMode ? CreateDriver(formdata) : UpdateDriver(driverId, formdata);
+  }
+
+
+
+
+  const CreateDriver = (data) => {
     //  e.preventDefault();
 
     uploadImage(picFile)((url) => {
@@ -113,6 +130,74 @@ function AddDriver() {
     }
   };
 
+
+
+  const UpdateDriver = (data) => {
+    //  e.preventDefault();
+
+    uploadImage(picFile)((url) => {
+      data.PicUrl = url;
+      alert(url);
+    })((err) => {
+      enqueueSnackbar(`Error:-${err.message} `, {
+        variant: "error",
+      });
+    });
+
+    uploadDocuments(docFile)((url) => {
+      data.LicenseUrl = url;
+    })((err) => {
+      enqueueSnackbar(`Error:-${err.message} `, {
+        variant: "error",
+      });
+    });
+  
+    editDriver(data, picFile, docFile)(driverDispatch)((res) => {
+      console.log(`data`, data);
+      if (res.message === "Success") {
+        enqueueSnackbar(
+          `Updated  Driver-${res.data.DriverName} successfully`,
+          {
+            variant: "success",
+          }
+        );
+      }
+    });
+
+    if (error) {
+      enqueueSnackbar(error, { variant: "error" });
+    }
+  };
+
+
+
+
+
+
+
+  useEffect(() => {
+    setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
+
+    if (!isAddMode) {
+      getDriverById(driverId).then((driver) => {
+        const fields = [
+          "DriverName",
+          "Email",
+          "Address",
+          "City",
+          "Country",
+          "Phone",
+          "PicUrl",
+          "Licensed",
+          "LicenseUrl",
+          "DriverDocs",
+        ];
+        fields.forEach((field) => setValue(field, driver[field]));
+      });
+    }
+
+  }, []);
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
       <div class="input-group mb-3">
@@ -145,14 +230,9 @@ function AddDriver() {
               <div class="col-md-12 ">
                 <form
                   enctype="multipart/form-data"
-                  onSubmit={handleSubmit(SubmitForm)}
+                  onSubmit={handleSubmit(onSubmit)}
                 >
-                  <input
-                    type="hidden"
-                    name="DriverId"
-                    value={user.UserId}
-                    class="form-control"
-                  />
+                 
                   <input
                     type="hidden"
                     name="UserId"
@@ -165,12 +245,7 @@ function AddDriver() {
                     value={user.CompanyId}
                     class="form-control"
                   />
-                  <input
-                    type="hidden"
-                    name="CarrierId"
-                    value="CarrierType"
-                    class="form-control"
-                  />
+                
 
                   <div class="form-group row">
                     <div class="col-md-12 ">

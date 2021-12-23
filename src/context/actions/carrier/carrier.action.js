@@ -26,7 +26,7 @@ export const listCarriers = () => async (dispatch) => {
   }
 };
 
-export const listCarriersById = (carrierId) => async (dispatch) => {
+export const listCarriersByIdAsync = (carrierId) => async (dispatch) => {
   dispatch({
     type: GET_CARRIERS_REQUEST,
   });
@@ -38,6 +38,35 @@ export const listCarriersById = (carrierId) => async (dispatch) => {
     dispatch({ type: GET_CARRIERS_FAIL, payload: error.message });
   }
 };
+
+export const listCarriersById = (carrierId) => (dispatch) => (onSuccess) => {
+ 
+  dispatch({
+    type: GET_CARRIERS_REQUEST,
+  });
+ 
+  axios
+    .get(`/carrier/findOne/${carrierId}`)
+    .then((res) => {
+      console.log(`carrier_data`, res.data)
+      dispatch({
+        type: GET_CARRIERS_SUCCESS,
+        payload: res.data,
+      });
+     
+      onSuccess();
+    })
+    .catch((err) => {
+      dispatch({
+        type: GET_CARRIERS_FAIL,
+        payload: err.message
+          ? err.message
+          : { error: "Something went wrong, try again" },
+      });
+    });
+};
+
+
 
 export const listCarriersByVehicle = (vehicleId) => async (dispatch) => {
   dispatch({
@@ -143,7 +172,7 @@ export const createCarrier = (form) => (dispatch) => (onSuccess) => {
   dispatch({
     type: CREATE_CARRIER_REQUEST,
   });
-
+ 
   axios
     .post("/carrier/create", form)
     .then((res) => {
@@ -158,7 +187,7 @@ export const createCarrier = (form) => (dispatch) => (onSuccess) => {
       dispatch({
         type: CREATE_CARRIER_FAIL,
         payload: err.message
-          ? err.response.data
+          ? err.message
           : { error: "Something went wrong, try again" },
       });
     });
@@ -183,7 +212,7 @@ export const editCarrier = (form, carrierId) => async (dispatch) => {
   dispatch({ type: EDIT_CARRIER_REQUEST });
 
   try {
-    const { res } = await axios.put(`/carrier/update/`, requestPayload);
+    const { res } = await axios.put(`/carrier/update/`, form);
 
     dispatch({
       type: EDIT_CARRIER_SUCCESS,

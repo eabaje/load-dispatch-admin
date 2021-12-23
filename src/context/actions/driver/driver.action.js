@@ -26,6 +26,21 @@ export const listDrivers = () => async (dispatch) => {
   }
 };
 
+export const listDriversById= (driverId) => async (dispatch) => {
+  dispatch({
+    type: GET_DRIVERS_REQUEST,
+  });
+  try {
+    const { res } = await axios.get(
+      `/driver/findOne/${driverId}`
+    );
+    dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
+    return res.data.data
+  } catch (error) {
+    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  }
+};
+
 export const listDriversByDriverName = (driverName) => async (dispatch) => {
   dispatch({
     type: GET_DRIVERS_REQUEST,

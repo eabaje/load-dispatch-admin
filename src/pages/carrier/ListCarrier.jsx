@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
@@ -77,6 +78,7 @@ function ListCarrier() {
                         <td>
                           <ul class="table-controls">
                             <li>
+                            <Link to={"/edit-carrier/"+item.CarrierId} className="btn btn-sm">   <i class="icon-pencil"></i></Link>
                               <a
                                 href={`/edit-carrier/${item.CarrierId}`}
                                 class="btn btn-sm"
