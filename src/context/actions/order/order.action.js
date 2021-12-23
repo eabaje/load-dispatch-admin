@@ -60,9 +60,7 @@ export const createOrder = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_ORDER_FAIL, payload: message });
   }
 };
@@ -89,9 +87,7 @@ export const editOrder = (form, orderId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_ORDER_FAIL, payload: message });
   }
 };
@@ -112,9 +108,7 @@ export const deleteOrder = (orderId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_ORDER_FAIL, payload: message });
   }
 };

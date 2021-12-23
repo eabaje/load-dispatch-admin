@@ -104,9 +104,7 @@ export const createVehicle = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-    error.response && error.response.data.message
-    ? error.response.data.message
-    : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_VEHICLE_FAIL, payload: message });
   }
 };
@@ -140,9 +138,7 @@ export const editVehicle = (form, vehicleId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-    error.response && error.response.data.message
-    ? error.response.data.message
-    : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_VEHICLE_FAIL, payload: message });
   }
 };
@@ -159,9 +155,7 @@ export const deleteVehicle = (vehicleId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_VEHICLE_FAIL, payload: message });
   }
 };

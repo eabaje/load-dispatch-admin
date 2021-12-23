@@ -61,9 +61,7 @@ export const createAssignedDriver = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_ASSIGN_DRIVER_FAIL, payload: message });
   }
 };
@@ -89,9 +87,7 @@ export const editAssignedDriver =
       });
     } catch (error) {
       const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
+        error.message && error.message ? error.message : error.message;
       dispatch({ type: EDIT_ASSIGN_DRIVER_FAIL, payload: message });
     }
   };

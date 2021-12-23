@@ -26,6 +26,19 @@ export const listCarriers = () => async (dispatch) => {
   }
 };
 
+export const listCarriersById = (carrierId) => async (dispatch) => {
+  dispatch({
+    type: GET_CARRIERS_REQUEST,
+  });
+  try {
+    const { res } = await axios.get(`/carrier/findOne/${carrierId}`);
+    dispatch({ type: GET_CARRIERS_SUCCESS, payload: res.data });
+    return res.data.data;
+  } catch (error) {
+    dispatch({ type: GET_CARRIERS_FAIL, payload: error.message });
+  }
+};
+
 export const listCarriersByVehicle = (vehicleId) => async (dispatch) => {
   dispatch({
     type: GET_CARRIERS_REQUEST,
@@ -107,14 +120,12 @@ export const createCarrier1 = (form) => async (dispatch) => {
     return res.data;
   } catch (error) {
     const message =
-    error.message && error.message
-    ? error.message
-    : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_CARRIER_FAIL, payload: message });
   }
 };
-export const createCarrier= (form) => (dispatch) => (onSuccess) => {
- // const requestPayload = {
+export const createCarrier = (form) => (dispatch) => (onSuccess) => {
+  // const requestPayload = {
   //   CompanyId: form.CompanyId ,
   //   CarrierName: form.CarrierName ,
   //   Email: form.Email || "",
@@ -180,9 +191,7 @@ export const editCarrier = (form, carrierId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_CARRIER_FAIL, payload: message });
   }
 };
@@ -199,9 +208,7 @@ export const deleteCarrier = (carrierId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_CARRIER_FAIL, payload: message });
   }
 };

@@ -12,7 +12,7 @@ function ListShipment() {
   const [user, setUser] = useState({});
 
   // GET request function to your Mock API
-  const fetchShipment = async () => {
+  const fetchData = async () => {
     // fetch(`${INVENTORY_API_URL}`)
     //   .then((res) => res.json())
     //   .then((json) => setData(json));
@@ -28,7 +28,7 @@ function ListShipment() {
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchShipment();
+    fetchData();
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   useEffect(() => {
@@ -44,15 +44,13 @@ function ListShipment() {
     <div>
       <div class="col-xl-12">
         <div class="card">
-          <div class="card-header alert alert-tertiary">
-            <h3 style={{ color: "#fff" }}>List of Shipments</h3>
-            <hr style={{ "border-color": "#fff", "align-items": "right" }} />
+          <div class="card-header alert alert-info">
+            <h3>List of Shipments</h3>
+            <hr />
             <ul>
               <li>Edit and delete Shipments</li>
-              <li>Assign Drivers to Vehicle</li>
-              <li>Request for Proposal</li>
-
-              <li>Assign Jobs to Personnel</li>
+              <li>Make Request for onboarding services</li>
+              <li>View interest for your shipment</li>
             </ul>
           </div>
           <div class="card-body table-border-style">

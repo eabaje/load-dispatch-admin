@@ -6,62 +6,50 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
-import { Country, State } from "country-state-city";
+
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createSubscription } from "../../context/actions/subscribe/subscribe.action";
+import {
+  createSubscription,
+  editSubscription,
+  listSubscriptionsBySubscriptionId,
+} from "../../context/actions/subscribe/subscribe.action";
 import ImageUpload from "../../components/upload/uploadImage";
 
-function AddSubscription() {
+function AddSubscription({ history, match }) {
+  const { id } = match.params;
+  // const { SubscribeId } = match.params;
+  const isAddMode = !id;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [IsEdit, setEdit] = useState(false);
-  const [country, setCountry] = useState("");
-  const [countries, setCountries] = useState([]);
-  const [pickUpRegion, setPickUpRegion] = useState([]);
-  const [deliveryRegion, setdeliveryRegion] = useState([]);
+
   const [user, setUser] = useState({});
+  const [data, setData] = useState([]);
 
-  // const onSubmit = (data) => console.log(data);
-
-  useEffect(() => {
-    setCountries((countries) => (countries = Country.getAllCountries()));
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
-
-  const selectPickUpCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setPickUpRegion(
-      (pickUpRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (pickUpRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
-
-  const selectDeliveryCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setdeliveryRegion(
-      (deliveryRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (deliveryRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
 
   const {
     subscribeDispatch,
-    subscribeState: { error, loading, data },
+    subscribeState: { error, loading },
   } = useContext(GlobalContext);
 
-  console.log("data:", data);
-  const SubmitForm = (formdata) => {
+  const getSubscriptionById = (id) => {
     //  e.preventDefault();
-    console.log("state:", formdata);
+
+    listSubscriptionsBySubscriptionId(id)(subscribeDispatch);
+  };
+
+  function onSubmit(formdata) {
+    return isAddMode
+      ? createSubscription(formdata)
+      : updateSubscription(id, formdata);
+  }
+
+  function createSubscription(formdata) {
     createSubscription(formdata)(subscribeDispatch)((res) => {
       if (res.message === "Success") {
         enqueueSnackbar("Created Subscrition Type successfully", {
@@ -69,18 +57,35 @@ function AddSubscription() {
         });
       }
     });
-    // console.log("data:", data.data);
-    // if (data.message === "Success") {
-    //   enqueueSnackbar("Created Subscrition Type successfully", {
-    //     variant: "success",
-    //   });
-    // } else {
-    //   if (error) {
-    //     enqueueSnackbar(error, { variant: "error" });
-    //   }
-    //   enqueueSnackbar("An Error occurred", { variant: "error" });
-    // }
-  };
+  }
+
+  function updateSubscription(id, formdata) {
+    editSubscription(formdata)(subscribeDispatch)((res) => {
+      if (res.message === "Success") {
+        enqueueSnackbar("Created Subscrition Type successfully", {
+          variant: "success",
+        });
+      }
+    });
+  }
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+
+    if (!isAddMode) {
+      getSubscriptionById(id).then((subscription) => {
+        const fields = [
+          "SubscriptionType",
+          "SubscriptionName",
+          "Amount",
+          "Description",
+          "Active",
+          "Duration",
+        ];
+        fields.forEach((field) => setValue(field, subscription[field]));
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -92,23 +97,11 @@ function AddSubscription() {
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleSubmit(SubmitForm)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <input
                     type="hidden"
                     name="UserId"
-                    value="UserId"
-                    class="form-control"
-                  />
-                  <input
-                    type="hidden"
-                    name="CompanyId"
-                    value="CompanyId"
-                    class="form-control"
-                  />
-                  <input
-                    type="hidden"
-                    name="CarrierId"
-                    value="CarrierType"
+                    value={user.UserId}
                     class="form-control"
                   />
 

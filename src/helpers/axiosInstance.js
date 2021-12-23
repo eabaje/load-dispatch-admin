@@ -29,13 +29,13 @@ axiosInstance.interceptors.response.use(
       resolve(response);
     }),
   (error) => {
-    if (!error.response) {
+    if (!error.message) {
       return new Promise((resolve, reject) => {
         reject(error);
       });
     }
 
-    if (error.response.status === 403) {
+    if (error.message.status === 403) {
       // history.push(`/${LOGOUT}`);
 
       localStorage.removeItem("token");

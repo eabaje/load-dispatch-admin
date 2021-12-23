@@ -7,19 +7,33 @@ import { signout } from "../../context/actions/auth/auth.action";
 function TopHeaderBar() {
   const {
     authDispatch,
-    authState: { error, user, isLoggedIn },
+    authState: { isLoggedIn },
   } = useContext(GlobalContext);
+
+  const [isAuthenticated, setIsAuthenticated] = React.useState(isLoggedIn);
+  const [authLoaded, setAuthLoaded] = React.useState(false);
+  const [user, setUser] = useState({});
+
+  const getUser = async () => {
+    try {
+      setUser(await JSON.parse(localStorage.getItem("user")));
+      if (user) {
+        setAuthLoaded(true);
+
+        setIsAuthenticated(true);
+      } else {
+        setAuthLoaded(true);
+
+        setIsAuthenticated(false);
+
+        window.location = "/signin";
+      }
+    } catch (error) {}
+  };
+  React.useEffect(() => {
+    getUser();
+  }, [isLoggedIn]);
   console.log(`User`, user);
-
-  // React.useEffect(() => {
-  //   if (isLoggedIn) {
-  //     history.push("/dashboard");
-  //   }
-  //   if (error) {
-  //     enqueueSnackbar(error.message, { variant: "error" });
-  //   }
-  // }, [isLoggedIn, history]);
-
   const LogOut = () => {
     signout()(authDispatch);
   };
@@ -168,7 +182,7 @@ function TopHeaderBar() {
               </div>
             </li>
             <li>
-              {isLoggedIn && (
+              {user && (
                 <div class="dropdown drp-user">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="feather icon-user"></i>

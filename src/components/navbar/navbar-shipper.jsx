@@ -69,7 +69,7 @@ const NavBarShipper = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/list-carrier">Connect with carriers </a>
+                  <a href="/list-carriers">Connect with carriers </a>
                 </li>
               </ul>
             </li>
@@ -83,7 +83,7 @@ const NavBarShipper = () => {
               </a>
               <ul className="pcoded-submenu">
                 <li>
-                  <a href="/list-carrier" label="Resources">
+                  <a href="/list-carriers" label="Resources">
                     List carrier Info
                   </a>
                 </li>

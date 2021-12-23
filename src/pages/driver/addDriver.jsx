@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { useForm,Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
@@ -68,7 +68,8 @@ function AddDriver() {
   const {
     register,
     formState: { errors },
-    handleSubmit,control
+    handleSubmit,
+    control,
   } = useForm();
 
   const {
@@ -78,23 +79,25 @@ function AddDriver() {
   const SubmitForm = (data) => {
     //  e.preventDefault();
 
-    // uploadImage(picFile)((url) => {
-    //   data.PicUrl = url;
-    //   alert(url);
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
+    uploadImage(picFile)((url) => {
+      data.PicUrl = url;
+      alert(url);
+    })((err) => {
+      enqueueSnackbar(`Error:-${err.message} `, {
+        variant: "error",
+      });
+    });
 
-    // uploadDocuments(docFile)((url) => {
-    //   data.LicenseUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
-    createDriver(data,picFile,docFile)(driverDispatch)((res) => {
+    uploadDocuments(docFile)((url) => {
+      data.LicenseUrl = url;
+    })((err) => {
+      enqueueSnackbar(`Error:-${err.message} `, {
+        variant: "error",
+      });
+    });
+    console.log(`form`, data);
+    createDriver(data, picFile, docFile)(driverDispatch)((res) => {
+      console.log(`data`, data);
       if (res.message === "Success") {
         enqueueSnackbar(
           `Created New Driver-${res.data.DriverName} successfully`,
@@ -140,17 +143,26 @@ function AddDriver() {
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form enctype="multipart/form-data" onSubmit={handleSubmit(SubmitForm)}>
+                <form
+                  enctype="multipart/form-data"
+                  onSubmit={handleSubmit(SubmitForm)}
+                >
+                  <input
+                    type="hidden"
+                    name="DriverId"
+                    value={user.UserId}
+                    class="form-control"
+                  />
                   <input
                     type="hidden"
                     name="UserId"
-                    value="UserId"
+                    value={user.UserId}
                     class="form-control"
                   />
                   <input
                     type="hidden"
                     name="CompanyId"
-                    value="CompanyId"
+                    value={user.CompanyId}
                     class="form-control"
                   />
                   <input
@@ -177,6 +189,7 @@ function AddDriver() {
                       <input
                         name="CompanyName"
                         class="form-control"
+                        value={user.CompanyName}
                         placeholder="Company Name"
                         {...register("CompanyName", {
                           required: true,
@@ -227,8 +240,6 @@ function AddDriver() {
                   <div class="form-group row">
                     <label class="col-sm-2 col-form-label">DOB</label>
                     <div class="col-sm-4">
-                     
-
                       <Controller
                         name={"DOB"}
                         control={control}
@@ -322,7 +333,6 @@ function AddDriver() {
                           class="form-check-input"
                           name="Licensed"
                           type="checkbox"
-                          id="gridCheck1"
                           {...register("Licensed", {
                             required: true,
                           })}
@@ -337,9 +347,9 @@ function AddDriver() {
                       <input
                         className="form-control"
                         type="file"
-                        id="LicenseUrl1"
-                        name="LicenseUrl1"
-                        {...register("LicenseUrl1")}
+                        id="LicenseUrl"
+                        name="LicenseUrl"
+                        {...register("LicenseUrl")}
                         onChange={(e) => onChangeDocHandler(e)}
                       />
                     </div>

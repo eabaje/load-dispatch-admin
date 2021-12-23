@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-
+import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -20,37 +20,13 @@ function AddVehicle({ history, match }) {
   const { carrierId } = match.params;
   const isAddMode = !id;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [country, setCountry] = useState("");
-  const [countries, setCountries] = useState([]);
-  const [pickUpRegion, setPickUpRegion] = useState([]);
-  const [deliveryRegion, setdeliveryRegion] = useState([]);
 
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
-    setCountries((countries) => (countries = Country.getAllCountries()));
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
-  const selectPickUpCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setPickUpRegion(
-      (pickUpRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (pickUpRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
-
-  const selectDeliveryCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setdeliveryRegion(
-      (deliveryRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (deliveryRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
   const {
     register,
     formState: { errors },
@@ -130,13 +106,13 @@ function AddVehicle({ history, match }) {
                   <input
                     type="hidden"
                     name="UserId"
-                    value="UserId"
+                    value={user.UserId}
                     class="form-control"
                   />
                   <input
                     type="hidden"
                     name="CompanyId"
-                    value="CompanyId"
+                    value={user.CompanyId}
                     class="form-control"
                   />
                   <input

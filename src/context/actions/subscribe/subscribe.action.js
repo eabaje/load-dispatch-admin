@@ -36,6 +36,7 @@ export const listSubscriptionsBySubscriptionId =
         `/subscription/findOne/${subscriptionId}`
       );
       dispatch({ type: GET_SUBSCRIBES_SUCCESS, payload: res.data });
+      return res.data.data;
     } catch (error) {
       dispatch({ type: GET_SUBSCRIBES_FAIL, payload: error.message });
     }
@@ -87,16 +88,13 @@ export const createSubscription1 = (form) => async (dispatch) => {
       type: CREATE_SUBSCRIBE_SUCCESS,
       payload: res.data,
     });
-    
   } catch (error) {
-    const message =
-      error.message? error.message
-        : error.data.message;
+    const message = error.message ? error.message : error;
     dispatch({ type: CREATE_SUBSCRIBE_FAIL, payload: message });
   }
 };
 
-export const createSubscription= (form) => (dispatch) => (onSuccess) => {
+export const createSubscription = (form) => (dispatch) => (onSuccess) => {
   const requestPayload = {
     SubscriptionType: form.SubscriptionType || "",
     SubscriptionName: form.SubscriptionName || "",
@@ -129,7 +127,7 @@ export const createSubscription= (form) => (dispatch) => (onSuccess) => {
     });
 };
 
-export const editSubscription = (form, subscriptionId) => async (dispatch) => {
+export const editSubscription = (subscriptionId, form) => async (dispatch) => {
   const requestPayload = {
     SubscriptionId: subscriptionId || form.SubscriptionType || "",
     SubscriptionType: form.SubscriptionType || "",
@@ -153,9 +151,7 @@ export const editSubscription = (form, subscriptionId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-    error.response && error.response.data.message
-    ? error.response.data.message
-    : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
   }
 };
@@ -174,9 +170,7 @@ export const deleteSubscription = (subscriptionId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_SUBSCRIBE_FAIL, payload: message });
   }
 };

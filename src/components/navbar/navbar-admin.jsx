@@ -86,12 +86,12 @@ const NavBarAdmin = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/list-carrier" label="Resources">
+                  <a href="/list-carriers" label="Resources">
                     List carrier Info
                   </a>
                 </li>
                 <li>
-                  <a href="/add-vehicle" label="Resources">
+                  <a href="/add-vehicle-to-carrier" label="Resources">
                     Create Vehicle Info
                   </a>
                 </li>

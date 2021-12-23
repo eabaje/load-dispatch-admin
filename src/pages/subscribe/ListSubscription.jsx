@@ -12,7 +12,7 @@ function ListSubscription() {
   const [user, setUser] = useState({});
 
   // GET request function to your Mock API
-  const fetchShipment = async () => {
+  const fetchData = async () => {
     // fetch(`${INVENTORY_API_URL}`)
     //   .then((res) => res.json())
     //   .then((json) => setData(json));
@@ -29,7 +29,7 @@ function ListSubscription() {
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchShipment();
+    fetchData();
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 

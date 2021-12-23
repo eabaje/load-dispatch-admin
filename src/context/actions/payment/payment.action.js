@@ -60,9 +60,7 @@ export const createPayment = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_PAYMENT_FAIL, payload: message });
   }
 };
@@ -90,9 +88,7 @@ export const editPayment = (form, paymentId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_PAYMENT_FAIL, payload: message });
   }
 };
@@ -113,9 +109,7 @@ export const deletePayment = (paymentId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_PAYMENT_FAIL, payload: message });
   }
 };

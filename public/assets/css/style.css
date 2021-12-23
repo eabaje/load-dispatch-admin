@@ -379,6 +379,7 @@ body {
     color: #373a3c;
     text-align: left;
     background-color: #ecf0f5;
+  
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -24063,7 +24064,9 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
     overflow: hidden;
     min-width: 100%;
     min-height: 100vh;
-    background:#023669;
+    /* background:#023669; */
+   
+    
 }
 
 @media (min-width: 1200px) {
@@ -24137,6 +24140,7 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
 }
 
 .auth-wrapper > div {
+   
     z-index: 5;
 }
 
@@ -24144,6 +24148,7 @@ div.dtk-focus-alt table.dataTable tbody th.focus {
     position: relative;
     padding: 15px;
     z-index: 5;
+   
 }
 
 .auth-wrapper .auth-content:not(.container) {

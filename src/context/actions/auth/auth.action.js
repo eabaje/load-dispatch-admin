@@ -41,10 +41,7 @@ export const register = (form) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REGISTER_FAIL,
-      payload:
-        error.message
-          ? error.response.message
-          : error.message,
+      payload: error.message ? error.message.message : error.message,
     });
   }
 };
@@ -65,8 +62,8 @@ export const signin = (form, dispatch) => {
   } catch (error) {
     dispatch({
       type: LOGIN_FAIL,
-      payload: error.response
-        ? error.response.data
+      payload: error.message
+        ? error.message.data
         : { error: "Something went wrong, try agin" },
     });
   }

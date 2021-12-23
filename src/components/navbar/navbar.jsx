@@ -12,9 +12,10 @@ import NavBarAudit from "./navbar-audit";
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState({});
 
   const {
-    authState: { error, user, isLoggedIn },
+    authState: { isLoggedIn },
   } = useContext(GlobalContext);
   //  const { dispatch } = useContext(AuthContext);
 
@@ -38,7 +39,8 @@ const NavBar = () => {
   };
   useEffect(() => {
     handleMenu();
-  }, []);
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, [isLoggedIn]);
 
   return (
     <>

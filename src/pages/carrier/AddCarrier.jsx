@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-
-import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
@@ -9,95 +8,126 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createCarrier } from "../../context/actions/carrier/carrier.action";
+import {
+  createCarrier,
+  editCarrier,
+  listCarrierByCriteria,
+  listCarriersById,
+} from "../../context/actions/carrier/carrier.action";
 
-function AddCarrier() {
+function AddCarrier({ history, match }) {
+  const { id } = match.params;
+  // const { SubscribeId } = match.params;
+  const isAddMode = !id;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [country, setCountry] = useState("");
+
   const [user, setUser] = useState({});
-  const [countries, setCountries] = useState([]);
-  const [pickUpRegion, setPickUpRegion] = useState([]);
-  const [deliveryRegion, setdeliveryRegion] = useState([]);
 
   // const onSubmit = (data) => console.log(data);
   //console.log(`companyId`, localStorage.getItem('user'));
   //setUser(JSON.parse(localStorage.getItem('user')));
 
-  useEffect(() => {
-
-    setCountries((countries) => (countries = Country.getAllCountries()));
-
-    setUser(JSON.parse(localStorage.getItem('user')));
-
-  }, []);
-
-  const selectPickUpCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setPickUpRegion(
-      (pickUpRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (pickUpRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
-
-  const selectDeliveryCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setdeliveryRegion(
-      (deliveryRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (deliveryRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
 
   const {
     carrierDispatch,
-    carrierState: { error, loading},
+    carrierState: { error, loading },
   } = useContext(GlobalContext);
+
+  const getCarrierById = (id) => {
+    //  e.preventDefault();
+
+    listCarriersById(id)(carrierDispatch);
+  };
+
+  function onSubmit(formdata) {
+    return isAddMode ? createCarrier(formdata) : updateCarrier(id, formdata);
+  }
+
+  function createCarrier(formdata) {
+    createCarrier(formdata)(carrierDispatch)((res) => {
+      if (res.message === "Success") {
+        enqueueSnackbar("Created new Carrier successfully", {
+          variant: "success",
+        });
+      }
+    });
+  }
+
+  function updateCarrier(id, formdata) {
+    editCarrier(formdata)(carrierDispatch)((res) => {
+      if (res.message === "Success") {
+        enqueueSnackbar("Update record successfully", {
+          variant: "success",
+        });
+      }
+    });
+  }
   const SubmitForm = (formdata) => {
     //  e.preventDefault();
-    
-   
-    formdata.CompanyId=user.CompanyId;
 
-    createCarrier(formdata)(carrierDispatch)(res=>{
+    formdata.CompanyId = user.CompanyId;
+
+    createCarrier(formdata)(carrierDispatch)((res) => {
       if (res.message === "Success") {
-          enqueueSnackbar("Created Carrier Record Successfully", {
-            variant: "success",
-          });
-        }
-
-
-    }
-      
-  
-      
-      );
-    // if (password !== confirmPassword) {
-    //   alert('Password and confirm password are not match');
-    // } else {
-    //   registerDispatch(createShipment(register));
-    // }
+        enqueueSnackbar("Created Carrier Record Successfully", {
+          variant: "success",
+        });
+      }
+    });
   };
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+
+    if (!isAddMode) {
+      getCarrierById(id).then((carrier) => {
+        const fields = [
+          "CarrierType",
+          "FleetType",
+          "FleetNumber",
+          "Licensed",
+          "AboutUs",
+          "ServiceDescription",
+          "Rating",
+          "Company.CompanyId",
+        ];
+        fields.forEach((field) => setValue(field, carrier[field]));
+      });
+    }
+  }, []);
+
   return (
     <>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
-              <h2 >Carrier Information</h2>
+              <h2>Carrier Information</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleSubmit(SubmitForm)}>
-                  <input type="hidden" value="UserId" class="form-control" />
-                  <input type="hidden" value={user.CompanyId} name="CompanyId" class="form-control" {...register("CompanyId")}/>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <input
+                    type="hidden"
+                    name="UserId"
+                    value={user.UserId}
+                    class="form-control"
+                    {...register("UserId")}
+                  />
+                  <input
+                    type="hidden"
+                    name="CompanyId"
+                    value={user.CompanyId}
+                    class="form-control"
+                    {...register("CompanyId")}
+                  />
+
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> Basic Info </h5>
@@ -159,28 +189,27 @@ function AddCarrier() {
                     </div>
                     <label class="col-sm-2 col-form-label">Licensed?</label>
                     <div class="col-sm-4">
-                    <div class="form-check">
-                      <input
-                        type="checkbox"
-                        name="Licensed"
-                        class="form-check-input-custom-2"
-                        
-                        {...register("Licensed", {
-                          required: true,
-                        })}
-                      />
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          name="Licensed"
+                          class="form-check-input-custom-2"
+                          {...register("Licensed", {
+                            required: true,
+                          })}
+                        />
+                      </div>
                     </div>
-                  </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-form-label col-md-2">About Us</label>
                     <div class="col-md-10">
                       <input
-                        name="Description"
+                        name="AboutUs"
                         class="form-control"
                         placeholder="About Us"
-                        {...register("Description", {
+                        {...register("AboutUs", {
                           required: true,
                         })}
                       />
@@ -207,7 +236,6 @@ function AddCarrier() {
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h6 class="alert alert-info">
-                       
                         After posting the basic information about your
                         service.kindly go to <b>List Carrier info</b> and add
                         your fleet.

@@ -394,8 +394,14 @@ a .icon-flip-vertical:before {
 .icon-cog:before {
   content: "\f013";
 }
-.icon-trash:before {
+.icon-delete:before {
   content: "\f014";
+}
+.icon-trash:before {
+  content: "\e8db";
+}
+.icon-trash-2:before {
+  content: "\e8da";
 }
 .icon-home:before {
   content: "\f015";

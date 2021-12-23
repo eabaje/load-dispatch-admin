@@ -130,14 +130,21 @@ function AddShipment() {
             <div class="card-body">
               <div class="col-md-12 ">
                 <form onSubmit={handleShipment(SubmitForm)}>
-                  <input type="hidden" name="UserId" class="form-control" />
+                  <input
+                    type="hidden"
+                    name="UserId"
+                    value={user.UserId}
+                    class="form-control"
+                    {...shipmentform("UserId")}
+                  />
                   <input
                     type="hidden"
                     name="CompanyId"
-                    value="1"
+                    value={user.CompanyId}
                     class="form-control"
                     {...shipmentform("CompanyId")}
                   />
+
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info">

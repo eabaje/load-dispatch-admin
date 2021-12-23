@@ -277,9 +277,7 @@ export const createTrip = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_TRIP_FAIL, payload: message });
   }
 };
@@ -314,9 +312,7 @@ export const editTrip = (form, tripId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_TRIP_FAIL, payload: message });
   }
 };
@@ -339,9 +335,7 @@ export const addTrack = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_TRIP_FAIL, payload: message });
   }
 };
@@ -368,9 +362,7 @@ export const editTrack = (form, trackId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_TRIP_FAIL, payload: message });
   }
 };
@@ -387,9 +379,7 @@ export const deleteTrack = (trackId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_SUBSCRIBE_FAIL, payload: message });
   }
 };
@@ -406,9 +396,7 @@ export const deleteTrip = (tripId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_TRIP_FAIL, payload: message });
   }
 };

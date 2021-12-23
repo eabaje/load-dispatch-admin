@@ -101,9 +101,7 @@ export const createUser = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
   }
 };
@@ -134,9 +132,7 @@ export const editUser = (form, userId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_PROFILE_FAIL, payload: message });
   }
 };
@@ -157,9 +153,7 @@ export const deleteUser = (userId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_PROFILE_FAIL, payload: message });
   }
 };
@@ -256,9 +250,7 @@ export const subcribeUser = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
   }
 };
@@ -289,9 +281,7 @@ export const updateUserSubscription =
       });
     } catch (error) {
       const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
+        error.message && error.message ? error.message : error.message;
       dispatch({ type: EDIT_PROFILE_FAIL, payload: message });
     }
   };
@@ -321,9 +311,7 @@ export const upgradeUserSubscription = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_PROFILE_FAIL, payload: message });
   }
 };

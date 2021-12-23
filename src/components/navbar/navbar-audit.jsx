@@ -86,7 +86,7 @@ const NavBarAudit = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/list-carrier" label="Resources">
+                  <a href="/list-carriers" label="Resources">
                     List carrier Info
                   </a>
                 </li>

@@ -1,8 +1,14 @@
 import React from "react";
-
+const imgMyimageexample = require("../assets/slider_2.jpg");
+const divStyle = {
+  width: "100vw",
+  height: "100vh",
+  backgroundImage: `url(${imgMyimageexample})`,
+  backgroundSize: "cover",
+};
 const AuthLayout = ({ children }) => (
   <div>
-    <div class="auth-wrapper">
+    <div class="auth-wrapper" style={divStyle}>
       <div class="auth-content">
         <div class="card">
           <div class="row align-items-center text-center">

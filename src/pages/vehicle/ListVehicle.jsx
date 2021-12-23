@@ -12,7 +12,7 @@ function ListVehicle() {
   const [user, setUser] = useState({});
 
   // GET request function to your Mock API
-  const fetchShipment = async () => {
+  const fetchData = async () => {
     // fetch(`${INVENTORY_API_URL}`)
     //   .then((res) => res.json())
     //   .then((json) => setData(json));
@@ -28,14 +28,14 @@ function ListVehicle() {
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchShipment();
+    fetchData();
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   return (
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header alert alert-info">
             <h3>List of Vehicles</h3>
             <ul>
               <li>Edit and delete Vehicles</li>
@@ -89,14 +89,36 @@ function ListVehicle() {
                       <td>{item.ModifiedBy}</td>
                       <td>{item.ModifiedOn}</td>
                       <td>
-                        <a href="./Edit/{item.CarrierId}">
-                          Edit Vehicle Details
-                        </a>
-                        |
-                        <a href="./Details/{item.CarrierId}">
-                          Assign Vehicle to Driver Details
-                        </a>{" "}
-                        |<a href="./Delete/{item.CarrierId}">Delete Record</a>
+                        <ul class="table-controls">
+                          <li>
+                            <a
+                              href={`/edit-vehicle-info/${item.VehicleId}`}
+                              class="btn btn-sm"
+                              title="Edit Carrier Entry"
+                            >
+                              <i class="icon-pencil"></i>
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href={`/assign-driver-to-vehicle/${item.VehicleId}`}
+                              class="btn btn-sm"
+                              title="Add Vehicle Info"
+                            >
+                              <i class="icon-check-sign"></i>
+                            </a>
+                          </li>
+
+                          <li>
+                            <a
+                              href={`/delete-data/${item.VehicleId}`}
+                              class="btn btn-sm"
+                              title="Delete"
+                            >
+                              <i class="icon-trash-2"></i>
+                            </a>
+                          </li>
+                        </ul>
                       </td>
                     </tr>
                   ))}

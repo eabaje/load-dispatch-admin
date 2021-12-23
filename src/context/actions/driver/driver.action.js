@@ -110,8 +110,6 @@ export const createDriver1 = (form) => async (dispatch) => {
 
   dispatch({ type: CREATE_DRIVER_REQUEST });
 
-
-
   try {
     const { res } = await axios.post(`/driver/create/`, form);
 
@@ -121,58 +119,56 @@ export const createDriver1 = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: CREATE_DRIVER_FAIL, payload: message });
   }
 };
 
-export const createDriver = (form,picFile,docFile) => (dispatch) => (onSuccess) => {
-  const requestPayload = {
-    CompanyId: form.CompanyId || "",
-    DriverName: form.DriverName || "",
-    Email: form.Email || "",
-    Phone: form.Phone || "",
-    Address: form.Address || "",
-    City: form.City || "",
-    Country: form.Country || "",
-    Licensed: form.Licensed || "",
-    LicenseUrl: form.LicenseUrl || "",
-    Rating: form.Rating || "",
-    DriverDocs: form.DriverDocs || "",
-    PicUrl: form.PicUrl || null,
-  };
-   
-  const data = new FormData()
-  data.append('PicUrl', picFile)
-  data.append('LicenseUrl',docFile)
+export const createDriver =
+  (form, picFile, docFile) => (dispatch) => (onSuccess) => {
+    const requestPayload = {
+      CompanyId: form.CompanyId || "",
+      DriverName: form.DriverName || "",
+      Email: form.Email || "",
+      Phone: form.Phone || "",
+      Address: form.Address || "",
+      City: form.City || "",
+      Country: form.Country || "",
+      Licensed: form.Licensed || "",
+      LicenseUrl: form.LicenseUrl || "",
+      Rating: form.Rating || "",
+      DriverDocs: form.DriverDocs || "",
+      PicUrl: form.PicUrl || null,
+    };
 
-  dispatch({
-    type: CREATE_DRIVER_REQUEST,
-  });
-  axios
-  .post("/driver/create",data, { 
-    form
-    })
-   .then((res) => {
-      dispatch({
-        type: CREATE_DRIVER_SUCCESS,
-        payload: res.data,
-      });
+    // const formdata = new FormData();
+    // formdata.append("PicUrl", picFile);
+    // formdata.append("LicenseUrl", docFile);
 
-      onSuccess(res.data);
-    })
-    .catch((err) => {
-      dispatch({
-        type: CREATE_DRIVER_FAIL,
-        payload: err.message
-          ? err.message
-          : { error: "Something went wrong, try again" },
-      });
+    // console.log(`Formdata`, formdata);, formdata,
+
+    dispatch({
+      type: CREATE_DRIVER_REQUEST,
     });
-};
+    axios
+      .post("/driver/create", form)
+      .then((res) => {
+        dispatch({
+          type: CREATE_DRIVER_SUCCESS,
+          payload: res.data,
+        });
 
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        dispatch({
+          type: CREATE_DRIVER_FAIL,
+          payload: err.message
+            ? err.message
+            : { error: "Something went wrong, try again" },
+        });
+      });
+  };
 
 export const editDriver = (form, id) => (dispatch) => (onSuccess) => {
   const requestPayload = {
@@ -228,9 +224,7 @@ export const deleteDriver = (driverId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
+      error.message && error.message ? error.message : error.message;
     dispatch({ type: DELETE_DRIVER_FAIL, payload: message });
   }
 };

@@ -121,12 +121,25 @@ const App = () => {
             <AppLayoutRoute path="/edit-shipment" component={EditShipment} />
             <AppLayoutRoute path="/add-carrier" component={AddCarrier} />
             <AppLayoutRoute
-              exact
+              key="list-carriers"
               path="/list-carriers"
               component={ListCarrier}
             />
-            <AppLayoutRoute path="/edit-carrier" component={EditCarrier} />
-            <AppLayoutRoute path="/add-vehicle" component={AddVehicle} />
+            <AppLayoutRoute
+              key="edit-carrier"
+              path="/edit-carrier/:carrierId"
+              component={AddCarrier}
+            />
+            <AppLayoutRoute
+              key="add-vehicle"
+              path="/add-vehicle"
+              component={AddVehicle}
+            />
+            <AppLayoutRoute
+              key="add-vehicle-to-carrier"
+              path="/add-vehicle-to-carrier/:carrierId"
+              component={AddVehicle}
+            />
             <AppLayoutRoute
               exact
               path="/list-vehicles"

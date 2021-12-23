@@ -11,7 +11,7 @@ function ListTrip() {
   const [data, setData] = useState([]);
 
   // GET request function to your Mock API
-  const fetchShipment = async () => {
+  const fetchData = async () => {
     // fetch(`${INVENTORY_API_URL}`)
     //   .then((res) => res.json())
     //   .then((json) => setData(json));
@@ -27,7 +27,7 @@ function ListTrip() {
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchShipment();
+    fetchData();
   }, []);
 
   useEffect(() => {
