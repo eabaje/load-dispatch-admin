@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
@@ -85,32 +86,35 @@ function ListSubscription() {
                       <td>
                         <ul class="table-controls">
                           <li>
-                            <a
-                              href={`/edit-subscription/${item.SubscribeId}`}
-                              class="btn btn-sm"
-                              title="Edit Subscription Entry"
+                            <Link
+                              to={"/edit-subscription/" + item.SubscribeId}
+                              className="btn btn-sm"
+                              title="Edit User Subscription"
                             >
+                              {" "}
                               <i class="icon-pencil"></i>
-                            </a>
+                            </Link>
                           </li>
                           <li>
-                            <a
-                              href={`/list-user-subscription/${item.SubscribeId}`}
-                              class="btn btn-sm"
-                              title="List Users by subscription"
+                            <Link
+                              to={"/list-user-subscription/" + item.SubscribeId}
+                              className="btn btn-sm"
+                              title="Get User Subscription"
                             >
-                              <i class="icon-check-sign"></i>
-                            </a>
+                              {" "}
+                              <i class="icon-user"></i>
+                            </Link>
                           </li>
 
                           <li>
-                            <a
-                              href={`/delete-data/${item.SubscribeId}`}
-                              class="btn btn-sm"
-                              title="Add Job Result"
+                            <Link
+                              to={"/delete-data/" + item.SubscribeId}
+                              className="btn btn-sm"
+                              title="Edit Carrier Entry"
                             >
+                              {" "}
                               <i class="icon-trash"></i>
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </td>

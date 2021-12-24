@@ -35,7 +35,9 @@ export const listSubscriptionsBySubscriptionId =
       const { res } = await axios.get(
         `/subscription/findOne/${subscriptionId}`
       );
+
       dispatch({ type: GET_SUBSCRIBES_SUCCESS, payload: res.data });
+
       return res.data.data;
     } catch (error) {
       dispatch({ type: GET_SUBSCRIBES_FAIL, payload: error.message });

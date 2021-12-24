@@ -78,33 +78,35 @@ function ListCarrier() {
                         <td>
                           <ul class="table-controls">
                             <li>
-                            <Link to={"/edit-carrier/"+item.CarrierId} className="btn btn-sm">   <i class="icon-pencil"></i></Link>
-                              <a
-                                href={`/edit-carrier/${item.CarrierId}`}
-                                class="btn btn-sm"
+                              <Link
+                                to={"/edit-carrier/" + item.CarrierId}
+                                className="btn btn-sm"
                                 title="Edit Carrier Entry"
                               >
+                                {" "}
                                 <i class="icon-pencil"></i>
-                              </a>
+                              </Link>
                             </li>
                             <li>
-                              <a
-                                href={`/add-vehicle-to-carrier/${item.CarrierId}`}
-                                class="btn btn-sm"
+                              <Link
+                                to={"/add-vehicle-to-carrier/" + item.CarrierId}
+                                className="btn btn-sm"
                                 title="Add Vehicle Info"
                               >
+                                {" "}
                                 <i class="icon-check-sign"></i>
-                              </a>
+                              </Link>
                             </li>
 
                             <li>
-                              <a
-                                href={`/delete-data/${item.CarrierId}`}
-                                class="btn btn-sm"
-                                title="Delete"
+                              <Link
+                                to={"/delete-data/" + item.CarrierId}
+                                className="btn btn-sm"
+                                title="Add Vehicle Info"
                               >
+                                {" "}
                                 <i class="icon-delete"></i>
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                         </td>

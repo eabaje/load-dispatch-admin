@@ -14,12 +14,11 @@ import {
   editSubscription,
   listSubscriptionsBySubscriptionId,
 } from "../../context/actions/subscribe/subscribe.action";
-import ImageUpload from "../../components/upload/uploadImage";
+import { fetchData } from "../../helpers/query";
 
 function AddSubscription({ history, match }) {
-  const { id } = match.params;
-  // const { SubscribeId } = match.params;
-  const isAddMode = !id;
+  const { subscribeId } = match.params;
+  const isAddMode = !subscribeId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [user, setUser] = useState({});
@@ -40,13 +39,13 @@ function AddSubscription({ history, match }) {
   const getSubscriptionById = (id) => {
     //  e.preventDefault();
 
-  return  listSubscriptionsBySubscriptionId(id)(subscribeDispatch);
+    return listSubscriptionsBySubscriptionId(id)(subscribeDispatch);
   };
 
   function onSubmit(formdata) {
     return isAddMode
       ? createSubscription(formdata)
-      : updateSubscription(id, formdata);
+      : updateSubscription(subscribeId, formdata);
   }
 
   function createSubscription(formdata) {
@@ -73,7 +72,8 @@ function AddSubscription({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
-      getSubscriptionById(id).then((subscription) => {
+      fetchData("subscription/findOne", subscribeId).then((subscription) => {
+        console.log(`subscription`, subscribeId);
         const fields = [
           "SubscriptionType",
           "SubscriptionName",

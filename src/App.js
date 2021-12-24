@@ -34,6 +34,7 @@ import ListSubscription from "./pages/subscribe/ListSubscription";
 
 import { GlobalContext } from "./context/Provider";
 import AddVehicle from "./pages/vehicle/Addvehicle";
+import ListInterest from "./pages/shipper/ListInterest";
 
 const App = () => {
   const {
@@ -112,64 +113,97 @@ const App = () => {
           <>
             <AppLayoutRoute exact path="/shipper" component={Shipper} />
             <AppLayoutRoute exact path="/dashboard" component={Home} />
-            <AppLayoutRoute  exact path="/add-shipment" component={AddShipment} />
+            <AppLayoutRoute
+              exact
+              path="/add-shipment"
+              component={AddShipment}
+            />
             <AppLayoutRoute
               exact
               path="/my-shipments"
               component={ListShipment}
             />
-            <AppLayoutRoute exact path="/edit-shipment" component={EditShipment} />
+            <AppLayoutRoute
+              exact
+              path="/list-interest-for-shipment/:shipmentId"
+              component={ListInterest}
+            />
+            <AppLayoutRoute
+              exact
+              path="/edit-shipment/:shipmentId"
+              component={AddShipment}
+            />
             <AppLayoutRoute
               key="edit-carrier"
-              exact  path="/edit-carrier/:carrierId"
+              exact
+              path="/edit-carrier/:carrierId"
               component={AddCarrier}
             />
             <AppLayoutRoute exact path="/add-carrier" component={AddCarrier} />
             <AppLayoutRoute
               key="list-carriers"
-              exact path="/list-carriers"
+              exact
+              path="/list-carriers"
               component={ListCarrier}
             />
-           
-             <AppLayoutRoute
+
+            <AppLayoutRoute
               key="add-vehicle-to-carrier"
-              exact path="/add-vehicle-to-carrier/:carrierId"
+              exact
+              path="/add-vehicle-to-carrier/:carrierId"
               component={AddVehicle}
             />
             <AppLayoutRoute
               key="add-vehicle"
-              exact path="/add-vehicle"
+              exact
+              path="/add-vehicle"
               component={AddVehicle}
             />
-           
+
             <AppLayoutRoute
               exact
               path="/list-vehicles"
               component={ListVehicle}
             />
-            <AppLayoutRoute exact path="/edit-vehicle" component={EditVehicle} />
-            <AppLayoutRoute exact path="/add-driver-info" component={AddDriver} /> 
-             <AppLayoutRoute exact path="/edit-driver-info" component={EditDriver} />
+            <AppLayoutRoute
+              exact
+              path="/edit-vehicle"
+              component={EditVehicle}
+            />
+            <AppLayoutRoute
+              exact
+              path="/add-driver-info"
+              component={AddDriver}
+            />
+            <AppLayoutRoute
+              exact
+              path="/edit-driver-info"
+              component={AddDriver}
+            />
             <AppLayoutRoute
               exact
               path="/list-drivers-info"
               component={ListDriver}
             />
-          
+
             <AppLayoutRoute exact path="/add-trip" component={AddTrip} />
             <AppLayoutRoute exact path="/edit-trip" component={EditTrip} />
             <AppLayoutRoute exact path="/list-trip" component={ListTrip} />
 
             <AppLayoutRoute
-             exact path="/add-subscription"
+              exact
+              path="/add-subscription"
               component={AddSubscription}
             />
             <AppLayoutRoute
-             exact path="/edit-subscription"
-              component={EditSubscription}
+              key="edit-subscription"
+              exact
+              path="/edit-subscription/:subscribeId"
+              component={AddSubscription}
             />
             <AppLayoutRoute
-             exact path="/list-subscription"
+              exact
+              path="/list-subscription"
               component={ListSubscription}
             />
           </>

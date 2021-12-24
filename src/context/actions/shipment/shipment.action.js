@@ -154,12 +154,13 @@ export const createShipment = (form) => async (dispatch) => {
   dispatch({ type: CREATE_SHIPMENT_REQUEST });
 
   try {
-    const { res } = await axios.post(`/shipment/create/`, requestPayload);
+    const { res } = await axios.post(`/shipment/create/`, form);
 
     dispatch({
       type: CREATE_SHIPMENT_SUCCESS,
       payload: res.data,
     });
+    return res.data;
   } catch (error) {
     const message =
       error.message && error.message ? error.message : error.message;
@@ -202,10 +203,7 @@ export const editShipment = (form, shipmentId) => async (dispatch) => {
   dispatch({ type: EDIT_SHIPMENT_REQUEST });
 
   try {
-    const { res } = await axios.put(
-      `/shipment/update/${shipmentId}`,
-      requestPayload
-    );
+    const { res } = await axios.put(`/shipment/update/${shipmentId}`, form);
 
     dispatch({
       type: EDIT_SHIPMENT_SUCCESS,

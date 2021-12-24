@@ -2,33 +2,23 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
 import $ from "jquery";
+import { fetchDataAll } from "../../helpers/query";
+import shipmentState from "../../context/initialStates/shipment.state";
 function ListShipment() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
 
-  // GET request function to your Mock API
-  const fetchData = async () => {
-    // fetch(`${INVENTORY_API_URL}`)
-    //   .then((res) => res.json())
-    //   .then((json) => setData(json));
-    try {
-      const res = await axios.get(`${API_URL}shipment/findAll`);
-      if (res) {
-        setData(res.data);
-      }
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: "error" });
-    }
-  };
-
   // Calling the function on component mount
   useEffect(() => {
-    fetchData();
+    fetchDataAll("shipment/findAll").then((shipment) => {
+      setData(shipment);
+    });
+    console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   useEffect(() => {
@@ -109,21 +99,32 @@ function ListShipment() {
                       <td>{item.DeliveryContactPhone}</td>
                       <td>{item.DeliveryEmail}</td>
                       <td>{item.AssignedShipment}</td>
-                      <td>{item.ShipmentDate}</td>
+                      <td>{item.ShipmentDate ?? null}</td>
                       <td>{item.ShipmentDocs}</td>
                       <td>{item.ShipmentStatus}</td>
                       <td>
                         <ul class="table-controls">
                           <li>
-                            <a
-                              href={`/edit-shipment/${item.ShipmentId}`}
-                              class="btn btn-sm"
-                              title="Edit Shipment Entry"
+                            <Link
+                              to={"/edit-shipment/" + item.ShipmentId}
+                              className="btn btn-sm"
+                              title="Edit Shipment"
                             >
+                              {" "}
                               <i class="icon-pencil"></i>
-                            </a>
+                            </Link>
                           </li>
                           <li>
+                            <Link
+                              to={
+                                "/list-interest-for-shipment/" + item.ShipmentId
+                              }
+                              className="btn btn-sm"
+                              title="List of all interested carriers"
+                            >
+                              {" "}
+                              <i class="icon-person"></i>
+                            </Link>
                             <a
                               href={`/list-interest-for-shipment/${item.ShipmentId}`}
                               class="btn btn-sm"
@@ -137,7 +138,7 @@ function ListShipment() {
                             <a
                               href={`/delete-data/${item.ShipmentId}`}
                               class="btn btn-sm"
-                              title="Add Job Result"
+                              title="Delete Data"
                             >
                               <i class="icon-trash"></i>
                             </a>

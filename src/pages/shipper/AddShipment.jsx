@@ -14,28 +14,33 @@ import {
   LOAD_UNIT,
   TRIP_STATUS,
 } from "../../constants/enum";
-import { createShipment } from "../../context/actions/shipment/shipment.action";
+import {
+  createShipment,
+  editShipment,
+  listShipmentsByShipmentId,
+} from "../../context/actions/shipment/shipment.action";
 import $ from "jquery";
 import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-function AddShipment() {
+import { fetchData } from "../../helpers/query";
+function AddShipment({ history, match }) {
+  const { shipmentId } = match.params;
+  // const { SubscribeId } = match.params;
+  const isAddMode = !shipmentId;
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
 
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [selpickUpRegion, setselpickUpRegion] = useState("");
+  const [seldeliveryRegion, setseldeliveryRegion] = useState("");
+
   const [user, setUser] = useState({});
 
   // const onSubmit = (data) => console.log(data);
-
-  useEffect(() => {
-    setCountries((countries) => (countries = Country.getAllCountries()));
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
 
   const selectPickUpCountry = async (e) => {
     setCountry((country) => e.target.value);
@@ -70,33 +75,98 @@ function AddShipment() {
     shipmentState: { error, loading, data },
   } = useContext(GlobalContext);
 
-  // const {
-  //   authState: { error: error2, loading: loading2, user, isLoggedIn },
-  // } = useContext(GlobalContext);
+  function onSubmit(formdata) {
+    return isAddMode
+      ? CreateShipment(formdata)
+      : updateShipment(shipmentId, formdata);
+  }
 
-  // console.log(`isLoggedIn`, isLoggedIn);
-
-  // useEffect(() => {
-  //   shipmentform({ name: "PickUpDate" }, { required: true });
-  //   shipmentform({ name: "DeliveryDate" }, { required: true });
-  // }, [shipmentform]);
-
-  const SubmitForm = (formdata) => {
-    //  e.preventDefault();
-    //  console.log("state:", formdata);
-    createShipment(formdata)(shipmentDispatch);
-    console.log("state:", data);
-    if (data.status === 200) {
-      enqueueSnackbar("Added New Shipment to database", {
-        variant: "success",
-      });
-    } else {
-      if (error) {
-        enqueueSnackbar(error, { variant: "error" });
+  function CreateShipment(formdata) {
+    console.log(`form`, formdata);
+    formdata.CompanyId = user.CompanyId;
+    createShipment(formdata)(shipmentDispatch)((res) => {
+      if (res.message === "Success") {
+        enqueueSnackbar("Created new Carrier successfully", {
+          variant: "success",
+        });
       }
-      enqueueSnackbar("An Error occurred", { variant: "error" });
+    });
+
+    if (error) {
+      enqueueSnackbar(error, {
+        variant: "error",
+      });
     }
-  };
+  }
+
+  function updateShipment(id, formdata) {
+    editShipment(formdata)(shipmentDispatch)((res) => {
+      if (res.message === "Success") {
+        enqueueSnackbar("Update record successfully", {
+          variant: "success",
+        });
+      }
+    });
+  }
+
+  useEffect(() => {
+    setCountries((countries) => (countries = Country.getAllCountries()));
+
+    setUser(JSON.parse(localStorage.getItem("user")));
+
+    if (!isAddMode) {
+      console.log(`object`, fetchData("shipment/findOne", shipmentId));
+      // listShipmentsByShipmentId(shipmentId)(shipmentDispatch).then(
+      //   (shipment) => {
+      fetchData("shipment/findOne", shipmentId).then((shipment) => {
+        console.log(`shipment`, shipment);
+        const fields = [
+          "CompanyId",
+          "LoadCategory",
+          "LoadType",
+          "LoadWeight",
+          "LoadUnit",
+          "Qty",
+          "Description",
+          "PickUpRegion",
+          "PickUpCountry",
+          "PickUpLocation",
+          "DeliveryCountry",
+          "DeliveryRegion",
+          "DeliveryLocation",
+          "ExpectedPickUpDate",
+          "ExpectedDeliveryDate",
+          "RequestForShipment",
+          "ShipmentRequestPrice",
+          "DeliveryContactName",
+          "DeliveryContactPhone",
+          "DeliveryEmail",
+          "AssignedShipment",
+          "ShipmentDate",
+          "ShipmentDocs",
+          "ShipmentStatus",
+        ];
+        fields.forEach((field) => setValue(field, shipment[field]));
+
+        setPickUpRegion(
+          (pickUpRegion) =>
+            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+            (pickUpRegion = State.getStatesOfCountry(shipment["PickUpCountry"]))
+        );
+
+        setdeliveryRegion(
+          (deliveryRegion) =>
+            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+            (deliveryRegion = State.getStatesOfCountry(
+              shipment["DeliveryCountry"]
+            ))
+        );
+
+        setselpickUpRegion(shipment["PickUpRegion"]);
+        setseldeliveryRegion(shipment["DeliveryRegion"]);
+      });
+    }
+  }, []);
 
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
@@ -129,7 +199,7 @@ function AddShipment() {
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleShipment(SubmitForm)}>
+                <form onSubmit={handleShipment(onSubmit)}>
                   <input
                     type="hidden"
                     name="UserId"
@@ -294,7 +364,12 @@ function AddShipment() {
                       >
                         <option value=""> Select Region/State </option>
                         {pickUpRegion.map((item) => (
-                          <option value={item.isoCode}>{item.name}</option>
+                          <option
+                            selected={selpickUpRegion === item.isoCode}
+                            value={item.isoCode}
+                          >
+                            {item.name}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -328,7 +403,7 @@ function AddShipment() {
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
                               onChange={onChange}
-                              selected={value}
+                              selected={Date.parse(value)}
                               placeholderText="Enter date"
                               customInput={<CustomInput />}
                             />
@@ -373,7 +448,12 @@ function AddShipment() {
                       >
                         <option value=""> Select Region/State </option>
                         {deliveryRegion.map((item) => (
-                          <option value={item.isoCode}>{item.name}</option>
+                          <option
+                            selected={seldeliveryRegion === item.isoCode}
+                            value={item.isoCode}
+                          >
+                            {item.name}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -408,7 +488,7 @@ function AddShipment() {
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
                               onChange={onChange}
-                              selected={value}
+                              selected={Date.parse(value)}
                               placeholderText="Enter date"
                               customInput={<CustomInput />}
                             />
@@ -465,7 +545,7 @@ function AddShipment() {
                     <label class="col-form-label col-md-2">Shipment Date</label>
                     <div class="col-md-4">
                       <Controller
-                        name={"ShipmentupDate"}
+                        name={"ShipmentDate"}
                         control={control}
                         // defaultValue={new Date()}
                         render={({ field: { onChange, value } }) => {
@@ -474,7 +554,7 @@ function AddShipment() {
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
                               onChange={onChange}
-                              selected={value}
+                              selected={Date.parse(value)}
                               placeholderText="Enter date"
                               customInput={<CustomInput />}
                             />
