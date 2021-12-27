@@ -6,6 +6,7 @@ import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
+import { Edit, Trash, Truck } from "react-feather";
 
 function ListCarrier() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -24,7 +25,7 @@ function ListCarrier() {
         setData(res.data.data);
       }
     } catch (err) {
-      enqueueSnackbar(getError(err), { variant: "error" });
+      enqueueSnackbar(err.response.data.message, { variant: "error" });
     }
   };
 
@@ -84,17 +85,17 @@ function ListCarrier() {
                                 title="Edit Carrier Entry"
                               >
                                 {" "}
-                                <i class="icon-pencil"></i>
+                               <Edit size={15}/>
                               </Link>
                             </li>
                             <li>
                               <Link
-                                to={"/add-vehicle-to-carrier/" + item.CarrierId}
+                                to={"/add-vehicle-to-carrier/" + item.CarrierId+"/"+item.CarrierType}
                                 className="btn btn-sm"
                                 title="Add Vehicle Info"
                               >
                                 {" "}
-                                <i class="icon-check-sign"></i>
+                                <Truck size={15}/>
                               </Link>
                             </li>
 
@@ -102,10 +103,10 @@ function ListCarrier() {
                               <Link
                                 to={"/delete-data/" + item.CarrierId}
                                 className="btn btn-sm"
-                                title="Add Vehicle Info"
+                                title="Delete Vehicle Info"
                               >
                                 {" "}
-                                <i class="icon-delete"></i>
+                                <Trash size={15}/>
                               </Link>
                             </li>
                           </ul>

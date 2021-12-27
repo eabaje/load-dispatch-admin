@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import {Camera,Trash,Truck,List,Edit} from 'react-feather'
 import { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -111,7 +112,7 @@ function ListShipment() {
                               title="Edit Shipment"
                             >
                               {" "}
-                              <i class="icon-pencil"></i>
+                              <Edit size={12}/>
                             </Link>
                           </li>
                           <li>
@@ -123,25 +124,24 @@ function ListShipment() {
                               title="List of all interested carriers"
                             >
                               {" "}
-                              <i class="icon-person"></i>
+                              <List size={12}/> 
                             </Link>
-                            <a
-                              href={`/list-interest-for-shipment/${item.ShipmentId}`}
-                              class="btn btn-sm"
-                              title="List Interest for shipment"
-                            >
-                              <i class="icon-check-sign"></i>
-                            </a>
+                           
+                           
                           </li>
 
                           <li>
-                            <a
-                              href={`/delete-data/${item.ShipmentId}`}
-                              class="btn btn-sm"
+                          <Link
+                              to={
+                                "/delete-data/" + item.ShipmentId
+                              }
+                              className="btn btn-sm"
                               title="Delete Data"
                             >
-                              <i class="icon-trash"></i>
-                            </a>
+                              {" "}
+                              <Trash size={12}/> 
+                            </Link>
+                           
                           </li>
                         </ul>
                       </td>

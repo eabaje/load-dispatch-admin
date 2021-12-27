@@ -13,6 +13,6 @@ initialstate.subscribeInitial = require('./subscribe.state.js').default;
 initialstate.tripInitial = require('./trip.state.js').default;
 initialstate.profileInitial = require('./profile.state.js').default;
 
-//initialstate.insurance = require('./insurance.state.js').default;
+initialstate.user = require('./user.state.js').default;
 
 export default initialstate;

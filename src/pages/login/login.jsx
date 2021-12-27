@@ -41,20 +41,26 @@ function Login() {
 
   console.log(`isAuthenticated`, isLoggedIn);
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      history.push("/dashboard");
-    }
-    if (error) {
-      enqueueSnackbar(error, { variant: "error" });
-    }
-  }, [isLoggedIn, history]);
+  // React.useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.push("/dashboard");
+  //   }
+  //   if (error) {
+  //     enqueueSnackbar(error, { variant: "error" });
+  //   }
+  // }, [isLoggedIn, history]);
 
   const SubmitForm = (formdata) => {
-    //  e.preventDefault();
+     // e.preventDefault();
     //  console.log("state:", formdata);
 
-    signin2(formdata)(authDispatch);
+    signin2(formdata)(authDispatch)(success=>{
+      history.push("/dashboard");
+
+    })(err =>{
+      console.log(`err`, err)
+      enqueueSnackbar(err, { variant: "error" });
+      });
 
     //else {
     //   if (error) {

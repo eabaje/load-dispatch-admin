@@ -26,16 +26,22 @@ export const listVehicles = () => async (dispatch) => {
   }
 };
 
-export const listVehiclesByVehicleId = (vehicleId) => async (dispatch) => {
+export const listVehiclesByVehicleId = (vehicleId) =>  (dispatch) => (onSuccess)=> {
   dispatch({
     type: GET_VEHICLES_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/vehicle/findOne/${vehicleId}`);
-    dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_VEHICLES_FAIL, payload: error.message });
-  }
+  axios.get(`/vehicle/findOne/${vehicleId}`)
+  .then((res) =>{
+
+  dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data.data });
+  onSuccess(res.data);
+
+  })
+  
+  . catch ((error) =>{
+    dispatch({ type: GET_VEHICLES_FAIL, payload: error.response.data.message });
+  })
+  
 };
 
 export const listVehiclesInsured = () => async (dispatch) => {
@@ -104,7 +110,7 @@ export const createVehicle = (form) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.message && error.message ? error.message : error.message;
+      error.response && error.response.data ? error.response.data.message : error.message;
     dispatch({ type: CREATE_VEHICLE_FAIL, payload: message });
   }
 };

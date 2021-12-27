@@ -76,7 +76,7 @@ export const listUsersByDate = (fromDate, endDate) => async (dispatch) => {
   }
 };
 
-export const createUser = (form) => async (dispatch) => {
+export const createUser = (form) => (dispatch) => (onSuccess) => (onError)=> {
   const requestPayload = {
     CompanyId: form.CompanyId || "",
     FirstName: form.FirstName || "",
@@ -92,21 +92,29 @@ export const createUser = (form) => async (dispatch) => {
 
   dispatch({ type: CREATE_PROFILE_REQUEST });
 
-  try {
-    const { res } = await axios.post(`/user/create/`, requestPayload);
+  axios.post(`/user/create/`, form)
+  .then((res)=>{
 
     dispatch({
       type: CREATE_PROFILE_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
+   onSuccess(res.data)
+  
+   })
+  
+   .catch((error)=>{
+
     const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
-  }
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+  dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+  onError(message)
+  
+  
+   })
 };
 
-export const editUser = (form, userId) => async (dispatch) => {
+export const editUser = (form, userId) => (dispatch) => (onSuccess) => (onError)=> {
   const requestPayload = {
     UserId: form.UserId || "",
     CompanyId: form.CompanyId || "",
@@ -123,19 +131,33 @@ export const editUser = (form, userId) => async (dispatch) => {
 
   dispatch({ type: EDIT_PROFILE_REQUEST });
 
-  try {
-    const { res } = await axios.put(`/user/update/`, requestPayload);
+   axios.put(`/user/update/`, form)
+
+   .then((res)=>{
 
     dispatch({
       type: EDIT_PROFILE_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
+   onSuccess(res.data)
+  
+   })
+  
+   .catch((error)=>{
+
     const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: EDIT_PROFILE_FAIL, payload: message });
-  }
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+  dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+  onError(message)
+  
+  
+   })
+
+   
+  
 };
+
+
 
 export const deleteUser = (userId) => async (dispatch) => {
   const requestPayload = {
@@ -153,8 +175,10 @@ export const deleteUser = (userId) => async (dispatch) => {
     });
   } catch (error) {
     const message =
-      error.message && error.message ? error.message : error.message;
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
     dispatch({ type: DELETE_PROFILE_FAIL, payload: message });
+
+    
   }
 };
 
@@ -168,7 +192,9 @@ export const listUserSubscriptions = () => async (dispatch) => {
     const { res } = await axios.get(`/user/findAllUserSubscriptions/`);
     dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
   } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+    const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+    dispatch({ type: GET_PROFILES_FAIL, payload: message });
   }
 };
 
@@ -180,7 +206,9 @@ export const listUserSubscriptionByUserId = (userId) => async (dispatch) => {
     const { res } = await axios.get(`/user/findUserSubscription/${userId}`);
     dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
   } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+    const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+    dispatch({ type: GET_PROFILES_FAIL, payload: message });
   }
 };
 
@@ -195,7 +223,9 @@ export const listUserSubscriptionByDate =
       );
       dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+      const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+      dispatch({ type: GET_PROFILES_FAIL, payload: message });
     }
   };
 
@@ -210,7 +240,9 @@ export const listUserSubscriptionByStartDate =
       );
       dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+      const message =
+      error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+      dispatch({ type: GET_PROFILES_FAIL, payload: message });
     }
   };
 
@@ -225,11 +257,13 @@ export const listUserSubscriptionByEndDate =
       );
       dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+      const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+      dispatch({ type: GET_PROFILES_FAIL, payload: message });
     }
   };
 
-export const subcribeUser = (form) => async (dispatch) => {
+export const subcribeUser = (form) =>  (dispatch) => (onSuccess) => (onError)=>{
   const requestPayload = {
     SubscriptionId: form.SubscriptionId || "",
     SubscriptionName: form.SubscriptionName || "",
@@ -241,22 +275,32 @@ export const subcribeUser = (form) => async (dispatch) => {
 
   dispatch({ type: CREATE_PROFILE_REQUEST });
 
-  try {
-    const { res } = await axios.post(`/user/subscribe/`, requestPayload);
+  
+ axios.post(`/user/subscribe/`, form)
+ .then((res)=>{
 
-    dispatch({
-      type: CREATE_PROFILE_SUCCESS,
-      payload: res.data,
-    });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
-  }
+  dispatch({
+    type: CREATE_PROFILE_SUCCESS,
+    payload: res.data,
+  });
+ onSuccess(res.data)
+
+ })
+ 
+ .catch((error)=>{
+
+  const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+onError(message)
+
+
+ })
+ 
 };
 
 export const updateUserSubscription =
-  (form, UserSubscriptionId) => async (dispatch) => {
+  (form, UserSubscriptionId) => (dispatch) => (onSuccess)=>(onError)=>{
     const requestPayload = {
       UserSubscriptionId: form.UserSubscriptionId || "",
       SubscriptionId: form.SubscriptionId || "",
@@ -269,24 +313,35 @@ export const updateUserSubscription =
 
     dispatch({ type: EDIT_PROFILE_REQUEST });
 
-    try {
-      const { res } = await axios.put(
+ 
+     axios.put(
         `/user/updateUserSubscription/`,
-        requestPayload
-      );
+        form
+      )
+      .then((res)=>{
 
-      dispatch({
-        type: EDIT_PROFILE_SUCCESS,
-        payload: res.data,
-      });
-    } catch (error) {
-      const message =
-        error.message && error.message ? error.message : error.message;
-      dispatch({ type: EDIT_PROFILE_FAIL, payload: message });
-    }
+        dispatch({
+          type: CREATE_PROFILE_SUCCESS,
+          payload: res.data,
+        });
+       onSuccess(res.data)
+      
+       })
+       
+       .catch((error)=>{
+      
+        const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+      dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+      onError(message)
+      
+      
+       })
+      
+     
   };
 
-export const upgradeUserSubscription = (form) => async (dispatch) => {
+export const upgradeUserSubscription = (form) => (dispatch) => (onSuccess)=>(onError)=>{ 
   const requestPayload = {
     UserSubscriptionId: form.UserSubscriptionId || "",
     SubscriptionId: form.SubscriptionId || "",
@@ -299,19 +354,28 @@ export const upgradeUserSubscription = (form) => async (dispatch) => {
 
   dispatch({ type: EDIT_PROFILE_REQUEST });
 
-  try {
-    const { res } = await axios.post(
+ 
+     axios.post(
       `/user/upgradeUserSubscription/`,
-      requestPayload
-    );
+     form
+    )
+    .then((res)=>{
 
-    dispatch({
-      type: EDIT_PROFILE_SUCCESS,
-      payload: res.data,
-    });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: EDIT_PROFILE_FAIL, payload: message });
-  }
+      dispatch({
+        type: CREATE_PROFILE_SUCCESS,
+        payload: res.data,
+      });
+     onSuccess(res.data)
+    
+     })
+     .catch((error)=>{
+    
+      const message =
+    error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
+    dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+    onError(message)
+    
+    
+     })
+    
 };

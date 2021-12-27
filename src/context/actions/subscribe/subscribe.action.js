@@ -129,33 +129,35 @@ export const createSubscription = (form) => (dispatch) => (onSuccess) => {
     });
 };
 
-export const editSubscription = (subscriptionId, form) => async (dispatch) => {
-  const requestPayload = {
-    SubscriptionId: subscriptionId || form.SubscriptionType || "",
-    SubscriptionType: form.SubscriptionType || "",
-    SubscriptionName: form.SubscriptionName || "",
-    Amount: form.Amount || "",
-    Description: form.Description || "",
-    Duration: form.Duration || null,
-  };
+export const editSubscription = (subscriptionId, form) =>  (dispatch) => (onSuccess) => { 
+  // const requestPayload = {
+  //   SubscriptionId: subscriptionId || form.SubscriptionType || "",
+  //   SubscriptionType: form.SubscriptionType || "",
+  //   SubscriptionName: form.SubscriptionName || "",
+  //   Amount: form.Amount || "",
+  //   Description: form.Description || "",
+  //   Duration: form.Duration || null,
+  // };
 
   dispatch({ type: EDIT_SUBSCRIBE_REQUEST });
 
-  try {
-    const { res } = await axios.put(
-      `/subscription/update/subscriptionId`,
+ 
+    const { res } =  axios.put(
+      `/subscription/update/${subscriptionId}`,
       form
-    );
-
+    ).then((res) => {
+   console.log(`response`, res.data)
     dispatch({
       type: EDIT_SUBSCRIBE_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
+    onSuccess(res.data);
+    })
+   .catch((error) => {
     const message =
       error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
-  }
+  })
 };
 
 export const deleteSubscription = (subscriptionId) => async (dispatch) => {

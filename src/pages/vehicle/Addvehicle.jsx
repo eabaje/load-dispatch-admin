@@ -18,6 +18,7 @@ import {
 function AddVehicle({ history, match }) {
   const { id } = match.params;
   const { carrierId } = match.params;
+  const { carrierType } = match.params;
   const isAddMode = !id;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -31,6 +32,7 @@ function AddVehicle({ history, match }) {
     register,
     formState: { errors },
     handleSubmit,
+    setValue
   } = useForm();
 
   const {
@@ -82,13 +84,29 @@ function AddVehicle({ history, match }) {
   useEffect(() => {
     if (!isAddMode) {
       // get user and set form fields
-      listVehiclesByVehicleId(id)(vehicleDispatch);
-      const dmap = JSON.stringify(data.data);
-      console.log(`dmap`, dmap);
+     
+     
+ listVehiclesByVehicleId(id)(vehicleDispatch)(res =>{
 
-      // const fields = ['title', 'firstName', 'lastName', 'email', 'role'];
-      // fields.forEach(field => setValue(field,  dmap[field]));
-      // setUser(user);
+  const fields = [
+    "VehicleType",
+    "VehicleNumber",
+    "SerialNumber",
+    "VehicleMake",
+    "Description",
+    "VehicleColor",
+    "VehicleModel",
+    "SerialNumber",
+    "LicensePlate",
+    "VehicleModelYear",
+    "PurchaseYear",
+  ];
+  fields.forEach((field) => setValue(field, res[field]));
+
+
+ });
+     
+    
     }
   }, []);
 
@@ -138,7 +156,7 @@ function AddVehicle({ history, match }) {
                       >
                         <option selected>Select Vehicle Type</option>
                         {LOAD_TYPE.map((item) => (
-                          <option key={item.value} value={item.value}>
+                          <option key={item.value} selected={carrierType === item.value} value={item.value}>
                             {item.text}
                           </option>
                         ))}

@@ -16,6 +16,7 @@ const {
   subscribeReducer,
   tripReducer,
   vehicleReducer,
+  userReducer,
 } = reducer;
 
 const {
@@ -30,6 +31,7 @@ const {
   subscribeInitial,
   tripInitial,
   vehicleInitial,
+  userInitial,
 } = InitialState;
 
 const GlobalProvider = ({ children }) => {
@@ -44,6 +46,7 @@ const GlobalProvider = ({ children }) => {
   const [subscribeState, subscribeDispatch] = useReducer(subscribeReducer, subscribeInitial);
   const [tripState, tripDispatch] = useReducer(tripReducer, tripInitial);
   const [vehicleState, vehicleDispatch] = useReducer(vehicleReducer, vehicleInitial);
+  const [userState, userDispatch] = useReducer(userReducer, userInitial);
 
   return (
     <GlobalContext.Provider

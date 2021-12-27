@@ -209,6 +209,7 @@ export const editShipment = (form, shipmentId) => async (dispatch) => {
       type: EDIT_SHIPMENT_SUCCESS,
       payload: res.data,
     });
+    return res.data;
   } catch (error) {
     const message =
       error.message && error.message ? error.message : error.message;

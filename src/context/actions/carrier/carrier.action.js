@@ -193,7 +193,7 @@ export const createCarrier = (form) => (dispatch) => (onSuccess) => {
     });
 };
 
-export const editCarrier = (form, carrierId) => async (dispatch) => {
+export const editCarrier = (form ,carrierId) => (dispatch) => (onSuccess) => {
   const requestPayload = {
     CompanyId: form.CompanyId || "",
     CarrierName: form.CarrierName || "",
@@ -211,18 +211,26 @@ export const editCarrier = (form, carrierId) => async (dispatch) => {
 
   dispatch({ type: EDIT_CARRIER_REQUEST });
 
-  try {
-    const { res } = await axios.put(`/carrier/update/`, form);
-
+ 
+  
+    axios.put(`/carrier/update/${carrierId}`, form)
+    
+    .then((res) => {
+    
+   
     dispatch({
       type: EDIT_CARRIER_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
+
+    onSuccess(res.data);
+  })
+  . catch ((error) => {
     const message =
       error.message && error.message ? error.message : error.message;
     dispatch({ type: EDIT_CARRIER_FAIL, payload: message });
-  }
+  });
+  
 };
 
 export const deleteCarrier = (carrierId) => async (dispatch) => {

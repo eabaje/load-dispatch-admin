@@ -35,6 +35,10 @@ import ListSubscription from "./pages/subscribe/ListSubscription";
 import { GlobalContext } from "./context/Provider";
 import AddVehicle from "./pages/vehicle/Addvehicle";
 import ListInterest from "./pages/shipper/ListInterest";
+import UserSubscription from "./pages/user/UserSubscription";
+import UserList from "./pages/user/UserList";
+import UploadShipment from "./pages/shipper/UploadShipment";
+import AddUserSubscription from "./pages/user/AddUserSubscription";
 
 const App = () => {
   const {
@@ -118,6 +122,12 @@ const App = () => {
               path="/add-shipment"
               component={AddShipment}
             />
+
+<AppLayoutRoute
+              exact
+              path="/add-shipment-upload"
+              component={UploadShipment}
+            />
             <AppLayoutRoute
               exact
               path="/my-shipments"
@@ -150,7 +160,7 @@ const App = () => {
             <AppLayoutRoute
               key="add-vehicle-to-carrier"
               exact
-              path="/add-vehicle-to-carrier/:carrierId"
+              path="/add-vehicle-to-carrier/:carrierId/:carrierType"
               component={AddVehicle}
             />
             <AppLayoutRoute
@@ -201,11 +211,44 @@ const App = () => {
               path="/edit-subscription/:subscribeId"
               component={AddSubscription}
             />
+
+list-user-subscription
             <AppLayoutRoute
               exact
               path="/list-subscription"
               component={ListSubscription}
             />
+
+            <AppLayoutRoute
+              exact
+              path="/list-user-subscription"
+              component={UserSubscription}
+            />    
+
+              <AppLayoutRoute
+              exact
+              path="/list-user-subscription/:userSubscriptionId"
+              component={UserSubscription}
+            />  
+
+              <AppLayoutRoute
+              exact
+              path="/add-user-subscription/:userSubscriptionId"
+              component={AddUserSubscription}
+            />      
+
+
+              <AppLayoutRoute
+              exact
+              path="/list-users"
+              component={UserList}
+            />    
+
+                          <AppLayoutRoute
+              exact
+              path="/list-user/:userId"
+              component={UserList}
+            />        
           </>
         )}
       </Switch>

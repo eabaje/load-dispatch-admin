@@ -17,7 +17,7 @@ import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function AddDriver({ history, match }) {
+function UploadShipment({ history, match }) {
   
   const { driverId } = match.params;
   const isAddMode = !driverId;
@@ -246,12 +246,28 @@ function AddDriver({ history, match }) {
                     class="form-control"
                   />
                 
-
+               
+	      
+	      
+	 
                   <div class="form-group row">
                     <div class="col-md-12 ">
                       <ImageUpload onChangePicHandler={onChangePicHandler} />
                     </div>
                   </div>
+                  <div class="form-group row">
+                    <div class="col-md-12 ">
+                    <div class="form-group files color">
+                    <label>Upload Your File </label>
+                    <input type="file" class="form-control" multiple=""/>
+                            </div>
+                    </div>
+                  </div>
+
+
+                
+              
+
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> </h5>
@@ -475,4 +491,4 @@ function AddDriver({ history, match }) {
   );
 }
 
-export default AddDriver;
+export default UploadShipment;

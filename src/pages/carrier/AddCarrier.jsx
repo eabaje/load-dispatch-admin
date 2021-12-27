@@ -27,8 +27,8 @@ function AddCarrier({ history, match }) {
   const { carrierId } = match.params;
   // const { SubscribeId } = match.params;
   const isAddMode = !carrierId;
-  console.log(`params`, match.params);
-  console.log(`isAddMode`, isAddMode);
+ // console.log(`params`, match.params);
+ // console.log(`isAddMode`, isAddMode);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [user, setUser] = useState({});
@@ -45,24 +45,20 @@ function AddCarrier({ history, match }) {
     carrierState: { error, loading },
   } = useContext(GlobalContext);
 
-  // const getCarrierById = (id) => {
-  //   //  e.preventDefault();
-
-  // return  listCarriersById(id)(carrierDispatch);
-  // };
+ 
 
   function onSubmit(formdata) {
     return isAddMode
       ? CreateCarrier(formdata)
-      : updateCarrier(carrierId, formdata);
+      : updateCarrier(formdata, carrierId);
   }
 
   function CreateCarrier(formdata) {
-    console.log(`form`, formdata);
+  
     formdata.CompanyId = user.CompanyId;
     createCarrier(formdata)(carrierDispatch)((res) => {
-      if (res.message === "Success") {
-        enqueueSnackbar("Created new Carrier successfully", {
+      if (res.message) {
+        enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
@@ -75,25 +71,27 @@ function AddCarrier({ history, match }) {
     }
   }
 
-  function updateCarrier(id, formdata) {
-    editCarrier(formdata)(carrierDispatch)((res) => {
-      if (res.message === "Success") {
-        enqueueSnackbar("Update record successfully", {
+  function updateCarrier(formdata,id ) {
+    editCarrier(formdata,id)(carrierDispatch)((res) => {
+
+ 
+      if (res.message) {
+        enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
     });
   }
 
-  console.log(`carrierUser`, user);
+
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
-      console.log(`object`, fetchData("carrier/findOne", carrierId));
+     // console.log(`object`, fetchData("carrier/findOne", carrierId));
       // listCarriersById(carrierId)(carrierDispatch)()
       fetchData("carrier/findOne", carrierId).then((carrier) => {
-        console.log(`carrier`, carrier);
+       
         const fields = [
           "CarrierType",
           "FleetType",

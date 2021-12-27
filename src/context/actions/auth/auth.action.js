@@ -11,7 +11,7 @@ import axios from "../../../helpers/axiosInstance";
 import Axios from "axios";
 import { API_URL } from "../../../constants";
 
-export const register = (form) => async (dispatch) => {
+export const register = (form) => async (dispatch) =>(onSuccess) =>(onError) => {
   const requestPayload = {
     CompanyId: form.CompanyId || "",
     CarrierName: form.CarrierName || "",
@@ -27,23 +27,26 @@ export const register = (form) => async (dispatch) => {
     PicUrl: form.PicUrl || null,
   };
 
-  dispatch({ type: REGISTER_REQUEST, payload: { requestPayload } });
-  try {
-    const { res } = await axios.post("auth/register", {
-      requestPayload,
-    });
+  dispatch({ type: REGISTER_REQUEST, payload: form });
+ 
+  axios.post("auth/register", form).then((res)=>{
 
-    dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+
+ dispatch({ type: REGISTER_SUCCESS, payload: res.data });
     // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
 
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("user", JSON.stringify(res.data.user));
-  } catch (error) {
-    dispatch({
-      type: REGISTER_FAIL,
-      payload: error.message ? error.message.message : error.message,
-    });
-  }
+
+
+  })
+   
+ .catch((err) => {
+    
+    const message=err.response
+    ? err.response.data.message
+    : { error: "Something went wrong, try agin" }
+  })
 };
 
 export const signin = (form, dispatch) => {
@@ -63,13 +66,13 @@ export const signin = (form, dispatch) => {
     dispatch({
       type: LOGIN_FAIL,
       payload: error.message
-        ? error.message.data
+        ? error.message
         : { error: "Something went wrong, try agin" },
     });
   }
 };
 
-export const signin2 = (form) => (dispatch) => {
+export const signin2 = (form) => (dispatch) =>(onSuccess) => (onError) =>{
   const requestPayload = {
     Email: form.Email,
     Password: form.Password,
@@ -81,19 +84,26 @@ export const signin2 = (form) => (dispatch) => {
   axios
     .post(`auth/signin`, requestPayload)
     .then((res) => {
-      console.log(`res`, res);
+     
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
+      console.log(`res`, res);
+      onSuccess(res.data);
     })
     .catch((err) => {
+    
+ const message=err.response
+ ? err.response.data.message
+ : { error: "Something went wrong, try agin" }
+
       dispatch({
         type: LOGIN_FAIL,
-        payload: err.message
-          ? err.response
-          : { error: "Something went wrong, try agin" },
+        payload:message,
       });
+      console.log(`err`, err)
+      onError(message);
     });
 };
 

@@ -13,6 +13,6 @@ reducer.subscribeReducer = require('./subscribe.reducer.js').default;
 reducer.tripReducer = require('./trip.reducer.js').default;
 reducer.profileReducer = require('./profile.reducer.js').default;
 
-//reducer.insurance = require('./insurance.reducer.js').default;
+reducer.user = require('./user.reducer.js').default;
 
 export default reducer;

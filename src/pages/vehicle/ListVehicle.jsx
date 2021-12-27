@@ -5,6 +5,7 @@ import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
+import { Edit, Trash, User } from "react-feather";
 
 function ListVehicle() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -96,7 +97,7 @@ function ListVehicle() {
                               class="btn btn-sm"
                               title="Edit Carrier Entry"
                             >
-                              <i class="icon-pencil"></i>
+                              <Edit size={12}/>
                             </a>
                           </li>
                           <li>
@@ -105,7 +106,7 @@ function ListVehicle() {
                               class="btn btn-sm"
                               title="Add Vehicle Info"
                             >
-                              <i class="icon-check-sign"></i>
+                               <User size={12}/>
                             </a>
                           </li>
 
@@ -115,7 +116,7 @@ function ListVehicle() {
                               class="btn btn-sm"
                               title="Delete"
                             >
-                              <i class="icon-trash-2"></i>
+                              <Trash size={12}/>
                             </a>
                           </li>
                         </ul>

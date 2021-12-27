@@ -9,21 +9,25 @@ import * as Yup from "yup";
 
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import {
-  createSubscription,
-  editSubscription,
-  listSubscriptionsBySubscriptionId,
-} from "../../context/actions/subscribe/subscribe.action";
+// import {
+//   createSubscription,
+//   editSubscription,
+//   listSubscriptionsBySubscriptionId,
+// } from "../../context/actions/user/user.action";
 import { fetchData } from "../../helpers/query";
 import { Editor } from "draft-js";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import WYSIWYGEditor from "../../components/wysiwyg/wysiwyg";
+import { subcribeUser, updateUserSubscription } from "../../context/actions/user/user.action";
 
-function AddSubscription({ history, match }) {
-  const { subscribeId } = match.params;
-  const isAddMode = !subscribeId;
+function AddUserSubscription({ history, match }) {
+  const { userSubscriptionId } = match.params;
+  const { userId } = match.params;
+  const isAddMode = !userSubscriptionId;
+  const { action } = match.params;
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [user, setUser] = useState({});
@@ -39,24 +43,19 @@ function AddSubscription({ history, match }) {
   } = useForm({ mode: "onChange"});
 
   const {
-    subscribeDispatch,
-    subscribeState: { error, loading },
+    userDispatch,
+    userState: { error, loading },
   } = useContext(GlobalContext);
 
-  const getSubscriptionById = (id) => {
-    //  e.preventDefault();
-
-    return listSubscriptionsBySubscriptionId(id)(subscribeDispatch);
-  };
 
   function onSubmit(formdata) {
     return isAddMode
-      ? createSubscription(formdata)
-      : updateSubscription(subscribeId, formdata);
+      ? createUserSubscription(formdata)
+      : updateUserSubscription(userSubscriptionId, formdata);
   }
 
-  function createSubscription(formdata) {
-    createSubscription(formdata)(subscribeDispatch)((res) => {
+  function createUserSubscription(formdata) {
+    subcribeUser(formdata)(userDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
@@ -65,8 +64,18 @@ function AddSubscription({ history, match }) {
     });
   }
 
-  function updateSubscription(id, formdata) {
-    editSubscription(id,formdata)(subscribeDispatch)((res) => {
+  function upgradeUserSubscription(formdata) {
+    upgradeUserSubscription(formdata)(userDispatch)((res) => {
+      if (res.message) {
+        enqueueSnackbar(res.message, {
+          variant: "success",
+        });
+      }
+    });
+  }
+
+  function updateUserSubscription(id, formdata) {
+    updateUserSubscription(formdata,id)(userDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
@@ -79,8 +88,8 @@ function AddSubscription({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
    
     if (!isAddMode) {
-      fetchData("subscription/findOne", subscribeId).then((subscription) => {
-        console.log(`subscription`, subscribeId);
+      fetchData("subscription/findOne", userSubscriptionId).then((subscription) => {
+        console.log(`subscription`, userSubscriptionId);
         const fields = [
           "SubscriptionType",
           "SubscriptionName",
@@ -101,7 +110,7 @@ function AddSubscription({ history, match }) {
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
-              <h2>Subscription Form</h2>
+              <h2>Add User Subscription Form</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
@@ -249,4 +258,5 @@ function AddSubscription({ history, match }) {
   );
 }
 
-export default AddSubscription;
+export default AddUserSubscription;
+

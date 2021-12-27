@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
 import $ from "jquery";
+import { Edit, Trash, Users } from "react-feather";
 function ListSubscription() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
@@ -92,17 +93,18 @@ function ListSubscription() {
                               title="Edit User Subscription"
                             >
                               {" "}
-                              <i class="icon-pencil"></i>
+                              <Edit size={12}/>
                             </Link>
                           </li>
                           <li>
                             <Link
-                              to={"/list-user-subscription/" + item.SubscribeId}
+                              to={"/list-user-subscription/" + item.SubscriptionType}
                               className="btn btn-sm"
                               title="Get User Subscription"
                             >
                               {" "}
-                              <i class="icon-user"></i>
+                             
+                              <Users size={12}/>
                             </Link>
                           </li>
 
@@ -110,10 +112,10 @@ function ListSubscription() {
                             <Link
                               to={"/delete-data/" + item.SubscribeId}
                               className="btn btn-sm"
-                              title="Edit Carrier Entry"
+                              title="Delete User Subscription"
                             >
                               {" "}
-                              <i class="icon-trash"></i>
+                              <Trash size={12}/>
                             </Link>
                           </li>
                         </ul>
