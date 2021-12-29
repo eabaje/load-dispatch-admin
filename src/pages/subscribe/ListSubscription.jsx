@@ -93,18 +93,17 @@ function ListSubscription() {
                               title="Edit User Subscription"
                             >
                               {" "}
-                              <Edit size={12}/>
+                              <Edit size={12} />
                             </Link>
                           </li>
                           <li>
                             <Link
-                              to={"/list-user-subscription/" + item.SubscriptionType}
+                              to={"/list-user-subscription/" + item.SubscribeId}
                               className="btn btn-sm"
                               title="Get User Subscription"
                             >
                               {" "}
-                             
-                              <Users size={12}/>
+                              <Users size={12} />
                             </Link>
                           </li>
 
@@ -115,7 +114,7 @@ function ListSubscription() {
                               title="Delete User Subscription"
                             >
                               {" "}
-                              <Trash size={12}/>
+                              <Trash size={12} />
                             </Link>
                           </li>
                         </ul>

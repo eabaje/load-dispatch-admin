@@ -11,42 +11,30 @@ import { Edit, Trash, Users } from "react-feather";
 import { fetchDataAll } from "../../helpers/query";
 
 function UserSubscription({ history, match }) {
-    const { userSubscriptionId } = match.params;
-    const isSingleMode = !userSubscriptionId;
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { userSubscriptionId } = match.params;
+  const isSingleMode = !userSubscriptionId;
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
-console.log(`userSubscriptionId`, userSubscriptionId)
-console.log(`isSingleMode`, isSingleMode)
+  console.log(`userSubscriptionId`, userSubscriptionId);
+  console.log(`isSingleMode`, isSingleMode);
   // GET request function to your Mock API
-  
- 
 
-// enqueueSnackbar(getError(err), { variant: "error" });
-  // Calling the function on component mount 
-  
+  // enqueueSnackbar(getError(err), { variant: "error" });
+  // Calling the function on component mount
+
   useEffect(() => {
-  
     setUser(JSON.parse(localStorage.getItem("user")));
 
-   
-
     if (isSingleMode) {
-    
-      fetchDataAll('user/findAllUserSubscriptions');
-       
-        }
-        else
-        {
-          fetchDataAll('user/findAllUserSubscriptions/'+userSubscriptionId);
-         
-         
-            
-        }
-
-   
+      fetchDataAll("user/findAllUserSubscriptions");
+    } else {
+      setData(
+        fetchDataAll("user/findAllUserSubscriptions/" + userSubscriptionId)
+      );
+    }
   }, []);
-
+  console.log(`pageData`, data);
   useEffect(() => {
     setTimeout(() => {
       $(".dataTable").DataTable({
@@ -73,38 +61,39 @@ console.log(`isSingleMode`, isSingleMode)
                 <thead>
                   <tr>
                     <th>SubscriptionName</th>
-                    <th>SubscriptionType</th>
-                    <th>User</th>
-                    
-                    <th>Active</th>
+
+                    {/* <th>User</th> */}
+
+                    {/* <th>Active</th>
                     <th>StartDate</th>
-                    <th>EndDate</th>
+                    <th>EndDate</th> */}
 
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.map((item) => (
-                    <tr key={item.UserSubscriptionId}>
-                     
-                      <td>{item.SubscriptionName}</td>
-                      <td>{item.FullName}</td>
-                      <td>{item.Description}</td>
-                      <td>{item.Duration}</td>
-                      <td>{item.Active}</td>
+                    <tr key={item?.UserSubscriptionId}>
+                      <td>{item?.SubscriptionName}</td>
+                      {/* <td>{item.User.FullName}</td> */}
+
+                      {/* <td>{item.Active}</td>
                       <td>{item.StartDate}</td>
-                      <td>{item.EndDate}</td>
+                      <td>{item.EndDate}</td> */}
 
                       <td>
-                        <ul class="table-controls">
+                        {/* <ul class="table-controls">
                           <li>
                             <Link
-                              to={"/edit-user-subscription/" + item.UserSubscriptionId}
+                              to={
+                                "/edit-user-subscription/" +
+                                item.UserSubscriptionId
+                              }
                               className="btn btn-sm"
                               title="Edit User Subscription"
                             >
                               {" "}
-                              <Edit size={12}/>
+                              <Edit size={12} />
                             </Link>
                           </li>
                           <li>
@@ -114,8 +103,7 @@ console.log(`isSingleMode`, isSingleMode)
                               title="Get User Subscription"
                             >
                               {" "}
-                             
-                              <Users size={12}/>
+                              <Users size={12} />
                             </Link>
                           </li>
 
@@ -126,10 +114,10 @@ console.log(`isSingleMode`, isSingleMode)
                               title="Delete User Subscription"
                             >
                               {" "}
-                              <Trash size={12}/>
+                              <Trash size={12} />
                             </Link>
                           </li>
-                        </ul>
+                        </ul> */}
                       </td>
                     </tr>
                   ))}
@@ -143,5 +131,4 @@ console.log(`isSingleMode`, isSingleMode)
   );
 }
 
-export default UserSubscription
-
+export default UserSubscription;

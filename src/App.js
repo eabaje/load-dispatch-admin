@@ -123,7 +123,7 @@ const App = () => {
               component={AddShipment}
             />
 
-<AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/add-shipment-upload"
               component={UploadShipment}
@@ -212,7 +212,6 @@ const App = () => {
               component={AddSubscription}
             />
 
-list-user-subscription
             <AppLayoutRoute
               exact
               path="/list-subscription"
@@ -223,32 +222,27 @@ list-user-subscription
               exact
               path="/list-user-subscription"
               component={UserSubscription}
-            />    
+            />
 
-              <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/list-user-subscription/:userSubscriptionId"
               component={UserSubscription}
-            />  
+            />
 
-              <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/add-user-subscription/:userSubscriptionId"
               component={AddUserSubscription}
-            />      
+            />
 
+            <AppLayoutRoute exact path="/list-users" component={UserList} />
 
-              <AppLayoutRoute
-              exact
-              path="/list-users"
-              component={UserList}
-            />    
-
-                          <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/list-user/:userId"
               component={UserList}
-            />        
+            />
           </>
         )}
       </Switch>
