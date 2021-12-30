@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -6,11 +6,23 @@ import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
 import { Edit, Trash, User } from "react-feather";
+import DataTable from "react-data-table-component";
+import DataTableExtensions from "react-data-table-component-extensions";
+import Form from "react-bootstrap/Form";
+import "react-data-table-component-extensions/dist/index.css";
+import { listVehicles } from "../../context/actions/vehicle/vehicle.action";
+import { GlobalContext } from "../../context/Provider";
 
 function ListVehicle() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
+
+  const {
+    vehicleDispatch,
+    vehicleState: {getVehicles: error, loading},
+  } = useContext(GlobalContext);
+
 
   // GET request function to your Mock API
   const fetchData = async () => {
@@ -29,9 +41,20 @@ function ListVehicle() {
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchData();
+ 
+    listVehicles()(vehicleDispatch)((result)=>{
+      setData(result);
+
+    })((err)=>{
+      
+      enqueueSnackbar(err, { variant: "error" });
+
+    });
+
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
+
+
   return (
     <div class="row">
       <div class="col-sm-12">

@@ -14,19 +14,27 @@ import {
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
 
-export const listVehicles = () => async (dispatch) => {
+export const listVehicles = () => (dispatch) =>(onSuccess)=>(onError)=> {
   dispatch({
     type: GET_VEHICLES_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/vehicle/findAll/`);
-    dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_VEHICLES_FAIL, payload: error.message });
-  }
+  axios.get(`/vehicle/findAll/`)
+  .then((res)=>{
+
+   dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
+
+  }).catch((error)=>{
+
+  dispatch({ type: GET_VEHICLES_FAIL, payload: error.response.data.message });
+  onError( error.response.data.message);
+
+  }) ;
+ 
+ 
+  
 };
 
-export const listVehiclesByVehicleId = (vehicleId) =>  (dispatch) => (onSuccess)=> {
+export const listVehiclesByVehicleId = (vehicleId) =>  (dispatch) => (onSuccess)=>(onError)=> {
   dispatch({
     type: GET_VEHICLES_REQUEST,
   });
@@ -40,6 +48,7 @@ export const listVehiclesByVehicleId = (vehicleId) =>  (dispatch) => (onSuccess)
   
   . catch ((error) =>{
     dispatch({ type: GET_VEHICLES_FAIL, payload: error.response.data.message });
+    onError( error.response.data.message);
   })
   
 };

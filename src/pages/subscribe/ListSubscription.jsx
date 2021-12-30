@@ -7,122 +7,172 @@ import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
 import $ from "jquery";
-import { Edit, Trash, Users } from "react-feather";
+import { ChevronsDown, Edit, Trash, Users } from "react-feather";
+import { fetchDataAll } from "../../helpers/query";
+import { listUserSubscriptions } from "../../context/actions/user/user.action";
+import { GlobalContext } from "../../context/Provider";
+import DataTable from "react-data-table-component";
+import DataTableExtensions from "react-data-table-component-extensions";
+import Form from "react-bootstrap/Form";
+import "react-data-table-component-extensions/dist/index.css";
 function ListSubscription() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
 
-  // GET request function to your Mock API
-  const fetchData = async () => {
-    // fetch(`${INVENTORY_API_URL}`)
-    //   .then((res) => res.json())
-    //   .then((json) => setData(json));
-    try {
-      const res = await axios.get(`${API_URL}subscription/findAll`);
-      if (res) {
-        console.log("state:", res.data);
-        setData(res.data.data);
-      }
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: "error" });
-    }
-  };
+  
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchData();
+  
+    fetchDataAll("subscription/findAll")((result)=>{
+
+      setData(result);
+
+    })((err)=>{
+
+      enqueueSnackbar(err.message, { variant: "error" });
+
+
+    });
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      $(".dataTable").DataTable({
-        // dom: "rBftlip",
+  
 
-        pageLength: 10,
-      });
-    }, 1000);
-  }, []);
+  const columns = [
+    {
+      id: 1,
+      name: "Subscription Name",
+      selector: (row) => row.SubscriptionName,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 2,
+      name: "Subscription Type",
+       selector: (row) => row.SubscriptionType,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 3,
+      name: "Amount",
+       selector: (row) => row.Amount,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 4,
+      name: "Description",
+       selector: (row) => row.Description,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 5,
+      name: "Active",
+      selector:  (row) => (
+        <Form.Check
+          type="checkbox"
+          id="custom-switch"
+          checked={row.Active}
+          disabled
+        />
+      ),
+      sortable: true,
+      right: true,
+      reorder: true
+    },
+
+    {
+      id: 6,
+      name: "Duration",
+       selector: (row) => row.Duration,
+      sortable: true,
+      reorder: true
+    },
+    {
+      id: 7,
+      name: "Created Date",
+      selector: (row) => (row.createdAt),
+      sortable: true,
+      right: true,
+      reorder: true
+    },
+
+    {
+      id: 8,
+      name: "Updated Date",
+      selector: (row) => (row.updatedAt),
+      sortable: true,
+      right: true,
+      reorder: true
+    },
+
+    {
+      name: "Action",
+      sortable: false,
+      selector: "null",
+      cell: (row) => [
+       <> <Link to= {"/edit-subscription/" + row.SubscribeId}
+        className="btn btn-sm" title="Edit  Subscription"
+        ><Edit size={12} /></Link></>,
+
+        <Link to= {"/list-user-subscription/" + row.SubscribeId }
+        className="btn btn-sm" title="List All Users Subscribed"
+        ><i
+        
+        className="first fas fa-user"
+      ></i></Link>,
+
+      <Link to= {"/delete-data/" + row.SubscribeId}
+      className="btn btn-sm" title="Delete/Archive Redundant/Incorrect data"
+      ><i
+      
+      className="fas fa-trash-alt"
+    ></i></Link>
+        
+      ]
+    }
+
+  ];
+
+  const tableData = {
+    columns,
+    data
+  };
+
   return (
     <div>
       <div class="col-xl-12">
         <div class="card">
-          <div class="card-header ">
+          <div class="card-header alert alert-info">
             <h3>List of Subscription</h3>
-            <ul class="alert alert-info">
+            <ul class="">
               <li>Edit and delete Subscription</li>
               <li>Get an overview of all Subscription</li>
             </ul>
           </div>
           <div class="card-body table-border-style">
             <div class="table-responsive">
-              <table class="table table-striped table-bordered table-hover table-checkable dataTable">
-                <thead>
-                  <tr>
-                    <th>SubscriptionName</th>
-                    <th>SubscriptionType</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Duration</th>
-                    <th>Active</th>
-                    <th>CreatedAt</th>
-                    <th>UpdatedAt</th>
 
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((item) => (
-                    <tr key={item.SubscribeId}>
-                      <td>{item.SubscriptionType}</td>
-                      <td>{item.SubscriptionName}</td>
-                      <td>{item.Amount}</td>
-                      <td>{item.Description}</td>
-                      <td>{item.Duration}</td>
-                      <td>{item.Active}</td>
-                      <td>{item.createdAt}</td>
-                      <td>{item.updatedAt}</td>
+               {/* <DataTableExtensions {...tableData}> */}
+            <DataTableExtensions exportHeaders columns={columns} data={data}>
+                  <DataTable
+                    columns={columns}
+                    data={data}
+                    className="table table-striped table-bordered table-hover table-checkable"
+                     defaultSortField={1}
+                    sortIcon={<ChevronsDown />}
+                    defaultSortAsc={true}
+                    pagination
+                    highlightOnHover
+                   
+                  />
+            </DataTableExtensions>
 
-                      <td>
-                        <ul class="table-controls">
-                          <li>
-                            <Link
-                              to={"/edit-subscription/" + item.SubscribeId}
-                              className="btn btn-sm"
-                              title="Edit User Subscription"
-                            >
-                              {" "}
-                              <Edit size={12} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={"/list-user-subscription/" + item.SubscribeId}
-                              className="btn btn-sm"
-                              title="Get User Subscription"
-                            >
-                              {" "}
-                              <Users size={12} />
-                            </Link>
-                          </li>
-
-                          <li>
-                            <Link
-                              to={"/delete-data/" + item.SubscribeId}
-                              className="btn btn-sm"
-                              title="Delete User Subscription"
-                            >
-                              {" "}
-                              <Trash size={12} />
-                            </Link>
-                          </li>
-                        </ul>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+             
             </div>
           </div>
         </div>

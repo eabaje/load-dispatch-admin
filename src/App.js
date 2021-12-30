@@ -232,7 +232,13 @@ const App = () => {
 
             <AppLayoutRoute
               exact
-              path="/add-user-subscription/:userSubscriptionId"
+              path="/add-user-subscription/:userId"
+              component={AddUserSubscription}
+            />
+
+             <AppLayoutRoute
+              exact
+              path="/edit-user-subscription/:userSubscriptionId/:userId"
               component={AddUserSubscription}
             />
 

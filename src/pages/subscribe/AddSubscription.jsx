@@ -40,7 +40,7 @@ function AddSubscription({ history, match }) {
 
   const {
     subscribeDispatch,
-    subscribeState: { error, loading },
+    subscribeState:{ createSubscribe: error, loading },
   } = useContext(GlobalContext);
 
   const getSubscriptionById = (id) => {
@@ -51,17 +51,22 @@ function AddSubscription({ history, match }) {
 
   function onSubmit(formdata) {
     return isAddMode
-      ? createSubscription(formdata)
+      ? CreateSubscription(formdata)
       : updateSubscription(subscribeId, formdata);
   }
 
-  function createSubscription(formdata) {
+  function CreateSubscription(formdata) {
     createSubscription(formdata)(subscribeDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
+    })((err)=>{
+
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     });
   }
 

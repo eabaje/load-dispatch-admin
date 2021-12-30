@@ -11,6 +11,10 @@ import {
   DELETE_PROFILE_FAIL,
   DELETE_PROFILE_REQUEST,
   DELETE_PROFILE_SUCCESS,
+  GET_USER_SUBSCRIPTION_BY_CRITERIA_REQUEST,
+  GET_USER_SUBSCRIPTIONS_SUCCESS,
+  GET_USER_SUBSCRIPTIONS_FAIL,
+  GET_USER_SUBSCRIPTIONS_REQUEST,
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
 
@@ -184,18 +188,32 @@ export const deleteUser = (userId) => async (dispatch) => {
 
 //Section  User Subscription
 
-export const listUserSubscriptions = () => async (dispatch) => {
+export const listUserSubscriptions = (criteria) => (dispatch) =>(onSuccess) =>(onError)=> {
   dispatch({
-    type: GET_PROFILES_REQUEST,
+    type: GET_USER_SUBSCRIPTIONS_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/user/findAllUserSubscriptions/`);
-    dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (error) {
-    const message =
+  
+    axios.get(`/user/findAllUserSubscriptions/${criteria}`)
+    .then((res)=>{
+
+      dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
+     
+      onSuccess(res.data) 
+      console.log(`res.data`, res.data)
+
+    })
+    .catch((error =>{
+
+     const message =
     error.message && error.response.data.message ? error.response.data.message : error.response.data.message;
-    dispatch({ type: GET_PROFILES_FAIL, payload: message });
-  }
+    dispatch({ type: GET_USER_SUBSCRIPTIONS_FAIL, payload: message });
+    onError(message)
+
+    }))
+    
+    
+   
+    
 };
 
 export const listUserSubscriptionByUserId = (userId) => async (dispatch) => {

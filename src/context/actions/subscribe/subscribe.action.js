@@ -96,7 +96,7 @@ export const createSubscription1 = (form) => async (dispatch) => {
   }
 };
 
-export const createSubscription = (form) => (dispatch) => (onSuccess) => {
+export const createSubscription = (form) => (dispatch) => (onSuccess) =>(onError)=> {
   const requestPayload = {
     SubscriptionType: form.SubscriptionType || "",
     SubscriptionName: form.SubscriptionName || "",
@@ -120,16 +120,18 @@ export const createSubscription = (form) => (dispatch) => (onSuccess) => {
       onSuccess(res.data);
     })
     .catch((err) => {
+      const msg=err.response.data.message
+      ? err.response.data.message
+      : { error: "Something went wrong, try again" };
       dispatch({
         type: CREATE_SUBSCRIBE_FAIL,
-        payload: err.message
-          ? err.response.data
-          : { error: "Something went wrong, try again" },
+        payload:msg,
       });
+      onError(msg)
     });
 };
 
-export const editSubscription = (subscriptionId, form) =>  (dispatch) => (onSuccess) => { 
+export const editSubscription = (subscriptionId, form) =>  (dispatch) => (onSuccess) => (onError)=>{ 
   // const requestPayload = {
   //   SubscriptionId: subscriptionId || form.SubscriptionType || "",
   //   SubscriptionType: form.SubscriptionType || "",
@@ -142,7 +144,7 @@ export const editSubscription = (subscriptionId, form) =>  (dispatch) => (onSucc
   dispatch({ type: EDIT_SUBSCRIBE_REQUEST });
 
  
-    const { res } =  axios.put(
+    axios.put(
       `/subscription/update/${subscriptionId}`,
       form
     ).then((res) => {
@@ -155,9 +157,11 @@ export const editSubscription = (subscriptionId, form) =>  (dispatch) => (onSucc
     })
    .catch((error) => {
     const message =
-      error.message && error.message ? error.message : error.message;
+      error.response.message && error.response.data.message ? error.response.data.message : { error: "Something went wrong, try again" };
     dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
+    onError(message)
   })
+
 };
 
 export const deleteSubscription = (subscriptionId) => async (dispatch) => {

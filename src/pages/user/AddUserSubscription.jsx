@@ -14,7 +14,7 @@ import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 //   editSubscription,
 //   listSubscriptionsBySubscriptionId,
 // } from "../../context/actions/user/user.action";
-import { fetchData } from "../../helpers/query";
+import { fetchData, fetchDataAll } from "../../helpers/query";
 import { Editor } from "draft-js";
 
 import ReactQuill from "react-quill";
@@ -31,7 +31,9 @@ function AddUserSubscription({ history, match }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [user, setUser] = useState({});
+  const [subscribeUser, setSubscribeUser] = useState({});
   const [data, setData] = useState([]);
+  const [subscriptionType, setsubscriptionType] = useState([]);
 
   const {
     register,
@@ -43,8 +45,8 @@ function AddUserSubscription({ history, match }) {
   } = useForm({ mode: "onChange"});
 
   const {
-    userDispatch,
-    userState: { error, loading },
+    userDispatch
+    // ,userState: { error, loading },
   } = useContext(GlobalContext);
 
 
@@ -88,21 +90,52 @@ function AddUserSubscription({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
    
     if (!isAddMode) {
-      fetchData("subscription/findOne", userSubscriptionId).then((subscription) => {
-        console.log(`subscription`, userSubscriptionId);
-        const fields = [
-          "SubscriptionType",
-          "SubscriptionName",
-          "Amount",
-          "Description",
+      // fetchData("subscription/findOne", userSubscriptionId)((subscription) => {
+      
+      //   const fields = [
+      //     "SubscriptionType",
+      //     "SubscriptionName",
+      //     "Amount",
+      //     "Description",
+      //     "Active",
+      //     "Duration",
+      //   ];
+      //   fields.forEach((field) => setValue(field, subscription[field]));
+      // });
+
+      fetchDataAll("subscription/findAll")((subscription) => {
+        setsubscriptionType(subscription)
+      
+      })((error)=>{
+        enqueueSnackbar(error.message, {
+          variant: "error",
+        });
+      })
+
+      fetchData("user/findUserSubscription",userId)((userSubscription) => {
+        setSubscribeUser(userSubscription)
+      
+
+          const fields = [
+          "SubscribeId",
+          
+         "StartDate",
           "Active",
-          "Duration",
+          "EndDate",
         ];
-        fields.forEach((field) => setValue(field, subscription[field]));
-      });
+        fields.forEach((field) => setValue(field, userSubscription[field]));
+      
+      
+      })((error)=>{
+        enqueueSnackbar(error.message, {
+          variant: "error",
+        });
+      })
+
+
     }
   }, []);
-
+  console.log(`subscribeUser`, subscribeUser)
   
   return (
     <>
@@ -128,26 +161,37 @@ function AddUserSubscription({ history, match }) {
                     </label>
 
                     <div class="col-sm-4">
-                      <input
+                     
+
+                        <select
+                        id="SubscriptionType"
                         name="SubscriptionType"
                         class="form-control"
-                        placeholder="Subscription Type "
                         {...register("SubscriptionType", {
                           required: true,
                         })}
                         required
-                      />
+                      >
+                        <option selected>Select Subscription Type</option>
+
+                        {subscriptionType.map((item) => (
+                          <option key={item.SubscribeId}  selected={subscribeUser.SubscribeId === item.SubscribeId} value={item.SubscribeId}>
+                            {item.SubscriptionType}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <label class="col-sm-2 col-form-label">
-                      Subscription Name
+                      Full Name
                     </label>
 
                     <div class="col-sm-4">
                       <input
-                        name="SubscriptionName"
+                        name="FullName"
                         class="form-control"
-                        placeholder="Subscription Name"
-                        {...register("SubscriptionName", {
+                          value={subscribeUser.User.FullName}
+                        placeholder="User Name"
+                        {...register("FullName", {
                           required: true,
                         })}
                         required
@@ -156,26 +200,26 @@ function AddUserSubscription({ history, match }) {
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Amount</label>
+                    <label class="col-sm-2 col-form-label">Start Date</label>
                     <div class="col-sm-2">
                       <input
-                        name="Amount"
-                        type="number"
+                        name="StartDate"
+                        type="text"
                         class="form-control"
-                        placeholder="Amount"
-                        {...register("Amount")}
+                        placeholder="Start Date"
+                        {...register("StartDate")}
                         required
                       />
                     </div>
 
-                    <label class="col-sm-2 col-form-label">Duration</label>
+                    <label class="col-sm-2 col-form-label">End Date</label>
                     <div class="col-sm-2">
                       <input
-                        name="Duration"
-                        type="number"
+                        name="EndDate"
+                        type="text"
                         class="form-control"
-                        placeholder="Duration"
-                        {...register("Duration")}
+                        placeholder="End Date"
+                        {...register("EndDate")}
                         required
                       />
                     </div>
@@ -195,23 +239,7 @@ function AddUserSubscription({ history, match }) {
                     </div>
                   </div>
 
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Description</label>
-                    <div class="col-md-10">
-                    {/* <Controller
-                        as={<WYSIWYGEditor />}
-                        name="editor_content"
-                        control={control}
-                      /> */}
-                      <input
-                        name="Description"
-                        class="form-control"
-                        placeholder="Description"
-                        {...register("Description")}
-                      />
-                    </div>
-                  </div>
-
+              
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> </h5>
