@@ -1,8 +1,15 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-
 export const columns = [
+  {
+    id: 5,
+    name: "FullName",
+    selector: (row) => row.FullName,
+    sortable: true,
+    reorder: true,
+  },
+
   {
     id: 1,
     name: "Company",
@@ -12,15 +19,15 @@ export const columns = [
   },
   {
     id: 2,
-    name: "Driver Name",
-    selector: (row) => row.DriverName,
+    name: "Contact Email",
+    selector: (row) => row.Email,
     sortable: true,
     reorder: true,
   },
   {
     id: 3,
-    name: "Vehicle Number",
-    selector: (row) => row.VehicleNumber,
+    name: "Contact Phone",
+    selector: (row) => row.Phone,
     sortable: true,
     reorder: true,
   },
@@ -34,43 +41,27 @@ export const columns = [
 
   {
     id: 5,
-    name: "City",
-    selector: (row) => row.City,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 6,
-    name: "Country",
-    selector: (row) => row.Country,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 7,
-    name: "Phone",
-    selector: (row) => row.Phone,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 8,
-    name: "Email",
-    selector: (row) => row.Email,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 9,
-    name: "Licensed?",
+    name: "IsActivated?",
     selector: (row) => (
       <Form.Check
         type="checkbox"
         id="custom-switch"
-        checked={row.Licensed}
+        checked={row.IsActivated}
+        disabled
+      />
+    ),
+    sortable: true,
+    right: true,
+    reorder: true,
+  },
+  {
+    id: 5,
+    name: "AcceptTerms?",
+    selector: (row) => (
+      <Form.Check
+        type="checkbox"
+        id="custom-switch"
+        checked={row.AcceptTerms}
         disabled
       />
     ),
@@ -81,43 +72,43 @@ export const columns = [
 
   {
     id: 10,
-    name: "PicUrl",
-    selector: (row) => row.PicUrl,
+    name: "Country",
+    selector: (row) => row.Country,
     sortable: true,
     reorder: true,
   },
-  {
-    id: 10,
-    name: "License Url",
-    selector: (row) => row.LicenseUrl,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 10,
-    name: "Rating",
-    selector: (row) => row.Rating,
-    sortable: true,
-    reorder: true,
-  },
-
   {
     id: 11,
-    name: "Driver Docs",
-    selector: (row) => row.DriverDocs,
+    name: "Region",
+    selector: (row) => row.Region,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 5,
+    name: "Payment Method",
+    selector: (row) => row.PaymentMethod,
     sortable: true,
     reorder: true,
   },
 
   {
     id: 12,
+    name: "Role",
+    selector: (row) => row.Company.CompanyType,
+    sortable: true,
+    right: true,
+    reorder: true,
+  },
+
+  {
+    id: 14,
     name: "Created Date",
     selector: (row) => row.createdAt,
     sortable: true,
     right: true,
     reorder: true,
   },
-
   {
     id: 13,
     name: "Updated Date",
@@ -135,24 +126,24 @@ export const columns = [
       <>
         {" "}
         <Link
-          to={"/edit-driver-info/" + row.DriverId}
+          to={"/edit-user-info/" + row.UserId}
           className="btn btn-sm"
-          title="Edit  Driver Info"
+          title="Edit  User Info"
         >
           <Edit size={12} />
         </Link>
       </>,
 
       <Link
-        to={"/assign-driver-to-vehicle/" + row.DriverId}
+        to={"/list-company-info/" + row.UserId}
         className="btn btn-sm"
-        title="Assign driver to vehicle"
+        title="List Company Info"
       >
-        <i className="first fas fa-car"></i>
+        <i className="first fas fa-cog"></i>
       </Link>,
 
       <Link
-        to={"/delete-data/" + row.DriverId}
+        to={"/delete-data/" + row.CarrierId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

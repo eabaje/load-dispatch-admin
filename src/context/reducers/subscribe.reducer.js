@@ -110,9 +110,8 @@ const subscribe = (state, { type, payload }) => {
         },
       };
     case CREATE_SUBSCRIBE_SUCCESS:
+      console.log(`payload`, payload);
 
-      console.log(`payload`, payload)
-      
       return {
         ...state,
         createSubscribe: {
@@ -127,16 +126,6 @@ const subscribe = (state, { type, payload }) => {
           loading: false,
           data: [payload, ...state.getSubscribes.data],
           error: null,
-        },
-      };
-
-    case CREATE_SUBSCRIBE_FAIL:
-      return {
-        ...state,
-        createSubscribe: {
-          ...state.createSubscribe,
-          loading: false,
-          error: payload,
         },
       };
 

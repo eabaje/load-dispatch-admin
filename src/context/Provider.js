@@ -1,6 +1,6 @@
-import React, { createContext, useReducer } from 'react';
-import InitialState from './initialStates/index.state';
-import reducer from './reducers/index.reducer';
+import React, { createContext, useReducer } from "react";
+import InitialState from "./initialStates/index.state";
+import reducer from "./reducers/index.reducer";
 
 export const GlobalContext = createContext({});
 
@@ -36,16 +36,40 @@ const {
 
 const GlobalProvider = ({ children }) => {
   const [authState, authDispatch] = useReducer(authReducer, authInitial);
-  const [assignState, assignDispatch] = useReducer(assignReducer, assignInitial);
-  const [carrierState, carrierDispatch] = useReducer(carrierReducer, carrierInitial);
-  const [driverState, driverDispatch] = useReducer(driverReducer, driverInitial);
+  const [assignState, assignDispatch] = useReducer(
+    assignReducer,
+    assignInitial
+  );
+  const [carrierState, carrierDispatch] = useReducer(
+    carrierReducer,
+    carrierInitial
+  );
+  const [driverState, driverDispatch] = useReducer(
+    driverReducer,
+    driverInitial
+  );
   const [orderState, orderDispatch] = useReducer(orderReducer, orderInitial);
-  const [paymentState, paymentDispatch] = useReducer(paymentReducer, paymentInitial);
-  const [profileState, profileDispatch] = useReducer(profileReducer, profileInitial);
-  const [shipmentState, shipmentDispatch] = useReducer(shipmentReducer, shipmentInitial);
-  const [subscribeState, subscribeDispatch] = useReducer(subscribeReducer, subscribeInitial);
+  const [paymentState, paymentDispatch] = useReducer(
+    paymentReducer,
+    paymentInitial
+  );
+  const [profileState, profileDispatch] = useReducer(
+    profileReducer,
+    profileInitial
+  );
+  const [shipmentState, shipmentDispatch] = useReducer(
+    shipmentReducer,
+    shipmentInitial
+  );
+  const [subscribeState, subscribeDispatch] = useReducer(
+    subscribeReducer,
+    subscribeInitial
+  );
   const [tripState, tripDispatch] = useReducer(tripReducer, tripInitial);
-  const [vehicleState, vehicleDispatch] = useReducer(vehicleReducer, vehicleInitial);
+  const [vehicleState, vehicleDispatch] = useReducer(
+    vehicleReducer,
+    vehicleInitial
+  );
   const [userState, userDispatch] = useReducer(userReducer, userInitial);
 
   return (
@@ -62,6 +86,7 @@ const GlobalProvider = ({ children }) => {
         subscribeState,
         tripState,
         vehicleState,
+        userState,
         authDispatch,
         assignDispatch,
         carrierDispatch,
@@ -73,6 +98,7 @@ const GlobalProvider = ({ children }) => {
         subscribeDispatch,
         tripDispatch,
         vehicleDispatch,
+        userDispatch,
       }}
     >
       {children}

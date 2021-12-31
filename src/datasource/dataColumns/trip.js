@@ -1,116 +1,119 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-
 export const columns = [
   {
     id: 1,
-    name: "Company",
-    selector: (row) => row.Company.CompanyName,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 2,
     name: "Driver Name",
     selector: (row) => row.DriverName,
     sortable: true,
     reorder: true,
   },
   {
+    id: 2,
+    name: "Company",
+    selector: (row) => row.Company.CompanyName,
+    sortable: true,
+    reorder: true,
+  },
+  {
     id: 3,
-    name: "Vehicle Number",
-    selector: (row) => row.VehicleNumber,
+    name: "Shipment Reference",
+    selector: (row) => row.ShipmentId,
     sortable: true,
     reorder: true,
   },
   {
     id: 4,
-    name: "Address",
-    selector: (row) => row.Address,
+    name: "Vehicle Id",
+    selector: (row) => row.VehicleId,
     sortable: true,
     reorder: true,
   },
 
   {
     id: 5,
-    name: "City",
-    selector: (row) => row.City,
+    name: "Driver Note",
+    selector: (row) => row.DriverNote,
     sortable: true,
     reorder: true,
   },
 
   {
     id: 6,
-    name: "Country",
-    selector: (row) => row.Country,
+    name: "Pick Up Region",
+    selector: (row) => row.PickUpRegion,
     sortable: true,
     reorder: true,
   },
 
   {
     id: 7,
-    name: "Phone",
-    selector: (row) => row.Phone,
+    name: "Pick Up Location",
+    selector: (row) => row.PickUpLocation,
     sortable: true,
     reorder: true,
   },
-
   {
     id: 8,
-    name: "Email",
-    selector: (row) => row.Email,
+    name: "Pick Up Country",
+    selector: (row) => row.PickUpCountry,
     sortable: true,
     reorder: true,
   },
   {
     id: 9,
-    name: "Licensed?",
-    selector: (row) => (
-      <Form.Check
-        type="checkbox"
-        id="custom-switch"
-        checked={row.Licensed}
-        disabled
-      />
-    ),
-    sortable: true,
-    right: true,
-    reorder: true,
-  },
-
-  {
-    id: 10,
-    name: "PicUrl",
-    selector: (row) => row.PicUrl,
+    name: "Delivery Region",
+    selector: (row) => row.DeliveryRegion,
     sortable: true,
     reorder: true,
   },
   {
     id: 10,
-    name: "License Url",
-    selector: (row) => row.LicenseUrl,
+    name: "Delivery Country",
+    selector: (row) => row.DeliveryCountry,
     sortable: true,
     reorder: true,
   },
-  {
-    id: 10,
-    name: "Rating",
-    selector: (row) => row.Rating,
-    sortable: true,
-    reorder: true,
-  },
-
   {
     id: 11,
-    name: "Driver Docs",
-    selector: (row) => row.DriverDocs,
+    name: "Delivery Location",
+    selector: (row) => row.DeliveryLocation,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 12,
+    name: "Expected PickUpDate",
+    selector: (row) => row.ExpectedPickUpDate,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 13,
+    name: "Expected Delivery Date",
+    selector: (row) => row.ExpectedDeliveryDate,
     sortable: true,
     reorder: true,
   },
 
   {
-    id: 12,
+    id: 14,
+    name: "Trip Duration",
+    selector: (row) => row.Duration,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 15,
+    name: "Driver Note",
+    selector: (row) => row.DriverNote,
+    sortable: true,
+    reorder: true,
+  },
+
+  {
+    id: 16,
     name: "Created Date",
     selector: (row) => row.createdAt,
     sortable: true,
@@ -119,7 +122,7 @@ export const columns = [
   },
 
   {
-    id: 13,
+    id: 17,
     name: "Updated Date",
     selector: (row) => row.updatedAt,
     sortable: true,
@@ -135,24 +138,24 @@ export const columns = [
       <>
         {" "}
         <Link
-          to={"/edit-driver-info/" + row.DriverId}
+          to={"/edit-trip-info/" + row.TripId}
           className="btn btn-sm"
-          title="Edit  Driver Info"
+          title="Edit  Subscription"
         >
           <Edit size={12} />
         </Link>
       </>,
 
       <Link
-        to={"/assign-driver-to-vehicle/" + row.DriverId}
+        to={"/track-trip/" + row.TripId}
         className="btn btn-sm"
-        title="Assign driver to vehicle"
+        title="Track Trip"
       >
-        <i className="first fas fa-car"></i>
+        <i className="first fas fa-truck-moving"></i>
       </Link>,
 
       <Link
-        to={"/delete-data/" + row.DriverId}
+        to={"/delete-data/" + row.VehicleId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

@@ -10,6 +10,8 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
+import { columns } from "../../datasource/dataColumns/trip";
+import { ChevronsDown } from "react-feather";
 function ListTrip() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
@@ -59,67 +61,19 @@ function ListTrip() {
           </div>
           <div class="card-body table-border-style">
             <div class="table-responsive">
-              <table class="table table-striped datatable">
-                <thead>
-                  <tr>
-                    <th>UserId</th>
-                    <th>CompanyId</th>
-                    <th>LoadCategory</th>
-                    <th>LoadType</th>
-                    <th>LoadWeight</th>
-                    <th>LoadUnit</th>
-                    <th>Qty</th>
-                    <th>Description</th>
-                    <th>PickUpRegion</th>
-                    <th>PickUpLocation</th>
-                    <th>DeliveryCountry</th>
-                    <th>DeliveryRegion</th>
-                    <th>DeliveryLocation</th>
-                    <th>ExpectedPickUpDate</th>
-                    <th>ExpectedDeliveryDate</th>
-                    <th>RequestForShipment</th>
-                    <th>ShipmentRequestPrice</th>
-                    <th>DeliveryContactName)</th>
-                    <th>DeliveryContactPhone</th>
-                    <th>DeliveryEmail</th>
-                    <th>AssignedShipment</th>
-                    <th>ShipmentDate</th>
-                    <th>ShipmentDocs</th>
-                    <th>ShipmentStatus</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((item) => (
-                    <tr key={item.ShipmentId}>
-                      <td>{item.UserId}</td>
-                      <td>{item.CompanyId}</td>
-                      <td>{item.LoadCategory}</td>
-                      <td>{item.LoadType}</td>
-                      <td>{item.LoadWeight}</td>
-                      <td>{item.LoadUnit}</td>
-                      <td>{item.Qty}</td>
-                      <td>{item.Description}</td>
-                      <td>{item.PickUpRegion}</td>
-                      <td>{item.PickUpLocation}</td>
-                      <td>{item.DeliveryCountry}</td>
-                      <td>{item.DeliveryRegion}</td>
-                      <td>{item.DeliveryLocation}</td>
-                      <td>{item.ExpectedPickUpDate}</td>
-                      <td>{item.ExpectedDeliveryDate}</td>
-                      <td>{item.RequestForShipment}</td>
-                      <td>{item.ShipmentRequestPrice}</td>
-                      <td>{item.DeliveryContactName}</td>
-                      <td>{item.DeliveryContactPhone}</td>
-                      <td>{item.DeliveryEmail}</td>
-                      <td>{item.AssignedShipment}</td>
-                      <td>{item.ShipmentDate}</td>
-                      <td>{item.ShipmentDocs}</td>
-                      <td>{item.ShipmentStatus}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {/* <DataTableExtensions {...tableData}> */}
+              <DataTableExtensions exportHeaders columns={columns} data={data}>
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  className="table table-striped table-bordered table-hover table-checkable"
+                  defaultSortField={1}
+                  sortIcon={<ChevronsDown />}
+                  defaultSortAsc={true}
+                  pagination
+                  highlightOnHover
+                />
+              </DataTableExtensions>
             </div>
           </div>
         </div>

@@ -125,16 +125,6 @@ const contacts = (state, { type, payload }) => {
         },
       };
 
-    case CREATE_CONTACT_FAIL:
-      return {
-        ...state,
-        createContact: {
-          ...state.createContact,
-          loading: false,
-          error: payload,
-        },
-      };
-
     case GET_CONTACTS_REQUEST:
       return {
         ...state,

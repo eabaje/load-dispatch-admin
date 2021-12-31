@@ -1,26 +1,33 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-
 export const columns = [
+  {
+    id: 5,
+    name: "Company Type",
+    selector: (row) => row.CompanyType,
+    sortable: true,
+    reorder: true,
+  },
+
   {
     id: 1,
     name: "Company",
-    selector: (row) => row.Company.CompanyName,
+    selector: (row) => row.CompanyName,
     sortable: true,
     reorder: true,
   },
   {
     id: 2,
-    name: "Driver Name",
-    selector: (row) => row.DriverName,
+    name: "Contact Email",
+    selector: (row) => row.ContactEmail,
     sortable: true,
     reorder: true,
   },
   {
     id: 3,
-    name: "Vehicle Number",
-    selector: (row) => row.VehicleNumber,
+    name: "Contact Phone",
+    selector: (row) => row.ContactPhone,
     sortable: true,
     reorder: true,
   },
@@ -34,37 +41,6 @@ export const columns = [
 
   {
     id: 5,
-    name: "City",
-    selector: (row) => row.City,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 6,
-    name: "Country",
-    selector: (row) => row.Country,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 7,
-    name: "Phone",
-    selector: (row) => row.Phone,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 8,
-    name: "Email",
-    selector: (row) => row.Email,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 9,
     name: "Licensed?",
     selector: (row) => (
       <Form.Check
@@ -81,30 +57,22 @@ export const columns = [
 
   {
     id: 10,
-    name: "PicUrl",
-    selector: (row) => row.PicUrl,
+    name: "Country",
+    selector: (row) => row.Country,
     sortable: true,
     reorder: true,
   },
-  {
-    id: 10,
-    name: "License Url",
-    selector: (row) => row.LicenseUrl,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 10,
-    name: "Rating",
-    selector: (row) => row.Rating,
-    sortable: true,
-    reorder: true,
-  },
-
   {
     id: 11,
-    name: "Driver Docs",
-    selector: (row) => row.DriverDocs,
+    name: "Region",
+    selector: (row) => row.Region,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 5,
+    name: "Company Type",
+    selector: (row) => row.CompanyType,
     sortable: true,
     reorder: true,
   },
@@ -135,24 +103,24 @@ export const columns = [
       <>
         {" "}
         <Link
-          to={"/edit-driver-info/" + row.DriverId}
+          to={"/edit-company-info/" + row.CompanyId}
           className="btn btn-sm"
-          title="Edit  Driver Info"
+          title="Edit  Subscription"
         >
           <Edit size={12} />
         </Link>
       </>,
 
       <Link
-        to={"/assign-driver-to-vehicle/" + row.DriverId}
+        to={"/add-vehicle-to-carrier/" + row.CarrierId}
         className="btn btn-sm"
-        title="Assign driver to vehicle"
+        title="Assign Driver to Vehicle"
       >
-        <i className="first fas fa-car"></i>
+        <i className="first fas fa-user"></i>
       </Link>,
 
       <Link
-        to={"/delete-data/" + row.DriverId}
+        to={"/delete-data/" + row.CarrierId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

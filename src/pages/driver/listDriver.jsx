@@ -9,6 +9,8 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
+import { columns } from "../../datasource/dataColumns/driver";
+import { ChevronsDown } from "react-feather";
 
 function ListDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -36,6 +38,11 @@ function ListDriver() {
     console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
+
+  const tableData = {
+    columns,
+    data,
+  };
   return (
     <>
       <div class="row">
@@ -53,63 +60,23 @@ function ListDriver() {
             </div>
             <div class="card-body table-border-style">
               <div class="table-responsive">
-                <table class="table table-striped ">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>DriverName</th>
-
-                      <th>Address</th>
-                      <th>City</th>
-                      {/* <th>Region</th> */}
-                      <th>Country</th>
-                      <th>Phone</th>
-                      <th>Email</th>
-                      <th>PicUrl</th>
-                      <th>Licensed</th>
-                      <th>LicenseUrl</th>
-                      <th>Rating</th>
-                      <th>DriverDocs</th>
-
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((item) => (
-                      <tr key={item.DriverId}>
-                        <td>{item.CompanyId}</td>
-                        <td>{item.DriverName}</td>
-
-                        <td>{item.Address}</td>
-                        <td>{item.City}</td>
-                        {/* <td>{item.Region}</td> */}
-
-                        <td>{item.Country}</td>
-                        <td>{item.Phone}</td>
-                        <td>{item.Email}</td>
-                        <td>{item.PicUrl}</td>
-                        <td>{item.Licensed}</td>
-                        <td>{item.LicenseUrl}</td>
-                        <td>{item.Rating}</td>
-                        <td>{item.DriverDocs}</td>
-
-                        <td>
-                          <a href="./EditDriver/{item.DriverId}">
-                            Edit Driver Details
-                          </a>{" "}
-                          |
-                          <a href="./Details/{item.DriverId}">
-                            Assign Vehicle to Driver Details
-                          </a>{" "}
-                          |
-                          <a href="./DeleteDriver/{item.DriverId}">
-                            Delete Record
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {/* <DataTableExtensions {...tableData}> */}
+                <DataTableExtensions
+                  exportHeaders
+                  columns={columns}
+                  data={data}
+                >
+                  <DataTable
+                    columns={columns}
+                    data={data}
+                    className="table table-striped table-bordered table-hover table-checkable"
+                    defaultSortField={1}
+                    sortIcon={<ChevronsDown />}
+                    defaultSortAsc={true}
+                    pagination
+                    highlightOnHover
+                  />
+                </DataTableExtensions>
               </div>
             </div>
           </div>

@@ -32,8 +32,8 @@ function TopHeaderBar() {
   };
   React.useEffect(() => {
     getUser();
-  }, [isLoggedIn]);
- // console.log(`User`, user);
+  }, []);
+  // console.log(`User`, user);
   const LogOut = () => {
     signout()(authDispatch);
   };

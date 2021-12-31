@@ -14,16 +14,26 @@ import {
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
 
-export const listSubscriptions = () => async (dispatch) => {
+export const listSubscriptions = () => (dispatch) => {
+  //  => (onSuccess) => (onError)
   dispatch({
     type: GET_SUBSCRIBES_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/subscription/findAll/`);
-    dispatch({ type: GET_SUBSCRIBES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_SUBSCRIBES_FAIL, payload: error.message });
-  }
+  //  console.log(`GET_SUBSCRIBES_REQUEST`, GET_SUBSCRIBES_REQUEST);
+  axios
+    .get(`/subscription/findAll/`)
+    .then((res) => {
+      dispatch({ type: GET_SUBSCRIBES_SUCCESS, payload: res.data });
+      // onSuccess(res.data);
+      console.log(`res.data`, res.data);
+    })
+    .catch((error) => {
+      const message = error.response
+        ? error.response.data
+        : { error: "Something went wrong, try again" };
+      dispatch({ type: GET_SUBSCRIBES_FAIL, payload: message });
+      //  onError(message);
+    });
 };
 
 export const listSubscriptionsBySubscriptionId =
@@ -96,73 +106,74 @@ export const createSubscription1 = (form) => async (dispatch) => {
   }
 };
 
-export const createSubscription = (form) => (dispatch) => (onSuccess) =>(onError)=> {
-  const requestPayload = {
-    SubscriptionType: form.SubscriptionType || "",
-    SubscriptionName: form.SubscriptionName || "",
-    Amount: form.Amount || "",
-    Description: form.Description || "",
-    Duration: form.Duration || null,
+export const createSubscription =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      SubscriptionType: form.SubscriptionType || "",
+      SubscriptionName: form.SubscriptionName || "",
+      Amount: form.Amount || "",
+      Description: form.Description || "",
+      Duration: form.Duration || null,
+    };
+
+    dispatch({
+      type: CREATE_SUBSCRIBE_REQUEST,
+    });
+
+    axios
+      .post("/subscription/create", form)
+      .then((res) => {
+        dispatch({
+          type: CREATE_SUBSCRIBE_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((error) => {
+        const message = error.response.data.message
+          ? error.response.data.message
+          : { error: "Something went wrong, try again" };
+        dispatch({
+          type: CREATE_SUBSCRIBE_FAIL,
+          payload: message,
+        });
+        onError(message);
+      });
   };
 
-  dispatch({
-    type: CREATE_SUBSCRIBE_REQUEST,
-  });
+export const editSubscription =
+  (subscriptionId, form) => (dispatch) => (onSuccess) => (onError) => {
+    // const requestPayload = {
+    //   SubscriptionId: subscriptionId || form.SubscriptionType || "",
+    //   SubscriptionType: form.SubscriptionType || "",
+    //   SubscriptionName: form.SubscriptionName || "",
+    //   Amount: form.Amount || "",
+    //   Description: form.Description || "",
+    //   Duration: form.Duration || null,
+    // };
 
-  axios
-    .post("/subscription/create", form)
-    .then((res) => {
-      dispatch({
-        type: CREATE_SUBSCRIBE_SUCCESS,
-        payload: res.data,
+    dispatch({ type: EDIT_SUBSCRIBE_REQUEST });
+
+    axios
+      .put(`/subscription/update/${subscriptionId}`, form)
+      .then((res) => {
+        console.log(`response`, res.data);
+        dispatch({
+          type: EDIT_SUBSCRIBE_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+      .catch((error) => {
+        const message =
+          error.response.message && error.response.data.message
+            ? error.response.data.message
+            : { error: "Something went wrong, try again" };
+        dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
+        onError(message);
       });
-
-      onSuccess(res.data);
-    })
-    .catch((err) => {
-      const msg=err.response.data.message
-      ? err.response.data.message
-      : { error: "Something went wrong, try again" };
-      dispatch({
-        type: CREATE_SUBSCRIBE_FAIL,
-        payload:msg,
-      });
-      onError(msg)
-    });
-};
-
-export const editSubscription = (subscriptionId, form) =>  (dispatch) => (onSuccess) => (onError)=>{ 
-  // const requestPayload = {
-  //   SubscriptionId: subscriptionId || form.SubscriptionType || "",
-  //   SubscriptionType: form.SubscriptionType || "",
-  //   SubscriptionName: form.SubscriptionName || "",
-  //   Amount: form.Amount || "",
-  //   Description: form.Description || "",
-  //   Duration: form.Duration || null,
-  // };
-
-  dispatch({ type: EDIT_SUBSCRIBE_REQUEST });
-
- 
-    axios.put(
-      `/subscription/update/${subscriptionId}`,
-      form
-    ).then((res) => {
-   console.log(`response`, res.data)
-    dispatch({
-      type: EDIT_SUBSCRIBE_SUCCESS,
-      payload: res.data,
-    });
-    onSuccess(res.data);
-    })
-   .catch((error) => {
-    const message =
-      error.response.message && error.response.data.message ? error.response.data.message : { error: "Something went wrong, try again" };
-    dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
-    onError(message)
-  })
-
-};
+  };
 
 export const deleteSubscription = (subscriptionId) => async (dispatch) => {
   dispatch({ type: DELETE_SUBSCRIBE_REQUEST });

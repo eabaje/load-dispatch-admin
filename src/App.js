@@ -44,7 +44,7 @@ const App = () => {
   const {
     authState: { user, isLoggedIn },
   } = useContext(GlobalContext);
-  console.log(`isLoggedIn`, isLoggedIn);
+  // console.log(`isLoggedIn`, isLoggedIn);
   // const getUser = () => {
   //   try {
   //     console.log(`users`, user);
@@ -236,7 +236,7 @@ const App = () => {
               component={AddUserSubscription}
             />
 
-             <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/edit-user-subscription/:userSubscriptionId/:userId"
               component={AddUserSubscription}

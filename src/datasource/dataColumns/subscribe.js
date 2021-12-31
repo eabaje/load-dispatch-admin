@@ -4,72 +4,40 @@ import { Link } from "react-router-dom";
 export const columns = [
   {
     id: 1,
-    name: "Carrier Name",
-    selector: (row) => row.CarrierId,
+    name: "Subscription Name",
+    selector: (row) => row.SubscriptionName,
     sortable: true,
     reorder: true,
   },
   {
     id: 2,
-    name: "Vehicle Type",
-    selector: (row) => row.VehicleType,
+    name: "Subscription Type",
+    selector: (row) => row.SubscriptionType,
     sortable: true,
     reorder: true,
   },
   {
     id: 3,
-    name: "Vehicle Number",
-    selector: (row) => row.VehicleNumber,
+    name: "Amount",
+    selector: (row) => row.Amount,
     sortable: true,
     reorder: true,
   },
   {
     id: 4,
-    name: "Vehicle Color",
-    selector: (row) => row.VehicleColor,
+    name: "Description",
+    selector: (row) => row.Description,
     sortable: true,
     reorder: true,
   },
-
   {
     id: 5,
-    name: "Vehicle Model",
-    selector: (row) => row.VehicleModel,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 6,
-    name: "License Plate",
-    selector: (row) => row.LicensePlate,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 7,
-    name: "Purchase Year",
-    selector: (row) => row.PurchaseYear,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 8,
-    name: "Vehicle Model",
-    selector: (row) => row.VehicleModel,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 9,
-    name: "Insured?",
+    name: "Active",
     selector: (row) => (
       <Form.Check
         type="checkbox"
         id="custom-switch"
-        checked={row.Insured}
+        checked={row.Active}
         disabled
       />
     ),
@@ -79,22 +47,14 @@ export const columns = [
   },
 
   {
-    id: 10,
-    name: "PicUrl",
-    selector: (row) => row.PicUrl,
+    id: 6,
+    name: "Duration",
+    selector: (row) => row.Duration,
     sortable: true,
     reorder: true,
   },
   {
-    id: 11,
-    name: "Vehicle Docs",
-    selector: (row) => row.VehicleDocs,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 12,
+    id: 7,
     name: "Created Date",
     selector: (row) => row.createdAt,
     sortable: true,
@@ -103,7 +63,7 @@ export const columns = [
   },
 
   {
-    id: 13,
+    id: 8,
     name: "Updated Date",
     selector: (row) => row.updatedAt,
     sortable: true,
@@ -119,7 +79,7 @@ export const columns = [
       <>
         {" "}
         <Link
-          to={"/edit-vehicle-info/" + row.VehicleId}
+          to={"/edit-subscription/" + row.SubscribeId}
           className="btn btn-sm"
           title="Edit  Subscription"
         >
@@ -128,15 +88,15 @@ export const columns = [
       </>,
 
       <Link
-        to={"/assign-driver-to-vehicle/" + row.VehicleId}
+        to={"/list-user-subscription/" + row.SubscribeId}
         className="btn btn-sm"
-        title="Assign Driver to Vehicle"
+        title="List All Users Subscribed"
       >
         <i className="first fas fa-user"></i>
       </Link>,
 
       <Link
-        to={"/delete-data/" + row.VehicleId}
+        to={"/delete-data/" + row.SubscribeId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

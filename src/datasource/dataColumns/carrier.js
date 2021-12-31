@@ -1,7 +1,6 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-
 export const columns = [
   {
     id: 1,
@@ -12,59 +11,28 @@ export const columns = [
   },
   {
     id: 2,
-    name: "Driver Name",
-    selector: (row) => row.DriverName,
+    name: "Carrier Type",
+    selector: (row) => row.CarrierType,
     sortable: true,
     reorder: true,
   },
   {
     id: 3,
-    name: "Vehicle Number",
-    selector: (row) => row.VehicleNumber,
+    name: "Fleet Type",
+    selector: (row) => row.FleetType,
     sortable: true,
     reorder: true,
   },
   {
     id: 4,
-    name: "Address",
-    selector: (row) => row.Address,
+    name: "Fleet Number",
+    selector: (row) => row.FleetNumber,
     sortable: true,
     reorder: true,
   },
 
   {
     id: 5,
-    name: "City",
-    selector: (row) => row.City,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 6,
-    name: "Country",
-    selector: (row) => row.Country,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 7,
-    name: "Phone",
-    selector: (row) => row.Phone,
-    sortable: true,
-    reorder: true,
-  },
-
-  {
-    id: 8,
-    name: "Email",
-    selector: (row) => row.Email,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 9,
     name: "Licensed?",
     selector: (row) => (
       <Form.Check
@@ -81,30 +49,22 @@ export const columns = [
 
   {
     id: 10,
-    name: "PicUrl",
-    selector: (row) => row.PicUrl,
+    name: "AboutUs",
+    selector: (row) => row.AboutUs,
     sortable: true,
     reorder: true,
   },
-  {
-    id: 10,
-    name: "License Url",
-    selector: (row) => row.LicenseUrl,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 10,
-    name: "Rating",
-    selector: (row) => row.Rating,
-    sortable: true,
-    reorder: true,
-  },
-
   {
     id: 11,
-    name: "Driver Docs",
-    selector: (row) => row.DriverDocs,
+    name: "Service Description",
+    selector: (row) => row.ServiceDescription,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 5,
+    name: "Rating",
+    selector: (row) => row.Rating,
     sortable: true,
     reorder: true,
   },
@@ -135,24 +95,24 @@ export const columns = [
       <>
         {" "}
         <Link
-          to={"/edit-driver-info/" + row.DriverId}
+          to={"/edit-carrier-info/" + row.CarrierId}
           className="btn btn-sm"
-          title="Edit  Driver Info"
+          title="Edit  Subscription"
         >
           <Edit size={12} />
         </Link>
       </>,
 
       <Link
-        to={"/assign-driver-to-vehicle/" + row.DriverId}
+        to={"/add-vehicle-to-carrier/" + row.CarrierId}
         className="btn btn-sm"
-        title="Assign driver to vehicle"
+        title="Assign Driver to Vehicle"
       >
-        <i className="first fas fa-car"></i>
+        <i className="first fas fa-user"></i>
       </Link>,
 
       <Link
-        to={"/delete-data/" + row.DriverId}
+        to={"/delete-data/" + row.CarrierId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

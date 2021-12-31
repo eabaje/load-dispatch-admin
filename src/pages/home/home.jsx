@@ -8,7 +8,6 @@ function Home() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const history = useHistory();
   const {
-    authDispatch,
     authState: { error, user, isLoggedIn },
   } = useContext(GlobalContext);
   React.useEffect(() => {
@@ -18,7 +17,7 @@ function Home() {
     if (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
-  }, [isLoggedIn, history]);
+  }, []);
   return (
     <div>
       <div class="row">

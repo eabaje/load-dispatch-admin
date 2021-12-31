@@ -7,51 +7,31 @@ import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
 import $ from "jquery";
-import { Edit, Trash, Users } from "react-feather";
+import { ChevronsDown, Edit, Trash, Users } from "react-feather";
 import { fetchDataAll } from "../../helpers/query";
+import DataTable from "react-data-table-component";
+import DataTableExtensions from "react-data-table-component-extensions";
+import Form from "react-bootstrap/Form";
+import "react-data-table-component-extensions/dist/index.css";
+import { columns } from "../../datasource/dataColumns/user";
 
 function UserList({ history, match }) {
-    const { userId } = match.params;
-    const isSingleMode = !userId;
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { userId } = match.params;
+  const isSingleMode = !userId;
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
 
-  // GET request function to your Mock API
-  
- 
-
-// enqueueSnackbar(getError(err), { variant: "error" });
-  // Calling the function on component mount 
-  
   useEffect(() => {
-  
     setUser(JSON.parse(localStorage.getItem("user")));
 
-   
-
     if (!isSingleMode) {
-    
-        fetchDataAll('user/findOne/'+userId)
-        }
-        else
-        {
-            fetchDataAll('user/findAllUser');
-            
-        }
-
-   
+      fetchDataAll("user/findOne/" + userId);
+    } else {
+      fetchDataAll("user/findAllUser");
+    }
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      $(".dataTable").DataTable({
-        // dom: "rBftlip",
-
-        pageLength: 10,
-      });
-    }, 1000);
-  }, []);
   return (
     <div>
       <div class="col-xl-12">
@@ -65,6 +45,19 @@ function UserList({ history, match }) {
           </div>
           <div class="card-body table-border-style">
             <div class="table-responsive">
+              {/* <DataTableExtensions {...tableData}> */}
+              <DataTableExtensions exportHeaders columns={columns} data={data}>
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  className="table table-striped table-bordered table-hover table-checkable"
+                  defaultSortField={1}
+                  sortIcon={<ChevronsDown />}
+                  defaultSortAsc={true}
+                  pagination
+                  highlightOnHover
+                />
+              </DataTableExtensions>
               <table class="table table-striped table-bordered table-hover table-checkable dataTable">
                 <thead>
                   <tr>
@@ -81,15 +74,13 @@ function UserList({ history, match }) {
                     <th></th>
                     <th>Accepted Terms</th>
                     <th>Payment Method</th>
-                   
-              
+
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.map((item) => (
                     <tr key={item.UserSubscriptionId}>
-                     
                       <td>{item.SubscriptionName}</td>
                       <td>{item.FullName}</td>
                       <td>{item.Email}</td>
@@ -109,12 +100,15 @@ function UserList({ history, match }) {
                         <ul class="table-controls">
                           <li>
                             <Link
-                              to={"/edit-user-subscription/" + item.UserSubscriptionId}
+                              to={
+                                "/edit-user-subscription/" +
+                                item.UserSubscriptionId
+                              }
                               className="btn btn-sm"
                               title="Edit User Subscription"
                             >
                               {" "}
-                              <Edit size={12}/>
+                              <Edit size={12} />
                             </Link>
                           </li>
                           <li>
@@ -124,8 +118,7 @@ function UserList({ history, match }) {
                               title="Get User Subscription"
                             >
                               {" "}
-                             
-                              <Users size={12}/>
+                              <Users size={12} />
                             </Link>
                           </li>
 
@@ -136,7 +129,7 @@ function UserList({ history, match }) {
                               title="Delete User Subscription"
                             >
                               {" "}
-                              <Trash size={12}/>
+                              <Trash size={12} />
                             </Link>
                           </li>
                         </ul>
@@ -153,5 +146,4 @@ function UserList({ history, match }) {
   );
 }
 
-export default UserList
-
+export default UserList;

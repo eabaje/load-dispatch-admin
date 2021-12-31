@@ -6,11 +6,12 @@ import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { getError } from "../../utils/error";
-import { Edit, Trash, Truck } from "react-feather";
+import { ChevronsDown, Edit, Trash, Truck } from "react-feather";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
+import { columns } from "../../datasource/dataColumns/carrier";
 
 function ListCarrier() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -19,9 +20,6 @@ function ListCarrier() {
 
   // GET request function to your Mock API
   const fetchData = async () => {
-    // fetch(`${INVENTORY_API_URL}`)
-    //   .then((res) => res.json())
-    //   .then((json) => setData(json));
     try {
       const res = await axios.get(`${API_URL}carrier/findAll`);
       if (res) {
@@ -39,6 +37,11 @@ function ListCarrier() {
     //console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
+
+  const tableData = {
+    columns,
+    data,
+  };
   return (
     <>
       <div class="row">
@@ -53,6 +56,23 @@ function ListCarrier() {
             </div>
             <div class="card-body table-border-style">
               <div class="table-responsive">
+                {/* <DataTableExtensions {...tableData}> */}
+                <DataTableExtensions
+                  exportHeaders
+                  columns={columns}
+                  data={data}
+                >
+                  <DataTable
+                    columns={columns}
+                    data={data}
+                    className="table table-striped table-bordered table-hover table-checkable"
+                    defaultSortField={1}
+                    sortIcon={<ChevronsDown />}
+                    defaultSortAsc={true}
+                    pagination
+                    highlightOnHover
+                  />
+                </DataTableExtensions>
                 <table class="table table-striped ">
                   <thead>
                     <tr>
@@ -89,17 +109,22 @@ function ListCarrier() {
                                 title="Edit Carrier Entry"
                               >
                                 {" "}
-                               <Edit size={15}/>
+                                <Edit size={15} />
                               </Link>
                             </li>
                             <li>
                               <Link
-                                to={"/add-vehicle-to-carrier/" + item.CarrierId+"/"+item.CarrierType}
+                                to={
+                                  "/add-vehicle-to-carrier/" +
+                                  item.CarrierId +
+                                  "/" +
+                                  item.CarrierType
+                                }
                                 className="btn btn-sm"
                                 title="Add Vehicle Info"
                               >
                                 {" "}
-                                <Truck size={15}/>
+                                <Truck size={15} />
                               </Link>
                             </li>
 
@@ -110,7 +135,7 @@ function ListCarrier() {
                                 title="Delete Vehicle Info"
                               >
                                 {" "}
-                                <Trash size={15}/>
+                                <Trash size={15} />
                               </Link>
                             </li>
                           </ul>
