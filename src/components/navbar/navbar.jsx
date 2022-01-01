@@ -40,7 +40,7 @@ const NavBar = () => {
   useEffect(() => {
     handleMenu();
     setUser(JSON.parse(localStorage.getItem("user")));
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <>

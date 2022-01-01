@@ -22,30 +22,41 @@ function ListSubscription() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const {
     subscribeDispatch,
     subscribeState: {
-      getSubscribes: { data, loading, error },
+      getSubscribes: { data,error,   },//loading
     },
   } = useContext(GlobalContext);
 
   // Calling the function on component mount
 
-  const getSubscription = useCallback(() => {
-    listSubscriptions()(subscribeDispatch);
-  }, []);
+  // const getSubscription = useCallback(() => {
+  //   listSubscriptions()(subscribeDispatch);
+  // }, []);
 
-  useEffect(() => {
-    getSubscription();
-    //((result) => {
-    //   setData(result.data);
-    // })((err) => {
-    //   enqueueSnackbar(err, { variant: "error" });
-    // });
+  // useEffect(() => {
+  
+  //   listSubscriptions()(subscribeDispatch);
+  //   //((result) => {
+  //   //   setData(result.data);
+  //   // })((err) => {
+  //   //   enqueueSnackbar(err, { variant: "error" });
+  //   // });
+  //   setUser(JSON.parse(localStorage.getItem("user")));
+  // }, [subscribeDispatch,listSubscriptions,loading,data,error]);
+
+   // Calling the function on component mount
+   useEffect(() => {
+    fetchDataAll("subscription/findAll")((subscribe) => {
+      setLoading(false);
+      setData(subscribe);
+    })((err)=>{});
+    console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
-
   // const tableData = {
   //   columns,
   //   data.data,
@@ -68,11 +79,11 @@ function ListSubscription() {
               <DataTableExtensions
                 exportHeaders
                 columns={columns}
-                data={data.data}
+                data={data2}
               >
                 <DataTable
                   columns={columns}
-                  data={data.data}
+                  data={data2}
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}

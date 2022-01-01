@@ -14,7 +14,8 @@ import {
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
 
-export const listVehicles = () => (dispatch) =>(onSuccess)=>(onError)=> {
+export const listVehicles = (dispatch)=> {
+  // =>(onSuccess)=>(onError)
   dispatch({
     type: GET_VEHICLES_REQUEST,
   });
@@ -22,11 +23,12 @@ export const listVehicles = () => (dispatch) =>(onSuccess)=>(onError)=> {
   .then((res)=>{
 
    dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
+ //  onSuccess(res.data);
 
   }).catch((error)=>{
 
   dispatch({ type: GET_VEHICLES_FAIL, payload: error.response.data.message });
-  onError( error.response.data.message);
+ // onError( error.response.data.message);
 
   }) ;
  
@@ -91,37 +93,46 @@ export const listVehiclesByDate = (fromDate, endDate) => async (dispatch) => {
   }
 };
 
-export const createVehicle = (form) => async (dispatch) => {
-  const requestPayload = {
-    CarrierId: form.CarrierId,
-    VehicleType: form.VehicleType,
-    VehicleNumber: form.VehicleNumber,
-    SerialNumber: form.SerialNumber,
-    VehicleMake: form.VehicleMake,
-    VehicleColor: form.VehicleColor,
-    VehicleModel: form.VehicleModel,
-    LicensePlate: form.LicensePlate,
-    VehicleModelYear: form.VehicleModelYear,
-    PurchaseYear: form.PurchaseYear,
-    Insured: form.Insured ? form.Insured : false,
-    PicUrl: form.PicUrl || null,
-    VehicleDocs: form.VehicleDocs || "",
-  };
+export const createVehicle = (form) =>(dispatch) =>(onSuccess)=>(onError)=> {
+  // const requestPayload = {
+  //   CarrierId: form.CarrierId,
+  //   VehicleType: form.VehicleType,
+  //   VehicleNumber: form.VehicleNumber,
+  //   SerialNumber: form.SerialNumber,
+  //   VehicleMake: form.VehicleMake,
+  //   VehicleColor: form.VehicleColor,
+  //   VehicleModel: form.VehicleModel,
+  //   LicensePlate: form.LicensePlate,
+  //   VehicleModelYear: form.VehicleModelYear,
+  //   PurchaseYear: form.PurchaseYear,
+  //   Insured: form.Insured ? form.Insured : false,
+  //   PicUrl: form.PicUrl || null,
+  //   VehicleDocs: form.VehicleDocs || "",
+  // };
 
   dispatch({ type: CREATE_VEHICLE_REQUEST });
 
-  try {
-    const { res } = await axios.post(`/vehicle/create/`, requestPayload);
+axios.post(`/vehicle/create/`, form)
+.then((res)=>{
 
-    dispatch({
+ dispatch({
       type: CREATE_VEHICLE_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
-    const message =
+    onSuccess(res.data);
+})
+.catch((error)=>{
+
+  const message =
       error.response && error.response.data ? error.response.data.message : error.message;
     dispatch({ type: CREATE_VEHICLE_FAIL, payload: message });
-  }
+
+    onError(message)
+
+});
+
+   
+ 
 };
 
 export const editVehicle = (form, vehicleId) => async (dispatch) => {

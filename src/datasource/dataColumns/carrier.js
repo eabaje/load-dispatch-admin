@@ -106,9 +106,9 @@ export const columns = [
       <Link
         to={"/add-vehicle-to-carrier/" + row.CarrierId}
         className="btn btn-sm"
-        title="Assign Driver to Vehicle"
+        title="Add Vehicle to carrier"
       >
-        <i className="first fas fa-user"></i>
+        <i className="first fas fa-car"></i>
       </Link>,
 
       <Link

@@ -16,10 +16,10 @@ import {
 } from "../../context/actions/vehicle/vehicle.action";
 
 function AddVehicle({ history, match }) {
-  const { id } = match.params;
+  const { vehicleId } = match.params;
   const { carrierId } = match.params;
   const { carrierType } = match.params;
-  const isAddMode = !id;
+  const isAddMode = !vehicleId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   // const onSubmit = (data) => console.log(data);
@@ -46,22 +46,24 @@ function AddVehicle({ history, match }) {
     listVehiclesByVehicleId(id)(vehicleDispatch);
   };
 
-  function SubmitForm(data) {
-    return isAddMode ? CreateVehicle(data) : EditVehicle(data, id);
+  function SubmitForm(formdata) {
+    return isAddMode ? CreateVehicle(formdata) : EditVehicle(formdata, vehicleId);
   }
 
-  function CreateVehicle(data) {
-    createVehicle(data)(vehicleDispatch);
-    if (data.message === "success") {
-      enqueueSnackbar("Added New Record succesfully", {
-        variant: "success",
-      });
-    } else {
-      if (error) {
-        enqueueSnackbar(error, { variant: "error" });
-      }
-      enqueueSnackbar("An Error occurred", { variant: "error" });
-    }
+  function CreateVehicle(formdata) {
+    console.log(`formdata`, formdata) 
+    createVehicle(formdata)(vehicleDispatch)((res) => {
+      
+        enqueueSnackbar(res.message, {
+          variant: "success",
+        });
+      
+    })((err)=>{
+
+      enqueueSnackbar(err, { variant: "error" });
+
+    });
+    
   }
 
   function EditVehicle(data, id) {
@@ -86,7 +88,7 @@ function AddVehicle({ history, match }) {
       // get user and set form fields
      
      
- listVehiclesByVehicleId(id)(vehicleDispatch)(res =>{
+ listVehiclesByVehicleId(vehicleId)(vehicleDispatch)(res =>{
 
   const fields = [
     "VehicleType",
@@ -136,9 +138,9 @@ function AddVehicle({ history, match }) {
                   <input
                     type="hidden"
                     name="CarrierId"
-                    value="CarrierType"
+                    value={carrierId}
                     class="form-control"
-                  />
+                    {...register("CarrierId")}/>
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> Vehicle Info </h5>

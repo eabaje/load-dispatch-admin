@@ -29,6 +29,7 @@ function UserSubscription({ history, match }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [res, setData] = useState([]);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
   console.log(`userSubscriptionId`, userSubscriptionId);
   console.log(`isSingleMode`, isSingleMode);
   // GET request function to your Mock API
@@ -37,24 +38,33 @@ function UserSubscription({ history, match }) {
   // Calling the function on component mount
   const {
     userDispatch,
-    userState: { getUserSubscription: loading },
+    userState: { getUserSubscription: error },
   } = useContext(GlobalContext);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
 
-    if (isSingleMode) {
-      listUserSubscriptions(userSubscriptionId)(userDispatch)((result) => {
-        setData(result.data);
+    if (userId) {
+      alert("hello")
+      fetchData("user/findUserSubscription",userId)((result) => {
+        setLoading(false);
+        setData(result);
       })((err) => {
         enqueueSnackbar(err.message, { variant: "error" });
       });
-    } else {
-      listUserSubscriptionByUserId(userId)(userDispatch)((result) => {
-        setData(result.data);
+     
+    } 
+    if (userSubscriptionId) {
+     
+
+      fetchDataAll("user/findAllUserSubscriptions/"+userSubscriptionId)((result) => {
+        setLoading(false);
+        setData(result);
       })((err) => {
         enqueueSnackbar(err.message, { variant: "error" });
       });
+
+
     }
   }, []);
 

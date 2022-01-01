@@ -160,7 +160,7 @@ const App = () => {
             <AppLayoutRoute
               key="add-vehicle-to-carrier"
               exact
-              path="/add-vehicle-to-carrier/:carrierId/:carrierType"
+              path="/add-vehicle-to-carrier/:carrierId/"
               component={AddVehicle}
             />
             <AppLayoutRoute
@@ -177,8 +177,8 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/edit-vehicle"
-              component={EditVehicle}
+              path="/edit-vehicle/:vehicleId"
+              component={AddVehicle}
             />
             <AppLayoutRoute
               exact

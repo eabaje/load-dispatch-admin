@@ -73,77 +73,7 @@ function ListCarrier() {
                     highlightOnHover
                   />
                 </DataTableExtensions>
-                <table class="table table-striped ">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>Carrier Type</th>
-                      <th>Fleet Type</th>
-                      <th>Fleet Number</th>
-                      <th>Licensed</th>
-                      <th>AboutUs</th>
-                      <th>Service Description</th>
-                      <th>Rating</th>
-
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((item, i) => (
-                      <tr key={i}>
-                        <td>{item.CompanyId}</td>
-                        <td>{item.CarrierType}</td>
-                        <td>{item.FleetType}</td>
-                        <td>{item.FleetNumber}</td>
-                        <td>{item.Licensed}</td>
-                        <td>{item.AboutUs}</td>
-                        <td>{item.ServiceDescription}</td>
-                        <td>{item.Rating}</td>
-
-                        <td>
-                          <ul class="table-controls">
-                            <li>
-                              <Link
-                                to={"/edit-carrier/" + item.CarrierId}
-                                className="btn btn-sm"
-                                title="Edit Carrier Entry"
-                              >
-                                {" "}
-                                <Edit size={15} />
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to={
-                                  "/add-vehicle-to-carrier/" +
-                                  item.CarrierId +
-                                  "/" +
-                                  item.CarrierType
-                                }
-                                className="btn btn-sm"
-                                title="Add Vehicle Info"
-                              >
-                                {" "}
-                                <Truck size={15} />
-                              </Link>
-                            </li>
-
-                            <li>
-                              <Link
-                                to={"/delete-data/" + item.CarrierId}
-                                className="btn btn-sm"
-                                title="Delete Vehicle Info"
-                              >
-                                {" "}
-                                <Trash size={15} />
-                              </Link>
-                            </li>
-                          </ul>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                
               </div>
             </div>
           </div>

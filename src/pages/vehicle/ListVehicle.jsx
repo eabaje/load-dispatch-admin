@@ -16,29 +16,31 @@ import { columns } from "../../datasource/dataColumns/vehicle";
 
 function ListVehicle() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = useState([]);
+  const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
 
   const {
     vehicleDispatch,
-    vehicleState: { getVehicles: error, loading },
+    vehicleState: { getVehicles:data, error, loading },
   } = useContext(GlobalContext);
 
   // Calling the function on component mount
   useEffect(() => {
-    listVehicles()(vehicleDispatch)((result) => {
-      setData(result);
-    })((err) => {
-      enqueueSnackbar(err, { variant: "error" });
-    });
+    listVehicles(vehicleDispatch);
+    
+    // ((result) => {
+    //   setData(result.data);
+    // })((err) => {
+    //   enqueueSnackbar(err, { variant: "error" });
+    // });
 
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
-
-  const tableData = {
-    columns,
-    data,
-  };
+    // setUser(JSON.parse(localStorage.getItem("user")));
+  }, [vehicleDispatch]);
+console.log(`data`, data)
+  // const tableData = {
+  //   columns,
+  //   data,
+  // };
   return (
     <div class="row">
       <div class="col-sm-12">
@@ -54,10 +56,10 @@ function ListVehicle() {
           <div class="card-body table-border-style">
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions exportHeaders columns={columns} data={data}>
+              <DataTableExtensions exportHeaders columns={columns} data={data.data}>
                 <DataTable
                   columns={columns}
-                  data={data}
+                  data={data.data}
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}
