@@ -34,10 +34,10 @@ const vehicles = (state, { type, payload }) => {
           error: null,
         },
 
-        getVehicles: {
-          ...state.getVehicles,
+        Vehicles: {
+          ...state.Vehicles,
           loading: false,
-          data: state.getVehicles.data.map((item) => {
+          data: state.Vehicles.data.map((item) => {
             if (item.VehicleId === payload.id) {
               return payload;
             } else {
@@ -80,10 +80,10 @@ const vehicles = (state, { type, payload }) => {
           error: null,
         },
 
-        getVehicles: {
-          ...state.getVehicles,
+        Vehicles: {
+          ...state.Vehicles,
           loading: false,
-          data: state.getVehicles.data.filter(
+          data: state.Vehicles.data.filter(
             (item) => item.VehicleId !== payload
           ),
           error: null,
@@ -119,29 +119,19 @@ const vehicles = (state, { type, payload }) => {
           data: payload,
         },
 
-        getVehicles: {
-          ...state.getVehicles,
-          loading: false,
-          data: [payload, ...state.getVehicles.data],
-          error: null,
-        },
-      };
-
-    case CREATE_VEHICLE_FAIL:
-      return {
-        ...state,
-        createVehicle: {
-          ...state.createVehicle,
-          loading: false,
-          error: payload,
-        },
+        // Vehicle: {
+        //   ...state.Vehicles,
+        //   loading: false,
+        //   data: [payload, ...state.Vehicle.data],
+        //   error: null,
+        // },
       };
 
     case GET_VEHICLES_REQUEST:
       return {
         ...state,
-        getVehicles: {
-          ...state.getVehicles,
+        Vehicles: {
+          ...state.Vehicles,
           loading: true,
           error: null,
         },
@@ -150,8 +140,8 @@ const vehicles = (state, { type, payload }) => {
     case GET_VEHICLES_SUCCESS:
       return {
         ...state,
-        getVehicles: {
-          ...state.getVehicles,
+        Vehicles: {
+          ...state.Vehicles,
           loading: false,
           data: payload,
           error: null,
@@ -161,8 +151,8 @@ const vehicles = (state, { type, payload }) => {
     case GET_VEHICLES_FAIL:
       return {
         ...state,
-        getVehicles: {
-          ...state.getVehicles,
+        Vehicles: {
+          ...state.Vehicles,
           loading: false,
           error: payload,
         },

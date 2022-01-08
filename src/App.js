@@ -12,24 +12,18 @@ import { useContext } from "react";
 import Shipper from "./pages/shipper/shipper";
 import AddShipment from "./pages/shipper/AddShipment";
 import ListShipment from "./pages/shipper/ListShipment";
-import EditShipment from "./pages/shipper/EditShipment";
-
 import AuthLayout from "./layout/authLayout";
 import MainLayout from "./layout/mainLayout";
 import Login from "./pages/login/login";
 import AddCarrier from "./pages/carrier/AddCarrier";
 import ListCarrier from "./pages/carrier/ListCarrier";
-import EditCarrier from "./pages/carrier/EditCarrier";
 import ListVehicle from "./pages/vehicle/ListVehicle";
-import EditVehicle from "./pages/vehicle/EditVehicle";
 import AddDriver from "./pages/driver/addDriver";
 import ListDriver from "./pages/driver/listDriver";
-import EditDriver from "./pages/driver/editDriver";
 import AddTrip from "./pages/trip/AddTrip";
 import EditTrip from "./pages/trip/EditTrip";
 import ListTrip from "./pages/trip/ListTrip";
 import AddSubscription from "./pages/subscribe/AddSubscription";
-import EditSubscription from "./pages/subscribe/EditSubscription";
 import ListSubscription from "./pages/subscribe/ListSubscription";
 
 import { GlobalContext } from "./context/Provider";
@@ -39,11 +33,19 @@ import UserSubscription from "./pages/user/UserSubscription";
 import UserList from "./pages/user/UserList";
 import UploadShipment from "./pages/shipper/UploadShipment";
 import AddUserSubscription from "./pages/user/AddUserSubscription";
+import isAuthenticated from "./utils/isAuthenticated";
+import ListCompany from "./pages/company/ListCompany";
 
 const App = () => {
   const {
     authState: { user, isLoggedIn },
   } = useContext(GlobalContext);
+
+  const history = useHistory();
+
+  if (!isAuthenticated()) {
+    history.push("/signin");
+  }
   // console.log(`isLoggedIn`, isLoggedIn);
   // const getUser = () => {
   //   try {
@@ -130,8 +132,28 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/my-shipments"
+              path="/my-shipments/:userId"
               component={ListShipment}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-all-shipments"
+              component={ListShipment}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-all-shipments-assigned/:assigned"
+              component={ListShipment}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-all-shipments-sent/:sent"
+              component={ListShipment}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-all-shipments-interest"
+              component={ListInterest}
             />
             <AppLayoutRoute
               exact
@@ -140,13 +162,19 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/edit-shipment/:shipmentId"
+              path="/place-interest-for-shipment/:isReadOnly/:shipmentId"
+              component={AddShipment}
+            />
+
+            <AppLayoutRoute
+              exact
+              path="/edit-shipment-info/:shipmentId"
               component={AddShipment}
             />
             <AppLayoutRoute
               key="edit-carrier"
               exact
-              path="/edit-carrier/:carrierId"
+              path="/edit-carrier-info/:carrierId"
               component={AddCarrier}
             />
             <AppLayoutRoute exact path="/add-carrier" component={AddCarrier} />
@@ -160,7 +188,7 @@ const App = () => {
             <AppLayoutRoute
               key="add-vehicle-to-carrier"
               exact
-              path="/add-vehicle-to-carrier/:carrierId/"
+              path="/add-vehicle-to-carrier/:carrierId/:carrierType"
               component={AddVehicle}
             />
             <AppLayoutRoute
@@ -173,6 +201,11 @@ const App = () => {
             <AppLayoutRoute
               exact
               path="/list-vehicles"
+              component={ListVehicle}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-carrier-vehicles/:carrierId/:carrierType"
               component={ListVehicle}
             />
             <AppLayoutRoute
@@ -248,6 +281,22 @@ const App = () => {
               exact
               path="/list-user/:userId"
               component={UserList}
+            />
+
+            <AppLayoutRoute
+              exact
+              path="/list-company-info"
+              component={ListCompany}
+            />
+            <AppLayoutRoute
+              exact
+              path="/edit-company-info/:companyId"
+              component={ListCompany}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-company-info/:userId"
+              component={ListCompany}
             />
           </>
         )}

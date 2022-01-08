@@ -1,6 +1,11 @@
 export default {
-  getSubscribes: {
+  Subscribes: {
     data: [],
+    error: null,
+    loading: false,
+  },
+  Subscribe: {
+    data: {},
     error: null,
     loading: false,
   },

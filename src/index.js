@@ -18,10 +18,10 @@ ReactDOM.render(
           horizontal: "right",
         }}
         iconVariant={{
-          success: "✅",
-          error: "✖️",
-          warning: "⚠️",
-          info: "ℹ️",
+          success: "✅ ",
+          error: "✖️ ",
+          warning: "⚠️ ",
+          info: "ℹ️ ",
         }}
         TransitionComponent={Slide}
         maxSnack={3}

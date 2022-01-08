@@ -1,6 +1,11 @@
 export default {
-  getDrivers: {
+  Drivers: {
     data: [],
+    error: null,
+    loading: false,
+  },
+  Driver: {
+    data: {},
     error: null,
     loading: false,
   },

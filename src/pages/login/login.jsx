@@ -31,15 +31,12 @@ function Login() {
 
   const {
     authDispatch,
-    authState: { error, user, isLoggedIn },
+    authState: { isLoggedIn, loading },
   } = useContext(GlobalContext);
 
   const [isAuthenticated, setIsAuthenticated] = React.useState(isLoggedIn);
-  // , authState: { error, user, IsLoggedIn },
 
-  // console.log(`authState`, error);
-
-  console.log(`isAuthenticated`, isLoggedIn);
+  //console.log(`isAuthenticated`, isLoggedIn);
 
   // React.useEffect(() => {
   //   if (isLoggedIn) {
@@ -51,23 +48,15 @@ function Login() {
   // }, [isLoggedIn, history]);
 
   const SubmitForm = (formdata) => {
-     // e.preventDefault();
+    // e.preventDefault();
     //  console.log("state:", formdata);
 
-    signin2(formdata)(authDispatch)(success=>{
+    signin2(formdata)(authDispatch)((success) => {
       history.push("/dashboard");
-
-    })(err =>{
-      console.log(`err`, err)
+    })((err) => {
+      console.log(`err`, err);
       enqueueSnackbar(err, { variant: "error" });
-      });
-
-    //else {
-    //   if (error) {
-    //     enqueueSnackbar(error, { variant: "error" });
-    //   }
-    //   enqueueSnackbar(error, { variant: "error" });
-    // }
+    });
   };
 
   return (
@@ -109,7 +98,9 @@ function Login() {
             Save credentials.
           </label>
         </div>
-        <button class="btn btn-block btn-primary mb-4">Signin</button>
+        <button class="btn btn-block btn-primary mb-4">
+          {loading && <i className="fa fa-spinner fa-spin"></i>} Signin
+        </button>
         <p class="mb-2 text-muted">
           Forgot password?{" "}
           <a href="auth-reset-password.html" class="f-w-400">

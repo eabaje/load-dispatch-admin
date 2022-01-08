@@ -10,44 +10,43 @@ import {
 import axios from "../../../helpers/axiosInstance";
 import Axios from "axios";
 import { API_URL } from "../../../constants";
+import { CONNECTION_ERROR } from "../../../constants/api";
 
-export const register = (form) => async (dispatch) =>(onSuccess) =>(onError) => {
-  const requestPayload = {
-    CompanyId: form.CompanyId || "",
-    CarrierName: form.CarrierName || "",
-    Email: form.Email || "",
-    Phone: form.Phone || "",
-    Address: form.Address || "",
-    City: form.City || "",
-    Country: form.Country || "",
-    Licensed: form.Licensed || "",
-    LicenseUrl: form.LicenseUrl || "",
-    Rating: form.Rating || "",
-    CarrierDocs: form.CarrierDocs || "",
-    PicUrl: form.PicUrl || null,
+export const register =
+  (form) => async (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      CompanyId: form.CompanyId || "",
+      CarrierName: form.CarrierName || "",
+      Email: form.Email || "",
+      Phone: form.Phone || "",
+      Address: form.Address || "",
+      City: form.City || "",
+      Country: form.Country || "",
+      Licensed: form.Licensed || "",
+      LicenseUrl: form.LicenseUrl || "",
+      Rating: form.Rating || "",
+      CarrierDocs: form.CarrierDocs || "",
+      PicUrl: form.PicUrl || null,
+    };
+
+    dispatch({ type: REGISTER_REQUEST, payload: form });
+
+    axios
+      .post("auth/register", form)
+      .then((res) => {
+        dispatch({ type: REGISTER_SUCCESS, payload: res.data });
+        // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+      })
+
+      .catch((err) => {
+        const message = err.response
+          ? err.response.data.message
+          : { error: "Something went wrong, try agin" };
+      });
   };
-
-  dispatch({ type: REGISTER_REQUEST, payload: form });
- 
-  axios.post("auth/register", form).then((res)=>{
-
-
- dispatch({ type: REGISTER_SUCCESS, payload: res.data });
-    // dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-
-
-  })
-   
- .catch((err) => {
-    
-    const message=err.response
-    ? err.response.data.message
-    : { error: "Something went wrong, try agin" }
-  })
-};
 
 export const signin = (form, dispatch) => {
   const requestPayload = {
@@ -65,14 +64,12 @@ export const signin = (form, dispatch) => {
   } catch (error) {
     dispatch({
       type: LOGIN_FAIL,
-      payload: error.message
-        ? error.message
-        : { error: "Something went wrong, try agin" },
+      payload: error.response ? error.response.data : CONNECTION_ERROR,
     });
   }
 };
 
-export const signin2 = (form) => (dispatch) =>(onSuccess) => (onError) =>{
+export const signin2 = (form) => (dispatch) => (onSuccess) => (onError) => {
   const requestPayload = {
     Email: form.Email,
     Password: form.Password,
@@ -84,7 +81,6 @@ export const signin2 = (form) => (dispatch) =>(onSuccess) => (onError) =>{
   axios
     .post(`auth/signin`, requestPayload)
     .then((res) => {
-     
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
@@ -93,16 +89,15 @@ export const signin2 = (form) => (dispatch) =>(onSuccess) => (onError) =>{
       onSuccess(res.data);
     })
     .catch((err) => {
-    
- const message=err.response
- ? err.response.data.message
- : { error: "Something went wrong, try agin" }
+      const message = err.response
+        ? err.response.data.message
+        : CONNECTION_ERROR;
 
       dispatch({
         type: LOGIN_FAIL,
-        payload:message,
+        payload: err,
       });
-      console.log(`err`, err)
+
       onError(message);
     });
 };

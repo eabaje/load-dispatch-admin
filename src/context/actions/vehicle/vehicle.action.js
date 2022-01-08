@@ -13,47 +13,73 @@ import {
   DELETE_VEHICLE_SUCCESS,
 } from "../../../constants/actionTypes";
 import axios from "../../../helpers/axiosInstance";
+import { CONNECTION_ERROR } from "../../../constants/api";
+import Axios from "axios";
+import { API_URL } from "../../../constants";
 
-export const listVehicles = (dispatch)=> {
-  // =>(onSuccess)=>(onError)
+export const listVehicles =
+  (vehicleType = null) =>
+  (dispatch) => {
+    //(onSuccess)=>(onError) =>
+    const url = vehicleType
+      ? `${API_URL}vehicle/findAll/${vehicleType}`
+      : `${API_URL}vehicle/findAll/`;
+    dispatch({
+      type: GET_VEHICLES_REQUEST,
+    });
+    Axios.get(url)
+      .then((res) => {
+        dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
+        //  onSuccess(res.data);
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_VEHICLES_FAIL,
+          payload: err.response ? err.response.data : CONNECTION_ERROR,
+        });
+        // onError( error.response.data.message);
+      });
+  };
+export const listVehiclesByCarrier = (carrierId, vehicleType) => (dispatch) => {
+  //(onSuccess)=>(onError) =>
+  const url = `${API_URL}vehicle/findAllVehiclesByCategory/${carrierId}/${vehicleType}`;
+
   dispatch({
     type: GET_VEHICLES_REQUEST,
   });
-  axios.get(`/vehicle/findAll/`)
-  .then((res)=>{
-
-   dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
- //  onSuccess(res.data);
-
-  }).catch((error)=>{
-
-  dispatch({ type: GET_VEHICLES_FAIL, payload: error.response.data.message });
- // onError( error.response.data.message);
-
-  }) ;
- 
- 
-  
+  Axios.get(url)
+    .then((res) => {
+      dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
+      //  onSuccess(res.data);
+    })
+    .catch((err) => {
+      dispatch({
+        type: GET_VEHICLES_FAIL,
+        payload: err.response ? err.response.data : CONNECTION_ERROR,
+      });
+      // onError( error.response.data.message);
+    });
 };
+export const listVehiclesByVehicleId =
+  (vehicleId) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({
+      type: GET_VEHICLES_REQUEST,
+    });
+    axios
+      .get(`/vehicle/findOne/${vehicleId}`)
+      .then((res) => {
+        dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
 
-export const listVehiclesByVehicleId = (vehicleId) =>  (dispatch) => (onSuccess)=>(onError)=> {
-  dispatch({
-    type: GET_VEHICLES_REQUEST,
-  });
-  axios.get(`/vehicle/findOne/${vehicleId}`)
-  .then((res) =>{
-
-  dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data.data });
-  onSuccess(res.data);
-
-  })
-  
-  . catch ((error) =>{
-    dispatch({ type: GET_VEHICLES_FAIL, payload: error.response.data.message });
-    onError( error.response.data.message);
-  })
-  
-};
+      .catch((error) => {
+        dispatch({
+          type: GET_VEHICLES_FAIL,
+          payload: error.response.data.message,
+        });
+        onError(error.response.data.message);
+      });
+  };
 
 export const listVehiclesInsured = () => async (dispatch) => {
   dispatch({
@@ -93,81 +119,81 @@ export const listVehiclesByDate = (fromDate, endDate) => async (dispatch) => {
   }
 };
 
-export const createVehicle = (form) =>(dispatch) =>(onSuccess)=>(onError)=> {
-  // const requestPayload = {
-  //   CarrierId: form.CarrierId,
-  //   VehicleType: form.VehicleType,
-  //   VehicleNumber: form.VehicleNumber,
-  //   SerialNumber: form.SerialNumber,
-  //   VehicleMake: form.VehicleMake,
-  //   VehicleColor: form.VehicleColor,
-  //   VehicleModel: form.VehicleModel,
-  //   LicensePlate: form.LicensePlate,
-  //   VehicleModelYear: form.VehicleModelYear,
-  //   PurchaseYear: form.PurchaseYear,
-  //   Insured: form.Insured ? form.Insured : false,
-  //   PicUrl: form.PicUrl || null,
-  //   VehicleDocs: form.VehicleDocs || "",
-  // };
+export const createVehicle =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    // const requestPayload = {
+    //   CarrierId: form.CarrierId,
+    //   VehicleType: form.VehicleType,
+    //   VehicleNumber: form.VehicleNumber,
+    //   SerialNumber: form.SerialNumber,
+    //   VehicleMake: form.VehicleMake,
+    //   VehicleColor: form.VehicleColor,
+    //   VehicleModel: form.VehicleModel,
+    //   LicensePlate: form.LicensePlate,
+    //   VehicleModelYear: form.VehicleModelYear,
+    //   PurchaseYear: form.PurchaseYear,
+    //   Insured: form.Insured ? form.Insured : false,
+    //   PicUrl: form.PicUrl || null,
+    //   VehicleDocs: form.VehicleDocs || "",
+    // };
 
-  dispatch({ type: CREATE_VEHICLE_REQUEST });
+    dispatch({ type: CREATE_VEHICLE_REQUEST });
 
-axios.post(`/vehicle/create/`, form)
-.then((res)=>{
+    axios
+      .post(`/vehicle/create/`, form)
+      .then((res) => {
+        dispatch({
+          type: CREATE_VEHICLE_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
 
- dispatch({
-      type: CREATE_VEHICLE_SUCCESS,
-      payload: res.data,
-    });
-    onSuccess(res.data);
-})
-.catch((error)=>{
+        dispatch({ type: CREATE_VEHICLE_FAIL, payload: message });
 
-  const message =
-      error.response && error.response.data ? error.response.data.message : error.message;
-    dispatch({ type: CREATE_VEHICLE_FAIL, payload: message });
-
-    onError(message)
-
-});
-
-   
- 
-};
-
-export const editVehicle = (form, vehicleId) => async (dispatch) => {
-  const requestPayload = {
-    VehicleId: vehicleId || form.VehicleId,
-    CarrierId: form.CarrierId,
-    VehicleType: form.VehicleType,
-    VehicleNumber: form.VehicleNumber,
-    SerialNumber: form.SerialNumber,
-    VehicleMake: form.VehicleMake,
-    VehicleColor: form.VehicleColor,
-    VehicleModel: form.VehicleModel,
-    LicensePlate: form.LicensePlate,
-    VehicleModelYear: form.VehicleModelYear,
-    PurchaseYear: form.PurchaseYear,
-    Insured: form.Insured ? form.Insured : false,
-    PicUrl: form.PicUrl || null,
-    VehicleDocs: form.VehicleDocs || "",
+        onError(message);
+      });
   };
 
-  dispatch({ type: EDIT_VEHICLE_REQUEST });
+export const editVehicle =
+  (form, vehicleId) => async (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      VehicleId: vehicleId || form.VehicleId,
+      CarrierId: form.CarrierId,
+      VehicleType: form.VehicleType,
+      VehicleNumber: form.VehicleNumber,
+      SerialNumber: form.SerialNumber,
+      VehicleMake: form.VehicleMake,
+      VehicleColor: form.VehicleColor,
+      VehicleModel: form.VehicleModel,
+      LicensePlate: form.LicensePlate,
+      VehicleModelYear: form.VehicleModelYear,
+      PurchaseYear: form.PurchaseYear,
+      Insured: form.Insured ? form.Insured : false,
+      PicUrl: form.PicUrl || null,
+      VehicleDocs: form.VehicleDocs || "",
+    };
 
-  try {
-    const { res } = await axios.put(`/vehicle/update/`, requestPayload);
+    dispatch({ type: EDIT_VEHICLE_REQUEST });
 
-    dispatch({
-      type: EDIT_VEHICLE_SUCCESS,
-      payload: res.data,
-    });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: EDIT_VEHICLE_FAIL, payload: message });
-  }
-};
+    axios
+      .put(`/vehicle/update/${vehicleId}`, form)
+      .then((res) => {
+        dispatch({
+          type: EDIT_VEHICLE_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+
+        dispatch({ type: EDIT_VEHICLE_FAIL, payload: message });
+        onError();
+      });
+  };
 
 export const deleteVehicle = (vehicleId) => async (dispatch) => {
   dispatch({ type: DELETE_VEHICLE_REQUEST });

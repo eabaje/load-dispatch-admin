@@ -9,7 +9,12 @@ import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createDriver, editDriver, listDriversByDriverName, listDriversById } from "../../context/actions/driver/driver.action";
+import {
+  createDriver,
+  editDriver,
+  listDriversByDriverName,
+  listDriversById,
+} from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
 import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
 import $ from "jquery";
@@ -18,7 +23,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function AddDriver({ history, match }) {
-  
   const { driverId } = match.params;
   const isAddMode = !driverId;
 
@@ -32,8 +36,6 @@ function AddDriver({ history, match }) {
   const [docFile, setdocFile] = useState(null);
   const [user, setUser] = useState({});
   // const onSubmit = (data) => console.log(data);
-
-  
 
   const selectPickUpCountry = async (e) => {
     setCountry((country) => e.target.value);
@@ -76,22 +78,22 @@ function AddDriver({ history, match }) {
 
   const {
     driverDispatch,
-    driverState: { error, loading },
+    driverState: {
+      createDriver: { error, loading },
+    },
   } = useContext(GlobalContext);
-
 
   const getDriverById = (id) => {
     //  e.preventDefault();
 
-   return listDriversById(id)(driverDispatch);
+    return listDriversById(id)(driverDispatch);
   };
 
   function onSubmit(formdata) {
-    return isAddMode ? CreateDriver(formdata) : UpdateDriver(driverId, formdata);
+    return isAddMode
+      ? CreateDriver(formdata)
+      : UpdateDriver(driverId, formdata);
   }
-
-
-
 
   const CreateDriver = (data) => {
     //  e.preventDefault();
@@ -130,14 +132,11 @@ function AddDriver({ history, match }) {
     }
   };
 
-
-
   const UpdateDriver = (data) => {
     //  e.preventDefault();
 
     uploadImage(picFile)((url) => {
       data.PicUrl = url;
-    
     })((err) => {
       enqueueSnackbar(`Error:-${err.message} `, {
         variant: "error",
@@ -151,16 +150,13 @@ function AddDriver({ history, match }) {
         variant: "error",
       });
     });
-  
+
     editDriver(data, picFile, docFile)(driverDispatch)((res) => {
       console.log(`data`, data);
       if (res.message === "Success") {
-        enqueueSnackbar(
-          `Updated  Driver-${res.data.DriverName} successfully`,
-          {
-            variant: "success",
-          }
-        );
+        enqueueSnackbar(`Updated  Driver-${res.data.DriverName} successfully`, {
+          variant: "success",
+        });
       }
     });
 
@@ -168,12 +164,6 @@ function AddDriver({ history, match }) {
       enqueueSnackbar(error, { variant: "error" });
     }
   };
-
-
-
-
-
-
 
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
@@ -196,7 +186,6 @@ function AddDriver({ history, match }) {
         fields.forEach((field) => setValue(field, driver[field]));
       });
     }
-
   }, []);
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
@@ -232,7 +221,6 @@ function AddDriver({ history, match }) {
                   enctype="multipart/form-data"
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                 
                   <input
                     type="hidden"
                     name="UserId"
@@ -245,7 +233,6 @@ function AddDriver({ history, match }) {
                     value={user.CompanyId}
                     class="form-control"
                   />
-                
 
                   <div class="form-group row">
                     <div class="col-md-12 ">
@@ -461,7 +448,12 @@ function AddDriver({ history, match }) {
                         class="btn  btn-primary"
                         style={{ float: "right" }}
                       >
-                        <i class="feather mr-2 icon-check-circle"></i> Submit
+                        {loading ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          <i class="feather mr-2 icon-check-circle"></i>
+                        )}{" "}
+                        {isAddMode ? "Submit" : "Update"}
                       </button>
                     </div>
                   </div>

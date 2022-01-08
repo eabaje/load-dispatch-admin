@@ -32,52 +32,41 @@ function AddVehicle({ history, match }) {
     register,
     formState: { errors },
     handleSubmit,
-    setValue
+    setValue,
   } = useForm();
 
   const {
     vehicleDispatch,
-    vehicleState: { error, loading, data },
+    vehicleState: {
+      createVehicle: { loading },
+    },
   } = useContext(GlobalContext);
 
-  const getVehicleById = (id) => {
-    //  e.preventDefault();
-
-    listVehiclesByVehicleId(id)(vehicleDispatch);
-  };
-
   function SubmitForm(formdata) {
-    return isAddMode ? CreateVehicle(formdata) : EditVehicle(formdata, vehicleId);
+    return isAddMode
+      ? CreateVehicle(formdata)
+      : EditVehicle(formdata, vehicleId);
   }
 
   function CreateVehicle(formdata) {
-    console.log(`formdata`, formdata) 
+    console.log(`formdata`, formdata);
     createVehicle(formdata)(vehicleDispatch)((res) => {
-      
-        enqueueSnackbar(res.message, {
-          variant: "success",
-        });
-      
-    })((err)=>{
-
+      enqueueSnackbar(res.message, {
+        variant: "success",
+      });
+    })((err) => {
       enqueueSnackbar(err, { variant: "error" });
-
     });
-    
   }
 
   function EditVehicle(data, id) {
-    editVehicle(data, id)(vehicleDispatch);
-    if (data.message === "success") {
-      enqueueSnackbar("Updated Record(s) succesfully", {
+    editVehicle(data, id)(vehicleDispatch)((res) => {
+      enqueueSnackbar(res.message, {
         variant: "success",
       });
-    } else {
-      if (error) {
-        enqueueSnackbar(error, { variant: "error" });
-      }
-      enqueueSnackbar("An Error occurred", { variant: "error" });
-    }
+    })((err) => {
+      enqueueSnackbar(err, { variant: "error" });
+    });
   }
 
   const [user, setUser] = useState({});
@@ -86,29 +75,23 @@ function AddVehicle({ history, match }) {
   useEffect(() => {
     if (!isAddMode) {
       // get user and set form fields
-     
-     
- listVehiclesByVehicleId(vehicleId)(vehicleDispatch)(res =>{
 
-  const fields = [
-    "VehicleType",
-    "VehicleNumber",
-    "SerialNumber",
-    "VehicleMake",
-    "Description",
-    "VehicleColor",
-    "VehicleModel",
-    "SerialNumber",
-    "LicensePlate",
-    "VehicleModelYear",
-    "PurchaseYear",
-  ];
-  fields.forEach((field) => setValue(field, res[field]));
-
-
- });
-     
-    
+      listVehiclesByVehicleId(vehicleId)(vehicleDispatch)((res) => {
+        const fields = [
+          "VehicleType",
+          "VehicleNumber",
+          "SerialNumber",
+          "VehicleMake",
+          "Description",
+          "VehicleColor",
+          "VehicleModel",
+          "SerialNumber",
+          "LicensePlate",
+          "VehicleModelYear",
+          "PurchaseYear",
+        ];
+        fields.forEach((field) => setValue(field, res[field]));
+      });
     }
   }, []);
 
@@ -140,7 +123,8 @@ function AddVehicle({ history, match }) {
                     name="CarrierId"
                     value={carrierId}
                     class="form-control"
-                    {...register("CarrierId")}/>
+                    {...register("CarrierId")}
+                  />
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> Vehicle Info </h5>
@@ -158,7 +142,11 @@ function AddVehicle({ history, match }) {
                       >
                         <option selected>Select Vehicle Type</option>
                         {LOAD_TYPE.map((item) => (
-                          <option key={item.value} selected={carrierType === item.value} value={item.value}>
+                          <option
+                            key={item.value}
+                            selected={carrierType === item.value}
+                            value={item.value}
+                          >
                             {item.text}
                           </option>
                         ))}
@@ -327,7 +315,12 @@ function AddVehicle({ history, match }) {
                         class="btn  btn-primary"
                         style={{ float: "right" }}
                       >
-                        <i class="feather mr-2 icon-check-circle"></i> Submit
+                        {loading ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          <i class="feather mr-2 icon-check-circle"></i>
+                        )}{" "}
+                        {isAddMode ? "Submit" : "Update"}
                       </button>
                     </div>
                   </div>

@@ -1,25 +1,35 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-export const columns = [
-  {
-    id: 1,
-    name: "User Name",
-    selector: (row) => row.User.FullName,
-    sortable: true,
-    reorder: true,
-  },
+import { LOAD_CAPACITY, LOAD_TYPE, TRIP_STATUS } from "../../constants/enum";
+import { Country, State } from "country-state-city";
+import { Button } from "@material-ui/core";
+import { GlobalContext } from "../../context/Provider";
+// import {
+//   listShipments,
+//   showInterest,
+// } from "../../context/actions/shipment/shipment.action";
+import { useContext } from "react";
+export const columns = (params) => [
+  // {
+  //   id: 1,
+  //   name: "User Name",
+  //   selector: (row) => row.User.FullName,
+  //   sortable: true,
+  //   reorder: true,
+  // },
   {
     id: 2,
     name: "Company",
-    selector: (row) => row.Company.CompanyName,
+    selector: (row) => row?.Company?.CompanyName,
     sortable: true,
     reorder: true,
   },
   {
     id: 3,
     name: "Load Category",
-    selector: (row) => row.LoadCategory,
+    selector: (row) =>
+      LOAD_TYPE.find((item) => item.value === row.LoadCategory).text,
     sortable: true,
     reorder: true,
   },
@@ -34,7 +44,8 @@ export const columns = [
   {
     id: 5,
     name: "Load Type",
-    selector: (row) => row.LoadType,
+    selector: (row) =>
+      LOAD_CAPACITY.find((item) => item.value === row.LoadType).text,
     sortable: true,
     reorder: true,
   },
@@ -58,7 +69,11 @@ export const columns = [
   {
     id: 8,
     name: "Pick Up Region",
-    selector: (row) => row.PickUpRegion,
+    selector: (row) =>
+      row.PickUpRegion
+        ? State.getStateByCodeAndCountry(row.PickUpRegion, row.PickUpCountry)
+            .name
+        : row.PickUpRegion,
     sortable: true,
     reorder: true,
   },
@@ -88,21 +103,33 @@ export const columns = [
   {
     id: 11,
     name: "Pick Up Country",
-    selector: (row) => row.PickUpCountry,
+    selector: (row) =>
+      row.PickUpCountry
+        ? Country.getCountryByCode(row.PickUpCountry).name
+        : row.PickUpCountry,
     sortable: true,
     reorder: true,
   },
   {
     id: 12,
     name: "Delivery Region",
-    selector: (row) => row.DeliveryRegion,
+    selector: (row) =>
+      row.DeliveryRegion
+        ? State.getStateByCodeAndCountry(
+            row.DeliveryRegion,
+            row.DeliveryCountry
+          ).name
+        : row.DeliveryRegion,
     sortable: true,
     reorder: true,
   },
   {
     id: 13,
     name: "Delivery Country",
-    selector: (row) => row.DeliveryCountry,
+    selector: (row) =>
+      row.DeliveryCountry
+        ? Country.getCountryByCode(row.DeliveryCountry).name
+        : row.DeliveryCountry,
     sortable: true,
     reorder: true,
   },
@@ -180,7 +207,8 @@ export const columns = [
   {
     id: 24,
     name: "Shipment Status",
-    selector: (row) => row.ShipmentStatus,
+    selector: (row) =>
+      TRIP_STATUS.find((item) => item.value === row.ShipmentStatus).text,
     sortable: true,
     reorder: true,
   },
@@ -210,29 +238,54 @@ export const columns = [
       <>
         {" "}
         <Link
-          to={"/edit-vehicle-info/" + row.VehicleId}
+          to={"/edit-shipment-info/" + row.ShipmentId}
           className="btn btn-sm"
           title="Edit  Subscription"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
       </>,
-
-      <Link
-        to={"/assign-driver-to-vehicle/" + row.VehicleId}
-        className="btn btn-sm"
-        title="Assign Driver to Vehicle"
-      >
-        <i className="first fas fa-user"></i>
-      </Link>,
-
-      <Link
-        to={"/delete-data/" + row.VehicleId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      params?.roles !== "carrier" && (
+        <Link
+          to={"/list-request-for-shipment/" + row.ShipmentId}
+          className="btn btn-sm"
+          title="Check shipment interests"
+        >
+          <i className="first fas fa-check"></i>
+        </Link>
+      ),
+      params?.roles !== "shipper" && (
+        <Link
+          to={"/place-interest-for-shipment/IsReadOnly/" + row.ShipmentId}
+          className="btn btn-sm"
+          title="Show shipment interests"
+        >
+          <i className="first fas fa-heart"></i>
+        </Link>
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/Shipments/" + row.ShipmentId}
+          className="btn btn-sm"
+          title="Delete/Archive (Redundant/Incorrect data)"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];
+
+// function ShowInterest(ShipmentId, userId) {
+//   const {
+//     shipmentDispatch,
+//     shipmentState: {
+//       Shipments: { data, loading },
+//       createShipment: { data: createdata }, //loading
+//     },
+//   } = useContext(GlobalContext);
+
+//   showInterest(ShipmentId, userId)(shipmentDispatch)((res) => {})((err) => {
+//     // enqueueSnackbar(err, { variant: "error" });
+//   });
+// }

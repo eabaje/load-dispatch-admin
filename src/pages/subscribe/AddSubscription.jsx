@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { Controller, useForm ,useController} from "react-hook-form";
+import { Controller, useForm, useController } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
@@ -35,12 +35,12 @@ function AddSubscription({ history, match }) {
     handleSubmit,
     setValue,
     watch,
-    control
-  } = useForm({ mode: "onChange"});
+    control,
+  } = useForm({ mode: "onChange" });
 
   const {
     subscribeDispatch,
-    subscribeState:{ createSubscribe: error, loading },
+    subscribeState: { createSubscribe: error, loading },
   } = useContext(GlobalContext);
 
   const getSubscriptionById = (id) => {
@@ -62,8 +62,7 @@ function AddSubscription({ history, match }) {
           variant: "success",
         });
       }
-    })((err)=>{
-
+    })((err) => {
       enqueueSnackbar(err, {
         variant: "error",
       });
@@ -71,7 +70,7 @@ function AddSubscription({ history, match }) {
   }
 
   function updateSubscription(id, formdata) {
-    editSubscription(id,formdata)(subscribeDispatch)((res) => {
+    editSubscription(id, formdata)(subscribeDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
@@ -82,7 +81,7 @@ function AddSubscription({ history, match }) {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-   
+
     if (!isAddMode) {
       fetchData("subscription/findOne", subscribeId).then((subscription) => {
         console.log(`subscription`, subscribeId);
@@ -99,7 +98,6 @@ function AddSubscription({ history, match }) {
     }
   }, []);
 
-  
   return (
     <>
       <div class="row">
@@ -194,7 +192,7 @@ function AddSubscription({ history, match }) {
                   <div class="form-group row">
                     <label class="col-form-label col-md-2">Description</label>
                     <div class="col-md-10">
-                    {/* <Controller
+                      {/* <Controller
                         as={<WYSIWYGEditor />}
                         name="editor_content"
                         control={control}
@@ -240,7 +238,12 @@ function AddSubscription({ history, match }) {
                         class="btn  btn-primary"
                         style={{ float: "right" }}
                       >
-                        <i class="feather mr-2 icon-check-circle"></i> Submit
+                        {loading ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          <i class="feather mr-2 icon-check-circle"></i>
+                        )}{" "}
+                        {isAddMode ? "Submit" : "Update"}
                       </button>
                     </div>
                   </div>

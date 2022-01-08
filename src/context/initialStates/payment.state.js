@@ -1,6 +1,11 @@
 export default {
-  getPayments: {
+  Payments: {
     data: [],
+    error: null,
+    loading: false,
+  },
+  Payment: {
+    data: {},
     error: null,
     loading: false,
   },

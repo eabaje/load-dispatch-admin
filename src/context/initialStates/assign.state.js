@@ -1,16 +1,16 @@
 export default {
-  getAssignDrivers: {
+  AssignedDrivers: {
     data: [],
     error: null,
     loading: false,
   },
-  createAssignDriver: {
+  createAssignedDriver: {
     data: {},
     error: null,
     loading: false,
   },
 
-  deleteAssignDriver: {
+  deleteAssignedDriver: {
     data: {},
     error: null,
     loading: false,

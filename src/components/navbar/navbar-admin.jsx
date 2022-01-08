@@ -46,7 +46,8 @@ const NavBarAdmin = () => {
             <li className="nav-item">
               <a href="/dashboard" class="nav-link ">
                 <span class="pcoded-micon">
-                  <i class="feather icon-home"></i>
+                  {/* <i class="feather icon-home"></i> */}
+                  <i className="first fas fa-home"></i>
                 </span>
                 <span class="pcoded-mtext">Dashboard</span>
               </a>
@@ -55,7 +56,7 @@ const NavBarAdmin = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-box"></i>
+                  <i className="first fas fa-car"></i>
                 </span>
                 <span className="pcoded-mtext">Ship Vehicles</span>
               </a>
@@ -64,7 +65,7 @@ const NavBarAdmin = () => {
                   <a href="/add-shipment">Post a Vehicle</a>
                 </li>
                 <li>
-                  <a href="/my-shipments">My Vehicles</a>
+                  <a href="/list-all-shipments">My Vehicles</a>
                 </li>
                 <li>
                   <a href="/truck-listing">Search Truck Space</a>
@@ -75,7 +76,7 @@ const NavBarAdmin = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-aperture"></i>
+                  <i className="first fas fa-truck"></i>
                 </span>
                 <span className="pcoded-mtext">Carrier</span>
               </a>
@@ -116,7 +117,7 @@ const NavBarAdmin = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/list-company" label="Resources">
+                  <a href="/list-company-info" label="Resources">
                     View All Company record(s)
                   </a>
                 </li>
@@ -126,7 +127,8 @@ const NavBarAdmin = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-aperture"></i>
+                  {/* <i className="feather icon-aperture"></i> */}
+                  <i className="first fas fa-users"></i>
                 </span>
                 <span className="pcoded-mtext">Driver Management</span>
               </a>
@@ -157,7 +159,8 @@ const NavBarAdmin = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-aperture"></i>
+                  {/* <i className="feather icon-aperture"></i> */}
+                  <i className="first fas fa-road"></i>
                 </span>
                 <span className="pcoded-mtext">Trip Management</span>
               </a>
@@ -193,7 +196,7 @@ const NavBarAdmin = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-aperture"></i>
+                  <i className="first fas fa-gift"></i>
                 </span>
                 <span className="pcoded-mtext">Subscription Management</span>
               </a>
@@ -219,7 +222,8 @@ const NavBarAdmin = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-book"></i>
+                  {/* <i className="feather icon-book"></i> */}
+                  <i className="first fas fa-cog"></i>
                 </span>
                 <span className="pcoded-mtext">Resources</span>
               </a>
@@ -229,36 +233,7 @@ const NavBarAdmin = () => {
                     View Payment Transaction
                   </a>
                 </li>
-                <li>
-                  <a href="/protected/classifieds/" label="Resources">
-                    Classifieds
-                  </a>
-                </li>
-                <li>
-                  <a href="/protected/services/" label="Resources">
-                    Transporter Services
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="http://www.mapquest.com/"
-                    label="Resources"
-                    id="navMaps"
-                    target="_blank"
-                  >
-                    Maps
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="http://www.mapquest.com/directions"
-                    label="Resources"
-                    id="navDirections"
-                    target="_blank"
-                  >
-                    Directions
-                  </a>
-                </li>
+
                 <li>
                   <a
                     href="http://www.nws.noaa.gov/"

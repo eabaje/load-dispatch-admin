@@ -17,8 +17,8 @@ const assigndriver = (state, { type, payload }) => {
     case EDIT_ASSIGN_DRIVER_REQUEST: {
       return {
         ...state,
-        createAssign_Driver: {
-          ...state.createAssign_Driver,
+        createAssignedDriver: {
+          ...state.createAssignedDriver,
           loading: true,
           error: null,
         },
@@ -28,16 +28,16 @@ const assigndriver = (state, { type, payload }) => {
     case EDIT_ASSIGN_DRIVER_SUCCESS: {
       return {
         ...state,
-        createAssign_Driver: {
-          ...state.createAssign_Driver,
+        createAssignedDriver: {
+          ...state.createAssignedDriver,
           loading: false,
           error: null,
         },
 
-        getAssign_Drivers: {
+        AssignedDrivers: {
           ...state.getAssign_Drivers,
           loading: false,
-          data: state.getAssign_Drivers.data.map((item) => {
+          data: state.AssignedDrivers.data.map((item) => {
             if (item.AssignId === payload.id) {
               return payload;
             } else {
@@ -52,8 +52,8 @@ const assigndriver = (state, { type, payload }) => {
     case EDIT_ASSIGN_DRIVER_FAIL: {
       return {
         ...state,
-        createAssign_Driver: {
-          ...state.createAssign_Driver,
+        createAssignedDriver: {
+          ...state.createAssignedDriver,
           loading: false,
           error: null,
         },
@@ -63,8 +63,8 @@ const assigndriver = (state, { type, payload }) => {
     case DELETE_ASSIGN_DRIVER_REQUEST: {
       return {
         ...state,
-        deleteAssign_Driver: {
-          ...state.deleteAssign_Driver,
+        deleteAssignedDriver: {
+          ...state.deleteAssignedDriver,
           loading: true,
           error: null,
         },
@@ -75,7 +75,7 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         deleteAssign_Driver: {
-          ...state.deleteAssign_Driver,
+          ...state.deleteAssignedDriver,
           loading: false,
           error: null,
         },
@@ -83,7 +83,7 @@ const assigndriver = (state, { type, payload }) => {
         getAssign_Drivers: {
           ...state.getAssign_Drivers,
           loading: false,
-          data: state.getAssign_Drivers.data.filter(
+          data: state.AssignedDrivers.data.filter(
             (item) => item.AssignId !== payload
           ),
           error: null,
@@ -95,7 +95,7 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         createAssign_Driver: {
-          ...state.createAssign_Driver,
+          ...state.createAssignedDriver,
           loading: false,
           error: null,
         },
@@ -104,7 +104,7 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         createAssign_Driver: {
-          ...state.createAssign_Driver,
+          ...state.createAssignedDriver,
           loading: true,
           error: null,
         },
@@ -113,16 +113,16 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         createAssign_Driver: {
-          ...state.createAssign_Driver,
+          ...state.createAssignedDriver,
           loading: false,
           error: null,
           data: payload,
         },
 
         getAssign_Drivers: {
-          ...state.getAssign_Drivers,
+          ...state.AssignedDrivers,
           loading: false,
-          data: [payload, ...state.getAssign_Drivers.data],
+          data: [payload, ...state.AssignedDrivers.data],
           error: null,
         },
       };
@@ -131,7 +131,7 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         getAssign_Drivers: {
-          ...state.getAssign_Drivers,
+          ...state.AssignedDrivers,
           loading: true,
           error: null,
         },
@@ -141,7 +141,7 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         getAssign_Drivers: {
-          ...state.getAssign_Drivers,
+          ...state.AssignedDrivers,
           loading: false,
           data: payload,
           error: null,
@@ -152,7 +152,7 @@ const assigndriver = (state, { type, payload }) => {
       return {
         ...state,
         getAssign_Drivers: {
-          ...state.getAssign_Drivers,
+          ...state.AssignedDrivers,
           loading: false,
           error: payload,
         },

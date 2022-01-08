@@ -1,6 +1,21 @@
 export default {
-  getShipments: {
+  Shipments: {
     data: [],
+    error: null,
+    loading: false,
+  },
+  Shipment: {
+    data: {},
+    error: null,
+    loading: false,
+  },
+  Interests: {
+    data: [],
+    error: null,
+    loading: false,
+  },
+  Interest: {
+    data: {},
     error: null,
     loading: false,
   },

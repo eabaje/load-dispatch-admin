@@ -8,10 +8,10 @@ import { GlobalContext } from "../../context/Provider";
 
 const NavBarShipper = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const [user, setUser] = useState({});
   const {
     authDispatch,
-    authState: { error, user, isLoggedIn },
+    authState: { loading },
   } = useContext(GlobalContext);
 
   const location = useLocation();
@@ -33,6 +33,7 @@ const NavBarShipper = () => {
   };
   useEffect(() => {
     handleMenu();
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   return (
@@ -64,9 +65,7 @@ const NavBarShipper = () => {
                   <a href="/add-shipment">Post a Vehicle</a>
                 </li>
                 <li>
-                  <a href={`/my-shipments/?userId=${user.UserId}`}>
-                    My Vehicles
-                  </a>
+                  <a href={`/my-shipments/${user.UserId}`}>My Vehicles</a>
                 </li>
                 <li>
                   <a href="/list-carriers">Connect with carriers </a>

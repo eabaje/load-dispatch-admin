@@ -4,7 +4,9 @@ import axios from "axios";
 import { API_URL } from "../constants";
 
 let headers = {};
-
+// if (localStorage.token) {
+//   headers.Authorization = `Bearer ${localStorage.token}`;
+// }
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers,

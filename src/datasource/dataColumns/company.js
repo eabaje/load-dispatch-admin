@@ -1,11 +1,14 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
+import { ROLES } from "../../constants/enum";
+import { Country, State } from "country-state-city";
 export const columns = [
   {
     id: 5,
-    name: "Company Type",
-    selector: (row) => row.CompanyType,
+    name: "Role Type",
+    selector: (row) =>
+      ROLES.find((item) => item.value === row.CompanyType).text,
     sortable: true,
     reorder: true,
   },
@@ -38,34 +41,21 @@ export const columns = [
     sortable: true,
     reorder: true,
   },
-
-  {
-    id: 5,
-    name: "Licensed?",
-    selector: (row) => (
-      <Form.Check
-        type="checkbox"
-        id="custom-switch"
-        checked={row.Licensed}
-        disabled
-      />
-    ),
-    sortable: true,
-    right: true,
-    reorder: true,
-  },
-
   {
     id: 10,
     name: "Country",
-    selector: (row) => row.Country,
+    selector: (row) =>
+      row.Country ? Country.getCountryByCode(row.Country).name : row.Country,
     sortable: true,
     reorder: true,
   },
   {
     id: 11,
     name: "Region",
-    selector: (row) => row.Region,
+    selector: (row) =>
+      row.Region
+        ? State.getStateByCodeAndCountry(row.Region, row.Country).name
+        : row.Region,
     sortable: true,
     reorder: true,
   },
@@ -105,22 +95,22 @@ export const columns = [
         <Link
           to={"/edit-company-info/" + row.CompanyId}
           className="btn btn-sm"
-          title="Edit  Subscription"
+          title="Edit  Company"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
       </>,
 
-      <Link
-        to={"/add-vehicle-to-carrier/" + row.CarrierId}
-        className="btn btn-sm"
-        title="Assign Driver to Vehicle"
-      >
-        <i className="first fas fa-user"></i>
-      </Link>,
+      // <Link
+      //   to={"/add-vehicle-to-carrier/" + row.CarrierId}
+      //   className="btn btn-sm"
+      //   title="Assign Driver to Vehicle"
+      // >
+      //   <i className="first fas fa-user"></i>
+      // </Link>,
 
       <Link
-        to={"/delete-data/" + row.CarrierId}
+        to={"/delete-data/Companys/" + row.CompanyId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

@@ -1,6 +1,7 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
+import { LOAD_CAPACITY, LOAD_TYPE } from "../../constants/enum";
 export const columns = [
   {
     id: 1,
@@ -12,14 +13,16 @@ export const columns = [
   {
     id: 2,
     name: "Carrier Type",
-    selector: (row) => row.CarrierType,
+    selector: (row) =>
+      LOAD_TYPE.find((item) => item.value === row.CarrierType).text,
     sortable: true,
     reorder: true,
   },
   {
     id: 3,
     name: "Fleet Type",
-    selector: (row) => row.FleetType,
+    selector: (row) =>
+      LOAD_CAPACITY.find((item) => item.value === row.FleetType).text,
     sortable: true,
     reorder: true,
   },
@@ -97,18 +100,26 @@ export const columns = [
         <Link
           to={"/edit-carrier-info/" + row.CarrierId}
           className="btn btn-sm"
-          title="Edit  Subscription"
+          title="Edit  Carrier Info"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
       </>,
 
       <Link
-        to={"/add-vehicle-to-carrier/" + row.CarrierId}
+        to={"/add-vehicle-to-carrier/" + row.CarrierId + "/" + row.CarrierType}
         className="btn btn-sm"
         title="Add Vehicle to carrier"
       >
         <i className="first fas fa-car"></i>
+      </Link>,
+
+      <Link
+        to={"/list-carrier-vehicles/" + row.CarrierId + "/" + row.CarrierType}
+        className="btn btn-sm"
+        title="List all Carrier Vehicle "
+      >
+        <i className="first fas fa-truck"></i>
       </Link>,
 
       <Link

@@ -34,10 +34,10 @@ const carriers = (state, { type, payload }) => {
           error: null,
         },
 
-        getCarriers: {
-          ...state.getCarriers,
+        Carriers: {
+          ...state.Carriers,
           loading: false,
-          data: state.getCarriers.data.map((item) => {
+          data: state.Carriers.data.map((item) => {
             if (item.CarrierId === payload.id) {
               return payload;
             } else {
@@ -80,10 +80,10 @@ const carriers = (state, { type, payload }) => {
           error: null,
         },
 
-        getCarriers: {
-          ...state.getCarriers,
+        Carriers: {
+          ...state.Carriers,
           loading: false,
-          data: state.getCarriers.data.filter(
+          data: state.Carriers.data.filter(
             (item) => item.CarrierId !== payload
           ),
           error: null,
@@ -119,10 +119,10 @@ const carriers = (state, { type, payload }) => {
           data: payload,
         },
 
-        getCarriers: {
-          ...state.getCarriers,
+        Carriers: {
+          ...state.Carriers,
           loading: false,
-          data: [payload, ...state.getCarriers.data],
+          data: [payload, ...state.Carriers.data],
           error: null,
         },
       };
@@ -140,8 +140,8 @@ const carriers = (state, { type, payload }) => {
     case GET_CARRIERS_REQUEST:
       return {
         ...state,
-        getCarriers: {
-          ...state.getCarriers,
+        Carriers: {
+          ...state.Carriers,
           loading: true,
           error: null,
         },
@@ -150,8 +150,8 @@ const carriers = (state, { type, payload }) => {
     case GET_CARRIERS_SUCCESS:
       return {
         ...state,
-        getCarriers: {
-          ...state.getCarriers,
+        Carriers: {
+          ...state.Carriers,
           loading: false,
           data: payload,
           error: null,
@@ -161,8 +161,8 @@ const carriers = (state, { type, payload }) => {
     case GET_CARRIERS_FAIL:
       return {
         ...state,
-        getCarriers: {
-          ...state.getCarriers,
+        Carriers: {
+          ...state.Carriers,
           loading: false,
           error: payload,
         },

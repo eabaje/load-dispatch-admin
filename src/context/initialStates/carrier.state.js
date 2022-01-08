@@ -1,5 +1,5 @@
 export default {
-  getCarriers: {
+  Carriers: {
     data: [],
     error: null,
     loading: false,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { Controller, useForm ,useController} from "react-hook-form";
+import { Controller, useForm, useController } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
@@ -20,7 +20,10 @@ import { Editor } from "draft-js";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import WYSIWYGEditor from "../../components/wysiwyg/wysiwyg";
-import { subcribeUser, updateUserSubscription } from "../../context/actions/user/user.action";
+import {
+  subcribeUser,
+  updateUserSubscription,
+} from "../../context/actions/user/user.action";
 
 function AddUserSubscription({ history, match }) {
   const { userSubscriptionId } = match.params;
@@ -41,14 +44,15 @@ function AddUserSubscription({ history, match }) {
     handleSubmit,
     setValue,
     watch,
-    control
-  } = useForm({ mode: "onChange"});
+    control,
+  } = useForm({ mode: "onChange" });
 
   const {
-    userDispatch
-    // ,userState: { error, loading },
+    userDispatch,
+    userState: {
+      createUserSubscription: { loading },
+    },
   } = useContext(GlobalContext);
-
 
   function onSubmit(formdata) {
     return isAddMode
@@ -77,7 +81,7 @@ function AddUserSubscription({ history, match }) {
   }
 
   function updateUserSubscription(id, formdata) {
-    updateUserSubscription(formdata,id)(userDispatch)((res) => {
+    updateUserSubscription(formdata, id)(userDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
@@ -88,10 +92,10 @@ function AddUserSubscription({ history, match }) {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-   
+
     if (!isAddMode) {
       // fetchData("subscription/findOne", userSubscriptionId)((subscription) => {
-      
+
       //   const fields = [
       //     "SubscriptionType",
       //     "SubscriptionName",
@@ -104,39 +108,30 @@ function AddUserSubscription({ history, match }) {
       // });
 
       fetchDataAll("subscription/findAll")((subscription) => {
-        setsubscriptionType(subscription)
-      
-      })((error)=>{
+        setsubscriptionType(subscription);
+      })((error) => {
         enqueueSnackbar(error.message, {
           variant: "error",
         });
-      })
+      });
 
-      fetchData("user/findUserSubscription",userId)((userSubscription) => {
-        setSubscribeUser(userSubscription)
-      
+      fetchData(
+        "user/findUserSubscription",
+        userId
+      )((userSubscription) => {
+        setSubscribeUser(userSubscription);
 
-          const fields = [
-          "SubscribeId",
-          
-         "StartDate",
-          "Active",
-          "EndDate",
-        ];
+        const fields = ["SubscribeId", "StartDate", "Active", "EndDate"];
         fields.forEach((field) => setValue(field, userSubscription[field]));
-      
-      
-      })((error)=>{
+      })((error) => {
         enqueueSnackbar(error.message, {
           variant: "error",
         });
-      })
-
-
+      });
     }
   }, []);
-  console.log(`subscribeUser`, subscribeUser)
-  
+  console.log(`subscribeUser`, subscribeUser);
+
   return (
     <>
       <div class="row">
@@ -161,9 +156,7 @@ function AddUserSubscription({ history, match }) {
                     </label>
 
                     <div class="col-sm-4">
-                     
-
-                        <select
+                      <select
                         id="SubscriptionType"
                         name="SubscriptionType"
                         class="form-control"
@@ -175,21 +168,25 @@ function AddUserSubscription({ history, match }) {
                         <option selected>Select Subscription Type</option>
 
                         {subscriptionType.map((item) => (
-                          <option key={item.SubscribeId}  selected={subscribeUser.SubscribeId === item.SubscribeId} value={item.SubscribeId}>
+                          <option
+                            key={item.SubscribeId}
+                            selected={
+                              subscribeUser.SubscribeId === item.SubscribeId
+                            }
+                            value={item.SubscribeId}
+                          >
                             {item.SubscriptionType}
                           </option>
                         ))}
                       </select>
                     </div>
-                    <label class="col-sm-2 col-form-label">
-                      Full Name
-                    </label>
+                    <label class="col-sm-2 col-form-label">Full Name</label>
 
                     <div class="col-sm-4">
                       <input
                         name="FullName"
                         class="form-control"
-                          value={subscribeUser.User.FullName}
+                        value={subscribeUser.User.FullName}
                         placeholder="User Name"
                         {...register("FullName", {
                           required: true,
@@ -239,7 +236,6 @@ function AddUserSubscription({ history, match }) {
                     </div>
                   </div>
 
-              
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> </h5>
@@ -272,7 +268,12 @@ function AddUserSubscription({ history, match }) {
                         class="btn  btn-primary"
                         style={{ float: "right" }}
                       >
-                        <i class="feather mr-2 icon-check-circle"></i> Submit
+                        {loading ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          <i class="feather mr-2 icon-check-circle"></i>
+                        )}{" "}
+                        {isAddMode ? "Submit" : "Update"}
                       </button>
                     </div>
                   </div>
@@ -287,4 +288,3 @@ function AddUserSubscription({ history, match }) {
 }
 
 export default AddUserSubscription;
-

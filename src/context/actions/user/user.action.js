@@ -15,7 +15,26 @@ import {
   GET_USER_SUBSCRIPTIONS_SUCCESS,
   GET_USER_SUBSCRIPTIONS_FAIL,
   GET_USER_SUBSCRIPTIONS_REQUEST,
+  GET_COMPANYS_REQUEST,
+  GET_COMPANYS_SUCCESS,
+  GET_COMPANYS_FAIL,
+  CREATE_USER_SUBSCRIPTION_REQUEST,
+  CREATE_USER_SUBSCRIPTION_SUCCESS,
+  CREATE_USER_SUBSCRIPTION_FAIL,
+  EDIT_USER_SUBSCRIPTION_REQUEST,
+  EDIT_USER_SUBSCRIPTION_SUCCESS,
+  EDIT_USER_SUBSCRIPTION_FAIL,
+  UPGRADE_USER_SUBSCRIPTION_REQUEST,
+  UPGRADE_USER_SUBSCRIPTION_SUCCESS,
+  UPGRADE_USER_SUBSCRIPTION_FAIL,
+  EDIT_COMPANY_REQUEST,
+  EDIT_COMPANY_SUCCESS,
+  EDIT_COMPANY_FAIL,
+  CREATE_COMPANY_REQUEST,
+  CREATE_COMPANY_SUCCESS,
+  CREATE_COMPANY_FAIL,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
 export const listUsers = () => async (dispatch) => {
@@ -25,8 +44,8 @@ export const listUsers = () => async (dispatch) => {
   try {
     const { res } = await axios.get(`/user/findAll/`);
     dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+  } catch (err) {
+    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
   }
 };
 
@@ -37,8 +56,8 @@ export const listUserByCriteria = (url, params) => async (dispatch) => {
   try {
     const { data } = await axios.get(`${url}${params}`);
     dispatch({ type: GET_PROFILES_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+  } catch (err) {
+    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
   }
 };
 
@@ -49,8 +68,8 @@ export const listUsersByUserId = (userId) => async (dispatch) => {
   try {
     const { res } = await axios.get(`/user/findOne/${userId}`);
     dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+  } catch (err) {
+    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
   }
 };
 
@@ -61,8 +80,8 @@ export const listUsersByName = (name) => async (dispatch) => {
   try {
     const { res } = await axios.get(`/user/findAllBySearch/${name}`);
     dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+  } catch (err) {
+    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
   }
 };
 
@@ -75,8 +94,8 @@ export const listUsersByDate = (fromDate, endDate) => async (dispatch) => {
       `/user/findAllProfilesByDate/${fromDate}/${endDate}/}`
     );
     dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: error.message });
+  } catch (err) {
+    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
   }
 };
 
@@ -106,11 +125,8 @@ export const createUser = (form) => (dispatch) => (onSuccess) => (onError) => {
       onSuccess(res.data);
     })
 
-    .catch((error) => {
-      const message =
-        error.message && error.response.data.message
-          ? error.response.data.message
-          : error.response.data.message;
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
       dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
       onError(message);
     });
@@ -145,11 +161,8 @@ export const editUser =
         onSuccess(res.data);
       })
 
-      .catch((error) => {
-        const message =
-          error.message && error.response.data.message
-            ? error.response.data.message
-            : error.response.data.message;
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
         onError(message);
       });
@@ -169,11 +182,11 @@ export const deleteUser = (userId) => async (dispatch) => {
       type: DELETE_PROFILE_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
+  } catch (err) {
     const message =
-      error.message && error.response.data.message
-        ? error.response.data.message
-        : error.response.data.message;
+      err.message && err.response.data.message
+        ? err.response.data.message
+        : err.response.data.message;
     dispatch({ type: DELETE_PROFILE_FAIL, payload: message });
   }
 };
@@ -194,11 +207,8 @@ export const listUserSubscriptions =
         onSuccess(res.data);
         console.log(`res.data`, res.data);
       })
-      .catch((error) => {
-        const message =
-          error.message && error.response.data.message
-            ? error.response.data.message
-            : error.response.data.message;
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({ type: GET_USER_SUBSCRIPTIONS_FAIL, payload: message });
         onError(message);
       });
@@ -207,7 +217,7 @@ export const listUserSubscriptions =
 export const listUserSubscriptionByUserId =
   (userId) => (dispatch) => (onSuccess) => (onError) => {
     dispatch({
-      type: GET_PROFILES_REQUEST,
+      type: GET_USER_SUBSCRIPTIONS_REQUEST,
     });
     axios
       .get(`/user/findUserSubscription/${userId}`)
@@ -217,11 +227,8 @@ export const listUserSubscriptionByUserId =
         onSuccess(res.data);
         console.log(`res.data`, res.data);
       })
-      .catch((error) => {
-        const message =
-          error.message && error.response.data.message
-            ? error.response.data.message
-            : error.response.data.message;
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({ type: GET_USER_SUBSCRIPTIONS_FAIL, payload: message });
         onError(message);
       });
@@ -230,56 +237,47 @@ export const listUserSubscriptionByUserId =
 export const listUserSubscriptionByDate =
   (fromDate, endDate) => async (dispatch) => {
     dispatch({
-      type: GET_PROFILES_REQUEST,
+      type: GET_USER_SUBSCRIPTIONS_REQUEST,
     });
     try {
       const { res } = await axios.get(
         `/user/findAllUserSubscriptionsByDate/${fromDate}/${endDate}/}`
       );
-      dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-    } catch (error) {
-      const message =
-        error.message && error.response.data.message
-          ? error.response.data.message
-          : error.response.data.message;
-      dispatch({ type: GET_PROFILES_FAIL, payload: message });
+      dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
+    } catch (err) {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_USER_SUBSCRIPTIONS_FAIL, payload: message });
     }
   };
 
 export const listUserSubscriptionByStartDate =
   (fromDate, endDate) => async (dispatch) => {
     dispatch({
-      type: GET_PROFILES_REQUEST,
+      type: GET_USER_SUBSCRIPTIONS_REQUEST,
     });
     try {
       const { res } = await axios.get(
         `/user/findAllUserSubscriptionsByStartDate/${fromDate}/${endDate}/}`
       );
-      dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-    } catch (error) {
-      const message =
-        error.message && error.response.data.message
-          ? error.response.data.message
-          : error.response.data.message;
-      dispatch({ type: GET_PROFILES_FAIL, payload: message });
+      dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
+    } catch (err) {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_USER_SUBSCRIPTIONS_FAIL, payload: message });
     }
   };
 
 export const listUserSubscriptionByEndDate =
   (fromDate, endDate) => async (dispatch) => {
     dispatch({
-      type: GET_PROFILES_REQUEST,
+      type: GET_USER_SUBSCRIPTIONS_REQUEST,
     });
     try {
       const { res } = await axios.get(
-        `/user/findAllUserSubscriptionsByEndDate/${fromDate}/${endDate}/}`
+        `/user/findAllUserSubscriptionsByEndDate/${fromDate}/${endDate}`
       );
-      dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-    } catch (error) {
-      const message =
-        error.message && error.response.data.message
-          ? error.response.data.message
-          : error.response.data.message;
+      dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
+    } catch (err) {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
       dispatch({ type: GET_PROFILES_FAIL, payload: message });
     }
   };
@@ -295,24 +293,21 @@ export const subcribeUser =
       EndDate: form.Phone || "",
     };
 
-    dispatch({ type: CREATE_PROFILE_REQUEST });
+    dispatch({ type: CREATE_USER_SUBSCRIPTION_REQUEST });
 
     axios
       .post(`/user/subscribe/`, form)
       .then((res) => {
         dispatch({
-          type: CREATE_PROFILE_SUCCESS,
+          type: CREATE_USER_SUBSCRIPTION_SUCCESS,
           payload: res.data,
         });
         onSuccess(res.data);
       })
 
-      .catch((error) => {
-        const message =
-          error.message && error.response.data.message
-            ? error.response.data.message
-            : error.response.data.message;
-        dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: CREATE_USER_SUBSCRIPTION_FAIL, payload: message });
         onError(message);
       });
   };
@@ -329,24 +324,21 @@ export const updateUserSubscription =
       EndDate: form.EndDate || "",
     };
 
-    dispatch({ type: EDIT_PROFILE_REQUEST });
+    dispatch({ type: EDIT_USER_SUBSCRIPTION_REQUEST });
 
     axios
       .put(`/user/updateUserSubscription/`, form)
       .then((res) => {
         dispatch({
-          type: CREATE_PROFILE_SUCCESS,
+          type: EDIT_USER_SUBSCRIPTION_SUCCESS,
           payload: res.data,
         });
         onSuccess(res.data);
       })
 
-      .catch((error) => {
-        const message =
-          error.message && error.response.data.message
-            ? error.response.data.message
-            : error.response.data.message;
-        dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_USER_SUBSCRIPTION_FAIL, payload: message });
         onError(message);
       });
   };
@@ -363,23 +355,137 @@ export const upgradeUserSubscription =
       EndDate: form.EndDate || "",
     };
 
-    dispatch({ type: EDIT_PROFILE_REQUEST });
+    dispatch({ type: UPGRADE_USER_SUBSCRIPTION_REQUEST });
 
     axios
       .post(`/user/upgradeUserSubscription/`, form)
       .then((res) => {
         dispatch({
-          type: CREATE_PROFILE_SUCCESS,
+          type: UPGRADE_USER_SUBSCRIPTION_SUCCESS,
           payload: res.data,
         });
         onSuccess(res.data);
       })
-      .catch((error) => {
-        const message =
-          error.message && error.response.data.message
-            ? error.response.data.message
-            : error.response.data.message;
-        dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: UPGRADE_USER_SUBSCRIPTION_FAIL, payload: message });
+        onError(message);
+      });
+  };
+
+////Section  Company
+
+export const listCompanys = () => (dispatch) => (onSuccess) => (onError) => {
+  dispatch({
+    type: GET_COMPANYS_REQUEST,
+  });
+  axios
+    .get(`/user/findAllCompanys/`)
+    .then((res) => {
+      dispatch({ type: GET_COMPANYS_SUCCESS, payload: res.data });
+      console.log(`res.data`, res.data);
+      onSuccess(res.data);
+    })
+
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_COMPANYS_FAIL, payload: message });
+      onError(message);
+    });
+};
+
+export const listCompanyByCompanyId =
+  (companyId) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({
+      type: GET_COMPANYS_REQUEST,
+    });
+    axios
+      .get(`/user/findCompany/${companyId}`)
+      .then((res) => {
+        dispatch({ type: GET_COMPANYS_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: GET_COMPANYS_FAIL, payload: message });
+        onError(message);
+      });
+  };
+
+export const listCompanyByDate =
+  (fromDate, endDate) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({
+      type: GET_COMPANYS_REQUEST,
+    });
+    axios
+      .get(`/user/findAllCompanysByDate/${fromDate}/${endDate}`)
+      .then((res) => {
+        dispatch({ type: GET_COMPANYS_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: GET_COMPANYS_FAIL, payload: message });
+        onError(message);
+      });
+  };
+export const addCompany = (form) => (dispatch) => (onSuccess) => (onError) => {
+  // const requestPayload = {
+  //   SubscriptionId: form.SubscriptionId || "",
+  //   SubscriptionName: form.SubscriptionName || "",
+  //   UserId: form.UserId || "",
+  //   Active: form.Active ? true : false,
+  //   StartDate: form.StartDate || "",
+  //   EndDate: form.Phone || "",
+  // };
+
+  dispatch({ type: CREATE_COMPANY_REQUEST });
+
+  axios
+    .post(`/user/createCompany/`, form)
+    .then((res) => {
+      dispatch({
+        type: CREATE_COMPANY_SUCCESS,
+        payload: res.data,
+      });
+      onSuccess(res.data);
+    })
+
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: CREATE_COMPANY_FAIL, payload: message });
+      onError(message);
+    });
+};
+export const updateCompany =
+  (form, CompanyId) => (dispatch) => (onSuccess) => (onError) => {
+    // const requestPayload = {
+    //   UserSubscriptionId: form.UserSubscriptionId || "",
+    //   SubscriptionId: form.SubscriptionId || "",
+    //   SubscriptionName: form.SubscriptionName || "",
+    //   UserId: form.UserId || "",
+    //   Active: form.Active ? true : false,
+    //   StartDate: form.StartDate || "",
+    //   EndDate: form.EndDate || "",
+    // };
+
+    dispatch({ type: EDIT_COMPANY_REQUEST });
+
+    axios
+      .put(`/user/updateCompany/${CompanyId}`, form)
+      .then((res) => {
+        dispatch({
+          type: EDIT_COMPANY_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_COMPANY_FAIL, payload: message });
         onError(message);
       });
   };

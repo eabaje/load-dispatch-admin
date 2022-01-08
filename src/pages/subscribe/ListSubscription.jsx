@@ -27,7 +27,7 @@ function ListSubscription() {
   const {
     subscribeDispatch,
     subscribeState: {
-      getSubscribes: { data,error,   },//loading
+      Subscribes: { data, error }, //loading
     },
   } = useContext(GlobalContext);
 
@@ -38,7 +38,7 @@ function ListSubscription() {
   // }, []);
 
   // useEffect(() => {
-  
+
   //   listSubscriptions()(subscribeDispatch);
   //   //((result) => {
   //   //   setData(result.data);
@@ -48,12 +48,12 @@ function ListSubscription() {
   //   setUser(JSON.parse(localStorage.getItem("user")));
   // }, [subscribeDispatch,listSubscriptions,loading,data,error]);
 
-   // Calling the function on component mount
-   useEffect(() => {
+  // Calling the function on component mount
+  useEffect(() => {
     fetchDataAll("subscription/findAll")((subscribe) => {
       setLoading(false);
       setData(subscribe);
-    })((err)=>{});
+    })((err) => {});
     console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
@@ -76,11 +76,7 @@ function ListSubscription() {
           <div class="card-body table-border-style">
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions
-                exportHeaders
-                columns={columns}
-                data={data2}
-              >
+              <DataTableExtensions exportHeaders columns={columns} data={data2}>
                 <DataTable
                   columns={columns}
                   data={data2}

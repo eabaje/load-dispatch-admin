@@ -34,10 +34,10 @@ const subscribe = (state, { type, payload }) => {
           error: null,
         },
 
-        getSubscribes: {
-          ...state.getSubscribes,
+        Subscribes: {
+          ...state.Subscribes,
           loading: false,
-          data: state.getSubscribes.data.map((item) => {
+          data: state.Subscribes.data.map((item) => {
             if (item.SubscriptionId === payload.id) {
               return payload;
             } else {
@@ -80,10 +80,10 @@ const subscribe = (state, { type, payload }) => {
           error: null,
         },
 
-        getSubscribes: {
-          ...state.getSubscribes,
+        Subscribes: {
+          ...state.Subscribes,
           loading: false,
-          data: state.getSubscribes.data.filter(
+          data: state.Subscribes.data.filter(
             (item) => item.SubscriptionId !== payload
           ),
           error: null,
@@ -121,10 +121,10 @@ const subscribe = (state, { type, payload }) => {
           data: payload,
         },
 
-        getSubscribes: {
-          ...state.getSubscribes,
+        Subscribes: {
+          ...state.Subscribes,
           loading: false,
-          data: [payload, ...state.getSubscribes.data],
+          data: [payload, ...state.Subscribes.data],
           error: null,
         },
       };
@@ -132,8 +132,8 @@ const subscribe = (state, { type, payload }) => {
     case GET_SUBSCRIBES_REQUEST:
       return {
         ...state,
-        getSubscribes: {
-          ...state.getSubscribes,
+        Subscribes: {
+          ...state.Subscribes,
           loading: true,
           error: null,
         },
@@ -142,8 +142,8 @@ const subscribe = (state, { type, payload }) => {
     case GET_SUBSCRIBES_SUCCESS:
       return {
         ...state,
-        getSubscribes: {
-          ...state.getSubscribes,
+        Subscribes: {
+          ...state.Subscribes,
           loading: false,
           data: payload,
           error: null,
@@ -153,8 +153,8 @@ const subscribe = (state, { type, payload }) => {
     case GET_SUBSCRIBES_FAIL:
       return {
         ...state,
-        getSubscribes: {
-          ...state.getSubscribes,
+        Subscribes: {
+          ...state.Subscribes,
           loading: false,
           error: payload,
         },

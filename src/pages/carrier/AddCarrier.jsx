@@ -25,10 +25,10 @@ import { fetchData } from "../../helpers/query";
 
 function AddCarrier({ history, match }) {
   const { carrierId } = match.params;
-  // const { SubscribeId } = match.params;
+
   const isAddMode = !carrierId;
- // console.log(`params`, match.params);
- // console.log(`isAddMode`, isAddMode);
+  // console.log(`params`, match.params);
+  console.log(`isAddMode`, isAddMode);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [user, setUser] = useState({});
@@ -42,10 +42,10 @@ function AddCarrier({ history, match }) {
 
   const {
     carrierDispatch,
-    carrierState: { error, loading },
+    carrierState: {
+      createCarrier: { loading },
+    },
   } = useContext(GlobalContext);
-
- 
 
   function onSubmit(formdata) {
     return isAddMode
@@ -54,44 +54,44 @@ function AddCarrier({ history, match }) {
   }
 
   function CreateCarrier(formdata) {
-  
     formdata.CompanyId = user.CompanyId;
+
     createCarrier(formdata)(carrierDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
-    });
-
-    if (error) {
-      enqueueSnackbar(error, {
+    })((err) => {
+      enqueueSnackbar(err, {
         variant: "error",
       });
-    }
+    });
   }
-
-  function updateCarrier(formdata,id ) {
-    editCarrier(formdata,id)(carrierDispatch)((res) => {
-
- 
+  function updateCarrier(formdata, id) {
+    editCarrier(formdata, id)(carrierDispatch)((res) => {
       if (res.message) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
+    })((err) => {
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     });
   }
-
-
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
-     // console.log(`object`, fetchData("carrier/findOne", carrierId));
+      // console.log(`object`, fetchData("carrier/findOne", carrierId));
       // listCarriersById(carrierId)(carrierDispatch)()
-      fetchData("carrier/findOne", carrierId).then((carrier) => {
-       
+      fetchData(
+        "carrier/findOne",
+        carrierId
+      )((carrier) => {
+        console.log(`carrier`, carrier);
         const fields = [
           "CarrierType",
           "FleetType",
@@ -103,6 +103,10 @@ function AddCarrier({ history, match }) {
           "CompanyId",
         ];
         fields.forEach((field) => setValue(field, carrier[field]));
+      })((err) => {
+        enqueueSnackbar(err.message, {
+          variant: "error",
+        });
       });
     }
   }, []);
@@ -272,7 +276,12 @@ function AddCarrier({ history, match }) {
                         class="btn  btn-primary"
                         style={{ float: "right" }}
                       >
-                        <i class="feather mr-2 icon-check-circle"></i> Submit
+                        {loading ? (
+                          <i className="fa fa-spinner fa-spin"></i>
+                        ) : (
+                          <i class="feather mr-2 icon-check-circle"></i>
+                        )}{" "}
+                        {isAddMode ? "Submit" : "Update"}
                       </button>
                     </div>
                   </div>

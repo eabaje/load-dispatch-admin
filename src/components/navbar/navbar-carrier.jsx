@@ -11,16 +11,10 @@ import "./pcoded";
 
 const NavBarCarrier = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  //  const { dispatch } = useContext(AuthContext);
+  const [user, setUser] = useState({});
 
   //assigning location variable
   const location = useLocation();
-
-  // //destructuring pathname from location
-  // const { pathname } = location;
-
-  // //Javascript split method to get the name of the path in array
-  // const splitLocation = pathname.split("/");
 
   const handleMenu = () => {
     $(document).ready(function () {
@@ -33,6 +27,7 @@ const NavBarCarrier = () => {
   };
   useEffect(() => {
     handleMenu();
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   return (
@@ -64,7 +59,10 @@ const NavBarCarrier = () => {
                   <a href="/add-shipment">Post a Vehicle</a>
                 </li>
                 <li>
-                  <a href="/my-shipments">My Vehicles</a>
+                  <a href="/list-all-shipments">Find all Vehicles</a>
+                </li>
+                <li>
+                  <a href={`/my-shipments/${user.UserId}`}>My Vehicles</a>
                 </li>
                 <li>
                   <a href="/truck-listing">Search Truck Space</a>

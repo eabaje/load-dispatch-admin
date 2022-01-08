@@ -18,6 +18,7 @@ import {
   createShipment,
   editShipment,
   listShipmentsByShipmentId,
+  showInterest,
 } from "../../context/actions/shipment/shipment.action";
 import $ from "jquery";
 import "bootstrap";
@@ -26,6 +27,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { fetchData } from "../../helpers/query";
 function AddShipment({ history, match }) {
   const { shipmentId } = match.params;
+  const { isReadOnly } = match.params;
   // const { SubscribeId } = match.params;
   const isAddMode = !shipmentId;
 
@@ -39,6 +41,7 @@ function AddShipment({ history, match }) {
   const [seldeliveryRegion, setseldeliveryRegion] = useState("");
 
   const [user, setUser] = useState({});
+  const [readOnly, setReadOnly] = useState(false);
 
   // const onSubmit = (data) => console.log(data);
 
@@ -62,65 +65,24 @@ function AddShipment({ history, match }) {
     );
   };
 
-  const {
-    register: shipmentform,
-    formState: { errors },
-    handleSubmit: handleShipment,
-    setValue,
-    control,
-  } = useForm();
-
-  const {
-    shipmentDispatch,
-    shipmentState: { error, loading, data },
-  } = useContext(GlobalContext);
-
-  function onSubmit(formdata) {
-    return isAddMode
-      ? CreateShipment(formdata)
-      : updateShipment(shipmentId, formdata);
-  }
-
-  function CreateShipment(formdata) {
-    console.log(`form`, formdata);
-    formdata.CompanyId = user.CompanyId;
-    createShipment(formdata)(shipmentDispatch)((res) => {
-      if (res.message === "Success") {
-        enqueueSnackbar("Created new Carrier successfully", {
-          variant: "success",
-        });
-      }
-    });
-
-    if (error) {
-      enqueueSnackbar(error, {
-        variant: "error",
-      });
-    }
-  }
-
-  function updateShipment(id, formdata) {
-    editShipment(formdata)(shipmentDispatch)((res) => {
-      if (res.message === "Success") {
-        enqueueSnackbar("Update record successfully", {
-          variant: "success",
-        });
-      }
-    });
-  }
-
   useEffect(() => {
+    if (isReadOnly) setReadOnly(!readOnly);
     setCountries((countries) => (countries = Country.getAllCountries()));
 
     setUser(JSON.parse(localStorage.getItem("user")));
 
+    // console.log(`user`, user.CompanyId);
     if (!isAddMode) {
-      console.log(`object`, fetchData("shipment/findOne", shipmentId));
+      // console.log(`object`, fetchData("shipment/findOne", shipmentId));
       // listShipmentsByShipmentId(shipmentId)(shipmentDispatch).then(
       //   (shipment) => {
-      fetchData("shipment/findOne", shipmentId).then((shipment) => {
-        console.log(`shipment`, shipment);
+      fetchData(
+        "shipment/findOne",
+        shipmentId
+      )((shipment) => {
+        //  console.log(`shipment`, shipment);
         const fields = [
+          "ShipmentId",
           "CompanyId",
           "LoadCategory",
           "LoadType",
@@ -164,10 +126,90 @@ function AddShipment({ history, match }) {
 
         setselpickUpRegion(shipment["PickUpRegion"]);
         setseldeliveryRegion(shipment["DeliveryRegion"]);
+      })((err) => {
+        enqueueSnackbar(err.message, {
+          variant: "error",
+        });
       });
     }
   }, []);
 
+  const {
+    register: shipmentform,
+    formState: { errors },
+    handleSubmit: handleShipment,
+    setValue,
+    control,
+  } = useForm();
+
+  const {
+    shipmentDispatch,
+    shipmentState: {
+      createShipment: { data, loading },
+    },
+  } = useContext(GlobalContext);
+
+  function onSubmit(formdata) {
+    return isAddMode
+      ? CreateShipment(formdata)
+      : isReadOnly
+      ? ShowInterest(formdata)
+      : updateShipment(formdata, shipmentId);
+  }
+
+  function CreateShipment(formdata) {
+    formdata.CompanyId = user.CompanyId;
+
+    createShipment(formdata)(shipmentDispatch)((res) => {
+      if (res) {
+        enqueueSnackbar("Created new Shipment successfully", {
+          variant: "success",
+        });
+      }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    });
+  }
+
+  function updateShipment(formdata, shipmentId) {
+    editShipment(formdata, shipmentId)(shipmentDispatch)((res) => {
+      if (res) {
+        enqueueSnackbar("Updated record successfully", {
+          variant: "success",
+        });
+      }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    });
+  }
+
+  function ShowInterest(formdata) {
+    // const formData = new FormData();
+
+    // formData.append("ShipmentId", shipmentId); //append the values with key, value pair
+    // formData.append("UserId", userId);
+    formdata.CompanyId = user.CompanyId;
+    formdata.UserId = user.UserId;
+    console.log(`form`, formdata);
+
+    showInterest(formdata)(shipmentDispatch)((res) => {
+      if (res) {
+        enqueueSnackbar(res.message, {
+          variant: "success",
+        });
+      }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    });
+  }
+
+  // console.log(`readOnly`, readOnly);
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
       <div class="input-group mb-3">
@@ -209,6 +251,12 @@ function AddShipment({ history, match }) {
                   />
                   <input
                     type="hidden"
+                    name="ShipmentId"
+                    class="form-control"
+                    {...shipmentform("ShipmentId")}
+                  />
+                  <input
+                    type="hidden"
                     name="CompanyId"
                     value={user.CompanyId}
                     class="form-control"
@@ -229,6 +277,7 @@ function AddShipment({ history, match }) {
                       <select
                         id="LoadCategory"
                         class="form-control"
+                        readOnly={readOnly}
                         {...shipmentform("LoadCategory", {
                           required: true,
                         })}
@@ -250,6 +299,7 @@ function AddShipment({ history, match }) {
                       <select
                         id="LoadType"
                         class="form-control"
+                        readOnly={readOnly}
                         {...shipmentform("LoadType", {
                           required: true,
                         })}
@@ -272,6 +322,7 @@ function AddShipment({ history, match }) {
                       <input
                         name="LoadWeight"
                         class="form-control"
+                        readOnly={readOnly}
                         placeholder="Load Weight"
                         {...shipmentform("LoadWeight", {
                           required: true,
@@ -284,6 +335,7 @@ function AddShipment({ history, match }) {
                       <select
                         id="LoadUnit"
                         name="LoadUnit"
+                        readOnly={readOnly}
                         class="form-control"
                         {...shipmentform("LoadUnit", {
                           required: true,
@@ -305,6 +357,7 @@ function AddShipment({ history, match }) {
                     <div class="col-sm-3">
                       <input
                         name="Qty"
+                        readOnly={readOnly}
                         class="form-control"
                         placeholder="Quantity"
                         {...shipmentform("Qty", {
@@ -321,6 +374,7 @@ function AddShipment({ history, match }) {
                       <input
                         name="Description"
                         class="form-control"
+                        readOnly={readOnly}
                         placeholder="Give your detailed description of expected delivery"
                         {...shipmentform("Description", {
                           required: true,
@@ -340,6 +394,7 @@ function AddShipment({ history, match }) {
                       <select
                         name="PickUpCountry"
                         class="form-control"
+                        readOnly={readOnly}
                         {...shipmentform("PickUpCountry")}
                         onChange={selectPickUpCountry}
                       >
@@ -357,6 +412,7 @@ function AddShipment({ history, match }) {
                       <select
                         name="PickUpRegion"
                         class="form-control"
+                        readOnly={readOnly}
                         id="PickUpRegion"
                         {...shipmentform("PickUpRegion", {
                           required: true,
@@ -382,6 +438,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="PickUpLocation"
+                        readOnly={readOnly}
                         class="form-control"
                         placeholder="Pick Up location"
                         {...shipmentform("PickUpLocation", {
@@ -395,6 +452,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <Controller
                         name={"ExpectedPickUpDate"}
+                        readOnly={readOnly}
                         control={control}
                         // defaultValue={new Date()}
                         render={({ field: { onChange, value } }) => {
@@ -424,6 +482,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <select
                         name="DeliveryCountry"
+                        readOnly={readOnly}
                         class="form-control"
                         {...shipmentform("DeliveryCountry")}
                         onChange={selectDeliveryCountry}
@@ -440,6 +499,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <select
                         name="DeliveryRegion"
+                        readOnly={readOnly}
                         class="form-control"
                         id="DeliveryRegion"
                         {...shipmentform("DeliveryRegion", {
@@ -467,6 +527,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="DeliveryLocation"
+                        readOnly={readOnly}
                         class="form-control"
                         placeholder="Delivery location"
                         {...shipmentform("DeliveryLocation", {
@@ -480,6 +541,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <Controller
                         name={"ExpectedDeliveryDate"}
+                        readOnly={readOnly}
                         control={control}
                         // defaultValue={new Date()}
                         render={({ field: { onChange, value } }) => {
@@ -504,6 +566,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="DeliveryContactName"
+                        readOnly={readOnly}
                         class="form-control"
                         placeholder="Contact Name"
                         {...shipmentform("DeliveryContactName", {
@@ -516,6 +579,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="DeliveryContactPhone"
+                        readOnly={readOnly}
                         placeholder="Contact Phone"
                         class="form-control"
                         {...shipmentform("DeliveryContactPhone", {
@@ -532,6 +596,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="DeliveryEmail"
+                        readOnly={readOnly}
                         class="form-control"
                         placeholder="Email"
                         {...shipmentform("DeliveryEmail", {
@@ -546,6 +611,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <Controller
                         name={"ShipmentDate"}
+                        readOnly={readOnly}
                         control={control}
                         // defaultValue={new Date()}
                         render={({ field: { onChange, value } }) => {
@@ -580,6 +646,7 @@ function AddShipment({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="RequestForShipment"
+                        readOnly={readOnly}
                         class="form-control"
                         placeholder=" State your requirement expectations"
                         {...shipmentform("RequestForShipment")}
@@ -593,6 +660,7 @@ function AddShipment({ history, match }) {
                       <select
                         id="ShipmentStatus"
                         name="ShipmentStatus"
+                        readOnly={readOnly}
                         class="form-control"
                         {...shipmentform("ShipmentStatus", {
                           required: true,
@@ -613,30 +681,55 @@ function AddShipment({ history, match }) {
 
                   <div class="form-row">
                     <div class="col-sm-10 ">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="invalidCheck"
-                          required
-                        />
-                        <label class="form-check-label" for="invalidCheck">
-                          Agree to terms and conditions
-                        </label>
-                        <div class="invalid-feedback">
-                          You must agree before submitting.
+                      {!readOnly && (
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="invalidCheck"
+                            required
+                          />
+                          <label class="form-check-label" for="invalidCheck">
+                            Agree to terms and conditions
+                          </label>
+                          <div class="invalid-feedback">
+                            You must agree before submitting.
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
+
                     <div class="right" style={{ float: "right" }}>
-                      <button
-                        type="submit"
-                        class="btn  btn-primary"
-                        style={{ float: "right" }}
-                      >
-                        <i class="feather mr-2 icon-check-circle"></i> Submit
-                      </button>
+                      {!readOnly && (
+                        <button
+                          type="submit"
+                          class="btn  btn-primary"
+                          style={{ float: "right" }}
+                        >
+                          {loading ? (
+                            <i className="fa fa-spinner fa-spin"></i>
+                          ) : (
+                            <i class="feather mr-2 icon-check-circle"></i>
+                          )}{" "}
+                          {isAddMode ? "Submit" : "Update"}
+                        </button>
+                      )}
+
+                      {readOnly && (
+                        <button
+                          type="submit"
+                          class="btn  btn-primary"
+                          style={{ float: "right" }}
+                        >
+                          {loading ? (
+                            <i className="fa fa-spinner fa-spin"></i>
+                          ) : (
+                            <i class="feather mr-2 icon-check-circle"></i>
+                          )}{" "}
+                          I am interested
+                        </button>
+                      )}
                     </div>
                   </div>
                 </form>

@@ -2,13 +2,13 @@ import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
 export const columns = [
-  {
-    id: 1,
-    name: "Carrier Name",
-    selector: (row) => row.CarrierId,
-    sortable: true,
-    reorder: true,
-  },
+  // {
+  //   id: 1,
+  //   name: "Carrier Name",
+  //   selector: (row) => row.Carrier.CarrierType,
+  //   sortable: true,
+  //   reorder: true,
+  // },
   {
     id: 2,
     name: "Vehicle Type",

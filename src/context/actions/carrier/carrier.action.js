@@ -12,18 +12,26 @@ import {
   DELETE_CARRIER_REQUEST,
   DELETE_CARRIER_SUCCESS,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
-export const listCarriers = () => async (dispatch) => {
+export const listCarriers = () => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: GET_CARRIERS_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/carrier/findAll/`);
-    dispatch({ type: GET_CARRIERS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_CARRIERS_FAIL, payload: error.message });
-  }
+  axios
+    .get(`/carrier/findAll/`)
+    .then((res) => {
+      dispatch({ type: GET_CARRIERS_SUCCESS, payload: res.data });
+      onSuccess(res.data);
+    })
+
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_CARRIERS_FAIL, payload: message });
+
+      onError(message);
+    });
 };
 
 export const listCarriersByIdAsync = (carrierId) => async (dispatch) => {
@@ -40,20 +48,19 @@ export const listCarriersByIdAsync = (carrierId) => async (dispatch) => {
 };
 
 export const listCarriersById = (carrierId) => (dispatch) => (onSuccess) => {
- 
   dispatch({
     type: GET_CARRIERS_REQUEST,
   });
- 
+
   axios
     .get(`/carrier/findOne/${carrierId}`)
     .then((res) => {
-      console.log(`carrier_data`, res.data)
+      console.log(`carrier_data`, res.data);
       dispatch({
         type: GET_CARRIERS_SUCCESS,
         payload: res.data,
       });
-     
+
       onSuccess();
     })
     .catch((err) => {
@@ -65,8 +72,6 @@ export const listCarriersById = (carrierId) => (dispatch) => (onSuccess) => {
       });
     });
 };
-
-
 
 export const listCarriersByVehicle = (vehicleId) => async (dispatch) => {
   dispatch({
@@ -153,85 +158,84 @@ export const createCarrier1 = (form) => async (dispatch) => {
     dispatch({ type: CREATE_CARRIER_FAIL, payload: message });
   }
 };
-export const createCarrier = (form) => (dispatch) => (onSuccess) => {
-  // const requestPayload = {
-  //   CompanyId: form.CompanyId ,
-  //   CarrierName: form.CarrierName ,
-  //   Email: form.Email || "",
-  //   Phone: form.Phone || "",
-  //   Address: form.Address || "",
-  //   City: form.City || "",
-  //   Country: form.Country || "",
-  //   Licensed: form.Licensed || "",
-  //   LicenseUrl: form.LicenseUrl || "",
-  //   Rating: form.Rating ,
-  //   CarrierDocs: form.CarrierDocs || "",
-  //   PicUrl: form.PicUrl || null,
-  // };
+export const createCarrier =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    // const requestPayload = {
+    //   CompanyId: form.CompanyId ,
+    //   CarrierName: form.CarrierName ,
+    //   Email: form.Email || "",
+    //   Phone: form.Phone || "",
+    //   Address: form.Address || "",
+    //   City: form.City || "",
+    //   Country: form.Country || "",
+    //   Licensed: form.Licensed || "",
+    //   LicenseUrl: form.LicenseUrl || "",
+    //   Rating: form.Rating ,
+    //   CarrierDocs: form.CarrierDocs || "",
+    //   PicUrl: form.PicUrl || null,
+    // };
 
-  dispatch({
-    type: CREATE_CARRIER_REQUEST,
-  });
- 
-  axios
-    .post("/carrier/create", form)
-    .then((res) => {
-      dispatch({
-        type: CREATE_CARRIER_SUCCESS,
-        payload: res.data,
-      });
-
-      onSuccess(res.data);
-    })
-    .catch((err) => {
-      dispatch({
-        type: CREATE_CARRIER_FAIL,
-        payload: err.message
-          ? err.message
-          : { error: "Something went wrong, try again" },
-      });
+    dispatch({
+      type: CREATE_CARRIER_REQUEST,
     });
-};
 
-export const editCarrier = (form ,carrierId) => (dispatch) => (onSuccess) => {
-  const requestPayload = {
-    CompanyId: form.CompanyId || "",
-    CarrierName: form.CarrierName || "",
-    Email: form.Email || "",
-    Phone: form.Phone || "",
-    Address: form.Address || "",
-    City: form.City || "",
-    Country: form.Country || "",
-    Licensed: form.Licensed || "",
-    LicenseUrl: form.LicenseUrl || "",
-    Rating: form.Rating || "",
-    CarrierDocs: form.CarrierDocs || "",
-    PicUrl: form.PicUrl || null,
+    axios
+      .post("/carrier/create", form)
+      .then((res) => {
+        dispatch({
+          type: CREATE_CARRIER_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({
+          type: CREATE_CARRIER_FAIL,
+          payload: message,
+        });
+        onError(message);
+      });
   };
 
-  dispatch({ type: EDIT_CARRIER_REQUEST });
+export const editCarrier =
+  (form, carrierId) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      CompanyId: form.CompanyId || "",
+      CarrierName: form.CarrierName || "",
+      Email: form.Email || "",
+      Phone: form.Phone || "",
+      Address: form.Address || "",
+      City: form.City || "",
+      Country: form.Country || "",
+      Licensed: form.Licensed || "",
+      LicenseUrl: form.LicenseUrl || "",
+      Rating: form.Rating || "",
+      CarrierDocs: form.CarrierDocs || "",
+      PicUrl: form.PicUrl || null,
+    };
 
- 
-  
-    axios.put(`/carrier/update/${carrierId}`, form)
-    
-    .then((res) => {
-    
-   
-    dispatch({
-      type: EDIT_CARRIER_SUCCESS,
-      payload: res.data,
-    });
+    dispatch({ type: EDIT_CARRIER_REQUEST });
 
-    onSuccess(res.data);
-  })
-  . catch ((error) => {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: EDIT_CARRIER_FAIL, payload: message });
-  });
-  
-};
+    axios
+      .put(`/carrier/update/${carrierId}`, form)
+
+      .then((res) => {
+        dispatch({
+          type: EDIT_CARRIER_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_CARRIER_FAIL, payload: message });
+
+        onError(message);
+      });
+  };
 
 export const deleteCarrier = (carrierId) => async (dispatch) => {
   dispatch({ type: DELETE_CARRIER_REQUEST });

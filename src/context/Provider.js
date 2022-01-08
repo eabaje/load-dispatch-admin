@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import InitialState from "./initialStates/index.state";
 import reducer from "./reducers/index.reducer";
+import vehicleReducer2 from "./reducers/vehicle.reducer";
 
 export const GlobalContext = createContext({});
 

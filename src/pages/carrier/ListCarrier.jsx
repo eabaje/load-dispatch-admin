@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -12,13 +12,23 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
 import { columns } from "../../datasource/dataColumns/carrier";
+import { GlobalContext } from "../../context/Provider";
+import { listCarriers } from "../../context/actions/carrier/carrier.action";
+import LoadingBox from "../../components/notification/loadingbox";
 
 function ListCarrier() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = useState([]);
+  const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
+  const {
+    carrierDispatch,
+    carrierState: {
+      Carriers: { data, loading },
+    },
+  } = useContext(GlobalContext);
 
   // GET request function to your Mock API
+
   const fetchData = async () => {
     try {
       const res = await axios.get(`${API_URL}carrier/findAll`);
@@ -33,14 +43,22 @@ function ListCarrier() {
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchData();
-    //console.log(`data`, data);
+    if (data.length === 0) {
+      listCarriers()(carrierDispatch)((res) => {
+        setData(res.data);
+      })((err) => {
+        enqueueSnackbar(err, { variant: "error" });
+      });
+    }
+
+    //  fetchData();
+    console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const tableData = {
     columns,
-    data,
+    data2,
   };
   return (
     <>
@@ -57,23 +75,27 @@ function ListCarrier() {
             <div class="card-body table-border-style">
               <div class="table-responsive">
                 {/* <DataTableExtensions {...tableData}> */}
-                <DataTableExtensions
-                  exportHeaders
-                  columns={columns}
-                  data={data}
-                >
-                  <DataTable
+
+                {loading ? (
+                  <LoadingBox />
+                ) : (
+                  <DataTableExtensions
+                    exportHeaders
                     columns={columns}
-                    data={data}
-                    className="table table-striped table-bordered table-hover table-checkable"
-                    defaultSortField={1}
-                    sortIcon={<ChevronsDown />}
-                    defaultSortAsc={true}
-                    pagination
-                    highlightOnHover
-                  />
-                </DataTableExtensions>
-                
+                    data={data.data}
+                  >
+                    <DataTable
+                      columns={columns}
+                      data={data.data}
+                      className="table table-striped table-bordered table-hover table-checkable"
+                      defaultSortField={1}
+                      sortIcon={<ChevronsDown />}
+                      defaultSortAsc={true}
+                      pagination
+                      highlightOnHover
+                    />
+                  </DataTableExtensions>
+                )}
               </div>
             </div>
           </div>

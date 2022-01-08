@@ -34,10 +34,10 @@ const payments = (state, { type, payload }) => {
           error: null,
         },
 
-        getPayments: {
-          ...state.getPayments,
+        Payments: {
+          ...state.Payments,
           loading: false,
-          data: state.getPayments.data.map((item) => {
+          data: state.Payments.data.map((item) => {
             if (item.PaymentId === payload.id) {
               return payload;
             } else {
@@ -80,10 +80,10 @@ const payments = (state, { type, payload }) => {
           error: null,
         },
 
-        getPayments: {
-          ...state.getPayments,
+        Payments: {
+          ...state.Payments,
           loading: false,
-          data: state.getPayments.data.filter(
+          data: state.Payments.data.filter(
             (item) => item.PaymentId !== payload
           ),
           error: null,
@@ -119,10 +119,10 @@ const payments = (state, { type, payload }) => {
           data: payload,
         },
 
-        getPayments: {
-          ...state.getPayments,
+        Payments: {
+          ...state.Payments,
           loading: false,
-          data: [payload, ...state.getPayments.data],
+          data: [payload, ...state.Payments.data],
           error: null,
         },
       };
@@ -140,8 +140,8 @@ const payments = (state, { type, payload }) => {
     case GET_PAYMENTS_REQUEST:
       return {
         ...state,
-        getPayments: {
-          ...state.getPayments,
+        Payments: {
+          ...state.Payments,
           loading: true,
           error: null,
         },
@@ -150,8 +150,8 @@ const payments = (state, { type, payload }) => {
     case GET_PAYMENTS_SUCCESS:
       return {
         ...state,
-        getPayments: {
-          ...state.getPayments,
+        Payments: {
+          ...state.Payments,
           loading: false,
           data: payload,
           error: null,
@@ -161,8 +161,8 @@ const payments = (state, { type, payload }) => {
     case GET_PAYMENTS_FAIL:
       return {
         ...state,
-        getPayments: {
-          ...state.getPayments,
+        Payments: {
+          ...state.Payments,
           loading: false,
           error: payload,
         },

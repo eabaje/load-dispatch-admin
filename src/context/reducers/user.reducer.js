@@ -25,6 +25,19 @@ import {
   EDIT_USER_REQUEST,
   EDIT_USER_SUCCESS,
   EDIT_USER_FAIL,
+  GET_COMPANYS_REQUEST,
+  GET_COMPANYS_SUCCESS,
+  GET_COMPANYS_FAIL,
+  CREATE_COMPANY_REQUEST,
+  CREATE_COMPANY_SUCCESS,
+  CREATE_COMPANY_FAIL,
+  EDIT_COMPANY_REQUEST,
+  EDIT_COMPANY_SUCCESS,
+  EDIT_COMPANY_FAIL,
+  DELETE_USER_FAIL,
+  DELETE_COMPANY_REQUEST,
+  DELETE_COMPANY_SUCCESS,
+  DELETE_COMPANY_FAIL,
 } from "../../constants/actionTypes";
 
 const user = (state, { type, payload }) => {
@@ -49,10 +62,10 @@ const user = (state, { type, payload }) => {
           error: null,
         },
 
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: false,
-          data: state.getUserSubscription.data.map((item) => {
+          data: state.UserSubscriptions.data.map((item) => {
             if (item.SubscriptionId === payload.id) {
               return payload;
             } else {
@@ -95,10 +108,10 @@ const user = (state, { type, payload }) => {
           error: null,
         },
 
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: false,
-          data: state.getUserSubscription.data.filter(
+          data: state.UserSubscriptions.data.filter(
             (item) => item.SubscriptionId !== payload
           ),
           error: null,
@@ -136,10 +149,10 @@ const user = (state, { type, payload }) => {
           data: payload,
         },
 
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: false,
-          data: [payload, ...state.getUserSubscription.data],
+          data: [payload, ...state.UserSubscriptions.data],
           error: null,
         },
       };
@@ -147,8 +160,8 @@ const user = (state, { type, payload }) => {
     case GET_USER_SUBSCRIPTIONS_REQUEST:
       return {
         ...state,
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: true,
           error: null,
         },
@@ -157,8 +170,8 @@ const user = (state, { type, payload }) => {
     case GET_USER_SUBSCRIPTIONS_SUCCESS:
       return {
         ...state,
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: false,
           data: payload,
           error: null,
@@ -168,8 +181,8 @@ const user = (state, { type, payload }) => {
     case GET_USER_SUBSCRIPTIONS_FAIL:
       return {
         ...state,
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: false,
           error: payload,
         },
@@ -178,7 +191,7 @@ const user = (state, { type, payload }) => {
     case UPGRADE_USER_SUBSCRIPTION_FAIL:
       return {
         ...state,
-        UPGRADEUserSubscription: {
+        upgradeUserSubscription: {
           ...state.upgradeUserSubscription,
           loading: false,
           error: null,
@@ -205,10 +218,10 @@ const user = (state, { type, payload }) => {
           data: payload,
         },
 
-        getUserSubscription: {
-          ...state.getUserSubscription,
+        UserSubscriptions: {
+          ...state.UserSubscriptions,
           loading: false,
-          data: [payload, ...state.getUserSubscription.data],
+          data: [payload, ...state.UserSubscriptions.data],
           error: null,
         },
       };
@@ -232,10 +245,10 @@ const user = (state, { type, payload }) => {
           error: null,
         },
 
-        getUser: {
-          ...state.getUser,
+        Users: {
+          ...state.Users,
           loading: false,
-          data: state.getUser.data.map((item) => {
+          data: state.Users.data.map((item) => {
             if (item.Id === payload.id) {
               return payload;
             } else {
@@ -259,8 +272,8 @@ const user = (state, { type, payload }) => {
     case DELETE_USER_REQUEST: {
       return {
         ...state,
-        delete: {
-          ...state.delete,
+        deleteUser: {
+          ...state.deleteUser,
           loading: true,
           error: null,
         },
@@ -270,20 +283,29 @@ const user = (state, { type, payload }) => {
     case DELETE_USER_SUCCESS: {
       return {
         ...state,
-        delete: {
-          ...state.delete,
+        deleteUser: {
+          ...state.deleteUser,
           loading: false,
           error: null,
         },
 
-        getUser: {
-          ...state.getUser,
+        Users: {
+          ...state.Users,
           loading: false,
-          data: state.getUser.data.filter((item) => item.Id !== payload),
+          data: state.Users.data.filter((item) => item.Id !== payload),
           error: null,
         },
       };
     }
+    case DELETE_USER_FAIL:
+      return {
+        ...state,
+        deleteUser: {
+          ...state.deleteUser,
+          loading: false,
+          error: null,
+        },
+      };
 
     case CREATE_USER_FAIL:
       return {
@@ -315,29 +337,19 @@ const user = (state, { type, payload }) => {
           data: payload,
         },
 
-        getUser: {
-          ...state.getUser,
+        Users: {
+          ...state.Users,
           loading: false,
-          data: [payload, ...state.getUser.data],
+          data: [payload, ...state.Users.data],
           error: null,
-        },
-      };
-
-    case CREATE_USER_FAIL:
-      return {
-        ...state,
-        createUser: {
-          ...state.createUser,
-          loading: false,
-          error: payload,
         },
       };
 
     case GET_USERS_REQUEST:
       return {
         ...state,
-        getUser: {
-          ...state.getUser,
+        Users: {
+          ...state.Users,
           loading: true,
           error: null,
         },
@@ -346,8 +358,8 @@ const user = (state, { type, payload }) => {
     case GET_USERS_SUCCESS:
       return {
         ...state,
-        getUser: {
-          ...state.getUser,
+        Users: {
+          ...state.Users,
           loading: false,
           data: payload,
           error: null,
@@ -357,10 +369,140 @@ const user = (state, { type, payload }) => {
     case GET_USERS_FAIL:
       return {
         ...state,
-        getUser: {
-          ...state.getUser,
+        Users: {
+          ...state.Users,
           loading: false,
           error: payload,
+        },
+      };
+
+    case GET_COMPANYS_REQUEST:
+      return {
+        ...state,
+        Companys: {
+          ...state.Companys,
+          loading: true,
+          error: null,
+        },
+      };
+
+    case GET_COMPANYS_SUCCESS:
+      return {
+        ...state,
+        Companys: {
+          ...state.Companys,
+          loading: false,
+          data: payload,
+          error: null,
+        },
+      };
+
+    case GET_COMPANYS_FAIL:
+      return {
+        ...state,
+        Companys: {
+          ...state.Companys,
+          loading: false,
+          error: payload,
+        },
+      };
+
+    case CREATE_COMPANY_FAIL:
+      return {
+        ...state,
+        createCompany: {
+          ...state.createCompany,
+          loading: false,
+          error: null,
+        },
+      };
+    case CREATE_COMPANY_REQUEST:
+      return {
+        ...state,
+        createCompany: {
+          ...state.createCompany,
+          loading: true,
+          error: null,
+        },
+      };
+    case CREATE_COMPANY_SUCCESS:
+      console.log(`payload`, payload);
+
+      return {
+        ...state,
+        createCompany: {
+          ...state.createCompany,
+          loading: false,
+          error: null,
+          data: payload,
+        },
+      };
+
+    case EDIT_COMPANY_REQUEST:
+      return {
+        ...state,
+        createCompany: {
+          ...state.createCompany,
+          loading: true,
+          error: null,
+        },
+      };
+
+    case EDIT_COMPANY_SUCCESS:
+      return {
+        ...state,
+        createCompany: {
+          ...state.createCompany,
+          loading: false,
+          error: null,
+        },
+      };
+
+    case EDIT_COMPANY_FAIL:
+      return {
+        ...state,
+        createCompany: {
+          ...state.createCompany,
+          loading: false,
+          error: null,
+        },
+      };
+
+    case DELETE_COMPANY_REQUEST: {
+      return {
+        ...state,
+        deleteCompany: {
+          ...state.deleteCompany,
+          loading: true,
+          error: null,
+        },
+      };
+    }
+
+    case DELETE_COMPANY_SUCCESS: {
+      return {
+        ...state,
+        deleteCompany: {
+          ...state.deleteCompany,
+          loading: false,
+          error: null,
+        },
+
+        Companys: {
+          ...state.Companys,
+          loading: false,
+          data: state.Companys.data.filter((item) => item.Id !== payload),
+          error: null,
+        },
+      };
+    }
+    case DELETE_COMPANY_FAIL:
+      return {
+        ...state,
+        deleteCompany: {
+          ...state.deleteCompany,
+          loading: false,
+          error: null,
         },
       };
 

@@ -34,10 +34,10 @@ const orders = (state, { type, payload }) => {
           error: null,
         },
 
-        getOrders: {
-          ...state.getOrders,
+        Orders: {
+          ...state.Orders,
           loading: false,
-          data: state.getOrders.data.map((item) => {
+          data: state.Orders.data.map((item) => {
             if (item.OrderId === payload.id) {
               return payload;
             } else {
@@ -80,10 +80,10 @@ const orders = (state, { type, payload }) => {
           error: null,
         },
 
-        getOrders: {
-          ...state.getOrders,
+        Orders: {
+          ...state.Orders,
           loading: false,
-          data: state.getOrders.data.filter((item) => item.OrderId !== payload),
+          data: state.Orders.data.filter((item) => item.OrderId !== payload),
           error: null,
         },
       };
@@ -117,29 +117,19 @@ const orders = (state, { type, payload }) => {
           data: payload,
         },
 
-        getOrders: {
-          ...state.getOrders,
+        Orders: {
+          ...state.Orders,
           loading: false,
-          data: [payload, ...state.getOrders.data],
+          data: [payload, ...state.Orders.data],
           error: null,
-        },
-      };
-
-    case CREATE_ORDER_FAIL:
-      return {
-        ...state,
-        createOrder: {
-          ...state.createOrder,
-          loading: false,
-          error: payload,
         },
       };
 
     case GET_ORDERS_REQUEST:
       return {
         ...state,
-        getOrders: {
-          ...state.getOrders,
+        Orders: {
+          ...state.Orders,
           loading: true,
           error: null,
         },
@@ -148,8 +138,8 @@ const orders = (state, { type, payload }) => {
     case GET_ORDERS_SUCCESS:
       return {
         ...state,
-        getOrders: {
-          ...state.getOrders,
+        Orders: {
+          ...state.Orders,
           loading: false,
           data: payload,
           error: null,
@@ -159,8 +149,8 @@ const orders = (state, { type, payload }) => {
     case GET_ORDERS_FAIL:
       return {
         ...state,
-        getOrders: {
-          ...state.getOrders,
+        Orders: {
+          ...state.Orders,
           loading: false,
           error: payload,
         },

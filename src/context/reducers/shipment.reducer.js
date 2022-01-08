@@ -10,6 +10,9 @@ import {
   EDIT_SHIPMENT_REQUEST,
   EDIT_SHIPMENT_SUCCESS,
   EDIT_SHIPMENT_FAIL,
+  GET_INTERESTS_SUCCESS,
+  GET_INTERESTS_REQUEST,
+  GET_INTERESTS_FAIL,
 } from "../../constants/actionTypes";
 
 const shipments = (state, { type, payload }) => {
@@ -34,18 +37,18 @@ const shipments = (state, { type, payload }) => {
           error: null,
         },
 
-        getShipments: {
-          ...state.getShipments,
-          loading: false,
-          data: state.getShipments.data.map((item) => {
-            if (item.ShipmentId === payload.id) {
-              return payload;
-            } else {
-              return item;
-            }
-          }),
-          error: null,
-        },
+        // Shipments: {
+        //   ...state.Shipments,
+        //   loading: false,
+        //   data: state.Shipments.data.map((item) => {
+        //     if (item.ShipmentId === payload.id) {
+        //       return payload;
+        //     } else {
+        //       return item;
+        //     }
+        //   }),
+        //   error: null,
+        // },
       };
     }
 
@@ -80,10 +83,10 @@ const shipments = (state, { type, payload }) => {
           error: null,
         },
 
-        getShipments: {
-          ...state.getShipments,
+        Shipments: {
+          ...state.Shipments,
           loading: false,
-          data: state.getShipments.data.filter(
+          data: state.Shipments.data.filter(
             (item) => item.ShipmentId !== payload
           ),
           error: null,
@@ -119,19 +122,19 @@ const shipments = (state, { type, payload }) => {
           data: payload,
         },
 
-        getShipments: {
-          ...state.getShipments,
-          loading: false,
-          data: [payload, ...state.getShipments.data],
-          error: null,
-        },
+        // Shipments: {
+        //   ...state.Shipments,
+        //   loading: false,
+        //   data: [payload, ...state.Shipments.data],
+        //   error: null,
+        // },
       };
 
     case GET_SHIPMENTS_REQUEST:
       return {
         ...state,
-        getShipments: {
-          ...state.getShipments,
+        Shipments: {
+          ...state.Shipments,
           loading: true,
           error: null,
         },
@@ -140,8 +143,8 @@ const shipments = (state, { type, payload }) => {
     case GET_SHIPMENTS_SUCCESS:
       return {
         ...state,
-        getShipments: {
-          ...state.getShipments,
+        Shipments: {
+          ...state.Shipments,
           loading: false,
           data: payload,
           error: null,
@@ -151,13 +154,42 @@ const shipments = (state, { type, payload }) => {
     case GET_SHIPMENTS_FAIL:
       return {
         ...state,
-        getShipments: {
-          ...state.getShipments,
+        Shipments: {
+          ...state.Shipments,
           loading: false,
           error: payload,
         },
       };
+    case GET_INTERESTS_REQUEST:
+      return {
+        ...state,
+        Interests: {
+          ...state.Interests,
+          loading: true,
+          error: null,
+        },
+      };
 
+    case GET_INTERESTS_SUCCESS:
+      return {
+        ...state,
+        Interests: {
+          ...state.Interests,
+          loading: false,
+          data: payload,
+          error: null,
+        },
+      };
+
+    case GET_INTERESTS_FAIL:
+      return {
+        ...state,
+        Interests: {
+          ...state.Interests,
+          loading: false,
+          error: payload,
+        },
+      };
     default:
       return state;
   }

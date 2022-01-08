@@ -8,32 +8,50 @@ import {
   EDIT_SHIPMENT_FAIL,
   EDIT_SHIPMENT_REQUEST,
   EDIT_SHIPMENT_SUCCESS,
+  GET_INTERESTS_FAIL,
+  GET_INTERESTS_SUCCESS,
+  GET_INTERESTS_REQUEST,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
-export const listShipments = () => async (dispatch) => {
+export const listShipments = () => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: GET_SHIPMENTS_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/shipment/findAll/`);
-    dispatch({ type: GET_SHIPMENTS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_SHIPMENTS_FAIL, payload: error.message });
-  }
+  axios
+    .get(`/shipment/findAll/`)
+    .then((res) => {
+      dispatch({ type: GET_SHIPMENTS_SUCCESS, payload: res.data });
+      console.log(`res.data`, res.data);
+      onSuccess(res.data);
+    })
+
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_SHIPMENTS_FAIL, payload: message });
+      onError(message);
+    });
 };
 
-export const listShipmentsByShipmentId = (shipmentId) => async (dispatch) => {
-  dispatch({
-    type: GET_SHIPMENTS_REQUEST,
-  });
-  try {
-    const { res } = await axios.get(`/shipment/findOne/${shipmentId}`);
-    dispatch({ type: GET_SHIPMENTS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_SHIPMENTS_FAIL, payload: error.message });
-  }
-};
+export const listShipmentsByShipmentId =
+  (shipmentId) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({
+      type: GET_SHIPMENTS_REQUEST,
+    });
+    axios
+      .get(`/shipment/findOne/${shipmentId}`)
+      .then((res) => {
+        dispatch({ type: GET_SHIPMENTS_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: GET_SHIPMENTS_FAIL, payload: message });
+        onError(message);
+      });
+  };
 
 export const listShipmentsByDate = (fromDate, endDate) => async (dispatch) => {
   dispatch({
@@ -121,98 +139,138 @@ export const listShipmentByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const createShipment = (form) => async (dispatch) => {
-  const requestPayload = {
-    CompanyId: form.CompanyId || "",
-    LoadCategory: form.LoadCategory || "",
-    LoadType: form.LoadType || "",
-    LoadWeight: form.LoadWeight || "",
-    LoadUnit: form.LoadUnit || "",
-    Qty: form.Qty || "",
-    Description: form.Description || "",
-    PickUpCountry: form.PickUpCountry,
-    PickUpRegion: form.PickUpRegion,
-    PickUpLocation: form.PickUpLocation,
-    DeliveryCountry: form.DeliveryCountry,
-    DeliveryRegion: form.DeliveryRegion,
-    DeliveryLocation: form.DeliveryLocation,
-    ExpectedPickUpDate: form.ExpectedPickUpDate,
-    ExpectedDeliveryDate: form.ExpectedDeliveryDate,
-    RequestForShipment: form.RequestForShipment,
-    ShipmentRequestPrice: form.ShipmentRequestPrice,
-    DeliveryContactName: form.DeliveryContactName,
-    DeliveryContactPhone: form.DeliveryContactPhone,
-    DeliveryEmail: form.DeliveryEmail,
-    AssignedShipment: form.AssignedShipment,
-    ShipmentDate: form.ShipmentDate,
-    ShipmentDocs: form.ShipmentDocs || "",
-    ShipmentStatus: form.ShipmentStatus || "",
-    // contact_picture: form.contactPicture || null,
-    // is_favorite: form.isFavorite || false,
+export const createShipment =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      CompanyId: form.CompanyId || "",
+      LoadCategory: form.LoadCategory || "",
+      LoadType: form.LoadType || "",
+      LoadWeight: form.LoadWeight || "",
+      LoadUnit: form.LoadUnit || "",
+      Qty: form.Qty || "",
+      Description: form.Description || "",
+      PickUpCountry: form.PickUpCountry,
+      PickUpRegion: form.PickUpRegion,
+      PickUpLocation: form.PickUpLocation,
+      DeliveryCountry: form.DeliveryCountry,
+      DeliveryRegion: form.DeliveryRegion,
+      DeliveryLocation: form.DeliveryLocation,
+      ExpectedPickUpDate: form.ExpectedPickUpDate,
+      ExpectedDeliveryDate: form.ExpectedDeliveryDate,
+      RequestForShipment: form.RequestForShipment,
+      ShipmentRequestPrice: form.ShipmentRequestPrice,
+      DeliveryContactName: form.DeliveryContactName,
+      DeliveryContactPhone: form.DeliveryContactPhone,
+      DeliveryEmail: form.DeliveryEmail,
+      AssignedShipment: form.AssignedShipment,
+      ShipmentDate: form.ShipmentDate,
+      ShipmentDocs: form.ShipmentDocs || "",
+      ShipmentStatus: form.ShipmentStatus || "",
+      // contact_picture: form.contactPicture || null,
+      // is_favorite: form.isFavorite || false,
+    };
+
+    dispatch({ type: CREATE_SHIPMENT_REQUEST });
+
+    axios
+      .post(`/shipment/create/`, form)
+
+      .then((res) => {
+        dispatch({ type: CREATE_SHIPMENT_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: CREATE_SHIPMENT_FAIL, payload: message });
+        onError(message);
+      });
   };
 
-  dispatch({ type: CREATE_SHIPMENT_REQUEST });
+export const editShipment =
+  (form, shipmentId) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      ShipmentId: shipmentId || form.ShipmentId,
+      UserId: form.UserId,
+      CompanyId: form.CompanyId || "",
+      LoadCategory: form.LoadCategory || "",
+      LoadType: form.LoadType || "",
+      LoadWeight: form.LoadWeight || "",
+      LoadUnit: form.LoadUnit || "",
+      Qty: form.Qty || "",
+      Description: form.Description || "",
+      PickUpCountry: form.PickUpCountry,
+      PickUpRegion: form.PickUpRegion,
+      PickUpLocation: form.PickUpLocation,
+      DeliveryCountry: form.DeliveryCountry,
+      DeliveryRegion: form.DeliveryRegion,
+      DeliveryLocation: form.DeliveryLocation,
+      ExpectedPickUpDate: form.ExpectedPickUpDate,
+      ExpectedDeliveryDate: form.ExpectedDeliveryDate,
+      RequestForShipment: form.RequestForShipment,
+      ShipmentRequestPrice: form.ShipmentRequestPrice,
+      DeliveryContactName: form.DeliveryContactName,
+      DeliveryContactPhone: form.DeliveryContactPhone,
+      DeliveryEmail: form.DeliveryEmail,
+      AssignedShipment: form.AssignedShipment,
+      ShipmentDate: form.ShipmentDate || "",
+      ShipmentDocs: form.ShipmentDocs || "",
+      ShipmentStatus: form.ShipmentStatus || "",
+      // contact_picture: form.contactPicture || null,
+      // is_favorite: form.isFavorite || false,
+    };
 
-  try {
-    const { res } = await axios.post(`/shipment/create/`, form);
+    dispatch({ type: EDIT_SHIPMENT_REQUEST });
 
-    dispatch({
-      type: CREATE_SHIPMENT_SUCCESS,
-      payload: res.data,
-    });
-    return res.data;
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_SHIPMENT_FAIL, payload: message });
-  }
-};
+    axios
+      .put(`/shipment/update/${shipmentId}`, form)
+      .then((res) => {
+        dispatch({ type: EDIT_SHIPMENT_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
 
-export const editShipment = (form, shipmentId) => async (dispatch) => {
-  const requestPayload = {
-    ShipmentId: shipmentId || form.ShipmentId,
-    UserId: form.UserId,
-    CompanyId: form.CompanyId || "",
-    LoadCategory: form.LoadCategory || "",
-    LoadType: form.LoadType || "",
-    LoadWeight: form.LoadWeight || "",
-    LoadUnit: form.LoadUnit || "",
-    Qty: form.Qty || "",
-    Description: form.Description || "",
-    PickUpCountry: form.PickUpCountry,
-    PickUpRegion: form.PickUpRegion,
-    PickUpLocation: form.PickUpLocation,
-    DeliveryCountry: form.DeliveryCountry,
-    DeliveryRegion: form.DeliveryRegion,
-    DeliveryLocation: form.DeliveryLocation,
-    ExpectedPickUpDate: form.ExpectedPickUpDate,
-    ExpectedDeliveryDate: form.ExpectedDeliveryDate,
-    RequestForShipment: form.RequestForShipment,
-    ShipmentRequestPrice: form.ShipmentRequestPrice,
-    DeliveryContactName: form.DeliveryContactName,
-    DeliveryContactPhone: form.DeliveryContactPhone,
-    DeliveryEmail: form.DeliveryEmail,
-    AssignedShipment: form.AssignedShipment,
-    ShipmentDate: form.ShipmentDate || "",
-    ShipmentDocs: form.ShipmentDocs || "",
-    ShipmentStatus: form.ShipmentStatus || "",
-    // contact_picture: form.contactPicture || null,
-    // is_favorite: form.isFavorite || false,
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_SHIPMENT_FAIL, payload: message });
+        onError(message);
+      });
   };
 
-  dispatch({ type: EDIT_SHIPMENT_REQUEST });
+export const showInterest =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    //  {shipmentId,userId,}
+    dispatch({ type: CREATE_SHIPMENT_REQUEST });
 
-  try {
-    const { res } = await axios.put(`/shipment/update/${shipmentId}`, form);
+    axios
+      .post(`/shipment/showInterest/`, form)
+      .then((res) => {
+        dispatch({ type: CREATE_SHIPMENT_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
 
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: CREATE_SHIPMENT_FAIL, payload: message });
+        onError(message);
+      });
+  };
+
+export const listShipmentsInterest =
+  () => (dispatch) => (onSuccess) => (onError) => {
     dispatch({
-      type: EDIT_SHIPMENT_SUCCESS,
-      payload: res.data,
+      type: GET_INTERESTS_REQUEST,
     });
-    return res.data;
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: EDIT_SHIPMENT_FAIL, payload: message });
-  }
-};
+    axios
+      .get(`/shipment/findAllShipmentsInterest/`)
+      .then((res) => {
+        dispatch({ type: GET_INTERESTS_SUCCESS, payload: res.data });
+        console.log(`res.data`, res.data);
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: GET_INTERESTS_FAIL, payload: message });
+        onError(message);
+      });
+  };

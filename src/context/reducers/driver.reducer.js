@@ -34,10 +34,10 @@ const drivers = (state, { type, payload }) => {
           error: null,
         },
 
-        getDrivers: {
-          ...state.getDrivers,
+        Drivers: {
+          ...state.Drivers,
           loading: false,
-          data: state.getDrivers.data.map((item) => {
+          data: state.Drivers.data.map((item) => {
             if (item.DriverId === payload.id) {
               return payload;
             } else {
@@ -80,12 +80,10 @@ const drivers = (state, { type, payload }) => {
           error: null,
         },
 
-        getDrivers: {
-          ...state.getDrivers,
+        Drivers: {
+          ...state.Drivers,
           loading: false,
-          data: state.getDrivers.data.filter(
-            (item) => item.DriverId !== payload
-          ),
+          data: state.Drivers.data.filter((item) => item.DriverId !== payload),
           error: null,
         },
       };
@@ -119,29 +117,19 @@ const drivers = (state, { type, payload }) => {
           data: payload,
         },
 
-        getDrivers: {
-          ...state.getDrivers,
+        Drivers: {
+          ...state.Drivers,
           loading: false,
-          data: [payload, ...state.getDrivers.data],
+          data: [payload, ...state.Drivers.data],
           error: null,
-        },
-      };
-
-    case CREATE_DRIVER_FAIL:
-      return {
-        ...state,
-        createDriver: {
-          ...state.createDriver,
-          loading: false,
-          error: payload,
         },
       };
 
     case GET_DRIVERS_REQUEST:
       return {
         ...state,
-        getDrivers: {
-          ...state.getDrivers,
+        Drivers: {
+          ...state.Drivers,
           loading: true,
           error: null,
         },
@@ -150,8 +138,8 @@ const drivers = (state, { type, payload }) => {
     case GET_DRIVERS_SUCCESS:
       return {
         ...state,
-        getDrivers: {
-          ...state.getDrivers,
+        Drivers: {
+          ...state.Drivers,
           loading: false,
           data: payload,
           error: null,
@@ -161,8 +149,8 @@ const drivers = (state, { type, payload }) => {
     case GET_DRIVERS_FAIL:
       return {
         ...state,
-        getDrivers: {
-          ...state.getDrivers,
+        Drivers: {
+          ...state.Drivers,
           loading: false,
           error: payload,
         },

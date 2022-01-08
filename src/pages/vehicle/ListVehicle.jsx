@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -10,24 +10,42 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
-import { listVehicles } from "../../context/actions/vehicle/vehicle.action";
+import {
+  listVehicles,
+  listVehiclesByCarrier,
+} from "../../context/actions/vehicle/vehicle.action";
 import { GlobalContext } from "../../context/Provider";
 import { columns } from "../../datasource/dataColumns/vehicle";
 
-function ListVehicle() {
+function ListVehicle({ history, match }) {
+  const { vehicleId } = match.params;
+  const { carrierId } = match.params;
+  const { carrierType } = match.params;
+  const isAddMode = !vehicleId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
 
   const {
     vehicleDispatch,
-    vehicleState: { getVehicles:data, error, loading },
+    vehicleState: {
+      Vehicles: { data, error, loading },
+    },
   } = useContext(GlobalContext);
 
   // Calling the function on component mount
   useEffect(() => {
-    listVehicles(vehicleDispatch);
-    
+    if (carrierType) {
+      if (data.length === 0) {
+        listVehiclesByCarrier(carrierId, carrierType)(vehicleDispatch);
+        // listVehicles()(vehicleDispatch);
+      }
+    } else {
+      if (data.length === 0) {
+        listVehicles()(vehicleDispatch);
+      }
+    }
+
     // ((result) => {
     //   setData(result.data);
     // })((err) => {
@@ -35,8 +53,8 @@ function ListVehicle() {
     // });
 
     // setUser(JSON.parse(localStorage.getItem("user")));
-  }, [vehicleDispatch]);
-console.log(`data`, data)
+  }, []);
+  console.log(`loading`, loading);
   // const tableData = {
   //   columns,
   //   data,
@@ -56,7 +74,11 @@ console.log(`data`, data)
           <div class="card-body table-border-style">
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions exportHeaders columns={columns} data={data.data}>
+              <DataTableExtensions
+                exportHeaders
+                columns={columns}
+                data={data.data}
+              >
                 <DataTable
                   columns={columns}
                   data={data.data}

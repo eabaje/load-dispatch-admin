@@ -34,10 +34,10 @@ const profiles = (state, { type, payload }) => {
           error: null,
         },
 
-        getProfiles: {
-          ...state.getProfiles,
+        Profiles: {
+          ...state.Profiles,
           loading: false,
-          data: state.getProfiles.data.map((item) => {
+          data: state.Profiles.data.map((item) => {
             if (item.UserId === payload.id) {
               return payload;
             } else {
@@ -80,12 +80,10 @@ const profiles = (state, { type, payload }) => {
           error: null,
         },
 
-        getProfiles: {
-          ...state.getProfiles,
+        Profiles: {
+          ...state.Profiles,
           loading: false,
-          data: state.getProfiles.data.filter(
-            (item) => item.UserId !== payload
-          ),
+          data: state.Profiles.data.filter((item) => item.UserId !== payload),
           error: null,
         },
       };
@@ -119,10 +117,10 @@ const profiles = (state, { type, payload }) => {
           data: payload,
         },
 
-        getProfiles: {
-          ...state.getProfiles,
+        Profiles: {
+          ...state.Profiles,
           loading: false,
-          data: [payload, ...state.getProfiles.data],
+          data: [payload, ...state.Profiles.data],
           error: null,
         },
       };
@@ -140,8 +138,8 @@ const profiles = (state, { type, payload }) => {
     case GET_PROFILES_REQUEST:
       return {
         ...state,
-        getProfiles: {
-          ...state.getProfiles,
+        Profiles: {
+          ...state.Profiles,
           loading: true,
           error: null,
         },
@@ -150,8 +148,8 @@ const profiles = (state, { type, payload }) => {
     case GET_PROFILES_SUCCESS:
       return {
         ...state,
-        getProfiles: {
-          ...state.getProfiles,
+        Profiles: {
+          ...state.Profiles,
           loading: false,
           data: payload,
           error: null,
@@ -161,8 +159,8 @@ const profiles = (state, { type, payload }) => {
     case GET_PROFILES_FAIL:
       return {
         ...state,
-        getProfiles: {
-          ...state.getProfiles,
+        Profiles: {
+          ...state.Profiles,
           loading: false,
           error: payload,
         },

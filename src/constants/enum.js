@@ -17,7 +17,6 @@ export const LOAD_TYPE = [
 export const LOAD_UNIT = [
   { value: "Kg", text: "Kg" },
   { value: "Tons", text: "Tons" },
- 
 ];
 
 export const TRIP_STATUS = [
@@ -45,10 +44,10 @@ export const FLEET_TYPE = [
 ];
 
 export const PAYMENT_METHOD = [
-  { Cash: "Cash" },
-  { CreditCard: "Credit Card" },
-  { DebitCard: "Debit Card" },
-  { Paypal: "Paypal" },
+  { value: "Cash", text: "Cash" },
+  { value: "CreditCard", text: "Credit Card" },
+  { value: "DebitCard", text: "Debit Card" },
+  { value: "Paypal", text: "Paypal" },
 ];
 
 export const ORDER_STATUS = [
