@@ -14,7 +14,7 @@ export const columns = (params) => [
   {
     id: 1,
     name: "Interested Carrier",
-    selector: (row) => row.User?.FullName,
+    // selector: (row) => row.User?.FullName,
     cell: (row) => [
       <>
         {" "}
@@ -23,7 +23,7 @@ export const columns = (params) => [
           className="btn btn-sm"
           title="click to view user profile"
         >
-          row.User?.FullName
+          {row.User?.FullName}
         </Link>
       </>,
     ],
@@ -33,7 +33,20 @@ export const columns = (params) => [
   {
     id: 2,
     name: "Shipment Ref No",
-    selector: (row) => row?.Shipment?.ShipmentId,
+    //  selector: (row) => row?.Shipment?.ShipmentId,
+
+    cell: (row) => [
+      <>
+        {" "}
+        <Link
+          to={"/list-shipment-info/isReadOnly/" + row.ShipmentId}
+          className="btn btn-sm"
+          title="click to view user profile"
+        >
+          {row.User?.FullName}
+        </Link>
+      </>,
+    ],
     sortable: true,
     reorder: true,
   },
