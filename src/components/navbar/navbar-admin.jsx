@@ -67,9 +67,6 @@ const NavBarAdmin = () => {
                 <li>
                   <a href="/list-all-shipments">My Vehicles</a>
                 </li>
-                <li>
-                  <a href="/truck-listing">Search Truck Space</a>
-                </li>
               </ul>
             </li>
 

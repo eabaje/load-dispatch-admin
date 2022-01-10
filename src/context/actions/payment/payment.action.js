@@ -12,18 +12,24 @@ import {
   DELETE_PAYMENT_REQUEST,
   DELETE_PAYMENT_SUCCESS,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
-export const listPayments = () => async (dispatch) => {
+export const listPayments = () => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: GET_PAYMENTS_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/payment/findAll/`);
-    dispatch({ type: GET_PAYMENTS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_PAYMENTS_FAIL, payload: error.message });
-  }
+  axios
+    .get(`/payment/findAll/`)
+    .then((res) => {
+      dispatch({ type: GET_PAYMENTS_SUCCESS, payload: res.data });
+
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_PAYMENTS_FAIL, payload: message });
+    });
 };
 
 export const listPaymentByCriteria = (url, params) => async (dispatch) => {

@@ -44,10 +44,10 @@ const NavBar = () => {
 
   return (
     <>
-      {(user.roles === "admin" && <NavBarAdmin />) ||
-        (user.roles === "carrier" && <NavBarCarrier />) ||
+      {(user.roles === "carrier" && <NavBarCarrier />) ||
         (user.roles === "shipper" && <NavBarShipper />) ||
         (user.roles === "broker" && <NavBarShipper />) ||
+        (user.roles === "admin" && <NavBarAdmin />) ||
         (user.roles === "audit" && <NavBarAudit />) || <NavBarAdmin />}
     </>
   );

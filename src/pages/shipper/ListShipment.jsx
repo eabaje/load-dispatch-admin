@@ -22,7 +22,9 @@ import {
 import LoadingBox from "../../components/notification/loadingbox";
 import { Button, Modal } from "react-bootstrap";
 
-function ListShipment() {
+function ListShipment({ history, match }) {
+  const { userId } = match.params;
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
@@ -34,7 +36,6 @@ function ListShipment() {
     shipmentDispatch,
     shipmentState: {
       Shipments: { data, loading },
-      createShipment: { data: createdata }, //loading
     },
   } = useContext(GlobalContext);
   // Calling the function on component mount
@@ -45,17 +46,9 @@ function ListShipment() {
   }
 
   useEffect(() => {
-    function saveInterest(shipmentid, userid) {
-      showInterest(shipmentid, userid)(shipmentDispatch)((res) => {})((err) => {
-        enqueueSnackbar(err, { variant: "error" });
-      });
-    }
-
     if (data.length === 0) {
-      // listShipments()(shipmentDispatch);
-
       listShipments()(shipmentDispatch)((res) => {
-        setData(res.data);
+        // setData(res.data);
       })((err) => {
         enqueueSnackbar(err.message, { variant: "error" });
       });
@@ -85,11 +78,19 @@ function ListShipment() {
                 <DataTableExtensions
                   exportHeaders
                   columns={columns(user)}
-                  data={data.data}
+                  data={
+                    userId
+                      ? data.data?.filter((item) => item?.UserId === userId)
+                      : data?.data
+                  }
                 >
                   <DataTable
                     columns={columns(user)}
-                    data={data.data}
+                    data={
+                      userId
+                        ? data.data?.filter((item) => item?.UserId === userId)
+                        : data?.data
+                    }
                     className="table table-striped table-bordered table-hover table-checkable"
                     defaultSortField={1}
                     sortIcon={<ChevronsDown />}

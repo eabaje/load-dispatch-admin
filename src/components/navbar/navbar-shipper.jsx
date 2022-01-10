@@ -56,7 +56,7 @@ const NavBarShipper = () => {
             <li className="nav-item pcoded-hasmenu">
               <a href="#!" className="nav-link ">
                 <span className="pcoded-micon">
-                  <i className="feather icon-box"></i>
+                  <i className="first fas fa-car"></i>
                 </span>
                 <span className="pcoded-mtext">Ship Vehicles</span>
               </a>
@@ -65,42 +65,10 @@ const NavBarShipper = () => {
                   <a href="/add-shipment">Post a Vehicle</a>
                 </li>
                 <li>
-                  <a href={`/my-shipments/${user.UserId}`}>My Vehicles</a>
+                  <a href={`/my-shipments-info/${user.UserId}`}>My Vehicles</a>
                 </li>
                 <li>
                   <a href="/list-carriers">Connect with carriers </a>
-                </li>
-              </ul>
-            </li>
-
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                  <i className="feather icon-truck"></i>
-                </span>
-                <span className="pcoded-mtext">Carrier</span>
-              </a>
-              <ul className="pcoded-submenu">
-                <li>
-                  <a href="/list-carriers" label="Resources">
-                    List carrier Info
-                  </a>
-                </li>
-
-                <li>
-                  <a href="/list-vehicles" label="Resources">
-                    Vehicle List
-                  </a>
-                </li>
-                <li>
-                  <a href="/view-vehicle-request" label="Resources">
-                    View Requests
-                  </a>
-                </li>
-                <li>
-                  <a href="/list-vehicle" label="Resources">
-                    Connect to Shippers
-                  </a>
                 </li>
               </ul>
             </li>

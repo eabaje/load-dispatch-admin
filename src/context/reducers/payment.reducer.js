@@ -91,15 +91,6 @@ const payments = (state, { type, payload }) => {
       };
     }
 
-    case CREATE_PAYMENT_FAIL:
-      return {
-        ...state,
-        createPayment: {
-          ...state.createPayment,
-          loading: false,
-          error: null,
-        },
-      };
     case CREATE_PAYMENT_REQUEST:
       return {
         ...state,

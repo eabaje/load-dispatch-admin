@@ -35,6 +35,7 @@ import UploadShipment from "./pages/shipper/UploadShipment";
 import AddUserSubscription from "./pages/user/AddUserSubscription";
 import isAuthenticated from "./utils/isAuthenticated";
 import ListCompany from "./pages/company/ListCompany";
+import ListPayment from "./payment/Listpayment";
 
 const App = () => {
   const {
@@ -132,7 +133,12 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/my-shipments/:userId"
+              path="/my-shipments-info"
+              component={ListShipment}
+            />
+            <AppLayoutRoute
+              exact
+              path="/my-shipments-info/:userId"
               component={ListShipment}
             />
             <AppLayoutRoute
@@ -297,6 +303,16 @@ const App = () => {
               exact
               path="/list-company-info/:userId"
               component={ListCompany}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-payment-info"
+              component={ListPayment}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-payment-info/:userId"
+              component={ListPayment}
             />
           </>
         )}
