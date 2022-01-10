@@ -1,14 +1,14 @@
-import Home from "./pages/home/home";
 import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
+  useHistory
 } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { useContext } from "react";
 
+import { useContext } from "react";
+import Home from "./pages/home/home";
 import Shipper from "./pages/shipper/shipper";
 import AddShipment from "./pages/shipper/AddShipment";
 import ListShipment from "./pages/shipper/ListShipment";
@@ -42,26 +42,12 @@ const App = () => {
     authState: { user, isLoggedIn },
   } = useContext(GlobalContext);
 
-  const history = useHistory();
+  let history = useHistory();
 
   if (!isAuthenticated()) {
     history.push("/signin");
   }
-  // console.log(`isLoggedIn`, isLoggedIn);
-  // const getUser = () => {
-  //   try {
-  //     console.log(`users`, user);
-  //     if (!user) {
-  //       document.location.href = "/signin";
-  //     }
-  //   } catch (error) {}
-  // };
-
-  // React.useEffect(() => {
-  //   if (isLoggedIn === false) {
-  //     document.location.href = "/signin";
-  //   }
-  // }, [isLoggedIn]);
+  
 
   function RouteWithLayout({ layout, component, ...rest }) {
     return (
