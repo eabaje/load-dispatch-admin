@@ -14,16 +14,16 @@ export const columns = (params) => [
   {
     id: 1,
     name: "Interested Carrier",
-    // selector: (row) => row.User?.FullName,
+     selector: (row) => row.User?.FullName,
     cell: (row) => [
       <>
         {" "}
         <Link
           to={"/list-user-info/" + row.UserId}
           className="btn btn-sm"
-          title="click to view user profile"
+          title="click to view carrier profile"
         >
-          {row.User?.FullName}
+         {row.User?.FullName}
         </Link>
       </>,
     ],
@@ -32,8 +32,8 @@ export const columns = (params) => [
   },
   {
     id: 2,
-    name: "Shipment Ref No",
-    //  selector: (row) => row?.Shipment?.ShipmentId,
+    name: "Shipment ",
+      selector: (row) => row.Shipment?.Description,
 
     cell: (row) => [
       <>
@@ -41,9 +41,9 @@ export const columns = (params) => [
         <Link
           to={"/list-shipment-info/isReadOnly/" + row.ShipmentId}
           className="btn btn-sm"
-          title="click to view user profile"
+          title="click to shipment info"
         >
-          {row.User?.FullName}
+         {row.Shipment?.Description}
         </Link>
       </>,
     ],
@@ -215,13 +215,13 @@ export const columns = (params) => [
   //     sortable: true,
   //     reorder: true,
   //   },
-  //   {
-  //     id: 22,
-  //     name: "Shipment Date",
-  //     selector: (row) => row.ShipmentDate,
-  //     sortable: true,
-  //     reorder: true,
-  //   },
+    {
+      id: 22,
+      name: "Date of Interest Shown",
+      selector: (row) => row.InterestDate,
+      sortable: true,
+      reorder: true,
+    },
   //   {
   //     id: 23,
   //     name: "Shipment Docs",
@@ -237,24 +237,28 @@ export const columns = (params) => [
   //     sortable: true,
   //     reorder: true,
   //   },
-  {
-    id: 25,
-    name: "Created Date",
-    selector: (row) => row.createdAt,
-    sortable: true,
-    right: true,
-    reorder: true,
-  },
-
-  {
-    id: 26,
-    name: "Updated Date",
-    selector: (row) => row.updatedAt,
-    sortable: true,
-    right: true,
-    reorder: true,
-  },
-
+//   params?.roles !== "admin" && (
+//   {
+//     id: 25,
+//     name: "Created Date",
+//     selector: (row) => row.createdAt,
+//     sortable: true,
+//     right: true,
+//     reorder: true,
+//   }
+// ),
+// params?.roles !== "admin" && (
+//   {
+//     id: 26,
+//     name: "Updated Date",
+//     selector: (row) => row.updatedAt,
+//     sortable: true,
+//     right: true,
+//     reorder: true,
+//   }
+    
+//   ),
+ 
   {
     name: "Action",
     sortable: false,

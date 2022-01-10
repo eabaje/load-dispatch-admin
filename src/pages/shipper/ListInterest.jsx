@@ -71,7 +71,7 @@ function ListInterest() {
             <h3>List of Interest in Shipments</h3>
             <hr />
             <ul>
-              <li>Edit and delete Shipments</li>
+             
               <li>Make Request for onboarding services</li>
               <li>View interest for your shipment</li>
             </ul>

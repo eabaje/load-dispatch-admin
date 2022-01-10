@@ -10,30 +10,24 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
+import { fetchData, fetchDataAll } from "../helpers/query";
 
-function ListVehicle() {
+function ListPayment() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
 
   // GET request function to your Mock API
-  const fetchData = async () => {
-    // fetch(`${INVENTORY_API_URL}`)
-    //   .then((res) => res.json())
-    //   .then((json) => setData(json));
-    try {
-      const res = await axios.get(`${API_URL}payment/findAll`);
-      if (res) {
-        setData(res);
-      }
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: "error" });
-    }
-  };
+ 
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchData();
+    fetchDataAll('/payment/findAll')((res)=>{
+      setData(res)
+    })((err)=>{
+
+
+    });
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   return (
@@ -44,12 +38,28 @@ function ListVehicle() {
             <h3>List of payment</h3>
             <ul>
               <li>Keep a track of all Succesfull Payment transaction</li>
-              <li>Review </li>
-              <li>Add vehicles to Carrier </li>
+              <li>Keep a track of all Status Payment transaction </li>
+              
             </ul>
           </div>
           <div class="card-body table-border-style">
             <div class="table-responsive">
+            <DataTableExtensions
+                exportHeaders
+                columns={columns}
+                data={data}
+              >
+                <DataTable
+                  columns={columns}
+                  data={data}
+                  className="table table-striped table-bordered table-hover table-checkable"
+                  defaultSortField={1}
+                  sortIcon={<ChevronsDown />}
+                  defaultSortAsc={true}
+                  pagination
+                  highlightOnHover
+                />
+              </DataTableExtensions>
               <table class="table table-striped ">
                 <thead>
                   <tr>
@@ -137,4 +147,4 @@ function ListVehicle() {
   );
 }
 
-export default ListVehicle;
+export default ListPayment;
