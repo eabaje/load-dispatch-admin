@@ -231,6 +231,7 @@ export const columns = (params) => [
   },
 
   {
+    id: 27,
     name: "Action",
     sortable: false,
     selector: "null",

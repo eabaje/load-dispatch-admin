@@ -46,17 +46,30 @@ function ListShipment({ history, match }) {
   }
 
   useEffect(() => {
+    
     if (data.length === 0) {
       listShipments()(shipmentDispatch)((res) => {
+        // if(userId){
+       
+        // setData(res.data?.filter((item) => item?.UserId === userId));
+        // }
+        // else{
+
         // setData(res.data);
+        // }
+        // setData(res.data?.filter((item) => item?.UserId === userId);
       })((err) => {
         enqueueSnackbar(err.message, { variant: "error" });
       });
     }
 
+    setData(data.data?.filter((item) => item.UserId === userId));
+    
+
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
-  console.log(`user`, user);
+  console.log(`userid`, userId);
+  console.log(`data`, data2);
   return (
     <div>
       <div class="col-xl-12">
@@ -83,6 +96,7 @@ function ListShipment({ history, match }) {
                       ? data.data?.filter((item) => item?.UserId === userId)
                       : data?.data
                   }
+                 // data= {data.data}
                 >
                   <DataTable
                     columns={columns(user)}
@@ -91,6 +105,7 @@ function ListShipment({ history, match }) {
                         ? data.data?.filter((item) => item?.UserId === userId)
                         : data?.data
                     }
+                   // data= {data.data}
                     className="table table-striped table-bordered table-hover table-checkable"
                     defaultSortField={1}
                     sortIcon={<ChevronsDown />}

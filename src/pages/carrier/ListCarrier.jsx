@@ -16,7 +16,8 @@ import { GlobalContext } from "../../context/Provider";
 import { listCarriers } from "../../context/actions/carrier/carrier.action";
 import LoadingBox from "../../components/notification/loadingbox";
 
-function ListCarrier() {
+function ListCarrier({ history, match }) {
+  const { companyId } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
@@ -82,11 +83,15 @@ function ListCarrier() {
                   <DataTableExtensions
                     exportHeaders
                     columns={columns}
-                    data={data.data}
+                    data={ companyId
+                      ? data.data?.filter((item) => item?.CompanyId === companyId)
+                      : data?.data}
                   >
                     <DataTable
                       columns={columns}
-                      data={data.data}
+                      data={ companyId
+                        ? data.data?.filter((item) => item?.CompanyId === companyId)
+                        : data?.data}
                       className="table table-striped table-bordered table-hover table-checkable"
                       defaultSortField={1}
                       sortIcon={<ChevronsDown />}

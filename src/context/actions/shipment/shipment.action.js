@@ -23,7 +23,7 @@ export const listShipments = () => (dispatch) => (onSuccess) => (onError) => {
     .get(`/shipment/findAll/`)
     .then((res) => {
       dispatch({ type: GET_SHIPMENTS_SUCCESS, payload: res.data });
-      console.log(`res.data`, res.data);
+     // console.log(`res.data`, res.data);
       onSuccess(res.data);
     })
 

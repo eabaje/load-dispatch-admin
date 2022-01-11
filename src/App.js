@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,9 +44,8 @@ const App = () => {
 
   let history = useHistory();
 
-  if (!isAuthenticated()) {
-    history.push("/signin");
-  }
+
+
   
 
   function RouteWithLayout({ layout, component, ...rest }) {
@@ -78,6 +77,14 @@ const App = () => {
   };
 
   const AppLayoutRoute = ({ component: Component, ...rest }) => {
+
+    if (!isAuthenticated()) {
+   
+      //window.location.href = '/signin'
+      history.push("/signin");
+    }
+
+
     return (
       <Route
         {...rest}
@@ -118,11 +125,13 @@ const App = () => {
               component={UploadShipment}
             />
             <AppLayoutRoute
+              key="my-shipments-info"
               exact
               path="/my-shipments-info"
               component={ListShipment}
             />
             <AppLayoutRoute
+              key="my-shipments-info/:userId"
               exact
               path="/my-shipments-info/:userId"
               component={ListShipment}
@@ -176,7 +185,19 @@ const App = () => {
               path="/list-carriers"
               component={ListCarrier}
             />
+            <AppLayoutRoute
+              key="list-carriers-info"
+              exact
+              path="/list-carriers-info"
+              component={ListCarrier}
+            />
 
+              <AppLayoutRoute
+              key="list-carriers-info/:companyId"
+              exact
+              path="/list-carriers-info/:companyId"
+              component={ListCarrier}
+            />
             <AppLayoutRoute
               key="add-vehicle-to-carrier"
               exact
