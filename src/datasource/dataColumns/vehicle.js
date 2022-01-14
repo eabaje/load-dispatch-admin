@@ -1,7 +1,8 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-export const columns = [
+import { LOAD_TYPE } from "../../constants/enum";
+export const columns = (params) => [
   // {
   //   id: 1,
   //   name: "Carrier Name",
@@ -12,7 +13,8 @@ export const columns = [
   {
     id: 2,
     name: "Vehicle Type",
-    selector: (row) => row.VehicleType,
+    selector: (row) =>
+      LOAD_TYPE.find((item) => item.value === row.VehicleType).text,
     sortable: true,
     reorder: true,
   },
@@ -116,32 +118,33 @@ export const columns = [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
+      (params?.roles === "carrier" || params?.roles === "admin") && (
         <Link
           to={"/edit-vehicle-info/" + row.VehicleId}
           className="btn btn-sm"
-          title="Edit  Subscription"
+          title="Edit  Vehcile"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
-      </>,
-
-      <Link
-        to={"/assign-driver-to-vehicle/" + row.VehicleId}
-        className="btn btn-sm"
-        title="Assign Driver to Vehicle"
-      >
-        <i className="first fas fa-user"></i>
-      </Link>,
-
-      <Link
-        to={"/delete-data/" + row.VehicleId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      ),
+      params?.roles === "carrier" && (
+        <Link
+          to={"/assign-driver-to-vehicle/" + row.VehicleId}
+          className="btn btn-sm"
+          title="Assign Driver to Vehicle"
+        >
+          <i className="first fas fa-user"></i>
+        </Link>
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/Vehicles/" + row.VehicleId}
+          className="btn btn-sm"
+          title="Delete/Archive (Redundant/Incorrect data)"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

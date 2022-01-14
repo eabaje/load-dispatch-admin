@@ -56,6 +56,7 @@ function ListPayment({ history, match }) {
         <div class="card">
           <div class="card-header alert alert-info">
             <h3>List of payment</h3>
+            <hr />
             <ul>
               <li>Keep a track of all Succesfull Payment transaction</li>
               <li>Keep a track of all Status Payment transaction </li>

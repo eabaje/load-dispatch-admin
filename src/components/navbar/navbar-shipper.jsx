@@ -37,61 +37,76 @@ const NavBarShipper = () => {
   }, []);
 
   return (
-    <nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
-      <div className="navbar-wrapper container">
-        <div className="navbar-content sidenav-horizontal" id="layout-sidenav">
-          <ul className="nav pcoded-inner-navbar sidenav-inner">
-            <li className="nav-item pcoded-menu-caption">
-              <label>Navigation</label>
-            </li>
-            <li className="nav-item">
-              <a href="/dashboard" class="nav-link ">
-                <span class="pcoded-micon">
-                  <i class="feather icon-home"></i>
-                </span>
-                <span class="pcoded-mtext">Dashboard</span>
-              </a>
-            </li>
+    <>
+      {" "}
+      <nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
+        <div className="navbar-wrapper container">
+          <div
+            className="navbar-content sidenav-horizontal"
+            id="layout-sidenav"
+          >
+            <ul className="nav pcoded-inner-navbar sidenav-inner">
+              <li className="nav-item pcoded-menu-caption">
+                <label>Navigation</label>
+              </li>
+              <li className="nav-item">
+                <a href="/dashboard" class="nav-link ">
+                  <span class="pcoded-micon">
+                    <i class="feather icon-home"></i>
+                  </span>
+                  <span class="pcoded-mtext">Dashboard</span>
+                </a>
+              </li>
 
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                  <i className="first fas fa-car"></i>
-                </span>
-                <span className="pcoded-mtext">Ship Vehicles</span>
-              </a>
-              <ul className="pcoded-submenu">
-                <li>
-                  <a href="/add-shipment">Post a Vehicle</a>
-                </li>
-                <li>
-                  <a href={`/my-shipments-info/${user.UserId}`}>My Vehicles</a>
-                </li>
-                <li>
-                  <a href="/list-carriers">Connect with carriers </a>
-                </li>
-              </ul>
-            </li>
+              <li className="nav-item pcoded-hasmenu">
+                <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className="first fas fa-car"></i>
+                  </span>
+                  <span className="pcoded-mtext">Ship Vehicles</span>
+                </a>
+                <ul className="pcoded-submenu">
+                  <li>
+                    <Link to={"/add-shipment"} title="Post a Vehicle">
+                      Post a Vehicle
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={`/my-shipments-info/${user.UserId}`}
+                      title="My Vehicles"
+                    >
+                      My Vehicles
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/list-carriers"} title="Connect with carriers">
+                      Connect with carriers
+                    </Link>
+                  </li>
+                </ul>
+              </li>
 
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                  <i className="feather icon-aperture"></i>
-                </span>
-                <span className="pcoded-mtext">Connect with Drivers</span>
-              </a>
-              <ul className="pcoded-submenu">
-                <li>
-                  <a href="/list-drivers-summary" label="Resources">
-                    List Drivers
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
+              <li className="nav-item pcoded-hasmenu">
+                <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className="first fas fa-users"></i>
+                  </span>
+                  <span className="pcoded-mtext">Connect with Drivers</span>
+                </a>
+                <ul className="pcoded-submenu">
+                  <li>
+                    <Link to={"/list-drivers-summary"} title="List Drivers">
+                      List Drivers
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 

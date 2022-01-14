@@ -38,6 +38,9 @@ import {
   DELETE_COMPANY_REQUEST,
   DELETE_COMPANY_SUCCESS,
   DELETE_COMPANY_FAIL,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAIL,
 } from "../../constants/actionTypes";
 
 const user = (state, { type, payload }) => {
@@ -371,6 +374,37 @@ const user = (state, { type, payload }) => {
         ...state,
         Users: {
           ...state.Users,
+          loading: false,
+          error: payload,
+        },
+      };
+
+    case GET_USER_REQUEST:
+      return {
+        ...state,
+        User: {
+          ...state.User,
+          loading: true,
+          error: null,
+        },
+      };
+
+    case GET_USER_SUCCESS:
+      return {
+        ...state,
+        User: {
+          ...state.User,
+          loading: false,
+          data: payload,
+          error: null,
+        },
+      };
+
+    case GET_USER_FAIL:
+      return {
+        ...state,
+        User: {
+          ...state.User,
           loading: false,
           error: payload,
         },

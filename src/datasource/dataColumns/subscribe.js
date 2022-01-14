@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
-export const columns = [
+export const columns = (params) => [
   {
     id: 1,
     name: "Subscription Name",

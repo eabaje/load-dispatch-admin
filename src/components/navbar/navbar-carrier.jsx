@@ -31,132 +31,140 @@ const NavBarCarrier = () => {
   }, []);
 
   return (
-    <nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
-      <div className="navbar-wrapper container">
-        <div className="navbar-content sidenav-horizontal" id="layout-sidenav">
-          <ul className="nav pcoded-inner-navbar sidenav-inner">
-            <li className="nav-item pcoded-menu-caption">
-              <label>Navigation</label>
-            </li>
-            <li className="nav-item">
-              <a href="/dashboard" class="nav-link ">
-                <span class="pcoded-micon">
-                <i className="first fas fa-home"></i>
-                </span>
-                <span class="pcoded-mtext">Dashboard</span>
-              </a>
-            </li>
+    <>
+      {" "}
+      <nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
+        <div className="navbar-wrapper container">
+          <div
+            className="navbar-content sidenav-horizontal"
+            id="layout-sidenav"
+          >
+            <ul className="nav pcoded-inner-navbar sidenav-inner">
+              <li className="nav-item pcoded-menu-caption">
+                <label>Navigation</label>
+              </li>
+              <li className="nav-item">
+                <a href="/dashboard" class="nav-link ">
+                  <span class="pcoded-micon">
+                    <i className="first fas fa-home"></i>
+                  </span>
+                  <span class="pcoded-mtext">Dashboard</span>
+                </a>
+              </li>
 
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                <i className="first fas fa-car"></i>
-                </span>
-                <span className="pcoded-mtext">Ship Vehicles</span>
-              </a>
-              <ul className="pcoded-submenu">
-                <li>
-                  <a href="/add-shipment">Post a Vehicle</a>
-                </li>
-                <li>
-                  <a href="/list-all-shipments">Find all Vehicles</a>
-                </li>
-                <li>
-                  <a href={`/my-shipments-info/${user.UserId}`}>My Vehicles</a>
-                </li>
-                <li>
-                  <a href="/truck-listing">Search Truck Space</a>
-                </li>
-              </ul>
-            </li>
+              <li className="nav-item pcoded-hasmenu">
+                <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className="first fas fa-car"></i>
+                  </span>
+                  <span className="pcoded-mtext">Ship Vehicles</span>
+                </a>
+                <ul className="pcoded-submenu">
+                  <li>
+                    <Link to={"/add-shipment"} title="Post a Vehicle">
+                      Post a Vehicle
+                    </Link>{" "}
+                  </li>
+                  <li>
+                    <Link to={"/list-all-shipments"} title="Find all Vehicles">
+                      Find all Vehicles
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={`/my-shipments-info/${user.UserId}`}
+                      title="My Vehicles"
+                    >
+                      My Vehicles
+                    </Link>{" "}
+                  </li>
+                </ul>
+              </li>
 
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                <i className="first fas fa-truck"></i>
-                </span>
-                <span className="pcoded-mtext">Carrier</span>
-              </a>
-              <ul className="pcoded-submenu">
-                <li>
-                  <a href="/add-carrier" label="Resources">
-                    Create carrier Info
-                  </a>
-                </li>
-                <li>
-                  <a href={`/list-carriers-info/${user.CompanyId}`} label="Resources">
-                    List carrier Info
-                  </a>
-                </li>
-              
-               
-              </ul>
-            </li>
+              <li className="nav-item pcoded-hasmenu">
+                <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className="first fas fa-truck"></i>
+                  </span>
+                  <span className="pcoded-mtext">Carrier</span>
+                </a>
+                <ul className="pcoded-submenu">
+                  <li>
+                    <Link to={"/add-carrier"} title="Create carrier Info">
+                      Create carrier Info
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={`/list-carriers-info/${user.CompanyId}`}
+                      title="List carrier Info"
+                    >
+                      List carrier Info
+                    </Link>
+                  </li>
+                </ul>
+              </li>
 
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                <i className="first fas fa-users"></i>
-                </span>
-                <span className="pcoded-mtext">Driver Management</span>
-              </a>
-              <ul className="pcoded-submenu">
-                <li>
-                  <a href="/list-drivers-info" label="Resources">
-                    List Drivers
-                  </a>
-                </li>
-                <li>
-                  <a href="/add-driver-info" label="Resources">
-                    Create Driver Profile
-                  </a>
-                </li>
-                <li>
-                  <a href="/assign-vehicle-driver" label="Resources">
-                    Assign Vehicle To Driver
-                  </a>
-                </li>
-                <li>
-                  <a href="/delete-driver" label="Resources">
-                    Delete Driver
-                  </a>
-                </li>
-              </ul>
-            </li>
+              <li className="nav-item pcoded-hasmenu">
+                <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className="first fas fa-users"></i>
+                  </span>
+                  <span className="pcoded-mtext">Driver Management</span>
+                </a>
+                <ul className="pcoded-submenu">
+                  <li>
+                    <Link to={"/list-drivers-info"} title=" List Drivers">
+                      List Drivers
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={"/add-driver-info"}
+                      title=" Create Driver Profile"
+                    >
+                      Create Driver Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to={"/assign-vehicle-driver"}
+                      title=" Assign Vehicle To Driver"
+                    >
+                      Assign Vehicle To Driver
+                    </Link>
+                  </li>
+                </ul>
+              </li>
 
-            <li className="nav-item pcoded-hasmenu">
-              <a href="#!" className="nav-link ">
-                <span className="pcoded-micon">
-                <i className="first fas fa-road"></i>
-                </span>
-                <span className="pcoded-mtext">Trip Management</span>
-              </a>
-              <ul className="pcoded-submenu">
-              <li>
-                  <a href="/list-trip-info/" label="Resources">
-                    List All Trips
-                  </a>
-                </li>
-                <li>
-                  <a href="/add-trip" label="Resources">
-                    Create Trip Record
-                  </a>
-                </li>
-               
-               
-              </ul>
-            </li>
-
-          
-
-
-          
-
-           
-          </ul>
+              <li className="nav-item pcoded-hasmenu">
+                <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className="first fas fa-road"></i>
+                  </span>
+                  <span className="pcoded-mtext">Trip Management</span>
+                </a>
+                <ul className="pcoded-submenu">
+                  <li>
+                    <Link to={"/list-trip"} title=" List All Trips">
+                      List All Trips
+                    </Link>
+                    <a href="/list-trip" label="Resources">
+                      List All Trips
+                    </a>
+                  </li>
+                  <li>
+                    <Link to={"/add-trip"} title=" Create Trip Record">
+                      Create Trip Record
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 

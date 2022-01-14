@@ -22,10 +22,8 @@ import {
 import LoadingBox from "../../components/notification/loadingbox";
 import { Button, Modal } from "react-bootstrap";
 
-function ListShipment({ history, match }) {
+function ListShipmentCriteria({ history, match }) {
   const { userId } = match.params;
-  const { assigned } = match.params;
-  const { sent } = match.params;
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
@@ -48,20 +46,6 @@ function ListShipment({ history, match }) {
   }
 
   useEffect(() => {
-    if (data.length === 0) {
-      listShipments()(shipmentDispatch)((res) => {
-        // if(userId){
-        // setData(res.data?.filter((item) => item?.UserId === userId));
-        // }
-        // else{
-        // setData(res.data);
-        // }
-        // setData(res.data?.filter((item) => item?.UserId === userId);
-      })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
-    }
-
     if (data.length === 0 && userId) {
       listShipments()(shipmentDispatch)((res) => {
         // if(userId){
@@ -103,41 +87,21 @@ function ListShipment({ history, match }) {
                 <DataTableExtensions
                   exportHeaders
                   columns={columns(user)}
-                  data={
-                    userId
-                      ? data.data?.filter((item) => item?.UserId === userId)
-                      : assigned
-                      ? data.data?.filter(
-                          (item) => item?.AssignedShipment === true
-                        )
-                      : sent
-                      ? data.data?.filter(
-                          (item) =>
-                            item?.ShipmentStatus === "Arrived" ||
-                            item?.ShipmentStatus === "Delivered"
-                        )
-                      : data?.data
-                  }
-                  // data={data.data}
+                  // data={
+                  //   userId
+                  //     ? data.data?.filter((item) => item?.UserId === userId)
+                  //     : data?.data
+                  // }
+                  data={data.data}
                 >
                   <DataTable
                     columns={columns(user)}
-                    data={
-                      userId
-                        ? data.data?.filter((item) => item?.UserId === userId)
-                        : assigned
-                        ? data.data?.filter(
-                            (item) => item?.AssignedShipment === true
-                          )
-                        : sent
-                        ? data.data?.filter(
-                            (item) =>
-                              item?.ShipmentStatus === "Arrived" ||
-                              item?.ShipmentStatus === "Delivered"
-                          )
-                        : data?.data
-                    }
-                    // data={data.data}
+                    // data={
+                    //   userId
+                    //     ? data.data?.filter((item) => item?.UserId === userId)
+                    //     : data?.data
+                    // }
+                    data={data.data}
                     className="table table-striped table-bordered table-hover table-checkable"
                     defaultSortField={1}
                     sortIcon={<ChevronsDown />}
@@ -163,4 +127,4 @@ function ListShipment({ history, match }) {
   );
 }
 
-export default ListShipment;
+export default ListShipmentCriteria;

@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory
+  useHistory,
 } from "react-router-dom";
 
 import { useContext } from "react";
@@ -36,6 +36,8 @@ import AddUserSubscription from "./pages/user/AddUserSubscription";
 import isAuthenticated from "./utils/isAuthenticated";
 import ListCompany from "./pages/company/ListCompany";
 import ListPayment from "./payment/Listpayment";
+import ListShipmentCriteria from "./pages/shipper/ListShipmentCriteria";
+import UserProfile from "./pages/user/UserProfile";
 
 const App = () => {
   const {
@@ -43,10 +45,6 @@ const App = () => {
   } = useContext(GlobalContext);
 
   let history = useHistory();
-
-
-
-  
 
   function RouteWithLayout({ layout, component, ...rest }) {
     return (
@@ -77,13 +75,10 @@ const App = () => {
   };
 
   const AppLayoutRoute = ({ component: Component, ...rest }) => {
-
     if (!isAuthenticated()) {
-   
       //window.location.href = '/signin'
       history.push("/signin");
     }
-
 
     return (
       <Route
@@ -124,14 +119,13 @@ const App = () => {
               path="/add-shipment-upload"
               component={UploadShipment}
             />
-            <AppLayoutRoute
+            {/* <AppLayoutRoute
               key="my-shipments-info"
               exact
               path="/my-shipments-info"
               component={ListShipment}
-            />
+            /> */}
             <AppLayoutRoute
-              key="my-shipments-info/:userId"
               exact
               path="/my-shipments-info/:userId"
               component={ListShipment}
@@ -142,7 +136,6 @@ const App = () => {
               component={ListShipment}
             />
             <AppLayoutRoute
-              exact
               path="/list-all-shipments-assigned/:assigned"
               component={ListShipment}
             />
@@ -192,7 +185,7 @@ const App = () => {
               component={ListCarrier}
             />
 
-              <AppLayoutRoute
+            <AppLayoutRoute
               key="list-carriers-info/:companyId"
               exact
               path="/list-carriers-info/:companyId"
@@ -263,7 +256,6 @@ const App = () => {
               path="/list-subscription"
               component={ListSubscription}
             />
-
             <AppLayoutRoute
               exact
               path="/list-user-subscription"
@@ -272,7 +264,7 @@ const App = () => {
 
             <AppLayoutRoute
               exact
-              path="/list-user-subscription/:userSubscriptionId"
+              path="/list-user-subscription/:userId/:userSubscriptionId"
               component={UserSubscription}
             />
 
@@ -287,13 +279,22 @@ const App = () => {
               path="/edit-user-subscription/:userSubscriptionId/:userId"
               component={AddUserSubscription}
             />
-
+            <AppLayoutRoute
+              exact
+              path="/user-subscription/:userId"
+              component={AddUserSubscription}
+            />
             <AppLayoutRoute exact path="/list-users" component={UserList} />
 
             <AppLayoutRoute
               exact
               path="/list-user/:userId"
               component={UserList}
+            />
+            <AppLayoutRoute
+              exact
+              path="/user-profile/:userId"
+              component={UserProfile}
             />
 
             <AppLayoutRoute

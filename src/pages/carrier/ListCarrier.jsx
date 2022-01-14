@@ -30,23 +30,11 @@ function ListCarrier({ history, match }) {
 
   // GET request function to your Mock API
 
-  const fetchData = async () => {
-    try {
-      const res = await axios.get(`${API_URL}carrier/findAll`);
-      if (res) {
-        console.log(`data`, res.data);
-        setData(res.data.data);
-      }
-    } catch (err) {
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
-    }
-  };
-
   // Calling the function on component mount
   useEffect(() => {
     if (data.length === 0) {
       listCarriers()(carrierDispatch)((res) => {
-        setData(res.data);
+        // setData(res.data);
       })((err) => {
         enqueueSnackbar(err, { variant: "error" });
       });
@@ -57,10 +45,6 @@ function ListCarrier({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
-  const tableData = {
-    columns,
-    data2,
-  };
   return (
     <>
       <div class="row">
@@ -68,6 +52,7 @@ function ListCarrier({ history, match }) {
           <div class="card">
             <div class="card-header alert alert-info">
               <h4>View List of carriers</h4>
+              <hr />
               <ul>
                 <li>Edit and delete Vehicle</li>
                 <li>Assign Drivers to Vehicle</li>
@@ -83,15 +68,23 @@ function ListCarrier({ history, match }) {
                   <DataTableExtensions
                     exportHeaders
                     columns={columns}
-                    data={ companyId
-                      ? data.data?.filter((item) => item?.CompanyId === companyId)
-                      : data?.data}
+                    data={
+                      companyId
+                        ? data.data?.filter(
+                            (item) => item?.CompanyId === parseInt(companyId)
+                          )
+                        : data?.data
+                    }
                   >
                     <DataTable
                       columns={columns}
-                      data={ companyId
-                        ? data.data?.filter((item) => item?.CompanyId === companyId)
-                        : data?.data}
+                      data={
+                        companyId
+                          ? data.data?.filter(
+                              (item) => item?.CompanyId === parseInt(companyId)
+                            )
+                          : data?.data
+                      }
                       className="table table-striped table-bordered table-hover table-checkable"
                       defaultSortField={1}
                       sortIcon={<ChevronsDown />}

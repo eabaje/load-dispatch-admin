@@ -29,7 +29,7 @@ function UserSubscription({ history, match }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [res, setData] = useState([]);
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
   console.log(`userSubscriptionId`, userSubscriptionId);
   console.log(`isSingleMode`, isSingleMode);
   // GET request function to your Mock API
@@ -38,47 +38,27 @@ function UserSubscription({ history, match }) {
   // Calling the function on component mount
   const {
     userDispatch,
-    userState: { getUserSubscription: error },
+    userState: { UserSubscriptions: data, loading },
   } = useContext(GlobalContext);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-
-    if (userId) {
-      alert("hello")
-      fetchData("user/findUserSubscription",userId)((result) => {
-        setLoading(false);
-        setData(result);
-      })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
-     
-    } 
-    if (userSubscriptionId) {
-     
-
-      fetchDataAll("user/findAllUserSubscriptions/"+userSubscriptionId)((result) => {
-        setLoading(false);
-        setData(result);
-      })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
-
-
+    listUserSubscriptions()(userDispatch)((res) => {})((err) => {
+      enqueueSnackbar(err.message, { variant: "error" });
+    });
+    if (data.length === 0) {
     }
+    console.log(`loading`, loading);
   }, []);
-
-  const tableData = {
-    columns,
-    res,
-  };
+  console.log(`data`, data);
   return (
     <div>
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header alert alert-info">
             <h3>List of User Subscription</h3>
-            <ul class="">
+            <hr />
+            <ul>
               <li>Edit and delete Subscription</li>
               <li>Get an overview of all Subscription</li>
             </ul>
@@ -86,10 +66,32 @@ function UserSubscription({ history, match }) {
           <div class="card-body table-border-style">
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions exportHeaders columns={columns} data={res}>
+              <DataTableExtensions
+                exportHeaders
+                columns={columns}
+                data={
+                  userId
+                    ? data.data?.filter((item) => item?.UserId === userId)
+                    : userSubscriptionId
+                    ? data.data?.filter(
+                        (item) =>
+                          item?.UserSubscriptionId === userSubscriptionId
+                      )
+                    : data?.data
+                }
+              >
                 <DataTable
                   columns={columns}
-                  data={res}
+                  data={
+                    userId
+                      ? data.data?.filter((item) => item?.UserId === userId)
+                      : userSubscriptionId
+                      ? data.data?.filter(
+                          (item) =>
+                            item?.UserSubscriptionId === userSubscriptionId
+                        )
+                      : data?.data
+                  }
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}

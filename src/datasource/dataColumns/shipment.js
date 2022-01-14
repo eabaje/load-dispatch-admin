@@ -11,13 +11,13 @@ import { GlobalContext } from "../../context/Provider";
 // } from "../../context/actions/shipment/shipment.action";
 import { useContext } from "react";
 export const columns = (params) => [
-  // {
-  //   id: 1,
-  //   name: "User Name",
-  //   selector: (row) => row.User.FullName,
-  //   sortable: true,
-  //   reorder: true,
-  // },
+  {
+    id: 1,
+    name: "Name",
+    selector: (row) => row.User.FullName,
+    sortable: true,
+    reorder: true,
+  },
   {
     id: 2,
     name: "Company",
@@ -197,15 +197,9 @@ export const columns = (params) => [
     sortable: true,
     reorder: true,
   },
+
   {
     id: 23,
-    name: "Shipment Docs",
-    selector: (row) => row.ShipmentDocs,
-    sortable: true,
-    reorder: true,
-  },
-  {
-    id: 24,
     name: "Shipment Status",
     selector: (row) =>
       TRIP_STATUS.find((item) => item.value === row.ShipmentStatus).text,
@@ -213,22 +207,30 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 25,
-    name: "Created Date",
-    selector: (row) => row.createdAt,
+    id: 24,
+    name: "Shipment Docs",
+    selector: (row) => row.ShipmentDocs,
     sortable: true,
-    right: true,
     reorder: true,
   },
 
-  {
-    id: 26,
-    name: "Updated Date",
-    selector: (row) => row.updatedAt,
-    sortable: true,
-    right: true,
-    reorder: true,
-  },
+  params?.roles === "admin" &&
+    ({
+      id: 25,
+      name: "Created Date",
+      selector: (row) => row.createdAt,
+      sortable: true,
+      right: true,
+      reorder: true,
+    },
+    {
+      id: 26,
+      name: "Updated Date",
+      selector: (row) => row.updatedAt,
+      sortable: true,
+      right: true,
+      reorder: true,
+    }),
 
   {
     id: 27,
@@ -236,17 +238,18 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
+      <></>,
+
+      (params?.UserId === row.UserId || params?.roles === "admin") && (
         <Link
           to={"/edit-shipment-info/" + row.ShipmentId}
           className="btn btn-sm"
-          title="Edit  Subscription"
+          title="Edit  Shipment"
         >
           <i className="first fas fa-pen"></i>
         </Link>
-      </>,
-      params?.roles !== "carrier" && (
+      ),
+      params?.UserId !== row.UserId && params?.roles !== "carrier" && (
         <Link
           to={"/list-request-for-shipment/" + row.ShipmentId}
           className="btn btn-sm"
@@ -255,11 +258,11 @@ export const columns = (params) => [
           <i className="first fas fa-check"></i>
         </Link>
       ),
-      params?.roles !== "shipper" && (
+      params?.UserId !== row.UserId && params?.roles !== "shipper" && (
         <Link
           to={"/place-interest-for-shipment/IsReadOnly/" + row.ShipmentId}
           className="btn btn-sm"
-          title="Show shipment interests"
+          title="Place shipment interests"
         >
           <i className="first fas fa-heart"></i>
         </Link>

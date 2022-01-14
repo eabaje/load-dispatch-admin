@@ -68,7 +68,8 @@ function ListSubscription() {
         <div class="card">
           <div class="card-header alert alert-info">
             <h3>List of Subscription</h3>
-            <ul class="">
+            <hr />
+            <ul>
               <li>Edit and delete Subscription</li>
               <li>Get an overview of all Subscription</li>
             </ul>

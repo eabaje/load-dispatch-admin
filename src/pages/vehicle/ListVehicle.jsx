@@ -65,6 +65,7 @@ function ListVehicle({ history, match }) {
         <div class="card">
           <div class="card-header alert alert-info">
             <h3>List of Vehicles</h3>
+            <hr />
             <ul>
               <li>Edit and delete Vehicles</li>
               <li>Assign Vehicle to Drivers</li>

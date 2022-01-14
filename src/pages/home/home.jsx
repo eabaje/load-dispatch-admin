@@ -3,8 +3,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context/Provider";
 import { useSnackbar } from "notistack";
 import { Link, useHistory } from "react-router-dom";
-import InterestedShipment from "../../components/home/interestedShipment";
+
 import NewsFlash from "../../components/home/newsFlash";
+//import TickerFeed from "../../components/home/tickerFeed";
 import SideLink from "../../components/home/sideLink";
 import isAuthenticated from "../../utils/isAuthenticated";
 
@@ -51,11 +52,7 @@ function Home() {
               <h5>Recent Request for Load Boarding</h5>
             </div>
             <div class="card-body">
-              <p>
-                In Horizontal Layout V2 - Navigation bar is set in a Horizontal
-                way with fixed width container. It also showing/hidden while
-                scrolling up/down.
-              </p>
+              {/* <TickerFeed /> */}
               <div class="alert alert-info mb-0" role="alert">
                 <p class="mb-0">
                   It is best suited for those applications where you required
@@ -67,7 +64,6 @@ function Home() {
           </div>
         </div>
       </div>
-      <InterestedShipment />
     </>
   );
 }

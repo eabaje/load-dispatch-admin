@@ -12,11 +12,11 @@ function SideLink() {
   }, []);
   return (
     <>
-      {(user.roles === "admin" && <SideLinkAdmin />) ||
-        (user.roles === "carrier" && <SideLinkCarrier />) ||
+      {(user.roles === "carrier" && <SideLinkCarrier />) ||
         (user.roles === "shipper" && <SideLinkShipper />) ||
         (user.roles === "broker" && <SideLinkShipper />) ||
-        (user.roles === "audit" && <SideLinkAdmin />) || <SideLinkAdmin />}
+        (user.roles === "audit" && <SideLinkAdmin />) ||
+        (user.roles === "admin" && <SideLinkAdmin />) || <SideLinkAdmin />}
     </>
   );
 }

@@ -159,6 +159,7 @@ function AddShipment({ history, match }) {
 
   function CreateShipment(formdata) {
     formdata.CompanyId = user.CompanyId;
+    formdata.UserId = user.UserId;
 
     createShipment(formdata)(shipmentDispatch)((res) => {
       if (res) {

@@ -186,7 +186,7 @@ function AddUserSubscription({ history, match }) {
                       <input
                         name="FullName"
                         class="form-control"
-                        value={subscribeUser.User.FullName}
+                        value={subscribeUser.User?.FullName}
                         placeholder="User Name"
                         {...register("FullName", {
                           required: true,

@@ -38,6 +38,7 @@ function UserList({ history, match }) {
         <div class="card">
           <div class="card-header ">
             <h3>List of User Subscription</h3>
+            <hr />
             <ul class="alert alert-info">
               <li>Edit and delete Subscription</li>
               <li>Get an overview of all Subscription</li>

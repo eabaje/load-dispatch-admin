@@ -50,6 +50,7 @@ function ListDriver() {
           <div class="card">
             <div class="card-header alert alert-info">
               <h4>View List of Drivers</h4>
+              <hr />
               <ul>
                 <li>Edit and delete Drivers</li>
                 <li>Assign Drivers to Vehicle</li>

@@ -3,7 +3,7 @@ import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
 import { ROLES } from "../../constants/enum";
 import { Country, State } from "country-state-city";
-export const columns = [
+export const columns = (params) => [
   {
     id: 5,
     name: "Role Type",

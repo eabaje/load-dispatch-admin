@@ -37,16 +37,22 @@ import {
 import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
-export const listUsers = () => async (dispatch) => {
+export const listUsers = () => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: GET_PROFILES_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/user/findAll/`);
-    dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (err) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
-  }
+  axios
+    .get(`/user/findAll/`)
+    .then((res) => {
+      dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
+      onSuccess(res.data);
+    })
+
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_PROFILES_FAIL, payload: message });
+      onError(message);
+    });
 };
 
 export const listUserByCriteria = (url, params) => async (dispatch) => {
@@ -61,17 +67,24 @@ export const listUserByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const listUsersByUserId = (userId) => async (dispatch) => {
-  dispatch({
-    type: GET_PROFILES_REQUEST,
-  });
-  try {
-    const { res } = await axios.get(`/user/findOne/${userId}`);
-    dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
-  } catch (err) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
-  }
-};
+export const listUsersByUserId =
+  (userId) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({
+      type: GET_PROFILES_REQUEST,
+    });
+    axios
+      .get(`/user/findOne/${userId}`)
+      .then((res) => {
+        dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: GET_PROFILES_FAIL, payload: message });
+        onError(message);
+      });
+  };
 
 export const listUsersByName = (name) => async (dispatch) => {
   dispatch({
@@ -194,7 +207,10 @@ export const deleteUser = (userId) => async (dispatch) => {
 //Section  User Subscription
 
 export const listUserSubscriptions =
-  (criteria) => (dispatch) => (onSuccess) => (onError) => {
+  (criteria = null) =>
+  (dispatch) =>
+  (onSuccess) =>
+  (onError) => {
     dispatch({
       type: GET_USER_SUBSCRIPTIONS_REQUEST,
     });
@@ -205,7 +221,6 @@ export const listUserSubscriptions =
         dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
 
         onSuccess(res.data);
-        console.log(`res.data`, res.data);
       })
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;
