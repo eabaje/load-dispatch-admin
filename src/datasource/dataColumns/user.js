@@ -123,32 +123,33 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
+      params?.roles === "admin" && (
         <Link
           to={"/edit-user-info/" + row.UserId}
           className="btn btn-sm"
           title="Edit  User Info"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
-      </>,
-
-      <Link
-        to={"/list-company-info/" + row.UserId}
-        className="btn btn-sm"
-        title="List Company Info"
-      >
-        <i className="first fas fa-cog"></i>
-      </Link>,
-
-      <Link
-        to={"/delete-data/" + row.CarrierId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/list-company-info/" + row.UserId}
+          className="btn btn-sm"
+          title="List Company Info"
+        >
+          <i className="first fas fa-cog"></i>
+        </Link>
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/" + row.CarrierId}
+          className="btn btn-sm"
+          title="Delete/Archive Redundant/Incorrect data"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

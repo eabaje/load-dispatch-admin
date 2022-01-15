@@ -67,9 +67,9 @@ export const columns = (params) => [
         <Link
           to={"/edit-track-info/" + row.TrackId}
           className="btn btn-sm"
-          title="Edit  Subscription"
+          title="Update Track Info"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
       </>,
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -12,41 +12,29 @@ import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
 import { columns } from "../../datasource/dataColumns/trip";
 import { ChevronsDown } from "react-feather";
+import { GlobalContext } from "../../context/Provider";
+import { listTrips } from "../../context/actions/trip/trip.action";
 function ListTrip() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = useState([]);
-
-  // GET request function to your Mock API
-  const fetchData = async () => {
-    // fetch(`${INVENTORY_API_URL}`)
-    //   .then((res) => res.json())
-    //   .then((json) => setData(json));
-    try {
-      const res = await axios.get(`${API_URL}trip/findAll`);
-      if (res) {
-        setData(res);
-      }
-    } catch (err) {
-      enqueueSnackbar(getError(err), { variant: "error" });
-    }
-  };
+  // const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
+  const {
+    tripDispatch,
+    tripState: {
+      Trips: { data, loading }, //loading
+    },
+  } = useContext(GlobalContext);
 
   // Calling the function on component mount
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      $(".datatable").DataTable({
-        destroy: true,
-        dom: "rBftlip",
-        buttons: [{}],
-
-        pageLength: 10,
+    if (data.length === 0) {
+      listTrips()(tripDispatch);
+      ((result) => {})((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
       });
-    }, 1000);
+    }
   }, []);
+
   return (
     <div>
       <div class="col-xl-12">
@@ -62,10 +50,14 @@ function ListTrip() {
           <div class="card-body table-border-style">
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions exportHeaders columns={columns} data={data}>
+              <DataTableExtensions
+                exportHeaders
+                columns={columns(user)}
+                data={data.data}
+              >
                 <DataTable
-                  columns={columns}
-                  data={data}
+                  columns={columns(user)}
+                  data={data.data}
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}

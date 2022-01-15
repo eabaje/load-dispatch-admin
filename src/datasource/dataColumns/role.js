@@ -58,14 +58,15 @@ export const columns = (params) => [
       >
         <i className="first fas fa-user"></i>
       </Link>,
-
-      <Link
-        to={"/delete-data/" + row.RoleId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/Roles/" + row.RoleId}
+          className="btn btn-sm"
+          title="Delete/Archive Redundant/Incorrect data"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

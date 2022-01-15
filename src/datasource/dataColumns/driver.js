@@ -139,7 +139,7 @@ export const columns = (params) => [
           className="btn btn-sm"
           title="Edit  Driver Info"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
       </>,
 
@@ -150,14 +150,15 @@ export const columns = (params) => [
       >
         <i className="first fas fa-car"></i>
       </Link>,
-
-      <Link
-        to={"/delete-data/" + row.DriverId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/Drivers/" + row.DriverId}
+          className="btn btn-sm"
+          title="Delete/Archive Redundant/Incorrect data"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

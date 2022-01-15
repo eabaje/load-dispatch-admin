@@ -96,27 +96,8 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
-        <Link
-          to={"/edit-role/" + row.RoleId}
-          className="btn btn-sm"
-          title="Edit  Subscription"
-        >
-          <Edit size={12} />
-        </Link>
-      </>,
-
       <Link
-        to={"/add-user-to-role/" + row.RoleId}
-        className="btn btn-sm"
-        title="Add User to Role"
-      >
-        <i className="first fas fa-user"></i>
-      </Link>,
-
-      <Link
-        to={"/delete-data/" + row.RoleId}
+        to={"/delete-data/Payments/" + row.PaymentId}
         className="btn btn-sm"
         title="Delete/Archive Redundant/Incorrect data"
       >

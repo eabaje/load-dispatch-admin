@@ -135,16 +135,15 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
+      (params?.roles === "driver" || params?.roles === "admin") && (
         <Link
           to={"/edit-trip-info/" + row.TripId}
           className="btn btn-sm"
-          title="Edit  Subscription"
+          title="Edit Trip Info"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
-      </>,
+      ),
 
       <Link
         to={"/track-trip/" + row.TripId}
@@ -153,14 +152,15 @@ export const columns = (params) => [
       >
         <i className="first fas fa-truck-moving"></i>
       </Link>,
-
-      <Link
-        to={"/delete-data/" + row.VehicleId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/" + row.VehicleId}
+          className="btn btn-sm"
+          title="Delete/Archive Redundant/Incorrect data"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

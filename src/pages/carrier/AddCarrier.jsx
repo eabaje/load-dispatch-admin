@@ -22,6 +22,7 @@ import {
   listCarriersById,
 } from "../../context/actions/carrier/carrier.action";
 import { fetchData } from "../../helpers/query";
+import Rating from "../../components/rating/Rating";
 
 function AddCarrier({ history, match }) {
   const { carrierId } = match.params;
@@ -249,6 +250,22 @@ function AddCarrier({ history, match }) {
                         service.kindly go to <b>List Carrier info</b> and add
                         your fleet.
                       </h6>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <h6 class="alert alert-info">
+                        After posting the basic information about your
+                        service.kindly go to <b>List Carrier info</b> and add
+                        your fleet.
+                      </h6>
+                      <Rating
+                        rating={product.rating}
+                        numReviews={product.numReviews}
+                      >
+                        {" "}
+                      </Rating>
                     </div>
                   </div>
 

@@ -14,7 +14,7 @@ export const columns = (params) => [
   {
     id: 1,
     name: "Interested Carrier",
-     selector: (row) => row.User?.FullName,
+    selector: (row) => row.User?.FullName,
     cell: (row) => [
       <>
         {" "}
@@ -23,7 +23,7 @@ export const columns = (params) => [
           className="btn btn-sm"
           title="click to view carrier profile"
         >
-         {row.User?.FullName}
+          {row.User?.FullName}
         </Link>
       </>,
     ],
@@ -33,7 +33,7 @@ export const columns = (params) => [
   {
     id: 2,
     name: "Shipment ",
-      selector: (row) => row.Shipment?.Description,
+    selector: (row) => row.Shipment?.Description,
 
     cell: (row) => [
       <>
@@ -43,7 +43,7 @@ export const columns = (params) => [
           className="btn btn-sm"
           title="click to shipment info"
         >
-         {row.Shipment?.Description}
+          {row.Shipment?.Description}
         </Link>
       </>,
     ],
@@ -215,13 +215,13 @@ export const columns = (params) => [
   //     sortable: true,
   //     reorder: true,
   //   },
-    {
-      id: 22,
-      name: "Date of Interest Shown",
-      selector: (row) => row.InterestDate,
-      sortable: true,
-      reorder: true,
-    },
+  {
+    id: 22,
+    name: "Date of Interest Shown",
+    selector: (row) => row.InterestDate,
+    sortable: true,
+    reorder: true,
+  },
   //   {
   //     id: 23,
   //     name: "Shipment Docs",
@@ -237,43 +237,33 @@ export const columns = (params) => [
   //     sortable: true,
   //     reorder: true,
   //   },
-//   params?.roles !== "admin" && (
-//   {
-//     id: 25,
-//     name: "Created Date",
-//     selector: (row) => row.createdAt,
-//     sortable: true,
-//     right: true,
-//     reorder: true,
-//   }
-// ),
-// params?.roles !== "admin" && (
-//   {
-//     id: 26,
-//     name: "Updated Date",
-//     selector: (row) => row.updatedAt,
-//     sortable: true,
-//     right: true,
-//     reorder: true,
-//   }
-    
-//   ),
- 
+  //   params?.roles !== "admin" && (
+  //   {
+  //     id: 25,
+  //     name: "Created Date",
+  //     selector: (row) => row.createdAt,
+  //     sortable: true,
+  //     right: true,
+  //     reorder: true,
+  //   }
+  // ),
+  // params?.roles !== "admin" && (
+  //   {
+  //     id: 26,
+  //     name: "Updated Date",
+  //     selector: (row) => row.updatedAt,
+  //     sortable: true,
+  //     right: true,
+  //     reorder: true,
+  //   }
+
+  //   ),
+
   {
     name: "Action",
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
-        <Link
-          to={"/edit-shipment-info/" + row.ShipmentId}
-          className="btn btn-sm"
-          title="Edit  Subscription"
-        >
-          <i className="first fas fa-pen"></i>
-        </Link>
-      </>,
       params?.roles !== "carrier" && (
         <Link
           to={"/list-request-for-shipment/" + row.ShipmentId}
@@ -294,7 +284,7 @@ export const columns = (params) => [
       ),
       params?.roles === "admin" && (
         <Link
-          to={"/delete-data/Shipments/" + row.ShipmentId}
+          to={"/delete-data/ShipmentsInterested/" + row.ShipmentInterestId}
           className="btn btn-sm"
           title="Delete/Archive (Redundant/Incorrect data)"
         >

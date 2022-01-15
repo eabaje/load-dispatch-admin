@@ -2,29 +2,90 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { useForm,Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
 import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import { createTrip } from "../../context/actions/trip/trip.action";
+import { createTrip, editTrip } from "../../context/actions/trip/trip.action";
 import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import user from "../../context/reducers/user.reducer";
+import { fetchData } from "../../helpers/query";
 
-function AddTrip() {
+function AddTrip({ history, match }) {
+  const { tripId } = match.params;
+  const { shipmentId } = match.params;
+  const { isReadOnly } = match.params;
+  // const { SubscribeId } = match.params;
+  const isAddMode = !tripId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
 
+  const [selpickUpRegion, setselpickUpRegion] = useState("");
+  const [seldeliveryRegion, setseldeliveryRegion] = useState("");
+  const [user, setUser] = useState({});
+  const [readOnly, setReadOnly] = useState(false);
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
+    if (isReadOnly) setReadOnly(!readOnly);
     setCountries((countries) => (countries = Country.getAllCountries()));
+
+    setUser(JSON.parse(localStorage.getItem("user")));
+
+    // console.log(`user`, user.CompanyId);
+    if (!isAddMode) {
+      fetchData(
+        "trip/findOne",
+        tripId
+      )((trip) => {
+        //  console.log(`shipment`, shipment);
+        const fields = [
+          "ShipmentId",
+          "DriverName",
+          "CompanyId",
+          "VehicleId",
+          "Duration",
+          "Description",
+          "PickUpRegion",
+          "PickUpCountry",
+          "PickUpLocation",
+          "DeliveryCountry",
+          "DeliveryRegion",
+          "DeliveryLocation",
+          "ExpectedPickUpDate",
+          "ExpectedDeliveryDate",
+          "DriverNote",
+        ];
+        fields.forEach((field) => setValue(field, trip[field]));
+
+        setPickUpRegion(
+          (pickUpRegion) =>
+            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+            (pickUpRegion = State.getStatesOfCountry(trip["PickUpCountry"]))
+        );
+
+        setdeliveryRegion(
+          (deliveryRegion) =>
+            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+            (deliveryRegion = State.getStatesOfCountry(trip["DeliveryCountry"]))
+        );
+
+        setselpickUpRegion(trip["PickUpRegion"]);
+        setseldeliveryRegion(trip["DeliveryRegion"]);
+      })((err) => {
+        enqueueSnackbar(err.message, {
+          variant: "error",
+        });
+      });
+    }
   }, []);
 
   const selectPickUpCountry = async (e) => {
@@ -49,46 +110,70 @@ function AddTrip() {
   const {
     register: tripform,
     formState: { errors },
-    handleSubmit,control,
+    handleSubmit,
+    control,
+    setValue,
   } = useForm();
 
   const {
     tripDispatch,
-    tripState: { error, loading, data },
+    tripState: {
+      CreateTrip: { error, loading, data },
+    },
   } = useContext(GlobalContext);
-  const SubmitForm = () => {
-    //  e.preventDefault();
 
-    createTrip(tripform)(tripDispatch)({
-      //  enqueueSnackbar('', { variant: "info" });
+  function onSubmit(formdata) {
+    return isAddMode ? CreateTrip(formdata) : updateTrip(formdata, tripId);
+  }
+
+  function CreateTrip(formdata) {
+    // formdata.CompanyId = user.CompanyId;
+    // formdata.UserId = user.UserId;
+
+    createTrip(formdata)(tripDispatch)((res) => {
+      if (res) {
+        enqueueSnackbar("Created new Trip enytry successfully", {
+          variant: "success",
+        });
+      }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
     });
+  }
 
-    // if (password !== confirmPassword) {
-    //   alert('Password and confirm password are not match');
-    // } else {
-    //   shipmentDispatch(createShipment(tripform));
-    // }
-  };
+  function updateTrip(formdata, tripId) {
+    editTrip(formdata, tripId)(tripDispatch)((res) => {
+      if (res) {
+        enqueueSnackbar("Updated record successfully", {
+          variant: "success",
+        });
+      }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    });
+  }
 
-
-  const CustomInput = React.forwardRef(({value,onClick}, ref) => {
+  const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
-      <div class="input-group mb-3"> 
-       <input
-                          ref={ref}
-                          type="text"
-                         class="form-control datepicker"
-                         value={value}
-                         onClick={onClick}
-                         placeholder="Click to enter date"
-                         
-                          required
-                        />
+      <div class="input-group mb-3">
+        <input
+          ref={ref}
+          type="text"
+          class="form-control datepicker"
+          value={value}
+          onClick={onClick}
+          placeholder="Click to enter date"
+          required
+        />
         <div class="input-group-append">
-                          <span class="input-group-text">
-                            <i class="fa fa-calendar"></i>
-                          </span>
-                        </div>
+          <span class="input-group-text">
+            <i class="fa fa-calendar"></i>
+          </span>
+        </div>
       </div>
     );
   });
@@ -102,10 +187,18 @@ function AddTrip() {
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleSubmit(SubmitForm)}>
-                  <input type="hidden" value="UserId" class="form-control" />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <input
+                    type="hidden"
+                    value={user.UserId}
+                    class="form-control"
+                  />
                   <input type="hidden" value="DriverId" class="form-control" />
-                  <input type="hidden" value="CompanyId" class="form-control" />
+                  <input
+                    type="hidden"
+                    value={user.CompanyId}
+                    class="form-control"
+                  />
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> Trip Basic Info </h5>
@@ -165,8 +258,6 @@ function AddTrip() {
                     </div>
                   </div>
                   <div class="form-group row">
-                   
-
                     <label class="col-form-label col-md-2">Country</label>
                     <div class="col-md-4">
                       <select
@@ -191,7 +282,8 @@ function AddTrip() {
                         class="form-control"
                         id="PickUpRegion"
                         {...tripform("PickUpRegion")}
-                      required>
+                        required
+                      >
                         <option value=""> Select Region/State </option>
                         {pickUpRegion.map((item) => (
                           <option value={item.isoCode}>{item.name}</option>
@@ -217,7 +309,6 @@ function AddTrip() {
                     </div>
                     <label class="col-form-label col-md-2">PickUp Date</label>
                     <div class="col-md-4">
-                      
                       <Controller
                         name={"ExpectedPickUpDate"}
                         control={control}
@@ -225,22 +316,17 @@ function AddTrip() {
                         render={({ field: { onChange, value } }) => {
                           return (
                             <DatePicker
-                            wrapperClassName="datePicker"
-                            className="form-control datepicker"
+                              wrapperClassName="datePicker"
+                              className="form-control datepicker"
                               onChange={onChange}
                               selected={value}
                               placeholderText="Enter date"
-                              customInput={<CustomInput/>}
+                              customInput={<CustomInput />}
                             />
                           );
                         }}
                       />
-                     
-
-                  </div>
-
-
-
+                    </div>
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">
@@ -249,7 +335,6 @@ function AddTrip() {
                   </div>
 
                   <div class="form-group row">
-                   
                     <label class="col-form-label col-md-2">Country</label>
 
                     <div class="col-md-4">
@@ -314,33 +399,27 @@ function AddTrip() {
                         required
                       />
                     </div>
-                    
+
                     <label class="col-form-label col-md-2">Delivery Date</label>
                     <div class="col-md-4">
-                     
-                        <Controller
-                          name={"ExpectedDeliveryDate"}
-                          control={control}
-                          // defaultValue={new Date()}
-                          render={({ field: { onChange, value } }) => {
-                            return (
-                              <DatePicker
+                      <Controller
+                        name={"ExpectedDeliveryDate"}
+                        control={control}
+                        // defaultValue={new Date()}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <DatePicker
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
-                                onChange={onChange}
-                                selected={value}
-                                placeholderText="Enter date"
-                                customInput={<CustomInput/>}
-                              />
-                            );
-                          }}
-                        />
-                        
-                      
+                              onChange={onChange}
+                              selected={value}
+                              placeholderText="Enter date"
+                              customInput={<CustomInput />}
+                            />
+                          );
+                        }}
+                      />
                     </div>
-
-
-
                   </div>
                   <div class="form-group row">
                     <div class="col-md-12">

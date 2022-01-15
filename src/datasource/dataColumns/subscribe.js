@@ -83,7 +83,7 @@ export const columns = (params) => [
           className="btn btn-sm"
           title="Edit  Subscription"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
       </>,
 
@@ -94,14 +94,15 @@ export const columns = (params) => [
       >
         <i className="first fas fa-user"></i>
       </Link>,
-
-      <Link
-        to={"/delete-data/" + row.SubscribeId}
-        className="btn btn-sm"
-        title="Delete/Archive Redundant/Incorrect data"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/Subscriptions/" + row.SubscribeId}
+          className="btn btn-sm"
+          title="Delete/Archive Redundant/Incorrect data"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

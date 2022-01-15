@@ -19,18 +19,25 @@ import {
   EDIT_TRACK_REQUEST,
   EDIT_TRACK_SUCCESS,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
-export const listTrips = () => async (dispatch) => {
+export const listTrips = () => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: GET_TRIPS_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/trip/findAll/`);
-    dispatch({ type: GET_TRIPS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_TRIPS_FAIL, payload: error.message });
-  }
+  axios
+    .get(`/trip/findAll/`)
+    .then((res) => {
+      dispatch({ type: GET_TRIPS_SUCCESS, payload: res.data });
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: GET_TRIPS_FAIL, payload: message });
+
+      onError(message);
+    });
 };
 
 export const listTracks = (tripId) => async (dispatch) => {
@@ -251,7 +258,7 @@ export const listTripByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const createTrip = (form) => async (dispatch) => {
+export const createTrip = (form) => (dispatch) => (onSuccess) => (onError) => {
   const requestPayload = {
     TrackId: form.TrackId,
     ShipmentId: form.ShipmentId,
@@ -268,56 +275,63 @@ export const createTrip = (form) => async (dispatch) => {
 
   dispatch({ type: CREATE_TRIP_REQUEST });
 
-  try {
-    const { res } = await axios.post(`/trip/create/`, requestPayload);
+  axios
+    .post(`/trip/create/`, form)
+    .then((res) => {
+      dispatch({
+        type: CREATE_TRIP_SUCCESS,
+        payload: res.data,
+      });
+      onSuccess();
+    })
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: CREATE_TRIP_FAIL, payload: message });
 
-    dispatch({
-      type: CREATE_TRIP_SUCCESS,
-      payload: res.data,
+      onError();
     });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_TRIP_FAIL, payload: message });
-  }
 };
 
-export const editTrip = (form, tripId) => async (dispatch) => {
-  const requestPayload = {
-    TripId: tripId || form.TripId,
-    TrackId: form.TrackId,
-    ShipmentId: form.ShipmentId,
-    VehicleId: form.VehicleId || "",
-    DriverId: form.DriverId || "",
-    PickUpLocation: form.PickUpLocation,
-    DeliveryLocation: form.DeliveryLocation,
-    PickUpDate: form.PickUpDate,
-    Duration: form.Duration,
-    DeliveryDate: form.DeliveryDate,
-    DriverNote: form.DriverNote,
-    Rating: form.Rating,
+export const editTrip =
+  (form, tripId) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      TripId: tripId || form.TripId,
+      TrackId: form.TrackId,
+      ShipmentId: form.ShipmentId,
+      VehicleId: form.VehicleId || "",
+      DriverId: form.DriverId || "",
+      PickUpLocation: form.PickUpLocation,
+      DeliveryLocation: form.DeliveryLocation,
+      PickUpDate: form.PickUpDate,
+      Duration: form.Duration,
+      DeliveryDate: form.DeliveryDate,
+      DriverNote: form.DriverNote,
+      Rating: form.Rating,
 
-    // contact_picture: form.contactPicture || null,
-    // is_favorite: form.isFavorite || false,
+      // contact_picture: form.contactPicture || null,
+      // is_favorite: form.isFavorite || false,
+    };
+
+    dispatch({ type: EDIT_TRIP_REQUEST });
+
+    axios
+      .put(`/trip/update/${tripId}`, form)
+      .then((res) => {
+        dispatch({
+          type: EDIT_TRIP_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess();
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_TRIP_FAIL, payload: message });
+
+        onError();
+      });
   };
 
-  dispatch({ type: EDIT_TRIP_REQUEST });
-
-  try {
-    const { res } = await axios.put(`/trip/update/${tripId}`, requestPayload);
-
-    dispatch({
-      type: EDIT_TRIP_SUCCESS,
-      payload: res.data,
-    });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: EDIT_TRIP_FAIL, payload: message });
-  }
-};
-
-export const addTrack = (form) => async (dispatch) => {
+export const addTrack = (form) => (dispatch) => (onSuccess) => (onError) => {
   const requestPayload = {
     TripId: form.TripId || "",
     Status: form.Status || "",
@@ -326,46 +340,50 @@ export const addTrack = (form) => async (dispatch) => {
 
   dispatch({ type: CREATE_TRIP_REQUEST });
 
-  try {
-    const { res } = await axios.post(`/trip/addtrack/`, requestPayload);
+  axios
+    .post(`/trip/addtrack/`, requestPayload)
+    .then((res) => {
+      dispatch({
+        type: CREATE_TRACK_SUCCESS,
+        payload: res.data,
+      });
+      onSuccess(res.data);
+    })
+    .catch((err) => {
+      const message = err.response ? err.response.data : CONNECTION_ERROR;
+      dispatch({ type: CREATE_TRACK_FAIL, payload: message });
 
-    dispatch({
-      type: CREATE_TRIP_SUCCESS,
-      payload: res.data,
+      onError(message);
     });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_TRIP_FAIL, payload: message });
-  }
 };
 
-export const editTrack = (form, trackId) => async (dispatch) => {
-  const requestPayload = {
-    TrackId: trackId || form.TripId,
-    TripId: form.TripId || "",
-    Status: form.Status || "",
-    TrackNote: form.TrackNote || "",
+export const editTrack =
+  (form, trackId) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      TrackId: trackId || form.TripId,
+      TripId: form.TripId || "",
+      Status: form.Status || "",
+      TrackNote: form.TrackNote || "",
+    };
+
+    dispatch({ type: CREATE_TRIP_REQUEST });
+
+    axios
+      .put(`/trip/updatetrack/${trackId}`, requestPayload)
+      .then((res) => {
+        dispatch({
+          type: EDIT_TRACK_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_TRACK_FAIL, payload: message });
+
+        onError(message);
+      });
   };
-
-  dispatch({ type: CREATE_TRIP_REQUEST });
-
-  try {
-    const { res } = await axios.put(
-      `/trip/updatetrack/${trackId}`,
-      requestPayload
-    );
-
-    dispatch({
-      type: CREATE_TRIP_SUCCESS,
-      payload: res.data,
-    });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_TRIP_FAIL, payload: message });
-  }
-};
 
 export const deleteTrack = (trackId) => async (dispatch) => {
   dispatch({ type: DELETE_TRACK_REQUEST });

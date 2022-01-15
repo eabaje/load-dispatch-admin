@@ -54,8 +54,7 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
+      (params?.UserId === row.UserId || params?.roles === "admin") && (
         <Link
           to={
             "/edit-user-subscription/" +
@@ -66,25 +65,27 @@ export const columns = (params) => [
           className="btn btn-sm"
           title="Edit User Subscription"
         >
-          <Edit size={12} />
+          <i className="first fas fa-pen"></i>
         </Link>
-      </>,
-
-      <Link
-        to={"/list-user-subscription/" + row.UserSubscriptionId}
-        className="btn btn-sm"
-        title="Edit User Subscription"
-      >
-        <i className="first fas fa-pen"></i>
-      </Link>,
-
-      <Link
-        to={"/delete-data/" + row.UserSubscriptionId}
-        className="btn btn-sm"
-        title="Edit User Subscription"
-      >
-        <i className="fas fa-trash-alt"></i>
-      </Link>,
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/list-user-subscription/" + row.UserSubscriptionId}
+          className="btn btn-sm"
+          title="Edit User Subscription"
+        >
+          <i className="first fas fa-pen"></i>
+        </Link>
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/delete-data/" + row.UserSubscriptionId}
+          className="btn btn-sm"
+          title="Edit User Subscription"
+        >
+          <i className="fas fa-trash-alt"></i>
+        </Link>
+      ),
     ],
   },
 ];

@@ -22,12 +22,12 @@ function ListSubscription() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   const {
     subscribeDispatch,
     subscribeState: {
-      Subscribes: { data, error }, //loading
+      Subscribes: { data, loading }, //loading
     },
   } = useContext(GlobalContext);
 
@@ -37,26 +37,27 @@ function ListSubscription() {
   //   listSubscriptions()(subscribeDispatch);
   // }, []);
 
-  // useEffect(() => {
-
-  //   listSubscriptions()(subscribeDispatch);
-  //   //((result) => {
-  //   //   setData(result.data);
-  //   // })((err) => {
-  //   //   enqueueSnackbar(err, { variant: "error" });
-  //   // });
-  //   setUser(JSON.parse(localStorage.getItem("user")));
-  // }, [subscribeDispatch,listSubscriptions,loading,data,error]);
-
-  // Calling the function on component mount
   useEffect(() => {
-    fetchDataAll("subscription/findAll")((subscribe) => {
-      setLoading(false);
-      setData(subscribe);
-    })((err) => {});
-    console.log(`data`, data);
+    if (data.length === 0) {
+      listSubscriptions()(subscribeDispatch);
+      ((result) => {
+        setData(result.data);
+      })((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
+    }
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
+
+  // Calling the function on component mount
+  // useEffect(() => {
+  //   fetchDataAll("subscription/findAll")((subscribe) => {
+  //     setLoading(false);
+  //     setData(subscribe);
+  //   })((err) => {});
+  //   console.log(`data`, data);
+  //   setUser(JSON.parse(localStorage.getItem("user")));
+  // }, []);
   // const tableData = {
   //   columns,
   //   data.data,
@@ -75,12 +76,17 @@ function ListSubscription() {
             </ul>
           </div>
           <div class="card-body table-border-style">
+            {loading && <LoadingBox />}
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions exportHeaders columns={columns} data={data2}>
+              <DataTableExtensions
+                exportHeaders
+                columns={columns}
+                data={data?.data}
+              >
                 <DataTable
                   columns={columns}
-                  data={data2}
+                  data={data?.data}
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}
@@ -93,7 +99,6 @@ function ListSubscription() {
           </div>
         </div>
       </div>
-      {loading && <LoadingBox />}
     </div>
   );
 }
