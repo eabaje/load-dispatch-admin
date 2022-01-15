@@ -260,12 +260,6 @@ function AddCarrier({ history, match }) {
                         service.kindly go to <b>List Carrier info</b> and add
                         your fleet.
                       </h6>
-                      <Rating
-                        rating={product.rating}
-                        numReviews={product.numReviews}
-                      >
-                        {" "}
-                      </Rating>
                     </div>
                   </div>
 
