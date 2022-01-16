@@ -16,10 +16,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import user from "../../context/reducers/user.reducer";
 import { fetchData } from "../../helpers/query";
 
-function AddTrip({ history, match }) {
+function AddTrack({ history, match }) {
   const { tripId } = match.params;
   const { shipmentId } = match.params;
-  const { Istrackable } = match.params;
+  const { trackId } = match.params;
   const { isReadOnly } = match.params;
   // const { SubscribeId } = match.params;
   const isAddMode = !tripId;
@@ -483,4 +483,4 @@ function AddTrip({ history, match }) {
   );
 }
 
-export default AddTrip;
+export default AddTrack;
