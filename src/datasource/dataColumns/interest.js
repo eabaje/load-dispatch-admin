@@ -19,7 +19,7 @@ export const columns = (params) => [
       <>
         {" "}
         <Link
-          to={"/list-user-info/" + row.UserId}
+          to={"/user-profile/" + row.UserId}
           className="btn btn-sm"
           title="click to view carrier profile"
         >

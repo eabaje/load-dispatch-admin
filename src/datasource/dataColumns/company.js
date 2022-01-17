@@ -5,10 +5,17 @@ import { ROLES } from "../../constants/enum";
 import { Country, State } from "country-state-city";
 export const columns = (params) => [
   {
-    id: 5,
+    id: 6,
     name: "Role Type",
     selector: (row) =>
       ROLES.find((item) => item.value === row.CompanyType).text,
+    sortable: true,
+    reorder: true,
+  },
+  {
+    id: 7,
+    name: "Specilaization",
+    selector: (row) => row.Specialization,
     sortable: true,
     reorder: true,
   },

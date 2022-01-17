@@ -67,7 +67,7 @@ function ListCarrier({ history, match }) {
                 ) : (
                   <DataTableExtensions
                     exportHeaders
-                    columns={columns}
+                    columns={columns(user)}
                     data={
                       companyId
                         ? data.data?.filter(
@@ -77,7 +77,7 @@ function ListCarrier({ history, match }) {
                     }
                   >
                     <DataTable
-                      columns={columns}
+                      columns={columns(user)}
                       data={
                         companyId
                           ? data.data?.filter(

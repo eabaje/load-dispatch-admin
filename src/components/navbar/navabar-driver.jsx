@@ -9,7 +9,7 @@ import "./pcoded";
 //import { AuthContext } from "../context/authContext/AuthContext";
 //import { logout } from "../context/authContext/AuthActions";
 
-const NavBarCarrier = () => {
+const NavBarDriver = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState({});
 
@@ -61,53 +61,8 @@ const NavBarCarrier = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
-                    <Link to={"/add-shipment"} title="Post a Vehicle">
-                      Post a Vehicle
-                    </Link>{" "}
-                  </li>
-                  <li>
                     <Link to={"/list-all-shipments"} title="Find all Vehicles">
                       Find all Vehicles
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to={`/my-shipments-info/${user.UserId}`}
-                      title="My Vehicles"
-                    >
-                      My Vehicles
-                    </Link>{" "}
-                  </li>
-                </ul>
-              </li>
-
-              <li className="nav-item pcoded-hasmenu">
-                <a href="#!" className="nav-link ">
-                  <span className="pcoded-micon">
-                    <i className="first fas fa-truck"></i>
-                  </span>
-                  <span className="pcoded-mtext">Carrier</span>
-                </a>
-                <ul className="pcoded-submenu">
-                  <li>
-                    <Link to={"/add-carrier"} title="Create carrier Info">
-                      Create carrier Info
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to={`/list-carriers-info/${user.CompanyId}`}
-                      title="List carrier Info"
-                    >
-                      List carrier Info
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to={`/list-vehicles-info/${user.CompanyId}`}
-                      title=" Vehicle List"
-                    >
-                      Vehicle List
                     </Link>
                   </li>
                 </ul>
@@ -122,24 +77,19 @@ const NavBarCarrier = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
-                    <Link to={"/list-drivers-info"} title=" List Drivers">
-                      List Drivers
+                    <Link
+                      to={`/edit-driver-info/${user.UserId}`}
+                      title="Update Driver Profile"
+                    >
+                      Update Driver Profile
                     </Link>
                   </li>
                   <li>
                     <Link
-                      to={"/add-driver-info"}
-                      title=" Create Driver Profile"
+                      to={"/list-assign-vehicle-driver"}
+                      title="View Assigned Vehicle To Driver"
                     >
-                      Create Driver Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to={"/assign-vehicle-driver"}
-                      title=" Assign Vehicle To Driver"
-                    >
-                      Assign Vehicle To Driver
+                      View Assigned Vehicle To Driver
                     </Link>
                   </li>
                 </ul>
@@ -154,7 +104,10 @@ const NavBarCarrier = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
-                    <Link to={"/list-trip"} title=" List All Trips">
+                    <Link
+                      to={`/list-trip-info/${user.UserId}`}
+                      title=" List All Trips"
+                    >
                       List All Trips
                     </Link>
                     <a href="/list-trip" label="Resources">
@@ -176,4 +129,4 @@ const NavBarCarrier = () => {
   );
 };
 
-export default NavBarCarrier;
+export default NavBarDriver;

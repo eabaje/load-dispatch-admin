@@ -249,9 +249,9 @@ export const columns = (params) => [
           <i className="first fas fa-pen"></i>
         </Link>
       ),
-      params?.UserId !== row.UserId && params?.roles !== "carrier" && (
+      params?.UserId === row.UserId && params?.roles !== "carrier" && (
         <Link
-          to={"/list-request-for-shipment/" + row.ShipmentId}
+          to={"/list-interest-for-shipment/" + row.ShipmentId}
           className="btn btn-sm"
           title="Check shipment interests"
         >

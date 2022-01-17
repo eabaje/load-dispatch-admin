@@ -38,6 +38,7 @@ import ListCompany from "./pages/company/ListCompany";
 import ListPayment from "./payment/Listpayment";
 import ListShipmentCriteria from "./pages/shipper/ListShipmentCriteria";
 import UserProfile from "./pages/user/UserProfile";
+import AssignDriverVehicle from "./pages/vehicle/AssignDriverVehicle";
 
 const App = () => {
   const {
@@ -209,6 +210,30 @@ const App = () => {
               path="/list-vehicles"
               component={ListVehicle}
             />
+
+            <AppLayoutRoute
+              exact
+              path="/list-vehicles-info/:companyId"
+              component={ListVehicle}
+            />
+            <AppLayoutRoute
+              exact
+              path="/list-vehicles-info/:companyId/:carrierId:/:carrierType"
+              component={ListVehicle}
+            />
+            <AppLayoutRoute
+              key="add-vehicle-to-driver"
+              exact
+              path="/add-vehicle-to-driver/:vehicleId/:driverId"
+              component={AddVehicle}
+            />
+
+            <AppLayoutRoute
+              exact
+              path="/list-assign-vehicle-driver/:userId"
+              component={ListVehicle}
+            />
+
             <AppLayoutRoute
               exact
               path="/list-carrier-vehicles/:carrierId/:carrierType"
@@ -226,7 +251,7 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/edit-driver-info"
+              path="/edit-driver-info/:userId"
               component={AddDriver}
             />
             <AppLayoutRoute

@@ -9,6 +9,7 @@ import NavBarAdmin from "./navbar-admin";
 import NavBarCarrier from "./navbar-carrier";
 import NavBarShipper from "./navbar-shipper";
 import NavBarAudit from "./navbar-audit";
+import NavBarDriver from "./navabar-driver";
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,6 +48,7 @@ const NavBar = () => {
       {(user.roles === "carrier" && <NavBarCarrier />) ||
         (user.roles === "shipper" && <NavBarShipper />) ||
         (user.roles === "broker" && <NavBarShipper />) ||
+        (user.roles === "driver" && <NavBarDriver />) ||
         (user.roles === "audit" && <NavBarAdmin />) ||
         (user.roles === "admin" && <NavBarAdmin />) || <NavBarAdmin />}
     </>

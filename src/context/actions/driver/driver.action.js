@@ -12,6 +12,7 @@ import {
   DELETE_DRIVER_REQUEST,
   DELETE_DRIVER_SUCCESS,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
 export const listDrivers = () => async (dispatch) => {
@@ -21,23 +22,37 @@ export const listDrivers = () => async (dispatch) => {
   try {
     const { res } = await axios.get(`/driver/findAll/`);
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
-
-export const listDriversById= (driverId) => async (dispatch) => {
+export const listDriversByCompany = (companyId) => async (dispatch) => {
   dispatch({
     type: GET_DRIVERS_REQUEST,
   });
   try {
     const { res } = await axios.get(
-      `/driver/findOne/${driverId}`
+      `/driver/findAllDriversByCompany/${companyId}`
     );
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-    return res.data.data
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
+  }
+};
+
+export const listDriversById = (driverId) => async (dispatch) => {
+  dispatch({
+    type: GET_DRIVERS_REQUEST,
+  });
+  try {
+    const { res } = await axios.get(`/driver/findOne/${driverId}`);
+    dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
+    return res.data.data;
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
 
@@ -50,8 +65,9 @@ export const listDriversByDriverName = (driverName) => async (dispatch) => {
       `/driver/findAllDriversByDriverName/${driverName}`
     );
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
 
@@ -64,8 +80,9 @@ export const listDriversByVehicle = (vehicleId) => async (dispatch) => {
       `/driver/findAllDriversByVehicle/${vehicleId}`
     );
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
 
@@ -76,8 +93,9 @@ export const listDriversLicensed = () => async (dispatch) => {
   try {
     const { res } = await axios.get(`/driver/findAllDriversLicensed/`);
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
 
@@ -90,20 +108,9 @@ export const listDriversByDate = (fromDate, endDate) => async (dispatch) => {
       `/driver/findAllDriversByDate/${fromDate}/${endDate}/}`
     );
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
-  }
-};
-
-export const listDriverByCriteria = (url, params) => async (dispatch) => {
-  dispatch({
-    type: GET_DRIVERS_REQUEST,
-  });
-  try {
-    const { data } = await axios.get(`${url}${params}`);
-    dispatch({ type: GET_DRIVERS_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({ type: GET_DRIVERS_FAIL, payload: error.message });
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
+    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
 
@@ -132,9 +139,8 @@ export const createDriver1 = (form) => async (dispatch) => {
       type: CREATE_DRIVER_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
     dispatch({ type: CREATE_DRIVER_FAIL, payload: message });
   }
 };
@@ -176,11 +182,11 @@ export const createDriver =
         onSuccess(res.data);
       })
       .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+
         dispatch({
           type: CREATE_DRIVER_FAIL,
-          payload: err.message
-            ? err.message
-            : { error: "Something went wrong, try again" },
+          payload: message,
         });
       });
   };
@@ -226,6 +232,48 @@ export const editDriver = (form, id) => (dispatch) => (onSuccess) => {
       });
     });
 };
+
+export const assignDriverToVehicle =
+  (form, id) => (dispatch) => (onSuccess) => {
+    const requestPayload = {
+      CompanyId: form.CompanyId || "",
+      DriverName: form.DriverName || "",
+      Email: form.Email || "",
+      Phone: form.Phone || "",
+      Address: form.Address || "",
+      City: form.City || "",
+      Country: form.Country || "",
+      Licensed: form.Licensed || "",
+      LicenseUrl: form.LicenseUrl || "",
+      Rating: form.Rating || "",
+      DriverDocs: form.DriverDocs || "",
+      PicUrl: form.PicUrl || null,
+    };
+
+    //console.log("requestPayload :>> ", form);
+    dispatch({
+      type: EDIT_DRIVER_REQUEST,
+    });
+
+    axios
+      .post(`/driver/AssignDriverToVehicle`, form)
+      .then((res) => {
+        dispatch({
+          type: EDIT_DRIVER_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        console.log("err", err.response);
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({
+          type: EDIT_DRIVER_FAIL,
+          payload: message,
+        });
+      });
+  };
 
 export const deleteDriver = (driverId) => async (dispatch) => {
   dispatch({ type: DELETE_DRIVER_REQUEST });

@@ -129,7 +129,7 @@ export const columns = (params) => [
       ),
       params?.roles === "carrier" && (
         <Link
-          to={"/assign-driver-to-vehicle/" + row.VehicleId}
+          to={"/assign-vehicle-to-driver/" + row.VehicleId + "/driverId"}
           className="btn btn-sm"
           title="Assign Driver to Vehicle"
         >

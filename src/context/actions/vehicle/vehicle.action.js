@@ -60,6 +60,28 @@ export const listVehiclesByCarrier = (carrierId, vehicleType) => (dispatch) => {
       // onError( error.response.data.message);
     });
 };
+
+export const listVehiclesByCompany = (companyId) => (dispatch) => {
+  //(onSuccess)=>(onError) =>
+  const url = `/vehicle/findAllVehiclesByCompany/${companyId}`;
+
+  dispatch({
+    type: GET_VEHICLES_REQUEST,
+  });
+  axios
+    .get(url)
+    .then((res) => {
+      dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
+      //  onSuccess(res.data);
+    })
+    .catch((err) => {
+      dispatch({
+        type: GET_VEHICLES_FAIL,
+        payload: err.response ? err.response.data : CONNECTION_ERROR,
+      });
+      // onError( error.response.data.message);
+    });
+};
 export const listVehiclesByVehicleId =
   (vehicleId) => (dispatch) => (onSuccess) => (onError) => {
     dispatch({

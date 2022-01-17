@@ -29,16 +29,12 @@ function UserProfile({ history, match }) {
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    listUsersByUserId(userId)(userDispatch)((res) => {})((err) => {
-      enqueueSnackbar(err.message, { variant: "error" });
-    });
-    setUser(JSON.parse(localStorage.getItem("user")));
-
-    if (!isSingleMode) {
-      fetchDataAll("user/findOne/" + userId);
-    } else {
-      fetchDataAll("user/findAllUser");
+    if (data.length === 0) {
+      listUsersByUserId(userId)(userDispatch)((res) => {})((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
     }
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   return (

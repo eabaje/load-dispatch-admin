@@ -13,11 +13,13 @@ import "react-data-table-component-extensions/dist/index.css";
 import {
   listVehicles,
   listVehiclesByCarrier,
+  listVehiclesByCompany,
 } from "../../context/actions/vehicle/vehicle.action";
 import { GlobalContext } from "../../context/Provider";
 import { columns } from "../../datasource/dataColumns/vehicle";
 
 function ListVehicle({ history, match }) {
+  const { companyId } = match.params;
   const { vehicleId } = match.params;
   const { carrierId } = match.params;
   const { carrierType } = match.params;
@@ -39,6 +41,10 @@ function ListVehicle({ history, match }) {
       if (data.length === 0) {
         listVehiclesByCarrier(carrierId, carrierType)(vehicleDispatch);
         // listVehicles()(vehicleDispatch);
+      }
+    } else if (companyId) {
+      if (data.length === 0) {
+        listVehiclesByCompany(companyId)(vehicleDispatch);
       }
     } else {
       if (data.length === 0) {
@@ -77,11 +83,11 @@ function ListVehicle({ history, match }) {
               {/* <DataTableExtensions {...tableData}> */}
               <DataTableExtensions
                 exportHeaders
-                columns={columns}
+                columns={columns(user)}
                 data={data.data}
               >
                 <DataTable
-                  columns={columns}
+                  columns={columns(user)}
                   data={data.data}
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}

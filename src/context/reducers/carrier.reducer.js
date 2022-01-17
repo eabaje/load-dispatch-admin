@@ -118,23 +118,6 @@ const carriers = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        Carriers: {
-          ...state.Carriers,
-          loading: false,
-          data: [payload, ...state.Carriers.data],
-          error: null,
-        },
-      };
-
-    case CREATE_CARRIER_FAIL:
-      return {
-        ...state,
-        createCarrier: {
-          ...state.createCarrier,
-          loading: false,
-          error: payload,
-        },
       };
 
     case GET_CARRIERS_REQUEST:

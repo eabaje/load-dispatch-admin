@@ -12,6 +12,7 @@ import {
   DELETE_SUBSCRIBE_REQUEST,
   DELETE_SUBSCRIBE_SUCCESS,
 } from "../../../constants/actionTypes";
+import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
 export const listSubscriptions = () => (dispatch) => {
@@ -130,10 +131,8 @@ export const createSubscription =
 
         onSuccess(res.data);
       })
-      .catch((error) => {
-        const message = error.response.data.message
-          ? error.response.data.message
-          : { error: "Something went wrong, try again" };
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({
           type: CREATE_SUBSCRIBE_FAIL,
           payload: message,
@@ -165,11 +164,8 @@ export const editSubscription =
         });
         onSuccess(res.data);
       })
-      .catch((error) => {
-        const message =
-          error.response.message && error.response.data.message
-            ? error.response.data.message
-            : { error: "Something went wrong, try again" };
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({ type: EDIT_SUBSCRIBE_FAIL, payload: message });
         onError(message);
       });
@@ -187,9 +183,8 @@ export const deleteSubscription = (subscriptionId) => async (dispatch) => {
       type: DELETE_SUBSCRIBE_SUCCESS,
       payload: res.data,
     });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
+  } catch (err) {
+    const message = err.response ? err.response.data : CONNECTION_ERROR;
     dispatch({ type: DELETE_SUBSCRIBE_FAIL, payload: message });
   }
 };

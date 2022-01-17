@@ -14,11 +14,17 @@ import {
   listVehiclesByVehicleId,
   editVehicle,
 } from "../../context/actions/vehicle/vehicle.action";
+import { fetchData, fetchDataAll } from "../../helpers/query";
+import {
+  assignDriverToVehicle,
+  listDriversByCompany,
+} from "../../context/actions/driver/driver.action";
 
 function AddVehicle({ history, match }) {
   const { vehicleId } = match.params;
   const { carrierId } = match.params;
   const { carrierType } = match.params;
+  const { driverId } = match.params;
   const isAddMode = !vehicleId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -42,9 +48,19 @@ function AddVehicle({ history, match }) {
     },
   } = useContext(GlobalContext);
 
+  const {
+    driverDispatch,
+    driverState: {
+      Drivers: { data, error },
+      createDriver: { data: assigndata, error: assignerror },
+    },
+  } = useContext(GlobalContext);
+
   function SubmitForm(formdata) {
     return isAddMode
       ? CreateVehicle(formdata)
+      : driverId
+      ? AssignDriverToVehicle(formdata, vehicleId)
       : EditVehicle(formdata, vehicleId);
   }
 
@@ -55,7 +71,7 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      enqueueSnackbar(err, { variant: "error" });
+      enqueueSnackbar(err.message, { variant: "error" });
     });
   }
 
@@ -65,7 +81,17 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      enqueueSnackbar(err, { variant: "error" });
+      enqueueSnackbar(err.message, { variant: "error" });
+    });
+  }
+
+  function AssignDriverToVehicle(data, id) {
+    assignDriverToVehicle(data, id)(driverDispatch)((res) => {
+      enqueueSnackbar(res.message, {
+        variant: "success",
+      });
+    })((err) => {
+      enqueueSnackbar(err.message, { variant: "error" });
     });
   }
 
@@ -73,12 +99,16 @@ function AddVehicle({ history, match }) {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
+    if (driverId) {
+      listDriversByCompany(user.CompanyId)(vehicleDispatch);
+    }
     if (!isAddMode) {
       // get user and set form fields
 
       listVehiclesByVehicleId(vehicleId)(vehicleDispatch)((res) => {
         const fields = [
           "VehicleType",
+          "VehicleId",
           "VehicleNumber",
           "SerialNumber",
           "VehicleMake",
@@ -125,6 +155,62 @@ function AddVehicle({ history, match }) {
                     class="form-control"
                     {...register("CarrierId")}
                   />
+                  {vehicleId && (
+                    <input
+                      type="hidden"
+                      name="VehicleId"
+                      value={vehicleId}
+                      class="form-control"
+                      {...register("VehicleId")}
+                    />
+                  )}
+                  {driverId && (
+                    <>
+                      <div class="form-group row">
+                        <div class="col-md-12">
+                          <h5 class="alert alert-info">
+                            Assign Vehicle to Driver{" "}
+                          </h5>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                          Driver To Assign
+                        </label>
+                        <div class="col-md-4">
+                          <select
+                            id="DriverId"
+                            class="form-control"
+                            {...register("DriverId", {
+                              required: true,
+                            })}
+                          >
+                            <option selected>Select Driver</option>
+                            {data.map((item) => (
+                              <option key={item.DriverId} value={item.DriverId}>
+                                {item.DriverName}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">
+                          Vehicle License Number(VIN)
+                        </label>
+                        <div class="col-sm-4">
+                          <input
+                            name="VehicleNumber"
+                            class="form-control"
+                            placeholder="Vehicle Number"
+                            {...register("VehicleNumber", {
+                              required: true,
+                            })}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> Vehicle Info </h5>
@@ -320,7 +406,11 @@ function AddVehicle({ history, match }) {
                         ) : (
                           <i class="feather mr-2 icon-check-circle"></i>
                         )}{" "}
-                        {isAddMode ? "Submit" : "Update"}
+                        {isAddMode
+                          ? "Submit"
+                          : driverId
+                          ? "Assign Driver"
+                          : "Update"}
                       </button>
                     </div>
                   </div>
