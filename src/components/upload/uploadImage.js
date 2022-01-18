@@ -45,7 +45,8 @@ class ImageUpload extends React.Component {
         <input
           className="fileInput"
           type="file"
-          name="PicUrl"
+          id="filePicUrl"
+          name="filePicUrl"
           onChange={(e) => this._handleImageChange(e)}
         />
       </div>

@@ -30,10 +30,7 @@ function AddVehicle({ history, match }) {
 
   // const onSubmit = (data) => console.log(data);
 
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
-
+ 
   const {
     register,
     formState: { errors },
@@ -99,6 +96,7 @@ function AddVehicle({ history, match }) {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
     if (driverId) {
       listDriversByCompany(user.CompanyId)(vehicleDispatch);
     }
@@ -147,6 +145,7 @@ function AddVehicle({ history, match }) {
                     name="CompanyId"
                     value={user.CompanyId}
                     class="form-control"
+                    {...register("CompanyId")}
                   />
                   <input
                     type="hidden"
@@ -369,6 +368,20 @@ function AddVehicle({ history, match }) {
                         placeholder=" Enter Purchase year"
                         {...register("PurchaseYear")}
                       />
+                    </div>
+
+                    <label class="col-sm-2 col-form-label">Insured?</label>
+                    <div class="col-sm-4">
+                      <div class="form-check">
+                        <input
+                          type="checkbox"
+                          name="Insured"
+                          class="form-check-input-custom-2"
+                          {...register("Insured", {
+                            required: true,
+                          })}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="form-group row">

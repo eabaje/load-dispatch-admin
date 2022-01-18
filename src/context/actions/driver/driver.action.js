@@ -146,7 +146,7 @@ export const createDriver1 = (form) => async (dispatch) => {
 };
 
 export const createDriver =
-  (form, picFile, docFile) => (dispatch) => (onSuccess) => {
+  (form) => (dispatch) => (onSuccess) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -166,8 +166,7 @@ export const createDriver =
     // formdata.append("PicUrl", picFile);
     // formdata.append("LicenseUrl", docFile);
 
-    // console.log(`Formdata`, formdata);, formdata,
-
+     console.log(`Formdata`, form);
     dispatch({
       type: CREATE_DRIVER_REQUEST,
     });

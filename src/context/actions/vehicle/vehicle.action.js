@@ -61,8 +61,8 @@ export const listVehiclesByCarrier = (carrierId, vehicleType) => (dispatch) => {
     });
 };
 
-export const listVehiclesByCompany = (companyId) => (dispatch) => {
-  //(onSuccess)=>(onError) =>
+export const listVehiclesByCompany = (companyId) => (dispatch) =>(onSuccess)=>(onError) => {
+  //
   const url = `/vehicle/findAllVehiclesByCompany/${companyId}`;
 
   dispatch({
@@ -72,14 +72,15 @@ export const listVehiclesByCompany = (companyId) => (dispatch) => {
     .get(url)
     .then((res) => {
       dispatch({ type: GET_VEHICLES_SUCCESS, payload: res.data });
-      //  onSuccess(res.data);
+        onSuccess(res.data);
     })
     .catch((err) => {
+      const message=err.response ? err.response.data : CONNECTION_ERROR
       dispatch({
         type: GET_VEHICLES_FAIL,
-        payload: err.response ? err.response.data : CONNECTION_ERROR,
+        payload: message,
       });
-      // onError( error.response.data.message);
+       onError( message);
     });
 };
 export const listVehiclesByVehicleId =

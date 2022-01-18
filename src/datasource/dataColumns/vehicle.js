@@ -94,7 +94,7 @@ export const columns = (params) => [
     sortable: true,
     reorder: true,
   },
-
+  params?.roles === "admin" && (
   {
     id: 12,
     name: "Created Date",
@@ -102,8 +102,9 @@ export const columns = (params) => [
     sortable: true,
     right: true,
     reorder: true,
-  },
-
+  }
+  ),
+  params?.roles === "admin" && (
   {
     id: 13,
     name: "Updated Date",
@@ -111,7 +112,7 @@ export const columns = (params) => [
     sortable: true,
     right: true,
     reorder: true,
-  },
+  }),
 
   {
     name: "Action",

@@ -2,7 +2,8 @@ import axios from "./axiosInstance";
 
 export const uploadImage = (file) => (onSuccess) => (onError) => {
   const data = new FormData();
-  data.append("PicUrl", file);
+  data.append("filePicUrl", file);
+  console.log(`object`, data)
   axios
     .post("/upload/uploadImage", data, {
       // receive two parameter endpoint url ,form data
@@ -19,7 +20,7 @@ export const uploadImage = (file) => (onSuccess) => (onError) => {
 
 export const uploadDocuments = (file) => (onSuccess) => (onError) => {
   const data = new FormData();
-  data.append("LicenseUrl", file);
+  data.append("fileLicenseUrl", file);
   axios
     .post("/upload/uploadDocument", data, {
       // receive two parameter endpoint url ,form data

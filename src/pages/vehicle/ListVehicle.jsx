@@ -37,34 +37,32 @@ function ListVehicle({ history, match }) {
 
   // Calling the function on component mount
   useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+    if (data.length === 0) {
     if (carrierType) {
-      if (data.length === 0) {
+     
         listVehiclesByCarrier(carrierId, carrierType)(vehicleDispatch);
         // listVehicles()(vehicleDispatch);
-      }
+      
     } else if (companyId) {
-      if (data.length === 0) {
-        listVehiclesByCompany(companyId)(vehicleDispatch);
+     
+      
+        listVehiclesByCompany(companyId)(vehicleDispatch)()(err=>{
+          enqueueSnackbar(err.message, { variant: "error" });
+
+        });
       }
-    } else {
-      if (data.length === 0) {
+     else {
+     
         listVehicles()(vehicleDispatch);
-      }
+      
     }
-
-    // ((result) => {
-    //   setData(result.data);
-    // })((err) => {
-    //   enqueueSnackbar(err, { variant: "error" });
-    // });
-
-    // setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
-  console.log(`loading`, loading);
-  // const tableData = {
-  //   columns,
-  //   data,
-  // };
+  }
+   
+    
+  }, [companyId]);
+  console.log(`data`, data);
+ 
   return (
     <div class="row">
       <div class="col-sm-12">

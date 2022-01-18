@@ -84,12 +84,38 @@ function AddDriver({ history, match }) {
   } = useContext(GlobalContext);
 
   const getDriverById = (id) => {
-    //  e.preventDefault();
-
-    return listDriversById(id)(driverDispatch);
+ 
+   return listDriversById(id)(driverDispatch);
   };
 
+  useEffect(() => {
+    setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
+
+    if (!isAddMode) {
+      getDriverById(driverId).then((driver) => {
+        const fields = [
+          "DriverName",
+          "Email",
+          "Address",
+          "City",
+          "Country",
+          "Phone",
+          "PicUrl",
+          "Licensed",
+          "LicenseUrl",
+          "DriverDocs",
+        ];
+        fields.forEach((field) => setValue(field, driver[field]));
+      });
+    }
+  }, []);
+
+
+  
+
   function onSubmit(formdata) {
+ // console.log(`formdata`, formdata);
     return isAddMode
       ? CreateDriver(formdata)
       : UpdateDriver(driverId, formdata);
@@ -97,10 +123,11 @@ function AddDriver({ history, match }) {
 
   const CreateDriver = (data) => {
     //  e.preventDefault();
-
+   
+    console.log(`form`, data);
     uploadImage(picFile)((url) => {
       data.PicUrl = url;
-      alert(url);
+      
     })((err) => {
       enqueueSnackbar(`Error:-${err.message} `, {
         variant: "error",
@@ -115,9 +142,9 @@ function AddDriver({ history, match }) {
       });
     });
     console.log(`form`, data);
-    createDriver(data, picFile, docFile)(driverDispatch)((res) => {
-      console.log(`data`, data);
-      if (res.message === "Success") {
+    createDriver(data)(driverDispatch)((res) => {
+    
+      if (res) {
         enqueueSnackbar(
           `Created New Driver-${res.data.DriverName} successfully`,
           {
@@ -128,7 +155,7 @@ function AddDriver({ history, match }) {
     });
 
     if (error) {
-      enqueueSnackbar(error, { variant: "error" });
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   };
 
@@ -165,28 +192,7 @@ function AddDriver({ history, match }) {
     }
   };
 
-  useEffect(() => {
-    setCountries((countries) => (countries = Country.getAllCountries()));
-    setUser(JSON.parse(localStorage.getItem("user")));
-
-    if (!isAddMode) {
-      getDriverById(driverId).then((driver) => {
-        const fields = [
-          "DriverName",
-          "Email",
-          "Address",
-          "City",
-          "Country",
-          "Phone",
-          "PicUrl",
-          "Licensed",
-          "LicenseUrl",
-          "DriverDocs",
-        ];
-        fields.forEach((field) => setValue(field, driver[field]));
-      });
-    }
-  }, []);
+ 
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
       <div class="input-group mb-3">
@@ -232,8 +238,20 @@ function AddDriver({ history, match }) {
                     name="CompanyId"
                     value={user.CompanyId}
                     class="form-control"
+                    {...register("CompanyId")}
                   />
-
+                  <input
+                    type="hidden"
+                    name="PicUrl"
+                    class="form-control"
+                    {...register("PicUrl")}
+                  /> 
+                  <input
+                  type="hidden"
+                  name="LicenseUrl"
+                  class="form-control"
+                  {...register("LicenseUrl" )}
+                />
                   <div class="form-group row">
                     <div class="col-md-12 ">
                       <ImageUpload onChangePicHandler={onChangePicHandler} />
@@ -409,9 +427,9 @@ function AddDriver({ history, match }) {
                       <input
                         className="form-control"
                         type="file"
-                        id="LicenseUrl"
-                        name="LicenseUrl"
-                        {...register("LicenseUrl")}
+                        id="fileLicenseUrl"
+                        name="fileLicenseUrl"
+                        {...register("fileLicenseUrl")}
                         onChange={(e) => onChangeDocHandler(e)}
                       />
                     </div>
