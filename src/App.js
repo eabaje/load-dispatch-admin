@@ -251,7 +251,7 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/edit-driver-info/:userId"
+              path="/edit-driver-info/:driverId"
               component={AddDriver}
             />
             <AppLayoutRoute

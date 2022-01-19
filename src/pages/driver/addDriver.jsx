@@ -22,7 +22,7 @@ import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomButton from "../../components/button/customButton";
-
+import { fetchData } from "../../helpers/query";
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
   const isAddMode = !driverId;
@@ -36,6 +36,7 @@ function AddDriver({ history, match }) {
   const [picFile, setpicFile] = useState(null);
   const [docFile, setdocFile] = useState(null);
   const [user, setUser] = useState({});
+  const [imgUrl, setImgUrl] = useState('');
   // const onSubmit = (data) => console.log(data);
 
   const selectPickUpCountry = async (e) => {
@@ -91,9 +92,14 @@ function AddDriver({ history, match }) {
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
     setUser(JSON.parse(localStorage.getItem("user")));
-
+    console.log(`isAddMode`, isAddMode);
     if (!isAddMode) {
-      getDriverById(driverId).then((driver) => {
+    
+      fetchData(
+        "driver/findOne",
+        driverId
+      )((driver) => {
+        console.log(`driver`, driver)
         const fields = [
           "DriverName",
           "Email",
@@ -107,6 +113,11 @@ function AddDriver({ history, match }) {
           "DriverDocs",
         ];
         fields.forEach((field) => setValue(field, driver[field]));
+        setImgUrl(driver['PicUrl']);
+      })
+      (err=>{
+        enqueueSnackbar(err.message, { variant: "error" });
+
       });
     }
   }, []);
@@ -249,7 +260,7 @@ function AddDriver({ history, match }) {
                   />
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload onChangePicHandler={onChangePicHandler} />
+                      <ImageUpload url={imgUrl} onChangePicHandler={onChangePicHandler} />
                     </div>
                   </div>
                   <div class="form-group row">
@@ -458,7 +469,7 @@ function AddDriver({ history, match }) {
                       <CustomButton
                         loading={loading}
                         isAddMode={isAddMode}
-                        caption={"I am "}
+                       
                       />
                     </div>
                   </div>

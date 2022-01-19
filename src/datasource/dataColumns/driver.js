@@ -1,6 +1,7 @@
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
+import { Country, State } from "country-state-city";
 
 export const columns = (params) => [
   {
@@ -43,7 +44,7 @@ export const columns = (params) => [
   {
     id: 6,
     name: "Country",
-    selector: (row) => row.Country,
+    selector: (row) => row.Country? Country.getCountryByCode(row.Country).name: row.Country,
     sortable: true,
     reorder: true,
   },

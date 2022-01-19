@@ -45,18 +45,24 @@ export const listDriversByCompany = (companyId) => async (dispatch) => {
   }
 };
 
-export const listDriversById = (driverId) => async (dispatch) => {
+export const listDriversById = (driverId) => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: GET_DRIVER_REQUEST,
   });
-  try {
-    const { res } = await axios.get(`/driver/findOne/${driverId}`);
+  axios.get(`/driver/findOne/${driverId}`)
+  .then((res)=>{
+
     dispatch({ type: GET_DRIVER_SUCCESS, payload: res.data });
-    return res.data.data;
-  } catch (err) {
+    onSuccess(res.data);
+
+  }).catch((err)=>{
+
     const message = err.response ? err.response.data : CONNECTION_ERROR;
     dispatch({ type: GET_DRIVER_FAIL, payload: message });
-  }
+    onError(message);
+
+  })
+   
 };
 
 export const listDriversByDriverName = (driverName) => async (dispatch) => {
