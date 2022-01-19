@@ -21,6 +21,7 @@ import $ from "jquery";
 import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import CustomButton from "../../components/button/customButton";
 
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
@@ -84,8 +85,7 @@ function AddDriver({ history, match }) {
   } = useContext(GlobalContext);
 
   const getDriverById = (id) => {
- 
-   return listDriversById(id)(driverDispatch);
+    return listDriversById(id)(driverDispatch);
   };
 
   useEffect(() => {
@@ -111,39 +111,35 @@ function AddDriver({ history, match }) {
     }
   }, []);
 
-
-  
-
   function onSubmit(formdata) {
- // console.log(`formdata`, formdata);
+    // console.log(`formdata`, formdata);
     return isAddMode
       ? CreateDriver(formdata)
       : UpdateDriver(driverId, formdata);
   }
 
   const CreateDriver = (data) => {
+    data.CompanyId = user.CompanyId;
     //  e.preventDefault();
-   
-    console.log(`form`, data);
-    uploadImage(picFile)((url) => {
-      data.PicUrl = url;
-      
-    })((err) => {
-      enqueueSnackbar(`Error:-${err.message} `, {
-        variant: "error",
-      });
-    });
 
-    uploadDocuments(docFile)((url) => {
-      data.LicenseUrl = url;
-    })((err) => {
-      enqueueSnackbar(`Error:-${err.message} `, {
-        variant: "error",
-      });
-    });
+    // console.log(`form`, data);
+    // uploadImage(picFile)((url) => {
+    //   data.PicUrl = url;
+    // })((err) => {
+    //   enqueueSnackbar(`Error:-${err.message} `, {
+    //     variant: "error",
+    //   });
+    // });
+
+    // uploadDocuments(docFile)((url) => {
+    //   data.LicenseUrl = url;
+    // })((err) => {
+    //   enqueueSnackbar(`Error:-${err.message} `, {
+    //     variant: "error",
+    //   });
+    // });
     console.log(`form`, data);
-    createDriver(data)(driverDispatch)((res) => {
-    
+    createDriver(data, picFile, docFile)(driverDispatch)((res) => {
       if (res) {
         enqueueSnackbar(
           `Created New Driver-${res.data.DriverName} successfully`,
@@ -192,7 +188,6 @@ function AddDriver({ history, match }) {
     }
   };
 
- 
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
       <div class="input-group mb-3">
@@ -245,13 +240,13 @@ function AddDriver({ history, match }) {
                     name="PicUrl"
                     class="form-control"
                     {...register("PicUrl")}
-                  /> 
+                  />
                   <input
-                  type="hidden"
-                  name="LicenseUrl"
-                  class="form-control"
-                  {...register("LicenseUrl" )}
-                />
+                    type="hidden"
+                    name="LicenseUrl"
+                    class="form-control"
+                    {...register("LicenseUrl")}
+                  />
                   <div class="form-group row">
                     <div class="col-md-12 ">
                       <ImageUpload onChangePicHandler={onChangePicHandler} />
@@ -269,11 +264,10 @@ function AddDriver({ history, match }) {
                       <input
                         name="CompanyName"
                         class="form-control"
+                        readOnly="readonly"
                         value={user.CompanyName}
                         placeholder="Company Name"
-                        {...register("CompanyName", {
-                          required: true,
-                        })}
+                        {...register("CompanyName")}
                       />
                     </div>
                     <label class="col-sm-2 col-form-label">Driver Name</label>
@@ -461,18 +455,11 @@ function AddDriver({ history, match }) {
                       </div>
                     </div>
                     <div class="right" style={{ float: "right" }}>
-                      <button
-                        type="submit"
-                        class="btn  btn-primary"
-                        style={{ float: "right" }}
-                      >
-                        {loading ? (
-                          <i className="fa fa-spinner fa-spin"></i>
-                        ) : (
-                          <i class="feather mr-2 icon-check-circle"></i>
-                        )}{" "}
-                        {isAddMode ? "Submit" : "Update"}
-                      </button>
+                      <CustomButton
+                        loading={loading}
+                        isAddMode={isAddMode}
+                        caption={"I am "}
+                      />
                     </div>
                   </div>
                 </form>

@@ -9,11 +9,11 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
-import { fetchData, fetchDataAll } from "../helpers/query";
-import { columns } from "../datasource/dataColumns/payment";
-import LoadingBox from "../components/notification/loadingbox";
-import { GlobalContext } from "../context/Provider";
-import { listPayments } from "../context/actions/payment/payment.action";
+import { fetchData, fetchDataAll } from "../../helpers/query";
+import { columns } from "../../datasource/dataColumns/payment";
+import LoadingBox from "../../components/notification/loadingbox";
+import { GlobalContext } from "../../context/Provider";
+import { listPayments } from "../../context/actions/payment/payment.action";
 
 function ListPayment({ history, match }) {
   const { userId } = match.params;

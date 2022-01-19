@@ -10,6 +10,9 @@ import {
   EDIT_DRIVER_REQUEST,
   EDIT_DRIVER_SUCCESS,
   EDIT_DRIVER_FAIL,
+  GET_DRIVER_REQUEST,
+  GET_DRIVER_SUCCESS,
+  GET_DRIVER_FAIL,
 } from "../../constants/actionTypes";
 
 const drivers = (state, { type, payload }) => {
@@ -151,6 +154,37 @@ const drivers = (state, { type, payload }) => {
         ...state,
         Drivers: {
           ...state.Drivers,
+          loading: false,
+          error: payload,
+        },
+      };
+
+    case GET_DRIVER_REQUEST:
+      return {
+        ...state,
+        Driver: {
+          ...state.Driver,
+          loading: true,
+          error: null,
+        },
+      };
+
+    case GET_DRIVER_SUCCESS:
+      return {
+        ...state,
+        Driver: {
+          ...state.Driver,
+          loading: false,
+          data: payload,
+          error: null,
+        },
+      };
+
+    case GET_DRIVER_FAIL:
+      return {
+        ...state,
+        Driver: {
+          ...state.Driver,
           loading: false,
           error: payload,
         },

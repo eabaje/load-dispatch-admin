@@ -11,6 +11,9 @@ import {
   DELETE_DRIVER_FAIL,
   DELETE_DRIVER_REQUEST,
   DELETE_DRIVER_SUCCESS,
+  GET_DRIVER_FAIL,
+  GET_DRIVER_SUCCESS,
+  GET_DRIVER_REQUEST,
 } from "../../../constants/actionTypes";
 import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
@@ -44,15 +47,15 @@ export const listDriversByCompany = (companyId) => async (dispatch) => {
 
 export const listDriversById = (driverId) => async (dispatch) => {
   dispatch({
-    type: GET_DRIVERS_REQUEST,
+    type: GET_DRIVER_REQUEST,
   });
   try {
     const { res } = await axios.get(`/driver/findOne/${driverId}`);
-    dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
+    dispatch({ type: GET_DRIVER_SUCCESS, payload: res.data });
     return res.data.data;
   } catch (err) {
     const message = err.response ? err.response.data : CONNECTION_ERROR;
-    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
+    dispatch({ type: GET_DRIVER_FAIL, payload: message });
   }
 };
 
@@ -146,7 +149,7 @@ export const createDriver1 = (form) => async (dispatch) => {
 };
 
 export const createDriver =
-  (form) => (dispatch) => (onSuccess) => {
+  (form, file1, file2) => (dispatch) => (onSuccess) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -166,12 +169,27 @@ export const createDriver =
     // formdata.append("PicUrl", picFile);
     // formdata.append("LicenseUrl", docFile);
 
-     console.log(`Formdata`, form);
+    const data = new FormData();
+    data.append("filePicUrl", file1);
+    // data.append("fileLicenseUrl", file2);
+    data.append("CompanyId", form.CompanyId);
+    data.append("DriverName", form.DriverName);
+    data.append("Email", form.Email);
+    data.append("Phone", form.Phone);
+    data.append("DOB", form.DOB);
+    data.append("Address", form.Address);
+    data.append("City", form.City);
+    data.append("Country", form.Country);
+    data.append("Licensed", form.Licensed);
+    // data.append("Country", form.Country);
+    // data.append("Country", file2.Country);
+
+    console.log(`upload`, file1);
     dispatch({
       type: CREATE_DRIVER_REQUEST,
     });
     axios
-      .post("/driver/create", form)
+      .post("/driver/create", data)
       .then((res) => {
         dispatch({
           type: CREATE_DRIVER_SUCCESS,

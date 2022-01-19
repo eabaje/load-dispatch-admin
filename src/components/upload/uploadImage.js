@@ -43,7 +43,7 @@ class ImageUpload extends React.Component {
       <div className="previewComponent" style={{ float: "right" }}>
         <div className="imgPreview">{$imagePreview}</div>
         <input
-          className="fileInput"
+          className="form-control-file"
           type="file"
           id="filePicUrl"
           name="filePicUrl"

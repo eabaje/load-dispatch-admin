@@ -35,10 +35,10 @@ import UploadShipment from "./pages/shipper/UploadShipment";
 import AddUserSubscription from "./pages/user/AddUserSubscription";
 import isAuthenticated from "./utils/isAuthenticated";
 import ListCompany from "./pages/company/ListCompany";
-import ListPayment from "./payment/Listpayment";
-import ListShipmentCriteria from "./pages/shipper/ListShipmentCriteria";
+
 import UserProfile from "./pages/user/UserProfile";
 import AssignDriverVehicle from "./pages/vehicle/AssignDriverVehicle";
+import ListPayment from "./pages/payment/Listpayment";
 
 const App = () => {
   const {
