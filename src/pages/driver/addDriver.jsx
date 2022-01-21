@@ -32,11 +32,11 @@ function AddDriver({ history, match }) {
   const [country, setCountry] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
-  const [deliveryRegion, setdeliveryRegion] = useState([]);
   const [picFile, setpicFile] = useState(null);
   const [docFile, setdocFile] = useState(null);
   const [user, setUser] = useState({});
-  const [imgUrl, setImgUrl] = useState('');
+  const [imgUrl, setImgUrl] = useState("");
+  const [selPickUpRegion, setselpickUpRegion] = useState("");
   // const onSubmit = (data) => console.log(data);
 
   const selectPickUpCountry = async (e) => {
@@ -46,16 +46,6 @@ function AddDriver({ history, match }) {
       (pickUpRegion) =>
         // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
         (pickUpRegion = State.getStatesOfCountry(e.target.value))
-    );
-  };
-
-  const selectDeliveryCountry = async (e) => {
-    setCountry((country) => e.target.value);
-
-    setdeliveryRegion(
-      (deliveryRegion) =>
-        // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-        (deliveryRegion = State.getStatesOfCountry(e.target.value))
     );
   };
 
@@ -94,15 +84,15 @@ function AddDriver({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
     console.log(`isAddMode`, isAddMode);
     if (!isAddMode) {
-    
       fetchData(
         "driver/findOne",
         driverId
       )((driver) => {
-        console.log(`driver`, driver)
+        console.log(`driver`, driver);
         const fields = [
           "DriverName",
           "Email",
+          "DOB",
           "Address",
           "City",
           "Country",
@@ -113,11 +103,17 @@ function AddDriver({ history, match }) {
           "DriverDocs",
         ];
         fields.forEach((field) => setValue(field, driver[field]));
-        setImgUrl(driver['PicUrl']);
-      })
-      (err=>{
-        enqueueSnackbar(err.message, { variant: "error" });
+        setImgUrl(driver["PicUrl"]);
 
+        setPickUpRegion(
+          (pickUpRegion) =>
+            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+            (pickUpRegion = State.getStatesOfCountry(driver["Country"]))
+        );
+
+        setselpickUpRegion(driver["Region"]);
+      })((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
       });
     }
   }, []);
@@ -169,21 +165,21 @@ function AddDriver({ history, match }) {
   const UpdateDriver = (data) => {
     //  e.preventDefault();
 
-    uploadImage(picFile)((url) => {
-      data.PicUrl = url;
-    })((err) => {
-      enqueueSnackbar(`Error:-${err.message} `, {
-        variant: "error",
-      });
-    });
+    // uploadImage(picFile)((url) => {
+    //   data.PicUrl = url;
+    // })((err) => {
+    //   enqueueSnackbar(`Error:-${err.message} `, {
+    //     variant: "error",
+    //   });
+    // });
 
-    uploadDocuments(docFile)((url) => {
-      data.LicenseUrl = url;
-    })((err) => {
-      enqueueSnackbar(`Error:-${err.message} `, {
-        variant: "error",
-      });
-    });
+    // uploadDocuments(docFile)((url) => {
+    //   data.LicenseUrl = url;
+    // })((err) => {
+    //   enqueueSnackbar(`Error:-${err.message} `, {
+    //     variant: "error",
+    //   });
+    // });
 
     editDriver(data, picFile, docFile)(driverDispatch)((res) => {
       console.log(`data`, data);
@@ -260,7 +256,10 @@ function AddDriver({ history, match }) {
                   />
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload url={imgUrl} onChangePicHandler={onChangePicHandler} />
+                      <ImageUpload
+                        url={imgUrl}
+                        onChangePicHandler={onChangePicHandler}
+                      />
                     </div>
                   </div>
                   <div class="form-group row">
@@ -466,11 +465,7 @@ function AddDriver({ history, match }) {
                       </div>
                     </div>
                     <div class="right" style={{ float: "right" }}>
-                      <CustomButton
-                        loading={loading}
-                        isAddMode={isAddMode}
-                       
-                      />
+                      <CustomButton loading={loading} isAddMode={isAddMode} />
                     </div>
                   </div>
                 </form>

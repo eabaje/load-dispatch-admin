@@ -4,10 +4,13 @@ import { IMG_URL } from "../../constants";
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { file: "", imagePreviewUrl:"" ,imgUrl: props.url? props.url: ""};
-    
+    this.state = {
+      file: "",
+      imagePreviewUrl: "",
+      imgUrl: props.url ? props.url : "",
+    };
   }
- 
+
   _handleSubmit(e) {
     e.preventDefault();
     // TODO: do something with -> this.state.file
@@ -32,22 +35,19 @@ class ImageUpload extends React.Component {
 
   render() {
     let { imagePreviewUrl } = this.state;
-    let { imgUrl } = this.state;
-   alert(IMG_URL+imgUrl)
+    const { imgUrl } = this.state;
+
     let $imagePreview = null;
     if (imagePreviewUrl) {
       $imagePreview = <img src={imagePreviewUrl} />;
     } else {
-
-     if(imgUrl){
-      $imagePreview = <img src={IMG_URL+imgUrl} />;
-
-     }else{
-      $imagePreview = (
-        <div className="previewText">Please select an Image for Preview</div>
-      );
-    
-    }
+      if (imgUrl) {
+        $imagePreview = <img src={IMG_URL + imgUrl} />;
+      } else {
+        $imagePreview = (
+          <div className="previewText">Please select an Image for Preview</div>
+        );
+      }
     }
 
     return (

@@ -45,25 +45,23 @@ export const listDriversByCompany = (companyId) => async (dispatch) => {
   }
 };
 
-export const listDriversById = (driverId) => (dispatch) => (onSuccess) => (onError) => {
-  dispatch({
-    type: GET_DRIVER_REQUEST,
-  });
-  axios.get(`/driver/findOne/${driverId}`)
-  .then((res)=>{
-
-    dispatch({ type: GET_DRIVER_SUCCESS, payload: res.data });
-    onSuccess(res.data);
-
-  }).catch((err)=>{
-
-    const message = err.response ? err.response.data : CONNECTION_ERROR;
-    dispatch({ type: GET_DRIVER_FAIL, payload: message });
-    onError(message);
-
-  })
-   
-};
+export const listDriversById =
+  (driverId) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({
+      type: GET_DRIVER_REQUEST,
+    });
+    axios
+      .get(`/driver/findOne/${driverId}`)
+      .then((res) => {
+        dispatch({ type: GET_DRIVER_SUCCESS, payload: res.data });
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: GET_DRIVER_FAIL, payload: message });
+        onError(message);
+      });
+  };
 
 export const listDriversByDriverName = (driverName) => async (dispatch) => {
   dispatch({
@@ -185,6 +183,7 @@ export const createDriver =
     data.append("DOB", form.DOB);
     data.append("Address", form.Address);
     data.append("City", form.City);
+    data.append("Region", form.Region);
     data.append("Country", form.Country);
     data.append("Licensed", form.Licensed);
     // data.append("Country", form.Country);
@@ -214,47 +213,66 @@ export const createDriver =
       });
   };
 
-export const editDriver = (form, id) => (dispatch) => (onSuccess) => {
-  const requestPayload = {
-    CompanyId: form.CompanyId || "",
-    DriverName: form.DriverName || "",
-    Email: form.Email || "",
-    Phone: form.Phone || "",
-    Address: form.Address || "",
-    City: form.City || "",
-    Country: form.Country || "",
-    Licensed: form.Licensed || "",
-    LicenseUrl: form.LicenseUrl || "",
-    Rating: form.Rating || "",
-    DriverDocs: form.DriverDocs || "",
-    PicUrl: form.PicUrl || null,
-  };
+export const editDriver =
+  (form, file1 = null, file2 = null) =>
+  (dispatch) =>
+  (onSuccess) => {
+    const requestPayload = {
+      CompanyId: form.CompanyId || "",
+      DriverName: form.DriverName || "",
+      Email: form.Email || "",
+      Phone: form.Phone || "",
+      Address: form.Address || "",
+      City: form.City || "",
+      Country: form.Country || "",
+      Licensed: form.Licensed || "",
+      LicenseUrl: form.LicenseUrl || "",
+      Rating: form.Rating || "",
+      DriverDocs: form.DriverDocs || "",
+      PicUrl: form.PicUrl || null,
+    };
+    const data = new FormData();
+    if (file1 !== null) data.append("filePicUrl", file1);
+    if (file1 !== null) data.append("fileLicenseUrl", file2);
+    // data.append("filePicUrl", file1);
+    // data.append("fileLicenseUrl", file2);
+    data.append("DriverId", form.DriverId);
+    data.append("CompanyId", form.CompanyId);
+    data.append("DriverName", form.DriverName);
+    data.append("Email", form.Email);
+    data.append("Phone", form.Phone);
+    data.append("DOB", form.DOB);
+    data.append("Address", form.Address);
+    data.append("City", form.City);
+    data.append("Region", form.Region);
+    data.append("Country", form.Country);
+    data.append("Licensed", form.Licensed);
 
-  console.log("requestPayload :>> ", requestPayload);
-  dispatch({
-    type: EDIT_DRIVER_REQUEST,
-  });
-
-  axios
-    .put(`/driver/update/${id}`, form)
-    .then((res) => {
-      dispatch({
-        type: EDIT_DRIVER_SUCCESS,
-        payload: res.data,
-      });
-
-      onSuccess(res.data);
-    })
-    .catch((err) => {
-      console.log("err", err.response);
-      dispatch({
-        type: EDIT_DRIVER_FAIL,
-        payload: err.message
-          ? err.response.data
-          : { error: "Something went wrong, try again" },
-      });
+    console.log("requestPayload :>> ", data);
+    dispatch({
+      type: EDIT_DRIVER_REQUEST,
     });
-};
+
+    axios
+      .put(`/driver/update/${form.DriverId}`, data)
+      .then((res) => {
+        dispatch({
+          type: EDIT_DRIVER_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        console.log("err", err.response);
+        dispatch({
+          type: EDIT_DRIVER_FAIL,
+          payload: err.message
+            ? err.response.data
+            : { error: "Something went wrong, try again" },
+        });
+      });
+  };
 
 export const assignDriverToVehicle =
   (form, id) => (dispatch) => (onSuccess) => {
