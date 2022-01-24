@@ -4,7 +4,7 @@ export const LOG_IN = "http://";
 
 export const API_URL = "https://loadboard-api.herokuapp.com/api/";
 
-export const LOG_OUT = "https://load-dispatch-admin.herokuapp.com";
+export const LOG_OUT = "https://load-dispatch-admin.vercel.app";
 
 // export const IMG_URL = "http://localhost:8000/pics/";
 
