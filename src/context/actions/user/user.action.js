@@ -204,6 +204,28 @@ export const deleteUser = (userId) => async (dispatch) => {
   }
 };
 
+export const updateUserRole =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({ type: CREATE_PROFILE_REQUEST });
+
+    axios
+      .put(`/user/updateUserRole/${form.UserId}`, form)
+
+      .then((res) => {
+        dispatch({
+          type: EDIT_PROFILE_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+        onError(message);
+      });
+  };
+
 //Section  User Subscription
 
 export const listUserSubscriptions =
@@ -504,3 +526,5 @@ export const updateCompany =
         onError(message);
       });
   };
+
+// Create User

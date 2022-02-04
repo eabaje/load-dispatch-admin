@@ -1,9 +1,10 @@
+import { Country, State } from "country-state-city";
 import { Form } from "react-bootstrap";
 import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
 export const columns = (params) => [
   {
-    id: 5,
+    id: 7,
     name: "FullName",
     selector: (row) => row.FullName,
     sortable: true,
@@ -55,7 +56,7 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 5,
+    id: 6,
     name: "AcceptTerms?",
     selector: (row) => (
       <Form.Check
@@ -73,14 +74,19 @@ export const columns = (params) => [
   {
     id: 10,
     name: "Country",
-    selector: (row) => row.Country,
+    selector: (row) =>
+      row.Country ? Country.getCountryByCode(row.Country).name : row.Country,
     sortable: true,
     reorder: true,
   },
   {
     id: 11,
     name: "Region",
-    selector: (row) => row.Region,
+    selector: (row) =>
+      row.Region
+        ? State.getStateByCodeAndCountry(row.Region, row.Country).name
+        : row.Region,
+
     sortable: true,
     reorder: true,
   },
@@ -139,6 +145,15 @@ export const columns = (params) => [
           title="List Company Info"
         >
           <i className="first fas fa-cog"></i>
+        </Link>
+      ),
+      params?.roles === "admin" && (
+        <Link
+          to={"/update-user-role/" + row.UserId}
+          className="btn btn-sm"
+          title="Update User Role"
+        >
+          <i className="first fas fa-person"></i>
         </Link>
       ),
       params?.roles === "admin" && (

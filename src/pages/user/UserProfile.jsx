@@ -73,7 +73,8 @@ function UserProfile({ history, match }) {
                         {data.data?.FullName}
                       </h6>
                       <p class="text-muted">
-                        Active | Male | Born {data.data?.DOB}
+                        {data.data?.IsActivated && "Active"} | Male | Born{" "}
+                        {data.data?.DOB}
                       </p>
                       <hr />
                       <p class="text-muted m-t-15">Activity Level: 87%</p>

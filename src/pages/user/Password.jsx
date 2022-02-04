@@ -56,7 +56,7 @@ function AddUserRole({ history, match }) {
   const {
     userDispatch,
     userState: {
-      createUserSubscription: { loading },
+      User: { loading },
     },
   } = useContext(GlobalContext);
 

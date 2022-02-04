@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -14,22 +14,24 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
 import { columns } from "../../datasource/dataColumns/user";
+import { GlobalContext } from "../../context/Provider";
+import { listUsers } from "../../context/actions/user/user.action";
 
 function UserList({ history, match }) {
   const { userId } = match.params;
   const isSingleMode = !userId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [data, setData] = useState([]);
+  const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
-
+  const {
+    userDispatch,
+    userState: { Users: data, loading },
+  } = useContext(GlobalContext);
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-
-    if (!isSingleMode) {
-      fetchDataAll("user/findOne/" + userId);
-    } else {
-      fetchDataAll("user/findAllUser");
-    }
+    listUsers()(userDispatch)((res) => {})((err) => {
+      enqueueSnackbar(err.message, { variant: "error" });
+    });
   }, []);
 
   return (
@@ -37,20 +39,32 @@ function UserList({ history, match }) {
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header ">
-            <h3>List of User Subscription</h3>
+            <h3>List of Users</h3>
             <hr />
             <ul class="alert alert-info">
-              <li>Edit and delete Subscription</li>
-              <li>Get an overview of all Subscription</li>
+              <li>Edit and delete Users</li>
+              <li>Get an overview of all Users</li>
             </ul>
           </div>
           <div class="card-body table-border-style">
             <div class="table-responsive">
               {/* <DataTableExtensions {...tableData}> */}
-              <DataTableExtensions exportHeaders columns={columns} data={data}>
+              <DataTableExtensions
+                exportHeaders
+                columns={columns(user)}
+                data={
+                  userId
+                    ? data.data?.filter((item) => item?.UserId === userId)
+                    : data?.data
+                }
+              >
                 <DataTable
-                  columns={columns}
-                  data={data}
+                  columns={columns(user)}
+                  data={
+                    userId
+                      ? data.data?.filter((item) => item?.UserId === userId)
+                      : data?.data
+                  }
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}
@@ -59,86 +73,6 @@ function UserList({ history, match }) {
                   highlightOnHover
                 />
               </DataTableExtensions>
-              <table class="table table-striped table-bordered table-hover table-checkable dataTable">
-                <thead>
-                  <tr>
-                    <th>SubscriptionName</th>
-                    <th>FullName</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>Region</th>
-                    <th>Country</th>
-                    <th>Company Name</th>
-                    <th>IsActivated?</th>
-                    <th></th>
-                    <th>Accepted Terms</th>
-                    <th>Payment Method</th>
-
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((item) => (
-                    <tr key={item.UserSubscriptionId}>
-                      <td>{item.SubscriptionName}</td>
-                      <td>{item.FullName}</td>
-                      <td>{item.Email}</td>
-                      <td>{item.Phone}</td>
-                      <td>{item.Phone}</td>
-                      <td>{item.Address}</td>
-                      <td>{item.City}</td>
-                      <td>{item.Region}</td>
-                      <td>{item.Country}</td>
-                      <td>{item.CompanyName}</td>
-                      <td>{item.IsActivated}</td>
-                      <td>{item.UserPicUrl}</td>
-                      <td>{item.AcceptTerms}</td>
-                      <td>{item.PaymentMethod}</td>
-
-                      <td>
-                        <ul class="table-controls">
-                          <li>
-                            <Link
-                              to={
-                                "/edit-user-subscription/" +
-                                item.UserSubscriptionId
-                              }
-                              className="btn btn-sm"
-                              title="Edit User Subscription"
-                            >
-                              {" "}
-                              <Edit size={12} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to={"/list-user-subscription/" + item.SubscribeId}
-                              className="btn btn-sm"
-                              title="Get User Subscription"
-                            >
-                              {" "}
-                              <Users size={12} />
-                            </Link>
-                          </li>
-
-                          <li>
-                            <Link
-                              to={"/delete-data/" + item.SubscribeId}
-                              className="btn btn-sm"
-                              title="Delete User Subscription"
-                            >
-                              {" "}
-                              <Trash size={12} />
-                            </Link>
-                          </li>
-                        </ul>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           </div>
         </div>

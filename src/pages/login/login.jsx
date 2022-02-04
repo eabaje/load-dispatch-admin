@@ -103,14 +103,8 @@ function Login() {
         </button>
         <p class="mb-2 text-muted">
           Forgot password?{" "}
-          <a href="auth-reset-password.html" class="f-w-400">
+          <a href="/reset-password" class="f-w-400">
             Reset
-          </a>
-        </p>
-        <p class="mb-0 text-muted">
-          Don’t have an account?{" "}
-          <a href="   `" class="f-w-400">
-            Signup
           </a>
         </p>
       </form>

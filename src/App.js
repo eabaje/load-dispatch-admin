@@ -39,6 +39,7 @@ import ListCompany from "./pages/company/ListCompany";
 import UserProfile from "./pages/user/UserProfile";
 import AssignDriverVehicle from "./pages/vehicle/AssignDriverVehicle";
 import ListPayment from "./pages/payment/Listpayment";
+import AddUserRole from "./pages/user/AddUserRole";
 
 const App = () => {
   const {
@@ -320,6 +321,11 @@ const App = () => {
               exact
               path="/user-profile/:userId"
               component={UserProfile}
+            />
+            <AppLayoutRoute
+              exact
+              path="/update-user-role/:userId"
+              component={AddUserRole}
             />
 
             <AppLayoutRoute
