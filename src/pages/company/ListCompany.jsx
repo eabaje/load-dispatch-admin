@@ -15,9 +15,13 @@ import { columns } from "../../datasource/dataColumns/company";
 import { GlobalContext } from "../../context/Provider";
 
 import LoadingBox from "../../components/notification/loadingbox";
-import { listCompanys } from "../../context/actions/user/user.action";
+import {
+  listCompanyByCompanyId,
+  listCompanys,
+} from "../../context/actions/user/user.action";
 
-function ListCompany() {
+function ListCompany({ history, match }) {
+  const { companyId } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
@@ -27,20 +31,6 @@ function ListCompany() {
       Companys: { data, loading },
     },
   } = useContext(GlobalContext);
-
-  // GET request function to your Mock API
-
-  const fetchData = async () => {
-    try {
-      const res = await axios.get(`${API_URL}carrier/findAll`);
-      if (res) {
-        console.log(`data`, res.data);
-        setData(res.data.data);
-      }
-    } catch (err) {
-      enqueueSnackbar(err.response.data.message, { variant: "error" });
-    }
-  };
 
   // Calling the function on component mount
   useEffect(() => {
@@ -81,12 +71,24 @@ function ListCompany() {
                 ) : (
                   <DataTableExtensions
                     exportHeaders
-                    columns={columns}
-                    data={data.data}
+                    columns={columns(user)}
+                    data={
+                      companyId
+                        ? data.data?.filter(
+                            (item) => item?.CompanyId === parseInt(companyId)
+                          )
+                        : data?.data
+                    }
                   >
                     <DataTable
-                      columns={columns}
-                      data={data.data}
+                      columns={columns(user)}
+                      data={
+                        companyId
+                          ? data.data?.filter(
+                              (item) => item?.CompanyId === parseInt(companyId)
+                            )
+                          : data?.data
+                      }
                       className="table table-striped table-bordered table-hover table-checkable"
                       defaultSortField={1}
                       sortIcon={<ChevronsDown />}

@@ -1,16 +1,16 @@
 import {
-  CREATE_PROFILE_FAIL,
-  CREATE_PROFILE_REQUEST,
-  CREATE_PROFILE_SUCCESS,
-  GET_PROFILES_FAIL,
-  GET_PROFILES_REQUEST,
-  GET_PROFILES_SUCCESS,
-  EDIT_PROFILE_FAIL,
-  EDIT_PROFILE_REQUEST,
-  EDIT_PROFILE_SUCCESS,
-  DELETE_PROFILE_FAIL,
-  DELETE_PROFILE_REQUEST,
-  DELETE_PROFILE_SUCCESS,
+  CREATE_USER_FAIL,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  GET_USERS_FAIL,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  EDIT_USER_FAIL,
+  EDIT_USER_REQUEST,
+  EDIT_USER_SUCCESS,
+  DELETE_USER_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
   GET_USER_SUBSCRIPTION_BY_CRITERIA_REQUEST,
   GET_USER_SUBSCRIPTIONS_SUCCESS,
   GET_USER_SUBSCRIPTIONS_FAIL,
@@ -33,82 +33,85 @@ import {
   CREATE_COMPANY_REQUEST,
   CREATE_COMPANY_SUCCESS,
   CREATE_COMPANY_FAIL,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAIL,
 } from "../../../constants/actionTypes";
 import { CONNECTION_ERROR } from "../../../constants/api";
 import axios from "../../../helpers/axiosInstance";
 
 export const listUsers = () => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
-    type: GET_PROFILES_REQUEST,
+    type: GET_USERS_REQUEST,
   });
   axios
     .get(`/user/findAll/`)
     .then((res) => {
-      dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
+      dispatch({ type: GET_USERS_SUCCESS, payload: res.data });
       onSuccess(res.data);
     })
 
     .catch((err) => {
       const message = err.response ? err.response.data : CONNECTION_ERROR;
-      dispatch({ type: GET_PROFILES_FAIL, payload: message });
+      dispatch({ type: GET_USERS_FAIL, payload: message });
       onError(message);
     });
 };
 
 export const listUserByCriteria = (url, params) => async (dispatch) => {
   dispatch({
-    type: GET_PROFILES_REQUEST,
+    type: GET_USERS_REQUEST,
   });
   try {
     const { data } = await axios.get(`${url}${params}`);
-    dispatch({ type: GET_PROFILES_SUCCESS, payload: data });
+    dispatch({ type: GET_USERS_SUCCESS, payload: data });
   } catch (err) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
+    dispatch({ type: GET_USERS_FAIL, payload: err.message });
   }
 };
 
 export const listUsersByUserId =
   (userId) => (dispatch) => (onSuccess) => (onError) => {
     dispatch({
-      type: GET_PROFILES_REQUEST,
+      type: GET_USER_REQUEST,
     });
     axios
       .get(`/user/findOne/${userId}`)
       .then((res) => {
-        dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
+        dispatch({ type: GET_USER_SUCCESS, payload: res.data });
         onSuccess(res.data);
       })
 
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;
-        dispatch({ type: GET_PROFILES_FAIL, payload: message });
+        dispatch({ type: GET_USER_FAIL, payload: message });
         onError(message);
       });
   };
 
 export const listUsersByName = (name) => async (dispatch) => {
   dispatch({
-    type: GET_PROFILES_REQUEST,
+    type: GET_USERS_REQUEST,
   });
   try {
     const { res } = await axios.get(`/user/findAllBySearch/${name}`);
-    dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
+    dispatch({ type: GET_USERS_SUCCESS, payload: res.data });
   } catch (err) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
+    dispatch({ type: GET_USERS_FAIL, payload: err.message });
   }
 };
 
 export const listUsersByDate = (fromDate, endDate) => async (dispatch) => {
   dispatch({
-    type: GET_PROFILES_REQUEST,
+    type: GET_USERS_REQUEST,
   });
   try {
     const { res } = await axios.get(
       `/user/findAllProfilesByDate/${fromDate}/${endDate}/}`
     );
-    dispatch({ type: GET_PROFILES_SUCCESS, payload: res.data });
+    dispatch({ type: GET_USERS_SUCCESS, payload: res.data });
   } catch (err) {
-    dispatch({ type: GET_PROFILES_FAIL, payload: err.message });
+    dispatch({ type: GET_USERS_FAIL, payload: err.message });
   }
 };
 
@@ -126,13 +129,13 @@ export const createUser = (form) => (dispatch) => (onSuccess) => (onError) => {
     UserPicUrl: form.UserPicUrl || null,
   };
 
-  dispatch({ type: CREATE_PROFILE_REQUEST });
+  dispatch({ type: CREATE_USER_REQUEST });
 
   axios
     .post(`/user/create/`, form)
     .then((res) => {
       dispatch({
-        type: CREATE_PROFILE_SUCCESS,
+        type: CREATE_USER_SUCCESS,
         payload: res.data,
       });
       onSuccess(res.data);
@@ -140,7 +143,7 @@ export const createUser = (form) => (dispatch) => (onSuccess) => (onError) => {
 
     .catch((err) => {
       const message = err.response ? err.response.data : CONNECTION_ERROR;
-      dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+      dispatch({ type: CREATE_USER_FAIL, payload: message });
       onError(message);
     });
 };
@@ -161,14 +164,14 @@ export const editUser =
       UserPicUrl: form.UserPicUrl || null,
     };
 
-    dispatch({ type: EDIT_PROFILE_REQUEST });
+    dispatch({ type: EDIT_USER_REQUEST });
 
     axios
       .put(`/user/update/`, form)
 
       .then((res) => {
         dispatch({
-          type: EDIT_PROFILE_SUCCESS,
+          type: EDIT_USER_SUCCESS,
           payload: res.data,
         });
         onSuccess(res.data);
@@ -176,7 +179,29 @@ export const editUser =
 
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;
-        dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+        dispatch({ type: CREATE_USER_FAIL, payload: message });
+        onError(message);
+      });
+  };
+
+export const resetPassword =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    dispatch({ type: CREATE_USER_REQUEST });
+
+    axios
+      .put(`/auth/reset/${form.Email}`, form)
+
+      .then((res) => {
+        dispatch({
+          type: EDIT_USER_SUCCESS,
+          payload: res.data,
+        });
+        onSuccess(res.data);
+      })
+
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({ type: EDIT_USER_FAIL, payload: message });
         onError(message);
       });
   };
@@ -186,13 +211,13 @@ export const deleteUser = (userId) => async (dispatch) => {
     ProfileId: userId,
   };
 
-  dispatch({ type: DELETE_PROFILE_REQUEST });
+  dispatch({ type: DELETE_USER_REQUEST });
 
   try {
     const { res } = await axios.delete(`/user/delete/${userId}`);
 
     dispatch({
-      type: DELETE_PROFILE_SUCCESS,
+      type: DELETE_USER_SUCCESS,
       payload: res.data,
     });
   } catch (err) {
@@ -200,20 +225,20 @@ export const deleteUser = (userId) => async (dispatch) => {
       err.message && err.response.data.message
         ? err.response.data.message
         : err.response.data.message;
-    dispatch({ type: DELETE_PROFILE_FAIL, payload: message });
+    dispatch({ type: DELETE_USER_FAIL, payload: message });
   }
 };
 
 export const updateUserRole =
   (form) => (dispatch) => (onSuccess) => (onError) => {
-    dispatch({ type: CREATE_PROFILE_REQUEST });
+    dispatch({ type: CREATE_USER_REQUEST });
 
     axios
       .put(`/user/updateUserRole/${form.UserId}`, form)
 
       .then((res) => {
         dispatch({
-          type: EDIT_PROFILE_SUCCESS,
+          type: EDIT_USER_SUCCESS,
           payload: res.data,
         });
         onSuccess(res.data);
@@ -221,7 +246,7 @@ export const updateUserRole =
 
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;
-        dispatch({ type: CREATE_PROFILE_FAIL, payload: message });
+        dispatch({ type: CREATE_USER_FAIL, payload: message });
         onError(message);
       });
   };
@@ -315,7 +340,7 @@ export const listUserSubscriptionByEndDate =
       dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
     } catch (err) {
       const message = err.response ? err.response.data : CONNECTION_ERROR;
-      dispatch({ type: GET_PROFILES_FAIL, payload: message });
+      dispatch({ type: GET_USERS_FAIL, payload: message });
     }
   };
 

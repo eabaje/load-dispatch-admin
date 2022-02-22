@@ -48,6 +48,8 @@ export const PAYMENT_METHOD = [
   { value: "CreditCard", text: "Credit Card" },
   { value: "DebitCard", text: "Debit Card" },
   { value: "Paypal", text: "Paypal" },
+  { value: "Stripe", text: "Stripe" },
+  { value: "PayStack", text: "PayStack" },
 ];
 
 export const ORDER_STATUS = [
@@ -62,6 +64,18 @@ export const CARGO_TYPE = [
   { value: "LiquidBulk", text: "Liquid Bulk" },
   { value: "BreakBulk", text: "Break Bulk" },
   { value: "DryBulk", text: "Dry Bulk" },
+];
+
+export const SPECIALIZATION_TYPE = [
+  { value: "carrier", text: "Carrier" },
+  { value: "shipper", text: "Auction" },
+  { value: "carrier", text: "Corp. Relocation" },
+  { value: "auditor", text: "Auditor" },
+  { value: "broker", text: "Rental Agency" },
+  { value: "broker", text: "Broker" },
+  { value: "shipper", text: "Salvage" },
+  { value: "shipper", text: "Manufacturer" },
+  { value: "shipper", text: "Import/Export" },
 ];
 
 export const ROLES = [

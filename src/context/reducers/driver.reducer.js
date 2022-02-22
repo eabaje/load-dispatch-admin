@@ -119,13 +119,6 @@ const drivers = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        Drivers: {
-          ...state.Drivers,
-          loading: false,
-          data: [payload, ...state.Drivers.data],
-          error: null,
-        },
       };
 
     case GET_DRIVERS_REQUEST:

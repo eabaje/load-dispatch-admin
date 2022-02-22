@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { Controller, useForm, useController } from "react-hook-form";
@@ -8,28 +7,31 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import { GlobalContext } from "../../context/Provider";
-import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-// import {
-//   createSubscription,
-//   editSubscription,
-//   listSubscriptionsBySubscriptionId,
-// } from "../../context/actions/user/user.action";
-import { fetchData, fetchDataAll } from "../../helpers/query";
-import { Editor } from "draft-js";
+import {
+  LOAD_TYPE,
+  LOAD_CAPACITY,
+  LOAD_UNIT,
+  ORDER_STATUS,
+} from "../../constants/enum";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import WYSIWYGEditor from "../../components/wysiwyg/wysiwyg";
+import { fetchData, fetchDataAll } from "../../helpers/query";
 import {
   subcribeUser,
   updateUserSubscription,
+  upgradeUserSubscription,
 } from "../../context/actions/user/user.action";
+
+import { usePaystackPayment } from "react-paystack";
+import { Public_Key } from "../../constants";
+import { createPayment } from "../../context/actions/payment/payment.action";
 
 function AddUserSubscription({ history, match }) {
   const { userSubscriptionId } = match.params;
   const { userId } = match.params;
-  const isAddMode = !userSubscriptionId;
+  const isAddMode = !userId;
   const { action } = match.params;
+
+  //initializePayment(onSuccess, onClose)
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -37,6 +39,9 @@ function AddUserSubscription({ history, match }) {
   const [subscribeUser, setSubscribeUser] = useState({});
   const [data, setData] = useState([]);
   const [subscriptionType, setsubscriptionType] = useState([]);
+  const [subscriptionChange, setsubscriptionChange] = useState(false);
+  const [amt, setAmt] = useState(0);
+  const [emailvar, setEmailvar] = useState("");
 
   const {
     register,
@@ -52,41 +57,125 @@ function AddUserSubscription({ history, match }) {
     userState: {
       createUserSubscription: { loading },
     },
+    paymentDispatch,
+    paymentState: {
+      createPayment: {
+        loading: { loading2 },
+      },
+    },
   } = useContext(GlobalContext);
 
+  const onChangeSubcriptionHandler = async (e) => {
+    if (parseInt(e.target.value) === subscribeUser.SubscribeId) {
+      setsubscriptionChange(false);
+      setAmt(0.0);
+      subscriptionChange === true || subscriptionChange(false);
+    } else {
+      subscriptionChange === false || setsubscriptionChange(true);
+      setsubscriptionChange(true);
+      getSubscriptionAmt(e.target.value);
+    }
+  };
+
+  const config = {
+    reference: new Date().getTime(),
+    email: subscribeUser?.User?.Email,
+    amount: amt * 100,
+    publicKey: Public_Key,
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = (reference, formdata) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    //log in payment
+    const formPayment = {
+      PaymentSessionId: reference,
+      ReferenceId: reference,
+      OrderStatus: ORDER_STATUS.find((item) => item.text === "Processed").value,
+      PaymentMethod: subscribeUser.User?.PaymentMethod,
+
+      TotalPrice: amt * 100,
+
+      PaymentDate: new Date(),
+    };
+
+    createPayment(formPayment)(paymentDispatch)((res) => {
+      isAddMode
+        ? createUserSubscription(formdata)
+        : subscriptionChange
+        ? UpgradeUserSubscription(formdata)
+        : UpdateUserSubscription(userSubscriptionId, formdata);
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    });
+    console.log(reference);
+  };
+
+  // you can call this function anything
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log("closed");
+  };
+
+  function getSubscriptionAmt(subscribeId) {
+    fetchData(
+      "subscription/findOne",
+      subscribeId
+    )((Subscription) => {
+      setAmt(Subscription.Amount);
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    });
+  }
+
   function onSubmit(formdata) {
-    return isAddMode
-      ? createUserSubscription(formdata)
-      : updateUserSubscription(userSubscriptionId, formdata);
+    initializePayment(onSuccess, onClose);
   }
 
   function createUserSubscription(formdata) {
     subcribeUser(formdata)(userDispatch)((res) => {
-      if (res.message) {
+      if (res) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
+    })((err) => {
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     });
   }
 
-  function upgradeUserSubscription(formdata) {
+  function UpgradeUserSubscription(formdata) {
     upgradeUserSubscription(formdata)(userDispatch)((res) => {
-      if (res.message) {
+      if (res) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
+    })((err) => {
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     });
   }
 
-  function updateUserSubscription(id, formdata) {
+  function UpdateUserSubscription(id, formdata) {
     updateUserSubscription(formdata, id)(userDispatch)((res) => {
-      if (res.message) {
+      if (res) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
+    })((err) => {
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     });
   }
 
@@ -94,19 +183,6 @@ function AddUserSubscription({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
-      // fetchData("subscription/findOne", userSubscriptionId)((subscription) => {
-
-      //   const fields = [
-      //     "SubscriptionType",
-      //     "SubscriptionName",
-      //     "Amount",
-      //     "Description",
-      //     "Active",
-      //     "Duration",
-      //   ];
-      //   fields.forEach((field) => setValue(field, subscription[field]));
-      // });
-
       fetchDataAll("subscription/findAll")((subscription) => {
         setsubscriptionType(subscription);
       })((error) => {
@@ -121,7 +197,13 @@ function AddUserSubscription({ history, match }) {
       )((userSubscription) => {
         setSubscribeUser(userSubscription);
 
-        const fields = ["SubscribeId", "StartDate", "Active", "EndDate"];
+        const fields = [
+          "UserId",
+          "SubscribeId",
+          "StartDate",
+          "Active",
+          "EndDate",
+        ];
         fields.forEach((field) => setValue(field, userSubscription[field]));
       })((error) => {
         enqueueSnackbar(error.message, {
@@ -131,14 +213,15 @@ function AddUserSubscription({ history, match }) {
     }
   }, []);
   console.log(`subscribeUser`, subscribeUser);
-
+  console.log("amt", amt);
+  // pk_test_c06524a4666917095175d12761920ec03b4ebb35
   return (
     <>
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
-              <h2>Add User Subscription Form</h2>
+              <h2>User Subscription Form</h2>
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
@@ -146,7 +229,13 @@ function AddUserSubscription({ history, match }) {
                   <input
                     type="hidden"
                     name="UserId"
-                    value={user.UserId}
+                    value={subscribeUser?.UserId}
+                    class="form-control"
+                  />
+                  <input
+                    type="hidden"
+                    name="Email"
+                    value={subscribeUser?.User?.Email}
                     class="form-control"
                   />
 
@@ -164,18 +253,19 @@ function AddUserSubscription({ history, match }) {
                           required: true,
                         })}
                         required
+                        onChange={(e) => onChangeSubcriptionHandler(e)}
                       >
                         <option selected>Select Subscription Type</option>
 
                         {subscriptionType.map((item) => (
                           <option
-                            key={item.SubscribeId}
+                            key={item?.SubscribeId}
                             selected={
-                              subscribeUser.SubscribeId === item.SubscribeId
+                              subscribeUser?.SubscribeId === item?.SubscribeId
                             }
-                            value={item.SubscribeId}
+                            value={item?.SubscribeId}
                           >
-                            {item.SubscriptionType}
+                            {item?.SubscriptionName}
                           </option>
                         ))}
                       </select>
@@ -186,7 +276,7 @@ function AddUserSubscription({ history, match }) {
                       <input
                         name="FullName"
                         class="form-control"
-                        value={subscribeUser.User?.FullName}
+                        value={subscribeUser?.User?.FullName}
                         placeholder="User Name"
                         {...register("FullName", {
                           required: true,
@@ -195,47 +285,53 @@ function AddUserSubscription({ history, match }) {
                       />
                     </div>
                   </div>
+                  {subscriptionChange === true ? (
+                    <></>
+                  ) : (
+                    <>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">
+                          Start Date
+                        </label>
+                        <div class="col-sm-2">
+                          <input
+                            name="StartDate"
+                            type="text"
+                            class="form-control"
+                            placeholder="Start Date"
+                            {...register("StartDate")}
+                            required
+                          />
+                        </div>
 
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Start Date</label>
-                    <div class="col-sm-2">
-                      <input
-                        name="StartDate"
-                        type="text"
-                        class="form-control"
-                        placeholder="Start Date"
-                        {...register("StartDate")}
-                        required
-                      />
-                    </div>
-
-                    <label class="col-sm-2 col-form-label">End Date</label>
-                    <div class="col-sm-2">
-                      <input
-                        name="EndDate"
-                        type="text"
-                        class="form-control"
-                        placeholder="End Date"
-                        {...register("EndDate")}
-                        required
-                      />
-                    </div>
-                    {/* <div class="col-sm-2"> Active?</div> */}
-                    <label class="col-sm-2 col-form-label">Active?</label>
-                    <div class="col-md-2">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input-custom"
-                          name="Active"
-                          type="checkbox"
-                          id="Active"
-                          {...register("Active")}
-                          required
-                        />
+                        <label class="col-sm-2 col-form-label">End Date</label>
+                        <div class="col-sm-2">
+                          <input
+                            name="EndDate"
+                            type="text"
+                            class="form-control"
+                            placeholder="End Date"
+                            {...register("EndDate")}
+                            required
+                          />
+                        </div>
+                        {/* <div class="col-sm-2"> Active?</div> */}
+                        <label class="col-sm-2 col-form-label">Active?</label>
+                        <div class="col-md-2">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input-custom"
+                              name="Active"
+                              type="checkbox"
+                              id="Active"
+                              {...register("Active")}
+                              required
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
+                    </>
+                  )}
                   <div class="form-group row">
                     <div class="col-md-12">
                       <h5 class="alert alert-info"> </h5>
@@ -244,7 +340,7 @@ function AddUserSubscription({ history, match }) {
                   <div class="form-group"></div>
 
                   <div class="form-row">
-                    <div class="col-sm-10 ">
+                    <div class="col-sm-8 ">
                       <div class="form-check">
                         <input
                           class="form-check-input"
@@ -262,7 +358,7 @@ function AddUserSubscription({ history, match }) {
                         </div>
                       </div>
                     </div>
-                    <div class="right" style={{ float: "right" }}>
+                    <div class="col-md-4 right" style={{ float: "right" }}>
                       <button
                         type="submit"
                         class="btn  btn-primary"
@@ -273,7 +369,11 @@ function AddUserSubscription({ history, match }) {
                         ) : (
                           <i class="feather mr-2 icon-check-circle"></i>
                         )}{" "}
-                        {isAddMode ? "Submit" : "Update"}
+                        {isAddMode
+                          ? "Submit"
+                          : subscriptionChange
+                          ? "Change Subscription"
+                          : "Renew Subscription"}
                       </button>
                     </div>
                   </div>

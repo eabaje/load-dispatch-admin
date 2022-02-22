@@ -44,32 +44,38 @@ export const listPaymentByCriteria = (url, params) => async (dispatch) => {
   }
 };
 
-export const createPayment = (form) => async (dispatch) => {
-  const requestPayload = {
-    UserId: form.UserId || "",
-    OrderId: form.OrderId || "",
-    TotalPrice: form.TotalPrice || "",
-    PaymentSessionId: form.PaymentSessionId || "",
-    ReferenceId: form.ReferenceId || "",
-    OrderStatus: form.OrderStatus || "",
-    PaymentMethod: form.PaymentMethod || "",
+export const createPayment =
+  (form) => (dispatch) => (onSuccess) => (onError) => {
+    const requestPayload = {
+      UserId: form.UserId || "",
+      OrderId: form.OrderId || "",
+      TotalPrice: form.TotalPrice || "",
+      PaymentSessionId: form.PaymentSessionId || "",
+      ReferenceId: form.ReferenceId || "",
+      OrderStatus: form.OrderStatus || "",
+      PaymentMethod: form.PaymentMethod || "",
+    };
+
+    dispatch({ type: CREATE_PAYMENT_REQUEST });
+    axios
+      .post("/payment/create", requestPayload)
+      .then((res) => {
+        dispatch({
+          type: CREATE_PAYMENT_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({
+          type: CREATE_PAYMENT_FAIL,
+          payload: message,
+        });
+        onError(message);
+      });
   };
-
-  dispatch({ type: CREATE_PAYMENT_REQUEST });
-
-  try {
-    const { res } = await axios.post(`/payment/create/`, requestPayload);
-
-    dispatch({
-      type: CREATE_PAYMENT_SUCCESS,
-      payload: res.data,
-    });
-  } catch (error) {
-    const message =
-      error.message && error.message ? error.message : error.message;
-    dispatch({ type: CREATE_PAYMENT_FAIL, payload: message });
-  }
-};
 
 export const editPayment = (form, paymentId) => async (dispatch) => {
   const requestPayload = {

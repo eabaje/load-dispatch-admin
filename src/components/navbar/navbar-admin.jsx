@@ -238,6 +238,11 @@ const NavBarAdmin = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
+                    <Link to={"/list-users"} title=" View list user">
+                      View List User
+                    </Link>
+                  </li>
+                  <li>
                     <Link
                       to={"/list-payment"}
                       title=" View Payment Transaction"

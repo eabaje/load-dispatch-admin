@@ -34,18 +34,18 @@ const subscribe = (state, { type, payload }) => {
           error: null,
         },
 
-        Subscribes: {
-          ...state.Subscribes,
-          loading: false,
-          data: state.Subscribes.data.map((item) => {
-            if (item.SubscriptionId === payload.id) {
-              return payload;
-            } else {
-              return item;
-            }
-          }),
-          error: null,
-        },
+        // Subscribes: {
+        //   ...state.Subscribes,
+        //   loading: false,
+        //   data: state.Subscribes.data.map((item) => {
+        //     if (item.SubscriptionId === payload.id) {
+        //       return payload;
+        //     } else {
+        //       return item;
+        //     }
+        //   }),
+        //   error: null,
+        // },
       };
     }
 
@@ -119,13 +119,6 @@ const subscribe = (state, { type, payload }) => {
           loading: false,
           error: null,
           data: payload,
-        },
-
-        Subscribes: {
-          ...state.Subscribes,
-          loading: false,
-          data: [payload, ...state.Subscribes.data],
-          error: null,
         },
       };
 

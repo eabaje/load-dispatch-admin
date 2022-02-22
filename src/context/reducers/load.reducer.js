@@ -116,23 +116,6 @@ const loads = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        getLoads: {
-          ...state.getLoads,
-          loading: false,
-          data: [payload, ...state.getLoads.data],
-          error: null,
-        },
-      };
-
-    case CREATE_LOAD_FAIL:
-      return {
-        ...state,
-        createLoad: {
-          ...state.createLoad,
-          loading: false,
-          error: payload,
-        },
       };
 
     case GET_LOADS_REQUEST:

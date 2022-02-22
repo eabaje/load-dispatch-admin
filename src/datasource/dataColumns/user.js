@@ -140,7 +140,7 @@ export const columns = (params) => [
       ),
       params?.roles === "admin" && (
         <Link
-          to={"/list-company-info/" + row.UserId}
+          to={"/list-company-info/" + row.Company.CompanyId}
           className="btn btn-sm"
           title="List Company Info"
         >

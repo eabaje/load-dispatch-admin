@@ -57,7 +57,7 @@ function AddSubscription({ history, match }) {
 
   function CreateSubscription(formdata) {
     createSubscription(formdata)(subscribeDispatch)((res) => {
-      if (res.message) {
+      if (res) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
@@ -70,12 +70,17 @@ function AddSubscription({ history, match }) {
   }
 
   function updateSubscription(id, formdata) {
+    alert(id);
     editSubscription(id, formdata)(subscribeDispatch)((res) => {
-      if (res.message) {
+      if (res) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
       }
+    })((err) => {
+      enqueueSnackbar(err, {
+        variant: "error",
+      });
     });
   }
 
@@ -83,7 +88,10 @@ function AddSubscription({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
-      fetchData("subscription/findOne", subscribeId).then((subscription) => {
+      fetchData(
+        "subscription/findOne",
+        subscribeId
+      )((subscription) => {
         console.log(`subscription`, subscribeId);
         const fields = [
           "SubscriptionType",
@@ -94,6 +102,10 @@ function AddSubscription({ history, match }) {
           "Duration",
         ];
         fields.forEach((field) => setValue(field, subscription[field]));
+      })((err) => {
+        enqueueSnackbar(err.message, {
+          variant: "error",
+        });
       });
     }
   }, []);

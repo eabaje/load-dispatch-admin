@@ -339,13 +339,6 @@ const user = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        Users: {
-          ...state.Users,
-          loading: false,
-          data: [payload, ...state.Users.data],
-          error: null,
-        },
       };
 
     case GET_USERS_REQUEST:
@@ -359,6 +352,7 @@ const user = (state, { type, payload }) => {
       };
 
     case GET_USERS_SUCCESS:
+      console.log(`payload`, payload);
       return {
         ...state,
         Users: {

@@ -23,14 +23,14 @@ import LoadingBox from "../../components/notification/loadingbox";
 // import SortIcon from "@mui/icons-material/ArrowDownward";
 
 function UserSubscription({ history, match }) {
-  const { userSubscriptionId } = match.params;
+  const { subscribeId } = match.params;
   const { userId } = match.params;
-  const isSingleMode = !userSubscriptionId;
+  const isSingleMode = !subscribeId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [res, setData] = useState([]);
   const [user, setUser] = useState({});
   // const [loading, setLoading] = useState(false);
-  console.log(`userSubscriptionId`, userSubscriptionId);
+  console.log(`userSubscriptionId`, subscribeId);
   console.log(`isSingleMode`, isSingleMode);
   // GET request function to your Mock API
 
@@ -38,15 +38,18 @@ function UserSubscription({ history, match }) {
   // Calling the function on component mount
   const {
     userDispatch,
-    userState: { UserSubscriptions: data, loading },
+    userState: {
+      UserSubscriptions: { data, loading },
+    },
   } = useContext(GlobalContext);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-    listUserSubscriptions()(userDispatch)((res) => {})((err) => {
-      enqueueSnackbar(err.message, { variant: "error" });
-    });
+
     if (data.length === 0) {
+      listUserSubscriptions()(userDispatch)((res) => {})((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
     }
     console.log(`loading`, loading);
   }, []);
@@ -65,30 +68,29 @@ function UserSubscription({ history, match }) {
           </div>
           <div class="card-body table-border-style">
             <div class="table-responsive">
+              {loading && <LoadingBox />}
               {/* <DataTableExtensions {...tableData}> */}
               <DataTableExtensions
                 exportHeaders
-                columns={columns}
+                columns={columns(user)}
                 data={
                   userId
                     ? data.data?.filter((item) => item?.UserId === userId)
-                    : userSubscriptionId
+                    : subscribeId
                     ? data.data?.filter(
-                        (item) =>
-                          item?.UserSubscriptionId === userSubscriptionId
+                        (item) => item?.SubscribeId === parseInt(subscribeId)
                       )
                     : data?.data
                 }
               >
                 <DataTable
-                  columns={columns}
+                  columns={columns(user)}
                   data={
                     userId
                       ? data.data?.filter((item) => item?.UserId === userId)
-                      : userSubscriptionId
+                      : subscribeId
                       ? data.data?.filter(
-                          (item) =>
-                            item?.UserSubscriptionId === userSubscriptionId
+                          (item) => item?.SubscribeId === parseInt(subscribeId)
                         )
                       : data?.data
                   }
@@ -103,7 +105,6 @@ function UserSubscription({ history, match }) {
             </div>
           </div>
         </div>
-        {loading && <LoadingBox />}
       </div>
     </div>
   );

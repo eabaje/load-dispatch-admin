@@ -116,13 +116,6 @@ const trips = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        Trips: {
-          ...state.Trips,
-          loading: false,
-          data: [payload, ...state.Trips.data],
-          error: null,
-        },
       };
 
     case GET_TRIPS_REQUEST:

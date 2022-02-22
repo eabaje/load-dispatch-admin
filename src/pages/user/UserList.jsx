@@ -25,15 +25,22 @@ function UserList({ history, match }) {
   const [user, setUser] = useState({});
   const {
     userDispatch,
-    userState: { Users: data, loading },
+
+    userState: {
+      Users: { data, loading }, //loading
+    },
   } = useContext(GlobalContext);
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-    listUsers()(userDispatch)((res) => {})((err) => {
-      enqueueSnackbar(err.message, { variant: "error" });
-    });
+    if (data.length === 0) {
+      listUsers()(userDispatch)((res) => {
+        // setUser(res.data);
+      })((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
+    }
   }, []);
-
+  console.log("user", data);
   return (
     <div>
       <div class="col-xl-12">

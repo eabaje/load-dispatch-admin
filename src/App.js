@@ -282,15 +282,10 @@ const App = () => {
               path="/list-subscription"
               component={ListSubscription}
             />
-            <AppLayoutRoute
-              exact
-              path="/list-user-subscription"
-              component={UserSubscription}
-            />
 
             <AppLayoutRoute
               exact
-              path="/list-user-subscription/:userId/:userSubscriptionId"
+              path="/list-user-subscription/:subscribeId"
               component={UserSubscription}
             />
 
@@ -322,6 +317,12 @@ const App = () => {
               path="/user-profile/:userId"
               component={UserProfile}
             />
+
+            <AppLayoutRoute
+              exact
+              path="/edit-user-info/:userId"
+              component={UserProfile}
+            />
             <AppLayoutRoute
               exact
               path="/update-user-role/:userId"
@@ -340,7 +341,7 @@ const App = () => {
             />
             <AppLayoutRoute
               exact
-              path="/list-company-info/:userId"
+              path="/list-company-info/:companyId"
               component={ListCompany}
             />
             <AppLayoutRoute

@@ -81,11 +81,11 @@ function ListSubscription() {
               {/* <DataTableExtensions {...tableData}> */}
               <DataTableExtensions
                 exportHeaders
-                columns={columns}
+                columns={columns(Users)}
                 data={data?.data}
               >
                 <DataTable
-                  columns={columns}
+                  columns={columns(user)}
                   data={data?.data}
                   className="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}

@@ -118,13 +118,6 @@ const assigndriver = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        getAssign_Drivers: {
-          ...state.AssignedDrivers,
-          loading: false,
-          data: [payload, ...state.AssignedDrivers.data],
-          error: null,
-        },
       };
 
     case GET_ASSIGN_DRIVERS_REQUEST:

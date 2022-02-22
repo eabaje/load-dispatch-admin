@@ -109,13 +109,6 @@ const payments = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        Payments: {
-          ...state.Payments,
-          loading: false,
-          data: [payload, ...state.Payments.data],
-          error: null,
-        },
       };
 
     case CREATE_PAYMENT_FAIL:

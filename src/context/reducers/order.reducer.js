@@ -116,13 +116,6 @@ const orders = (state, { type, payload }) => {
           error: null,
           data: payload,
         },
-
-        Orders: {
-          ...state.Orders,
-          loading: false,
-          data: [payload, ...state.Orders.data],
-          error: null,
-        },
       };
 
     case GET_ORDERS_REQUEST:

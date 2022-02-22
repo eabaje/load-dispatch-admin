@@ -5,23 +5,15 @@ import { Link, useLocation } from "react-router-dom";
 import $ from "jquery";
 import "./pcoded";
 import { GlobalContext } from "../../context/Provider";
-import NavBarAdmin from "./navbar-admin";
-import NavBarCarrier from "./navbar-carrier";
-import NavBarShipper from "./navbar-shipper";
-import NavBarAudit from "./navbar-audit";
-import NavBarDriver from "./navabar-driver";
-import NavBarPublic from "./navbar-public";
 
-const NavBar = () => {
+const NavBarPublic = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState({});
-
   const {
-    authState: { isLoggedIn },
+    authDispatch,
+    authState: { loading },
   } = useContext(GlobalContext);
-  //  const { dispatch } = useContext(AuthContext);
 
-  //assigning location variable
   const location = useLocation();
 
   //destructuring pathname from location
@@ -46,14 +38,31 @@ const NavBar = () => {
 
   return (
     <>
-      {(user.roles === "carrier" && <NavBarCarrier />) ||
-        (user.roles === "shipper" && <NavBarShipper />) ||
-        (user.roles === "broker" && <NavBarShipper />) ||
-        (user.roles === "driver" && <NavBarDriver />) ||
-        (user.roles === "audit" && <NavBarAdmin />) ||
-        (user.roles === "admin" && <NavBarAdmin />) || <NavBarPublic />}
+      {" "}
+      <nav class="pcoded-navbar theme-horizontal menu-light brand-blue">
+        <div className="navbar-wrapper container">
+          <div
+            className="navbar-content sidenav-horizontal"
+            id="layout-sidenav"
+          >
+            <ul className="nav pcoded-inner-navbar sidenav-inner">
+              <li className="nav-item pcoded-menu-caption">
+                <label>Navigation</label>
+              </li>
+              <li className="nav-item">
+                <a href="/dashboard" class="nav-link ">
+                  <span class="pcoded-micon">
+                    <i class="feather icon-home"></i>
+                  </span>
+                  <span class="pcoded-mtext">Dashboard</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </>
   );
 };
 
-export default NavBar;
+export default NavBarPublic;
