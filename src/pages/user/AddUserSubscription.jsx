@@ -90,8 +90,9 @@ function AddUserSubscription({ history, match }) {
     // Implementation for whatever you want to do with reference and after success call.
     //log in payment
     const formPayment = {
-      PaymentSessionId: reference,
-      ReferenceId: reference,
+      UserId: subscribeUser?.UserId,
+      PaymentSessionId: reference.trans,
+      ReferenceId: reference.reference,
       OrderStatus: ORDER_STATUS.find((item) => item.text === "Processed").value,
       PaymentMethod: subscribeUser.User?.PaymentMethod,
 
@@ -101,6 +102,7 @@ function AddUserSubscription({ history, match }) {
     };
 
     createPayment(formPayment)(paymentDispatch)((res) => {
+      console.log("formdata", formdata);
       isAddMode
         ? createUserSubscription(formdata)
         : subscriptionChange

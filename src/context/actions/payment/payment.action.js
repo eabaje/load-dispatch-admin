@@ -46,6 +46,7 @@ export const listPaymentByCriteria = (url, params) => async (dispatch) => {
 
 export const createPayment =
   (form) => (dispatch) => (onSuccess) => (onError) => {
+    console.log("form", form);
     const requestPayload = {
       UserId: form.UserId || "",
       OrderId: form.OrderId || "",
@@ -58,7 +59,7 @@ export const createPayment =
 
     dispatch({ type: CREATE_PAYMENT_REQUEST });
     axios
-      .post("/payment/create", requestPayload)
+      .post("/payment/create", form)
       .then((res) => {
         dispatch({
           type: CREATE_PAYMENT_SUCCESS,
