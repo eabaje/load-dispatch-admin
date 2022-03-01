@@ -43,6 +43,13 @@ function AddUserSubscription({ history, match }) {
   const [amt, setAmt] = useState(0);
   const [emailvar, setEmailvar] = useState("");
 
+  const [formPost, setFormPost] = useState({
+    SubscriptionId: null,
+    UserId: null,
+  });
+  const subscribeRef = React.useRef();
+  const passwordRef = React.useRef();
+
   const {
     register,
     formState: { errors },
@@ -74,6 +81,10 @@ function AddUserSubscription({ history, match }) {
       subscriptionChange === false || setsubscriptionChange(true);
       setsubscriptionChange(true);
       getSubscriptionAmt(e.target.value);
+      setFormPost({
+        SubscriptionId: parseInt(e.target.value),
+        UserId: subscribeUser?.UserId,
+      });
     }
   };
 
@@ -86,7 +97,7 @@ function AddUserSubscription({ history, match }) {
 
   const initializePayment = usePaystackPayment(config);
 
-  const onSuccess = (reference, formdata) => {
+  const onSuccess = (reference) => {
     // Implementation for whatever you want to do with reference and after success call.
     //log in payment
     const formPayment = {
@@ -102,18 +113,17 @@ function AddUserSubscription({ history, match }) {
     };
 
     createPayment(formPayment)(paymentDispatch)((res) => {
-      console.log("formdata", formdata);
+      //   console.log("formdata@CreatePayment", formPost);
       isAddMode
-        ? createUserSubscription(formdata)
+        ? createUserSubscription(formPost)
         : subscriptionChange
-        ? UpgradeUserSubscription(formdata)
-        : UpdateUserSubscription(userSubscriptionId, formdata);
+        ? UpgradeUserSubscription(formPost)
+        : UpdateUserSubscription(userSubscriptionId, formPost);
     })((error) => {
       enqueueSnackbar(error.message, {
         variant: "error",
       });
     });
-    console.log(reference);
   };
 
   // you can call this function anything
@@ -136,6 +146,8 @@ function AddUserSubscription({ history, match }) {
   }
 
   function onSubmit(formdata) {
+    // console.log("formdata", formdata);
+
     initializePayment(onSuccess, onClose);
   }
 
@@ -251,6 +263,7 @@ function AddUserSubscription({ history, match }) {
                         id="SubscriptionType"
                         name="SubscriptionType"
                         class="form-control"
+                        ref={subscribeRef}
                         {...register("SubscriptionType", {
                           required: true,
                         })}
