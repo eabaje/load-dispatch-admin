@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { getFiles, uploadMedia } from "../../helpers/uploadImage";
+import Gallery from "react-photo-gallery";
+import Lightbox from "react-images";
 
 export default class UploadImages extends Component {
   constructor(props) {
@@ -16,6 +18,11 @@ export default class UploadImages extends Component {
 
       imageInfos: [],
     };
+    this.state = { currentImage: 0 };
+    this.closeLightbox = this.closeLightbox.bind(this);
+    this.openLightbox = this.openLightbox.bind(this);
+    this.gotoNext = this.gotoNext.bind(this);
+    this.gotoPrevious = this.gotoPrevious.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +70,29 @@ export default class UploadImages extends Component {
           currentFile: undefined,
         });
       });
+  }
+
+  openLightbox(event, obj) {
+    this.setState({
+      currentImage: obj.index,
+      lightboxIsOpen: true,
+    });
+  }
+  closeLightbox() {
+    this.setState({
+      currentImage: 0,
+      lightboxIsOpen: false,
+    });
+  }
+  gotoPrevious() {
+    this.setState({
+      currentImage: this.state.currentImage - 1,
+    });
+  }
+  gotoNext() {
+    this.setState({
+      currentImage: this.state.currentImage + 1,
+    });
   }
 
   render() {
@@ -178,3 +208,15 @@ export default class UploadImages extends Component {
     );
   }
 }
+
+<div>
+  <Gallery photos={photos} onClick={this.openLightbox} />
+  <Lightbox
+    images={photos}
+    onClose={this.closeLightbox}
+    onClickPrev={this.gotoPrevious}
+    onClickNext={this.gotoNext}
+    currentImage={this.state.currentImage}
+    isOpen={this.state.lightboxIsOpen}
+  />
+</div>;
