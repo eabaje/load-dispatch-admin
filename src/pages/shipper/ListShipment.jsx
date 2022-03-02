@@ -105,7 +105,7 @@ function ListShipment({ history, match }) {
                   columns={columns(user)}
                   data={
                     userId
-                      ? data.data?.filter((item) => item?.UserId === userId)
+                      ? data.data
                       : assigned
                       ? data.data?.filter(
                           (item) => item?.AssignedShipment === true

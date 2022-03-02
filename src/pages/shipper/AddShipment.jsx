@@ -128,6 +128,9 @@ function AddShipment({ history, match }) {
 
         setselpickUpRegion(shipment["PickUpRegion"]);
         setseldeliveryRegion(shipment["DeliveryRegion"]);
+
+        //  setFormStep(1);
+        console.log("formstep", formStep);
       })((err) => {
         enqueueSnackbar(err.message, {
           variant: "error",
@@ -171,6 +174,7 @@ function AddShipment({ history, match }) {
         });
 
         setFormStep(1);
+        console.log("formstep", formStep);
       }
     })((error) => {
       enqueueSnackbar(error.message, {
@@ -722,27 +726,26 @@ function AddShipment({ history, match }) {
                       </div>
 
                       <div class="right" style={{ float: "right" }}>
-                        {!readOnly && (
+                        {!readOnly && !isAddMode && formStep === 0 && (
                           <button
-                            type="submit"
+                            type="button"
                             class="btn  btn-primary"
-                            style={{ float: "right" }}
+                            onClick={() => setFormStep(1)}
+                            style={{ right: "150px" }}
                           >
+                            <i class="feather mr-2 icon-check-circle"></i>{" "}
+                            {"Upload Picture "}
+                          </button>
+                        )}
+
+                        {!readOnly && (
+                          <button type="submit" class="btn  btn-primary">
                             {loading ? (
                               <i className="fa fa-spinner fa-spin"></i>
                             ) : (
                               <i class="feather mr-2 icon-check-circle"></i>
                             )}{" "}
                             {isAddMode ? "Next" : "Update"}
-                          </button>
-                        )}
-                        {!readOnly && isAddMode && formStep === 0 && (
-                          <button
-                            type="submit"
-                            class="btn  btn-primary"
-                            style={{ float: "right" }}
-                          >
-                            {" "}
                           </button>
                         )}
 

@@ -40,7 +40,7 @@ export const uploadMedia = (file, referenceId, onUploadProgress) => {
   formData.append("RefId", referenceId);
   formData.append("file", file);
 
-  return axios.post("/upload/uploadImage", formData, {
+  return axios.post("/upload/uploadImageWithData", formData, {
     // headers: {
     //   "Content-Type": "multipart/form-data",
     // },
@@ -48,6 +48,6 @@ export const uploadMedia = (file, referenceId, onUploadProgress) => {
   });
 };
 
-export const getFiles = () => {
-  return axios.get("/files");
+export const getFiles = (referenceId) => {
+  return axios.get(`/upload/getFiles/${referenceId}`);
 };
