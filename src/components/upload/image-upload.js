@@ -47,7 +47,7 @@ export default class UploadImages extends Component {
       progress: 0,
     });
 
-    uploadMedia(this.state.currentFile, (event) => {
+    uploadMedia(this.state.currentFile, this.state.referenceId, (event) => {
       this.setState({
         progress: Math.round((100 * event.loaded) / event.total),
       });
@@ -128,7 +128,11 @@ export default class UploadImages extends Component {
               </span>
             </label>
 
-            <button className="submit" onClick={this.handleUpload}>
+            <button
+              className="submit"
+              disabled={!currentFile}
+              onClick={this.upload}
+            >
               Upload
             </button>
 
@@ -203,20 +207,20 @@ export default class UploadImages extends Component {
                 </li>
               ))}
           </ul>
+
+          <Gallery photos={imageInfos.url} onClick={this.openLightbox} />
+          <Lightbox
+            images={imageInfos.url}
+            onClose={this.closeLightbox}
+            onClickPrev={this.gotoPrevious}
+            onClickNext={this.gotoNext}
+            currentImage={this.state.currentImage}
+            isOpen={this.state.lightboxIsOpen}
+          />
         </div>
       </div>
     );
   }
 }
 
-<div>
-  <Gallery photos={photos} onClick={this.openLightbox} />
-  <Lightbox
-    images={photos}
-    onClose={this.closeLightbox}
-    onClickPrev={this.gotoPrevious}
-    onClickNext={this.gotoNext}
-    currentImage={this.state.currentImage}
-    isOpen={this.state.lightboxIsOpen}
-  />
-</div>;
+<div></div>;
