@@ -128,9 +128,11 @@ function AddShipment({ history, match }) {
 
         setselpickUpRegion(shipment["PickUpRegion"]);
         setseldeliveryRegion(shipment["DeliveryRegion"]);
+        setRefId(shipmentId);
 
         //  setFormStep(1);
         console.log("formstep", formStep);
+        console.log("refId", refId);
       })((err) => {
         enqueueSnackbar(err.message, {
           variant: "error",
@@ -725,7 +727,11 @@ function AddShipment({ history, match }) {
                         )}
                       </div>
 
-                      <div class="right" style={{ float: "right" }}>
+                      <div class="right" style={{ float: "right" }}></div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-6">
                         {!readOnly && !isAddMode && formStep === 0 && (
                           <button
                             type="button"
@@ -737,7 +743,8 @@ function AddShipment({ history, match }) {
                             {"Upload Picture "}
                           </button>
                         )}
-
+                      </div>
+                      <div class="col-md-6">
                         {!readOnly && (
                           <button type="submit" class="btn  btn-primary">
                             {loading ? (
@@ -767,7 +774,7 @@ function AddShipment({ history, match }) {
                     </div>
                   </form>
                 )}
-                {formStep === 1 && <UploadImages {...refId} />}
+                {formStep === 1 && <UploadImages refId={shipmentId} />}
               </div>
             </div>
           </div>

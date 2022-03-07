@@ -23,6 +23,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomButton from "../../components/button/customButton";
 import { fetchData } from "../../helpers/query";
+
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
   const isAddMode = !driverId;

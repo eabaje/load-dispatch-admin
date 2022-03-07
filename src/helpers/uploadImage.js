@@ -37,6 +37,7 @@ export const uploadDocuments = (file) => (onSuccess) => (onError) => {
 
 export const uploadMedia = (file, referenceId, onUploadProgress) => {
   let formData = new FormData();
+  //alert(referenceId);
   formData.append("RefId", referenceId);
   formData.append("file", file);
 
