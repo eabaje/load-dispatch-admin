@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect, Component } from "react";
 import { getFiles, uploadMedia } from "../../helpers/uploadImage";
-import Gallery from "react-photo-gallery";
-import Carousel, { Modal, ModalGateway } from "react-images";
+//import Gallery from "react-photo-gallery";
+import Gallery from "react-grid-gallery";
+//import Carousel, { Modal, ModalGateway } from "react-images";
 import Measure from "react-measure";
 //import "react-image-gallery/styles/css/image-gallery.css";
 
@@ -47,8 +48,8 @@ export default function UploadImages(props) {
       const photos = files.data.data;
       let newMarkers = photos.map((el) => ({
         src: IMG_URL + el.url,
-        width: 3,
-        height: 4,
+        thumbnail:IMG_URL + el.ThumbUrl,
+       
       }));
       //  alert(newMarkers);
       setImageInfos(files.data.data);
@@ -67,10 +68,11 @@ export default function UploadImages(props) {
       .then((response) => {
         setMessage(response.data.message);
 
-        return getFiles(props.refId);
+      //  return getFiles(props.refId);
       })
       .then((files) => {
         setImageInfos(files.data.data);
+        return getFiles(props.refId);
 
         //  console.log("imageInfos", this.state.imageInfos);
       })
@@ -98,7 +100,7 @@ export default function UploadImages(props) {
 
   return (
     <>
-      <Measure
+      {/* <Measure
         bounds
         onResize={(contentRect) =>
           setWidth({ width: contentRect.bounds.width })
@@ -117,11 +119,13 @@ export default function UploadImages(props) {
           }
           if (width >= 1824) {
             columns = 4;
-          }
+          } */}
 
           <div>
             <div className="row">
               <div className="col-8">
+              <h5> Upload pictures of your shipment</h5>
+              <hr/>
                 <input
                   type="file"
                   name="file-5[]"
@@ -146,14 +150,16 @@ export default function UploadImages(props) {
                 : this.state.message}
             </span> */}
                 </label>
-
+                <br/>
+                <div style={{"padding-left":"40px"}}>
                 <button
-                  className="btn btn-success btn-sm"
+                  className="btn btn-success btn-sm " 
                   disabled={!currentFile}
                   onClick={upload}
                 >
                   Upload
                 </button>
+                </div>
               </div>
             </div>
 
@@ -195,7 +201,15 @@ export default function UploadImages(props) {
               ))}
           </ul> */}
               <div ref={measureRef} style={{ height: 500, overflow: "scroll" }}>
-                <Gallery photos={imageGallery} onClick={openLightbox} />
+              <Gallery
+      images={imageGallery}
+      enableLightbox={true}
+      // maxRows={3}
+      backdropClosesModal
+      // currentImage={3}
+      // isOpen={ true}
+    />
+              {/*  <Gallery photos={imageGallery} onClick={openLightbox} />
                 <ModalGateway>
                   {viewerIsOpen ? (
                     <Modal onClose={closeLightbox}>
@@ -210,7 +224,7 @@ export default function UploadImages(props) {
                     </Modal>
                   ) : null}
                 </ModalGateway>
-                {/* <Lightbox
+                 <Lightbox
             onClick={this.openLightbox}
             images={imageInfos}
             onClose={this.closeLightbox}
@@ -223,8 +237,8 @@ export default function UploadImages(props) {
               </div>
             </div>
           </div>;
-        }}
-      </Measure>
+        {/* }}
+      </Measure> */}
     </>
   );
 }
