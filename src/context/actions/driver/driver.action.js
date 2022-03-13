@@ -30,20 +30,29 @@ export const listDrivers = () => async (dispatch) => {
     dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
-export const listDriversByCompany = (companyId) => async (dispatch) => {
+export const listDriversByCompany =  (companyId) => (dispatch) =>(onSuccess)=>(onError) => {
   dispatch({
     type: GET_DRIVERS_REQUEST,
   });
-  try {
-    const { res } = await axios.get(
-      `/driver/findAllDriversByCompany/${companyId}`
-    );
+  axios
+  .get(`/driver/findAllDriversByCompany/${companyId}`)
+  .then((res) => {
     dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-  } catch (err) {
-    const message = err.response ? err.response.data : CONNECTION_ERROR;
-    dispatch({ type: GET_DRIVERS_FAIL, payload: message });
-  }
+    console.log('from', res.data)
+      onSuccess(res.data);
+  })
+  .catch((err) => {
+    const message=err.response ? err.response.data : CONNECTION_ERROR
+    dispatch({
+      type: GET_DRIVERS_FAIL,
+      payload: message,
+    });
+     onError( message);
+  });
+  
 };
+
+
 
 export const listDriversById =
   (driverId) => (dispatch) => (onSuccess) => (onError) => {
@@ -149,11 +158,13 @@ export const createDriver1 = (form) => async (dispatch) => {
   } catch (err) {
     const message = err.response ? err.response.data : CONNECTION_ERROR;
     dispatch({ type: CREATE_DRIVER_FAIL, payload: message });
+
+  
   }
 };
 
 export const createDriver =
-  (form, file1, file2) => (dispatch) => (onSuccess) => {
+  (form, file1, file2) => (dispatch) => (onSuccess) => (onError) =>{
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -210,13 +221,15 @@ export const createDriver =
           type: CREATE_DRIVER_FAIL,
           payload: message,
         });
+
+        onError( message);
       });
   };
 
 export const editDriver =
   (form, file1 = null, file2 = null) =>
   (dispatch) =>
-  (onSuccess) => {
+  (onSuccess) => (onError) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -265,17 +278,17 @@ export const editDriver =
       })
       .catch((err) => {
         console.log("err", err.response);
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({
-          type: EDIT_DRIVER_FAIL,
-          payload: err.message
-            ? err.response.data
-            : { error: "Something went wrong, try again" },
+          type: CREATE_DRIVER_FAIL,
+          payload: message,
         });
+        onError( message);
       });
   };
 
 export const assignDriverToVehicle =
-  (form, id) => (dispatch) => (onSuccess) => {
+  (form, id) => (dispatch) => (onSuccess) => (onError) =>{
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -293,14 +306,14 @@ export const assignDriverToVehicle =
 
     //console.log("requestPayload :>> ", form);
     dispatch({
-      type: EDIT_DRIVER_REQUEST,
+      type: CREATE_DRIVER_REQUEST,
     });
 
     axios
       .post(`/driver/AssignDriverToVehicle`, form)
       .then((res) => {
         dispatch({
-          type: EDIT_DRIVER_SUCCESS,
+          type: CREATE_DRIVER_SUCCESS,
           payload: res.data,
         });
 
@@ -310,9 +323,10 @@ export const assignDriverToVehicle =
         console.log("err", err.response);
         const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({
-          type: EDIT_DRIVER_FAIL,
+          type: CREATE_DRIVER_FAIL,
           payload: message,
         });
+        onError( message);
       });
   };
 

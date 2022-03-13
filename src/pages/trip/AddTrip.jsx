@@ -119,7 +119,7 @@ function AddTrip({ history, match }) {
   const {
     tripDispatch,
     tripState: {
-      CreateTrip: { error, loading, data },
+      createTrip: { data: tripdata, error: triperror },
     },
   } = useContext(GlobalContext);
 
@@ -137,8 +137,8 @@ function AddTrip({ history, match }) {
           variant: "success",
         });
       }
-    })((error) => {
-      enqueueSnackbar(error.message, {
+    })((err) => {
+      enqueueSnackbar(err, {
         variant: "error",
       });
     });
@@ -151,8 +151,8 @@ function AddTrip({ history, match }) {
           variant: "success",
         });
       }
-    })((error) => {
-      enqueueSnackbar(error.message, {
+    })((err) => {
+      enqueueSnackbar(err, {
         variant: "error",
       });
     });

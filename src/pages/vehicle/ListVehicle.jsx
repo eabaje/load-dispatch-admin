@@ -45,10 +45,13 @@ function ListVehicle({ history, match }) {
         // listVehicles()(vehicleDispatch);
       
     } else if (companyId) {
-     
-      
-        listVehiclesByCompany(companyId)(vehicleDispatch)()(err=>{
-          enqueueSnackbar(err.message, { variant: "error" });
+          
+        listVehiclesByCompany(companyId)(vehicleDispatch)(res=>{
+
+        }
+
+        )(err=>{
+          enqueueSnackbar(err, { variant: "error" });
 
         });
       }
@@ -60,7 +63,7 @@ function ListVehicle({ history, match }) {
   }
    
     
-  }, [companyId]);
+  }, []);
   console.log(`data`, data);
  
   return (

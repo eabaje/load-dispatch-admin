@@ -145,7 +145,7 @@ export const columns = (params) => [
       </>,
 
       <Link
-        to={"/assign-driver-to-vehicle/" + row.DriverId}
+        to={"/list-company-vehicles/" + row.CompanyId }
         className="btn btn-sm"
         title="Assign driver to vehicle"
       >

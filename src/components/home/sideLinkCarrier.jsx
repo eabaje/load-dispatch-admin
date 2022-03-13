@@ -66,7 +66,7 @@ function SideLinkCarrier() {
                 "align-items": "center",
               }}
             >
-              <Link to="/list-carrier-info">
+              <Link to="/list-carriers-info">
                 {" "}
                 <span>Choose a Carrier</span>
               </Link>

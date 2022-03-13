@@ -288,7 +288,7 @@ export const createTrip = (form) => (dispatch) => (onSuccess) => (onError) => {
       const message = err.response ? err.response.data : CONNECTION_ERROR;
       dispatch({ type: CREATE_TRIP_FAIL, payload: message });
 
-      onError();
+      onError(message);
     });
 };
 

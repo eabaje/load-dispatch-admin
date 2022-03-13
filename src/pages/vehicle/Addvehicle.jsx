@@ -22,6 +22,7 @@ import {
 
 function AddVehicle({ history, match }) {
   const { vehicleId } = match.params;
+  const { companyId } = match.params;
   const { carrierId } = match.params;
   const { carrierType } = match.params;
   const { driverId } = match.params;
@@ -48,12 +49,13 @@ function AddVehicle({ history, match }) {
   const {
     driverDispatch,
     driverState: {
-      Drivers: { data, error },
+      Drivers: { data:driverdata, error },
       createDriver: { data: assigndata, error: assignerror },
     },
   } = useContext(GlobalContext);
 
   function SubmitForm(formdata) {
+    console.log('formdata', formdata)
     return isAddMode
       ? CreateVehicle(formdata)
       : driverId
@@ -68,7 +70,7 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err, { variant: "error" });
     });
   }
 
@@ -78,7 +80,7 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err, { variant: "error" });
     });
   }
 
@@ -88,7 +90,7 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      enqueueSnackbar(err.message, { variant: "error" });
+      enqueueSnackbar(err, { variant: "error" });
     });
   }
 
@@ -97,13 +99,28 @@ function AddVehicle({ history, match }) {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-    if (driverId) {
-      listDriversByCompany(user.CompanyId)(vehicleDispatch);
+    
+    if(driverdata.length===0){
+
+      if (driverId) {
+        alert('hi from here')
+    
+      listDriversByCompany(companyId)(driverDispatch)((res)=>{
+
+      })(err=>{
+        enqueueSnackbar(err, { variant: "error" });
+
+      });
+
+      }
     }
     if (!isAddMode) {
-      // get user and set form fields
-
-      listVehiclesByVehicleId(vehicleId)(vehicleDispatch)((res) => {
+     
+      fetchData(
+        "vehicle/findOne",
+        vehicleId
+      )((res) => {
+       
         const fields = [
           "VehicleType",
           "VehicleId",
@@ -115,14 +132,22 @@ function AddVehicle({ history, match }) {
           "VehicleModel",
           "SerialNumber",
           "LicensePlate",
+          "Insured",
           "VehicleModelYear",
           "PurchaseYear",
         ];
         fields.forEach((field) => setValue(field, res[field]));
+
+      
+      })((err) => {
+        enqueueSnackbar(err.message, {
+          variant: "error",
+        });
       });
+      
     }
   }, []);
-
+console.log('data', driverdata)
   return (
     <>
       <div class="row">
@@ -139,11 +164,12 @@ function AddVehicle({ history, match }) {
                     name="UserId"
                     value={user.UserId}
                     class="form-control"
+                    {...register("UserId")}
                   />
                   <input
                     type="hidden"
                     name="CompanyId"
-                    value={user.CompanyId}
+                    value={companyId}
                     class="form-control"
                     {...register("CompanyId")}
                   />
@@ -185,7 +211,7 @@ function AddVehicle({ history, match }) {
                             })}
                           >
                             <option selected>Select Driver</option>
-                            {data.map((item) => (
+                            {driverdata?.data.map((item) => (
                               <option key={item.DriverId} value={item.DriverId}>
                                 {item.DriverName}
                               </option>
@@ -199,6 +225,7 @@ function AddVehicle({ history, match }) {
                         <div class="col-sm-4">
                           <input
                             name="VehicleNumber"
+                            id="VehicleNumber"
                             class="form-control"
                             placeholder="Vehicle Number"
                             {...register("VehicleNumber", {
@@ -284,6 +311,7 @@ function AddVehicle({ history, match }) {
                     <div class="col-md-10">
                       <input
                         name="Description"
+                        id="Description"
                         class="form-control"
                         placeholder="Description"
                         {...register("Description", {
@@ -363,7 +391,7 @@ function AddVehicle({ history, match }) {
                     <div class="col-md-4">
                       <input
                         name="PurchaseYear"
-                        placeholder="Purchase Year"
+                       
                         class="form-control"
                         placeholder=" Enter Purchase year"
                         {...register("PurchaseYear")}

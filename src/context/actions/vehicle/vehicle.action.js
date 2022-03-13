@@ -181,7 +181,7 @@ export const createVehicle =
   };
 
 export const editVehicle =
-  (form, vehicleId) => async (dispatch) => (onSuccess) => (onError) => {
+  (form, vehicleId) => (dispatch) => (onSuccess) => (onError) => {
     const requestPayload = {
       VehicleId: vehicleId || form.VehicleId,
       CarrierId: form.CarrierId,

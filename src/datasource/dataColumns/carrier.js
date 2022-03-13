@@ -107,7 +107,7 @@ export const columns = (params) => [
       </>,
 
       <Link
-        to={"/add-vehicle-to-carrier/" + row.CarrierId + "/" + row.CarrierType}
+        to={"/add-vehicle-to-carrier/"+  row.CompanyId + "/" + row.CarrierId + "/" + row.CarrierType}
         className="btn btn-sm"
         title="Add Vehicle to carrier"
       >

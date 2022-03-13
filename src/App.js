@@ -196,7 +196,7 @@ const App = () => {
             <AppLayoutRoute
               key="add-vehicle-to-carrier"
               exact
-              path="/add-vehicle-to-carrier/:carrierId/:carrierType"
+              path="/add-vehicle-to-carrier/:companyId/:carrierId/:carrierType"
               component={AddVehicle}
             />
             <AppLayoutRoute
@@ -225,7 +225,7 @@ const App = () => {
             <AppLayoutRoute
               key="add-vehicle-to-driver"
               exact
-              path="/add-vehicle-to-driver/:vehicleId/:driverId"
+              path="/assign-vehicle-to-driver/:companyId/:vehicleId/:driverId"
               component={AddVehicle}
             />
 
@@ -240,9 +240,14 @@ const App = () => {
               path="/list-carrier-vehicles/:carrierId/:carrierType"
               component={ListVehicle}
             />
+              <AppLayoutRoute
+              exact
+              path="/list-company-vehicles/:companyId"
+              component={ListVehicle}
+            />
             <AppLayoutRoute
               exact
-              path="/edit-vehicle/:vehicleId"
+              path="/edit-vehicle-info/:vehicleId"
               component={AddVehicle}
             />
             <AppLayoutRoute
