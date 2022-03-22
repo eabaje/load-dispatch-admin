@@ -90,7 +90,8 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      enqueueSnackbar(err, { variant: "error" });
+      alert(err)
+    //  enqueueSnackbar(err, { variant: "error" });
     });
   }
 
@@ -101,10 +102,9 @@ function AddVehicle({ history, match }) {
     setUser(JSON.parse(localStorage.getItem("user")));
     
     if(driverdata.length===0){
-
+ 
       if (driverId) {
-        alert('hi from here')
-    
+     
       listDriversByCompany(companyId)(driverDispatch)((res)=>{
 
       })(err=>{
@@ -211,7 +211,7 @@ console.log('data', driverdata)
                             })}
                           >
                             <option selected>Select Driver</option>
-                            {driverdata?.data.map((item) => (
+                            {driverdata?.data?.map((item) => (
                               <option key={item.DriverId} value={item.DriverId}>
                                 {item.DriverName}
                               </option>
@@ -314,9 +314,7 @@ console.log('data', driverdata)
                         id="Description"
                         class="form-control"
                         placeholder="Description"
-                        {...register("Description", {
-                          required: true,
-                        })}
+                        {...register("Description")}
                       />
                     </div>
                   </div>

@@ -110,9 +110,7 @@ const NavBarDriver = () => {
                     >
                       List All Trips
                     </Link>
-                    <a href="/list-trip" label="Resources">
-                      List All Trips
-                    </a>
+                   
                   </li>
                   <li>
                     <Link to={"/add-trip"} title=" Create Trip Record">

@@ -160,14 +160,7 @@ const NavBarAdmin = () => {
                       List Drivers
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      to={"/add-driver-info"}
-                      title=" Create Driver Profile"
-                    >
-                      Create Driver Profile
-                    </Link>
-                  </li>
+                 
                 </ul>
               </li>
 
@@ -184,9 +177,7 @@ const NavBarAdmin = () => {
                     <Link to={"/list-trip"} title=" List All Trips">
                       List All Trips
                     </Link>
-                    <a href="/list-trip" label="Resources">
-                      List All Trips
-                    </a>
+                   
                   </li>
                   <li>
                     <Link to={"/add-trip"} title=" Create Trip Record">

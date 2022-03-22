@@ -134,14 +134,7 @@ const NavBarCarrier = () => {
                       Create Driver Profile
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      to={"/assign-vehicle-driver"}
-                      title=" Assign Vehicle To Driver"
-                    >
-                      Assign Vehicle To Driver
-                    </Link>
-                  </li>
+                 
                 </ul>
               </li>
 
@@ -157,9 +150,7 @@ const NavBarCarrier = () => {
                     <Link to={"/list-trip"} title=" List All Trips">
                       List All Trips
                     </Link>
-                    <a href="/list-trip" label="Resources">
-                      List All Trips
-                    </a>
+                  
                   </li>
                   <li>
                     <Link to={"/add-trip"} title=" Create Trip Record">

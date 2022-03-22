@@ -316,7 +316,7 @@ export const assignDriverToVehicle =
           type: CREATE_DRIVER_SUCCESS,
           payload: res.data,
         });
-
+        console.log("assignedResult",  res.data);
         onSuccess(res.data);
       })
       .catch((err) => {

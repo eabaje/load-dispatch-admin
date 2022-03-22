@@ -64,9 +64,7 @@ const NavBarAudit = () => {
                   <span className="pcoded-mtext">Ship Vehicles</span>
                 </a>
                 <ul className="pcoded-submenu">
-                  <li>
-                    <a href="/add-shipment">Post a Vehicle</a>
-                  </li>
+                  
                   <li>
                     <a href="/my-shipments">My Vehicles</a>
                   </li>
@@ -84,21 +82,13 @@ const NavBarAudit = () => {
                   <span className="pcoded-mtext">Carrier</span>
                 </a>
                 <ul className="pcoded-submenu">
-                  <li>
-                    <a href="/add-carrier" label="Resources">
-                      Create carrier Info
-                    </a>
-                  </li>
+                 
                   <li>
                     <a href="/list-carriers" label="Resources">
                       List carrier Info
                     </a>
                   </li>
-                  <li>
-                    <a href="/add-vehicle" label="Resources">
-                      Create Vehicle Info
-                    </a>
-                  </li>
+                
                   <li>
                     <a href="/list-vehicles" label="Resources">
                       Vehicle List
@@ -109,16 +99,8 @@ const NavBarAudit = () => {
                       View Requests
                     </a>
                   </li>
-                  <li>
-                    <a href="/list-vehicle" label="Resources">
-                      Connect to Shippers
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/add-company" label="Resources">
-                      Update Company record
-                    </a>
-                  </li>
+                 
+                 
                   <li>
                     <a href="/list-company" label="Resources">
                       View All Company record(s)
@@ -127,36 +109,7 @@ const NavBarAudit = () => {
                 </ul>
               </li>
 
-              <li className="nav-item pcoded-hasmenu">
-                <a href="#!" className="nav-link ">
-                  <span className="pcoded-micon">
-                    <i className="feather icon-aperture"></i>
-                  </span>
-                  <span className="pcoded-mtext">Driver Management</span>
-                </a>
-                <ul className="pcoded-submenu">
-                  <li>
-                    <a href="/list-drivers-info" label="Resources">
-                      List Drivers
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/add-driver-info" label="Resources">
-                      Create Driver Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/assign-vehicle-driver" label="Resources">
-                      Assign Vehicle To Driver
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/delete-driver" label="Resources">
-                      Delete Driver
-                    </a>
-                  </li>
-                </ul>
-              </li>
+             
 
               <li className="nav-item pcoded-hasmenu">
                 <a href="#!" className="nav-link ">
@@ -171,26 +124,9 @@ const NavBarAudit = () => {
                       List All Trips
                     </a>
                   </li>
-                  <li>
-                    <a href="/add-trip" label="Resources">
-                      Create Trip Record
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/search-trip" label="Resources">
-                      Search Trips
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/edit-trip" label="Resources">
-                      Edit Trip Record
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/delete-trip" label="Resources">
-                      Delete/Archive Trips
-                    </a>
-                  </li>
+                 
+                 
+                
                 </ul>
               </li>
 
@@ -207,11 +143,7 @@ const NavBarAudit = () => {
                       List All Subscription Types
                     </a>
                   </li>
-                  <li>
-                    <a href="/add-subscription" label="Resources">
-                      Create Subscription
-                    </a>
-                  </li>
+               
                   <li>
                     <a href="/list-user-subscription" label="Resources">
                       Search User Subscription

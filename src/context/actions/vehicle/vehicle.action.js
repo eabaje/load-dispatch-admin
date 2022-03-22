@@ -214,7 +214,7 @@ export const editVehicle =
         const message = err.response ? err.response.data : CONNECTION_ERROR;
 
         dispatch({ type: EDIT_VEHICLE_FAIL, payload: message });
-        onError();
+        onError(message);
       });
   };
 
