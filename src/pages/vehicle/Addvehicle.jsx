@@ -31,7 +31,6 @@ function AddVehicle({ history, match }) {
 
   // const onSubmit = (data) => console.log(data);
 
- 
   const {
     register,
     formState: { errors },
@@ -49,13 +48,13 @@ function AddVehicle({ history, match }) {
   const {
     driverDispatch,
     driverState: {
-      Drivers: { data:driverdata, error },
+      Drivers: { data: driverdata, error },
       createDriver: { data: assigndata, error: assignerror },
     },
   } = useContext(GlobalContext);
 
   function SubmitForm(formdata) {
-    console.log('formdata', formdata)
+    console.log("formdata", formdata);
     return isAddMode
       ? CreateVehicle(formdata)
       : driverId
@@ -90,8 +89,8 @@ function AddVehicle({ history, match }) {
         variant: "success",
       });
     })((err) => {
-      alert(err)
-    //  enqueueSnackbar(err, { variant: "error" });
+      alert(err);
+      //  enqueueSnackbar(err, { variant: "error" });
     });
   }
 
@@ -100,27 +99,19 @@ function AddVehicle({ history, match }) {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
-    
-    if(driverdata.length===0){
- 
+
+    if (driverdata.length === 0) {
       if (driverId) {
-     
-      listDriversByCompany(companyId)(driverDispatch)((res)=>{
-
-      })(err=>{
-        enqueueSnackbar(err, { variant: "error" });
-
-      });
-
+        listDriversByCompany(companyId)(driverDispatch)((res) => {})((err) => {
+          enqueueSnackbar(err, { variant: "error" });
+        });
       }
     }
     if (!isAddMode) {
-     
       fetchData(
         "vehicle/findOne",
         vehicleId
       )((res) => {
-       
         const fields = [
           "VehicleType",
           "VehicleId",
@@ -134,20 +125,19 @@ function AddVehicle({ history, match }) {
           "LicensePlate",
           "Insured",
           "VehicleModelYear",
+          "CompanyId",
+          "CarrierId",
           "PurchaseYear",
         ];
         fields.forEach((field) => setValue(field, res[field]));
-
-      
       })((err) => {
         enqueueSnackbar(err.message, {
           variant: "error",
         });
       });
-      
     }
   }, []);
-console.log('data', driverdata)
+  console.log("data", driverdata);
   return (
     <>
       <div class="row">
@@ -311,7 +301,6 @@ console.log('data', driverdata)
                     <div class="col-md-10">
                       <input
                         name="Description"
-                        id="Description"
                         class="form-control"
                         placeholder="Description"
                         {...register("Description")}
@@ -389,7 +378,6 @@ console.log('data', driverdata)
                     <div class="col-md-4">
                       <input
                         name="PurchaseYear"
-                       
                         class="form-control"
                         placeholder=" Enter Purchase year"
                         {...register("PurchaseYear")}
