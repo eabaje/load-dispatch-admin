@@ -135,6 +135,8 @@ function AddVehicle({ history, match }) {
           "Insured",
           "VehicleModelYear",
           "PurchaseYear",
+          "CompanyId",
+          "CarrierId",
         ];
         fields.forEach((field) => setValue(field, res[field]));
 
@@ -147,7 +149,7 @@ function AddVehicle({ history, match }) {
       
     }
   }, []);
-console.log('data', driverdata)
+//console.log('data', driverdata)
   return (
     <>
       <div class="row">

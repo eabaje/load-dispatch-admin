@@ -198,7 +198,7 @@ export const editVehicle =
       PicUrl: form.PicUrl || null,
       VehicleDocs: form.VehicleDocs || "",
     };
-
+console.log('form', form)
     dispatch({ type: EDIT_VEHICLE_REQUEST });
 
     axios
