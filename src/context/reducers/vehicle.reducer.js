@@ -34,18 +34,18 @@ const vehicles = (state, { type, payload }) => {
           error: null,
         },
 
-        Vehicles: {
-          ...state.Vehicles,
-          loading: false,
-          data: state.Vehicles.data.map((item) => {
-            if (item.VehicleId === payload.id) {
-              return payload;
-            } else {
-              return item;
-            }
-          }),
-          error: null,
-        },
+        // Vehicles: {
+        //   ...state.Vehicles,
+        //   loading: false,
+        //   data: state.Vehicles.data.map((item) => {
+        //     if (item.VehicleId === payload.id) {
+        //       return payload;
+        //     } else {
+        //       return item;
+        //     }
+        //   }),
+        //   error: null,
+        // },
       };
     }
 
