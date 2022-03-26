@@ -12,7 +12,8 @@ import "react-data-table-component-extensions/dist/index.css";
 import { columns } from "../../datasource/dataColumns/driver";
 import { ChevronsDown } from "react-feather";
 
-function ListDriver() {
+function ListDriver({ history, match }) {
+  const { companyId } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [user, setUser] = useState({});
@@ -23,7 +24,12 @@ function ListDriver() {
     //   .then((res) => res.json())
     //   .then((json) => setData(json));
     try {
-      const res = await axios.get(`${API_URL}driver/findAll`);
+     
+      const lnk= companyId ? `${API_URL}driver/findAllDriversByCompany/${companyId}`: `${API_URL}driver/findAll`;
+      
+      const res =  await axios.get(lnk);
+
+     
       if (res) {
         setData(res.data.data);
       }

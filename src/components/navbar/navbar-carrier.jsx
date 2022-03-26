@@ -122,7 +122,7 @@ const NavBarCarrier = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
-                    <Link to={"/list-drivers-info"} title=" List Drivers">
+                    <Link to={`/list-carrier-drivers-info/${user.CompanyId}`} title=" List Drivers">
                       List Drivers
                     </Link>
                   </li>

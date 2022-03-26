@@ -17,17 +17,17 @@ import {
 } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
 import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
-import $ from "jquery";
 import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomButton from "../../components/button/customButton";
 import { fetchData } from "../../helpers/query";
+import { IMG_URL } from "../../constants";
 
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
   const isAddMode = !driverId;
-
+  let imgPath='';
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [IsEdit, setEdit] = useState(false);
   const [country, setCountry] = useState("");
@@ -36,7 +36,7 @@ function AddDriver({ history, match }) {
   const [picFile, setpicFile] = useState(null);
   const [docFile, setdocFile] = useState(null);
   const [user, setUser] = useState({});
-  const [imgUrl, setImgUrl] = useState("");
+  const [url, setUrl] = useState(null);
   const [selPickUpRegion, setselpickUpRegion] = useState("");
   // const onSubmit = (data) => console.log(data);
 
@@ -89,7 +89,10 @@ function AddDriver({ history, match }) {
         "driver/findOne",
         driverId
       )((driver) => {
-        console.log(`driver`, driver);
+        console.log(`driver`, IMG_URL+driver["PicUrl"]);
+        setUrl(driver["PicUrl"])
+        imgPath=driver["PicUrl"]
+      //  alert(imgPath)
         const fields = [
           "DriverName",
           "Email",
@@ -104,7 +107,7 @@ function AddDriver({ history, match }) {
           "DriverDocs",
         ];
         fields.forEach((field) => setValue(field, driver[field]));
-        setImgUrl(driver["PicUrl"]);
+      //  setImgUrl(driver["PicUrl"]);
 
         setPickUpRegion(
           (pickUpRegion) =>
@@ -258,9 +261,9 @@ function AddDriver({ history, match }) {
                   <div class="form-group row">
                     <div class="col-md-12 ">
                       <ImageUpload
-                        url={imgUrl}
+                        url={url}
                         onChangePicHandler={onChangePicHandler}
-                      />
+                      />{url}
                     </div>
                   </div>
                   <div class="form-group row">
@@ -335,7 +338,7 @@ function AddDriver({ history, match }) {
                               wrapperClassName="datePicker"
                               className="form-control datepicker"
                               onChange={onChange}
-                              selected={value}
+                              selected={Date.parse(value)}
                               yearDropdownItemNumber={100}
                               // dateFormat="dd-MM-yyyy"
                               scrollableYearDropdown={true}

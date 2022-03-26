@@ -11,6 +11,7 @@ class ImageUpload extends React.Component {
     };
   }
 
+ 
   _handleSubmit(e) {
     e.preventDefault();
     // TODO: do something with -> this.state.file
@@ -36,13 +37,13 @@ class ImageUpload extends React.Component {
   render() {
     let { imagePreviewUrl } = this.state;
     const { imgUrl } = this.state;
-
+    alert(imgUrl)
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = <img src={imagePreviewUrl} />;
+      $imagePreview = (<img src={imagePreviewUrl} />);
     } else {
       if (imgUrl) {
-        $imagePreview = <img src={IMG_URL + imgUrl} />;
+        $imagePreview =  (<img src={IMG_URL + imgUrl} />);
       } else {
         $imagePreview = (
           <div className="previewText">Please select an Image for Preview</div>

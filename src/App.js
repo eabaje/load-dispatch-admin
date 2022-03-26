@@ -265,7 +265,11 @@ const App = () => {
               path="/list-drivers-info"
               component={ListDriver}
             />
-
+          <AppLayoutRoute
+              exact
+              path="/list-carrier-drivers-info/:companyId"
+              component={ListDriver}
+            />
             <AppLayoutRoute exact path="/add-trip" component={AddTrip} />
             <AppLayoutRoute exact path="/edit-trip" component={EditTrip} />
             <AppLayoutRoute exact path="/list-trip" component={ListTrip} />
