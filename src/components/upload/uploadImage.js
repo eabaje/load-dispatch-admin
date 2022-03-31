@@ -1,71 +1,79 @@
-import React from "react";
+
+import React, { useState, useCallback, useEffect, Component } from "react";
+import { getDriverImg, getFiles, uploadMedia } from "../../helpers/uploadImage";
 import { IMG_URL } from "../../constants";
-//import ReactDOM from "react-dom";
-class ImageUpload extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: "",
-      imagePreviewUrl: "",
-      imgUrl: props.url ? props.url : "",
-    };
-  }
 
- 
-  _handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-    console.log("handle uploading-", this.state.file);
-  }
+export default function ImageUpload(props) {
+  const [width, setWidth] = useState(-1);
+  const [currentFile, setCurrentFile] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState("");
+  const [imageInfo, setImageInfo] = useState({});
+  const [imageGallery, setImageGallery] = useState([
+    {
+      src: null,
+    },
+  ]);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
-  _handleImageChange(e) {
-    e.preventDefault();
+  const measureRef = React.useRef();
 
-    let reader = new FileReader();
-    let file = e.target.files[0];
+  const selectFile = async (e) => {
+    setPreviewImage("");
+    setImageInfo(null);
+    setCurrentFile(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
+    setProgress(0);
+    setMessage("");
+  };
 
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result,
-      });
-    };
-    this.props.onChangePicHandler(e);
-    reader.readAsDataURL(file);
-  }
+  
 
-  render() {
-    let { imagePreviewUrl } = this.state;
-    const { imgUrl } = this.state;
-    alert(imgUrl)
-    let $imagePreview = null;
-    if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
-    } else {
-      if (imgUrl) {
-        $imagePreview =  (<img src={IMG_URL + imgUrl} />);
-      } else {
-        $imagePreview = (
-          <div className="previewText">Please select an Image for Preview</div>
-        );
-      }
-    }
+  useEffect(() => {
+    //  alert(props.refId);
+    getDriverImg(props.refId).then((files) => {
+      const photos = files.data.data;
+      
+      //  alert(newMarkers);
+      setImageInfo(files.data.data);
+    
+      //  alert(imageGallery);
+        console.log("imageInfos", imageInfo);
+    });
+  }, []);
 
-    return (
-      <div className="previewComponent" style={{ float: "right" }}>
-        <div className="imgPreview">{$imagePreview}</div>
+  
+
+  return (
+    <>
+        <div className="previewComponent" style={{ float: "right" }}>
+          {previewImage && (
+              <div>
+                <img className="preview" src={previewImage} alt="" />
+              </div>
+            )}
+          {imageInfo && (
+              <div>
+                <img className="preview" src={IMG_URL+ imageInfo.PicUrl} alt="" />
+              </div>
+            )}
+
+        {/* <div className="imgPreview">{$imagePreview}</div> */}
         <input
           className="form-control-file"
           type="file"
           id="filePicUrl"
           name="filePicUrl"
-          onChange={(e) => this._handleImageChange(e)}
+          onChange={selectFile}
         />
       </div>
-    );
-  }
+    </>
+  );
 }
 
-export default ImageUpload;
-//ReactDOM.render(<ImageUpload />, document.getElementById("mainApp"));
-//module.exports = ImageUpload;
+
+
+
+

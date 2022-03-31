@@ -40,6 +40,7 @@ import UserProfile from "./pages/user/UserProfile";
 import AssignDriverVehicle from "./pages/vehicle/AssignDriverVehicle";
 import ListPayment from "./pages/payment/Listpayment";
 import AddUserRole from "./pages/user/AddUserRole";
+import ListProfileDriver from "./pages/driver/ListProfileDriver";
 
 const App = () => {
   const {
@@ -269,6 +270,12 @@ const App = () => {
               exact
               path="/list-carrier-drivers-info/:companyId"
               component={ListDriver}
+            />
+
+              <AppLayoutRoute
+              exact
+              path="/list-drivers-profile"
+              component={ListProfileDriver}
             />
             <AppLayoutRoute exact path="/add-trip" component={AddTrip} />
             <AppLayoutRoute exact path="/edit-trip" component={EditTrip} />

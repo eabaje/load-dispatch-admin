@@ -96,7 +96,7 @@ const NavBarShipper = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
-                    <Link to={"/list-drivers-summary"} title="List Drivers">
+                    <Link to={"/list-drivers-profile"} title="List Drivers">
                       List Drivers
                     </Link>
                   </li>

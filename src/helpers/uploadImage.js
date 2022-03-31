@@ -52,3 +52,7 @@ export const uploadMedia = (file, referenceId, onUploadProgress) => {
 export const getFiles = (referenceId) => {
   return axios.get(`/upload/getFiles/${referenceId}`);
 };
+
+export const getDriverImg = (driverId) => {
+  return axios.get(`/driver/findOne/${driverId}`);
+};
