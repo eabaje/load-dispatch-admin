@@ -25210,3 +25210,13 @@ background-size: cover;
     font-weight: 600;
     margin: 0;
   }
+
+  #product-catalog {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.product-title {
+    font-size: 2em;
+}
