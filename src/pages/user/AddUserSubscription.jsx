@@ -73,9 +73,15 @@ function AddUserSubscription({ history, match }) {
   } = useContext(GlobalContext);
 
   const onChangeSubcriptionHandler = async (e) => {
+    // alert(parseInt(e.target.value));
+    if (!isNaN(parseInt(e.target.value))) {
+      return false;
+    }
+
     if (parseInt(e.target.value) === subscribeUser.SubscribeId) {
       setsubscriptionChange(false);
-      setAmt(0.0);
+      // setAmt(0.0);
+      getSubscriptionAmt(e.target.value);
       subscriptionChange === true || subscriptionChange(false);
     } else {
       subscriptionChange === false || setsubscriptionChange(true);
@@ -219,6 +225,7 @@ function AddUserSubscription({ history, match }) {
           "EndDate",
         ];
         fields.forEach((field) => setValue(field, userSubscription[field]));
+        getSubscriptionAmt(userSubscription.SubscribeId);
       })((error) => {
         enqueueSnackbar(error.message, {
           variant: "error",
