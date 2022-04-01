@@ -87,20 +87,16 @@ const NavBarShipper = () => {
                 </ul>
               </li>
 
-              <li className="nav-item pcoded-hasmenu">
+              <li className="nav-item pcoded">
                 <a href="#!" className="nav-link ">
                   <span className="pcoded-micon">
                     <i className="first fas fa-users"></i>
                   </span>
-                  <span className="pcoded-mtext">Connect with Drivers</span>
+                  <span className="pcoded-mtext"><Link to={"/list-drivers-profile"} title="List Drivers">
+                  Connect with Drivers
+                    </Link></span>
                 </a>
-                <ul className="pcoded-submenu">
-                  <li>
-                    <Link to={"/list-drivers-profile"} title="List Drivers">
-                      List Drivers
-                    </Link>
-                  </li>
-                </ul>
+               
               </li>
             </ul>
           </div>

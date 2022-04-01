@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-grid";
 import { useSnackbar } from "notistack";
 import { API_URL } from "../../constants";
 import { fetchDataAll } from "../../helpers/query";
+import DriverCard from "../../components/grid/driverCard";
 function ListProfileDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -24,15 +25,23 @@ function ListProfileDriver() {
   return (
     <>
       {data.length > 0 ? (
+         <div class="container mt-5">
+         <div class="row d-flex justify-content-center">
+             <div class="col-md-12">
         <Container fluid className="grid">
           <Row>
-            {data.map((f, index) => (
-              <Col className="col-lg-4 ml-5">
-                <driverCard d={f[index]} />
+         
+            {data.map((item) => (
+              
+              <Col className="col-lg-6 ">
+                <DriverCard key={item.DriverId} driver={item} />
               </Col>
             ))}
           </Row>
         </Container>
+        </div>
+     </div>
+ </div>
       ) : (
         <h4 class="alert alert-info">No driver record found</h4>
       )}

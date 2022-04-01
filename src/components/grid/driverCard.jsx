@@ -1,50 +1,60 @@
 import { Country,State } from 'country-state-city'
 import React from 'react'
+import { IMG_URL } from '../../constants';
 
-function driverCard(props) {
-
+function DriverCard(props) {
+    const { driver } = props;
     const calculate_age = dob => {
-        const birthDate = new Date(dob); 
-        const difference = Date.now() - birthDate.getTime();
-        const age = new Date(difference);
-      
-        return Math.abs(age.getUTCFullYear() - 1970);
+        const today = new Date();
+        const birthDate = new Date(dob);
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
       }
+
+      function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
   return (
     <>
    
-    <div class="container mt-5">
-     <div class="row d-flex justify-content-center">
-         <div class="col-md-7">
-             <div class="card p-3 py-4">
-                 <div class="text-center"> <img src={props.PicUrl} width="100" class="rounded-circle"/> </div>
-                 <div class="text-center mt-3"> <span class="bg-secondary p-1 px-4 rounded text-white">{props.DriverName}</span>
-                     <h5 class="mt-2 mb-0">{props.DriverName}</h5> <span>Date of Birth:{props.DOB}</span>
+   
+             <div class="card p-3 py-6">
+                 <div class="text-center"> <img src={IMG_URL+driver?.PicUrl} width="100" class="rounded-circle"/> </div>
+                 <div class="text-center mt-3"> <span class="bg-secondary p-1 px-4 rounded text-white">{driver?.DriverName}</span>
+                     <h6 class="mt-2 mb-0">{driver.Company?.CompanyName}</h6> <span>{driver?.Phone}</span>
                      
                      
                     
                      <div class="row about-list">
                                 <div class="col-md-6">
+                                   
                                     <div class="media">
-                                        <label>Birthday</label>
-                                        <p>{props.DOB}</p>
-                                    </div>
-                                    <div class="media">
-                                        <label>Age</label>
-                                        <p>{calculate_age(props.DOB)} Yr</p>
+                                        <label>Age(yrs)</label>
+                                        <p>{ getAge(driver?.DOB)}</p>
                                     </div>
                                     <div class="media">
                                         <label>City</label>
-                                        <p>{ props.City}</p>
+                                        <p>{ driver?.City}</p>
                                     </div>
                                     <div class="media">
                                         <label>Country</label>
-                                        <p>{ Country.getCountryByCode(props.Country).name}</p>
+                                        <p> { driver?.Country ? Country.getCountryByCode(driver?.Country).name : driver?.Country}</p>
                                     </div>
                                 </div>
                         </div>
                      <div class="px-4 mt-1">
-                         <p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                         <p class="fonts"> </p>
                      </div>
                      
                      <ul class="social-list">
@@ -57,13 +67,11 @@ function driverCard(props) {
                      <div class="buttons"> <button class="btn btn-outline-primary px-4">Message</button> <button class="btn btn-primary px-4 ms-3">Contact</button> </div>
                  </div>
              </div>
-         </div>
-     </div>
- </div>
+        
     
     
     </>
   )
 }
 
-export default driverCard
+export default DriverCard
