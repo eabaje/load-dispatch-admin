@@ -256,7 +256,7 @@ function AddDriver({ history, match }) {
                   />
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload refId={driverId} />
+                      <ImageUpload refId={driverId} onChangePicHandler={onChangePicHandler}/>
                     </div>
                   </div>
                   <div class="form-group row">
