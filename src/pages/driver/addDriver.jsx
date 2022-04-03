@@ -27,7 +27,7 @@ import { IMG_URL } from "../../constants";
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
   const isAddMode = !driverId;
-  let imgPath='';
+  let imgPath = "";
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [IsEdit, setEdit] = useState(false);
   const [country, setCountry] = useState("");
@@ -76,10 +76,6 @@ function AddDriver({ history, match }) {
     },
   } = useContext(GlobalContext);
 
-  const getDriverById = (id) => {
-    return listDriversById(id)(driverDispatch);
-  };
-
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
     setUser(JSON.parse(localStorage.getItem("user")));
@@ -89,10 +85,10 @@ function AddDriver({ history, match }) {
         "driver/findOne",
         driverId
       )((driver) => {
-        console.log(`driver`, IMG_URL+driver["PicUrl"]);
-        setUrl(driver["PicUrl"])
-        imgPath=driver["PicUrl"]
-      //  alert(imgPath)
+        console.log(`driver`, IMG_URL + driver["PicUrl"]);
+        setUrl(driver["PicUrl"]);
+        imgPath = driver["PicUrl"];
+        //  alert(imgPath)
         const fields = [
           "DriverName",
           "Email",
@@ -107,7 +103,7 @@ function AddDriver({ history, match }) {
           "DriverDocs",
         ];
         fields.forEach((field) => setValue(field, driver[field]));
-      //  setImgUrl(driver["PicUrl"]);
+        //  setImgUrl(driver["PicUrl"]);
 
         setPickUpRegion(
           (pickUpRegion) =>
@@ -159,11 +155,11 @@ function AddDriver({ history, match }) {
           }
         );
       }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
     });
-
-    if (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
-    }
   };
 
   const UpdateDriver = (data) => {
@@ -192,11 +188,11 @@ function AddDriver({ history, match }) {
           variant: "success",
         });
       }
+    })((error) => {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
     });
-
-    if (error) {
-      enqueueSnackbar(error, { variant: "error" });
-    }
   };
 
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
@@ -260,10 +256,7 @@ function AddDriver({ history, match }) {
                   />
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload
-                        refId={driverId}
-                       
-                      />
+                      <ImageUpload refId={driverId} />
                     </div>
                   </div>
                   <div class="form-group row">

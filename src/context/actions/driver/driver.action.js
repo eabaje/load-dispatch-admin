@@ -30,29 +30,27 @@ export const listDrivers = () => async (dispatch) => {
     dispatch({ type: GET_DRIVERS_FAIL, payload: message });
   }
 };
-export const listDriversByCompany =  (companyId) => (dispatch) =>(onSuccess)=>(onError) => {
-  dispatch({
-    type: GET_DRIVERS_REQUEST,
-  });
-  axios
-  .get(`/driver/findAllDriversByCompany/${companyId}`)
-  .then((res) => {
-    dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-    console.log('from', res.data)
-      onSuccess(res.data);
-  })
-  .catch((err) => {
-    const message=err.response ? err.response.data : CONNECTION_ERROR
+export const listDriversByCompany =
+  (companyId) => (dispatch) => (onSuccess) => (onError) => {
     dispatch({
-      type: GET_DRIVERS_FAIL,
-      payload: message,
+      type: GET_DRIVERS_REQUEST,
     });
-     onError( message);
-  });
-  
-};
-
-
+    axios
+      .get(`/driver/findAllDriversByCompany/${companyId}`)
+      .then((res) => {
+        dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
+        console.log("from", res.data);
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+        dispatch({
+          type: GET_DRIVERS_FAIL,
+          payload: message,
+        });
+        onError(message);
+      });
+  };
 
 export const listDriversById =
   (driverId) => (dispatch) => (onSuccess) => (onError) => {
@@ -158,13 +156,11 @@ export const createDriver1 = (form) => async (dispatch) => {
   } catch (err) {
     const message = err.response ? err.response.data : CONNECTION_ERROR;
     dispatch({ type: CREATE_DRIVER_FAIL, payload: message });
-
-  
   }
 };
 
 export const createDriver =
-  (form, file1, file2) => (dispatch) => (onSuccess) => (onError) =>{
+  (form, file1, file2) => (dispatch) => (onSuccess) => (onError) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -199,8 +195,7 @@ export const createDriver =
     data.append("Licensed", form.Licensed);
     // data.append("Country", form.Country);
     // data.append("Country", file2.Country);
-
-    console.log(`upload`, file1);
+    console.log(`form-action`, data);
     dispatch({
       type: CREATE_DRIVER_REQUEST,
     });
@@ -222,14 +217,15 @@ export const createDriver =
           payload: message,
         });
 
-        onError( message);
+        onError(message);
       });
   };
 
 export const editDriver =
   (form, file1 = null, file2 = null) =>
   (dispatch) =>
-  (onSuccess) => (onError) => {
+  (onSuccess) =>
+  (onError) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -283,12 +279,12 @@ export const editDriver =
           type: CREATE_DRIVER_FAIL,
           payload: message,
         });
-        onError( message);
+        onError(message);
       });
   };
 
 export const assignDriverToVehicle =
-  (form, id) => (dispatch) => (onSuccess) => (onError) =>{
+  (form, id) => (dispatch) => (onSuccess) => (onError) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -316,7 +312,7 @@ export const assignDriverToVehicle =
           type: CREATE_DRIVER_SUCCESS,
           payload: res.data,
         });
-        console.log("assignedResult",  res.data);
+        console.log("assignedResult", res.data);
         onSuccess(res.data);
       })
       .catch((err) => {
@@ -326,7 +322,7 @@ export const assignDriverToVehicle =
           type: CREATE_DRIVER_FAIL,
           payload: message,
         });
-        onError( message);
+        onError(message);
       });
   };
 
