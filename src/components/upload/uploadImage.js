@@ -1,9 +1,9 @@
-
 import React, { useState, useCallback, useEffect, Component } from "react";
 import { getDriverImg, getFiles, uploadMedia } from "../../helpers/uploadImage";
 import { IMG_URL } from "../../constants";
 
 export default function ImageUpload(props) {
+  const { refId, onChangePicHandler } = props;
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");
   const [previewImage, setPreviewImage] = useState("");
@@ -20,7 +20,7 @@ export default function ImageUpload(props) {
 
   const measureRef = React.useRef();
 
-  const selectFile = async (e) => {
+  const _selectFile = async (e) => {
     setPreviewImage("");
     setImageInfo(null);
     setCurrentFile(e.target.files[0]);
@@ -29,36 +29,32 @@ export default function ImageUpload(props) {
     setMessage("");
   };
 
-  
-
   useEffect(() => {
     //  alert(props.refId);
-    getDriverImg(props.refId).then((files) => {
+    getDriverImg(refId).then((files) => {
       const photos = files.data.data;
-      
+
       //  alert(newMarkers);
       setImageInfo(files.data.data);
-    
+
       //  alert(imageGallery);
-        console.log("imageInfos", imageInfo);
+      console.log("imageInfos", imageInfo);
     });
   }, []);
 
-  
-
   return (
     <>
-        <div className="previewComponent" style={{ float: "right" }}>
-          {previewImage && (
-              <div>
-                <img className="preview" src={previewImage} alt="" />
-              </div>
-            )}
-          {imageInfo && (
-              <div>
-                <img className="preview" src={IMG_URL+ imageInfo.PicUrl} alt="" />
-              </div>
-            )}
+      <div className="previewComponent" style={{ float: "right" }}>
+        {previewImage && (
+          <div>
+            <img className="preview" src={previewImage} alt="" />
+          </div>
+        )}
+        {imageInfo && (
+          <div>
+            <img className="preview" src={IMG_URL + imageInfo.PicUrl} alt="" />
+          </div>
+        )}
 
         {/* <div className="imgPreview">{$imagePreview}</div> */}
         <input
@@ -66,14 +62,12 @@ export default function ImageUpload(props) {
           type="file"
           id="filePicUrl"
           name="filePicUrl"
-          onChange={selectFile}
+          onChange={(e) => {
+            _selectFile(e);
+            onChangePicHandler(e);
+          }}
         />
       </div>
     </>
   );
 }
-
-
-
-
-

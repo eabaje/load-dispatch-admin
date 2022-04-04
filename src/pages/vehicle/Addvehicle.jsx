@@ -19,6 +19,7 @@ import {
   assignDriverToVehicle,
   listDriversByCompany,
 } from "../../context/actions/driver/driver.action";
+import UploadImages from "../../components/upload/image-upload";
 
 function AddVehicle({ history, match }) {
   const { vehicleId } = match.params;
@@ -27,6 +28,8 @@ function AddVehicle({ history, match }) {
   const { carrierType } = match.params;
   const { driverId } = match.params;
   const isAddMode = !vehicleId;
+  const [formStep, setFormStep] = useState(0);
+  const [refId, setRefId] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   // const onSubmit = (data) => console.log(data);
@@ -68,6 +71,9 @@ function AddVehicle({ history, match }) {
       enqueueSnackbar(res.message, {
         variant: "success",
       });
+      setRefId(res.data.VehicleId);
+      setFormStep(1);
+      //Route to Upload Pictures for vehicle
     })((err) => {
       enqueueSnackbar(err, { variant: "error" });
     });
@@ -130,6 +136,7 @@ function AddVehicle({ history, match }) {
           "CarrierId",
         ];
         fields.forEach((field) => setValue(field, res[field]));
+        setRefId(vehicleId);
       })((err) => {
         enqueueSnackbar(err.message, {
           variant: "error",
@@ -137,7 +144,7 @@ function AddVehicle({ history, match }) {
       });
     }
   }, []);
-//console.log('data', driverdata)
+  //console.log('data', driverdata)
   return (
     <>
       <div class="row">
@@ -148,300 +155,341 @@ function AddVehicle({ history, match }) {
             </div>
             <div class="card-body">
               <div class="col-md-12 ">
-                <form onSubmit={handleSubmit(SubmitForm)}>
-                  <input
-                    type="hidden"
-                    name="UserId"
-                    value={user.UserId}
-                    class="form-control"
-                    {...register("UserId")}
-                  />
-                  <input
-                    type="hidden"
-                    name="CompanyId"
-                    value={companyId}
-                    class="form-control"
-                    {...register("CompanyId")}
-                  />
-                  <input
-                    type="hidden"
-                    name="CarrierId"
-                    value={carrierId}
-                    class="form-control"
-                    {...register("CarrierId")}
-                  />
-                  {vehicleId && (
+                {formStep === 0 && (
+                  <form onSubmit={handleSubmit(SubmitForm)}>
                     <input
                       type="hidden"
-                      name="VehicleId"
-                      value={vehicleId}
+                      name="UserId"
+                      value={user.UserId}
                       class="form-control"
-                      {...register("VehicleId")}
+                      {...register("UserId")}
                     />
-                  )}
-                  {driverId && (
-                    <>
-                      <div class="form-group row">
-                        <div class="col-md-12">
-                          <h5 class="alert alert-info">
-                            Assign Vehicle to Driver{" "}
-                          </h5>
+                    <input
+                      type="hidden"
+                      name="CompanyId"
+                      value={companyId}
+                      class="form-control"
+                      {...register("CompanyId")}
+                    />
+                    <input
+                      type="hidden"
+                      name="CarrierId"
+                      value={carrierId}
+                      class="form-control"
+                      {...register("CarrierId")}
+                    />
+                    {vehicleId && (
+                      <input
+                        type="hidden"
+                        name="VehicleId"
+                        value={vehicleId}
+                        class="form-control"
+                        {...register("VehicleId")}
+                      />
+                    )}
+                    {driverId && (
+                      <>
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                            <h5 class="alert alert-info">
+                              Assign Vehicle to Driver{" "}
+                            </h5>
+                          </div>
                         </div>
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">
+                            Driver To Assign
+                          </label>
+                          <div class="col-md-4">
+                            <select
+                              id="DriverId"
+                              class="form-control"
+                              {...register("DriverId", {
+                                required: true,
+                              })}
+                            >
+                              <option selected>Select Driver</option>
+                              {driverdata?.data?.map((item) => (
+                                <option
+                                  key={item.DriverId}
+                                  value={item.DriverId}
+                                >
+                                  {item.DriverName}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <label class="col-sm-2 col-form-label">
+                            Vehicle License Number(VIN)
+                          </label>
+                          <div class="col-sm-4">
+                            <input
+                              name="VehicleNumber"
+                              id="VehicleNumber"
+                              class="form-control"
+                              placeholder="Vehicle Number"
+                              {...register("VehicleNumber", {
+                                required: true,
+                              })}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <h5 class="alert alert-info"> Vehicle Info </h5>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">
-                          Driver To Assign
-                        </label>
-                        <div class="col-md-4">
-                          <select
-                            id="DriverId"
-                            class="form-control"
-                            {...register("DriverId", {
-                              required: true,
-                            })}
-                          >
-                            <option selected>Select Driver</option>
-                            {driverdata?.data?.map((item) => (
-                              <option key={item.DriverId} value={item.DriverId}>
-                                {item.DriverName}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <label class="col-sm-2 col-form-label">
-                          Vehicle License Number(VIN)
-                        </label>
-                        <div class="col-sm-4">
-                          <input
-                            name="VehicleNumber"
-                            id="VehicleNumber"
-                            class="form-control"
-                            placeholder="Vehicle Number"
-                            {...register("VehicleNumber", {
-                              required: true,
-                            })}
-                          />
-                        </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">
+                        Vehicle Type
+                      </label>
+                      <div class="col-md-4">
+                        <select
+                          id="VehicleType"
+                          class="form-control"
+                          {...register("VehicleType", {
+                            required: true,
+                          })}
+                        >
+                          <option selected>Select Vehicle Type</option>
+                          {LOAD_TYPE.map((item) => (
+                            <option
+                              key={item.value}
+                              selected={carrierType === item.value}
+                              value={item.value}
+                            >
+                              {item.text}
+                            </option>
+                          ))}
+                        </select>
                       </div>
-                    </>
-                  )}
 
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info"> Vehicle Info </h5>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Vehicle Type</label>
-                    <div class="col-md-4">
-                      <select
-                        id="VehicleType"
-                        class="form-control"
-                        {...register("VehicleType", {
-                          required: true,
-                        })}
-                      >
-                        <option selected>Select Vehicle Type</option>
-                        {LOAD_TYPE.map((item) => (
-                          <option
-                            key={item.value}
-                            selected={carrierType === item.value}
-                            value={item.value}
-                          >
-                            {item.text}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <label class="col-sm-2 col-form-label">
-                      Vehicle License Number(VIN)
-                    </label>
-                    <div class="col-sm-4">
-                      <input
-                        name="VehicleNumber"
-                        class="form-control"
-                        placeholder="Vehicle Number"
-                        {...register("VehicleNumber", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Serial Number</label>
-
-                    <div class="col-sm-4">
-                      <input
-                        name="SerialNumber"
-                        class="form-control"
-                        placeholder="Serial Number"
-                        {...register("SerialNumber", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                    <label class="col-sm-2 col-form-label">Vehicle Make</label>
-                    <div class="col-sm-4">
-                      <input
-                        name="VehicleMake"
-                        class="form-control"
-                        placeholder="Vehicle Make"
-                        {...register("VehicleMake", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Description</label>
-                    <div class="col-md-10">
-                      <input
-                        name="Description"
-                        class="form-control"
-                        placeholder="Description"
-                        {...register("Description")}
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info"> Vehicle Information </h5>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Vehicle Color</label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="VehicleColor"
-                        class="form-control"
-                        placeholder="Vehicle Color"
-                        {...register("VehicleColor", {
-                          required: true,
-                        })}
-                        required
-                      />
-                    </div>
-                    <label class="col-form-label col-md-2">Vehicle Model</label>
-                    <div class="col-md-4">
-                      <input
-                        name="VehicleModel"
-                        class="form-control"
-                        placeholder="Vehicle Model"
-                        {...register("VehicleModel", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">
-                      Vehicle License Plate
-                    </label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="LicensePlate"
-                        class="form-control"
-                        placeholder="License Plate"
-                        {...register("LicensePlate", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-
-                    <label class="col-form-label col-md-2">
-                      Vehicle Model Year
-                    </label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="VehicleModelYear"
-                        placeholder="Vehicle Model Year"
-                        class="form-control"
-                        {...register("VehicleModelYear", {
-                          required: true,
-                        })}
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-form-label col-md-2">Purchase Year</label>
-
-                    <div class="col-md-4">
-                      <input
-                        name="PurchaseYear"
-                        class="form-control"
-                        placeholder=" Enter Purchase year"
-                        {...register("PurchaseYear")}
-                      />
-                    </div>
-
-                    <label class="col-sm-2 col-form-label">Insured?</label>
-                    <div class="col-sm-4">
-                      <div class="form-check">
+                      <label class="col-sm-2 col-form-label">
+                        Vehicle License Number(VIN)
+                      </label>
+                      <div class="col-sm-4">
                         <input
-                          type="checkbox"
-                          name="Insured"
-                          class="form-check-input-custom-2"
-                          {...register("Insured", {
+                          name="VehicleNumber"
+                          class="form-control"
+                          placeholder="Vehicle Number"
+                          {...register("VehicleNumber", {
                             required: true,
                           })}
                         />
                       </div>
                     </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info"></h5>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col-sm-10 ">
-                      <div class="form-check">
+
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">
+                        Serial Number
+                      </label>
+
+                      <div class="col-sm-4">
                         <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="IsValid"
-                          value=""
-                          id="invalidCheck"
+                          name="SerialNumber"
+                          class="form-control"
+                          placeholder="Serial Number"
+                          {...register("SerialNumber", {
+                            required: true,
+                          })}
+                        />
+                      </div>
+                      <label class="col-sm-2 col-form-label">
+                        Vehicle Make
+                      </label>
+                      <div class="col-sm-4">
+                        <input
+                          name="VehicleMake"
+                          class="form-control"
+                          placeholder="Vehicle Make"
+                          {...register("VehicleMake", {
+                            required: true,
+                          })}
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-form-label col-md-2">Description</label>
+                      <div class="col-md-10">
+                        <input
+                          name="Description"
+                          class="form-control"
+                          placeholder="Description"
+                          {...register("Description")}
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <h5 class="alert alert-info"> Vehicle Information </h5>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-form-label col-md-2">
+                        Vehicle Color
+                      </label>
+
+                      <div class="col-md-4">
+                        <input
+                          name="VehicleColor"
+                          class="form-control"
+                          placeholder="Vehicle Color"
+                          {...register("VehicleColor", {
+                            required: true,
+                          })}
                           required
                         />
-                        <label class="form-check-label" for="invalidCheck">
-                          I confirm all information entered are accurate
-                        </label>
-                        <div class="invalid-feedback">
-                          You must agree before submitting.
+                      </div>
+                      <label class="col-form-label col-md-2">
+                        Vehicle Model
+                      </label>
+                      <div class="col-md-4">
+                        <input
+                          name="VehicleModel"
+                          class="form-control"
+                          placeholder="Vehicle Model"
+                          {...register("VehicleModel", {
+                            required: true,
+                          })}
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-form-label col-md-2">
+                        Vehicle License Plate
+                      </label>
+
+                      <div class="col-md-4">
+                        <input
+                          name="LicensePlate"
+                          class="form-control"
+                          placeholder="License Plate"
+                          {...register("LicensePlate", {
+                            required: true,
+                          })}
+                        />
+                      </div>
+
+                      <label class="col-form-label col-md-2">
+                        Vehicle Model Year
+                      </label>
+
+                      <div class="col-md-4">
+                        <input
+                          name="VehicleModelYear"
+                          placeholder="Vehicle Model Year"
+                          class="form-control"
+                          {...register("VehicleModelYear", {
+                            required: true,
+                          })}
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-form-label col-md-2">
+                        Purchase Year
+                      </label>
+
+                      <div class="col-md-4">
+                        <input
+                          name="PurchaseYear"
+                          class="form-control"
+                          placeholder=" Enter Purchase year"
+                          {...register("PurchaseYear")}
+                        />
+                      </div>
+
+                      <label class="col-sm-2 col-form-label">Insured?</label>
+                      <div class="col-sm-4">
+                        <div class="form-check">
+                          <input
+                            type="checkbox"
+                            name="Insured"
+                            class="form-check-input-custom-2"
+                            {...register("Insured", {
+                              required: true,
+                            })}
+                          />
                         </div>
                       </div>
                     </div>
-                    <div class="right" style={{ float: "right" }}>
-                      <button
-                        type="submit"
-                        class="btn  btn-primary"
-                        style={{ float: "right" }}
-                      >
-                        {loading ? (
-                          <i className="fa fa-spinner fa-spin"></i>
-                        ) : (
-                          <i class="feather mr-2 icon-check-circle"></i>
-                        )}{" "}
-                        {isAddMode
-                          ? "Submit"
-                          : driverId
-                          ? "Assign Driver"
-                          : "Update"}
-                      </button>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <h5 class="alert alert-info"></h5>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                    <div class="form-row">
+                      <div class="col-sm-10 ">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="IsValid"
+                            value=""
+                            id="invalidCheck"
+                            required
+                          />
+                          <label class="form-check-label" for="invalidCheck">
+                            I confirm all information entered are accurate
+                          </label>
+                          <div class="invalid-feedback">
+                            You must agree before submitting.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6 "></div>
+                      <div class="col-md-4 ">
+                        <span>
+                          {!isAddMode && formStep === 0 && (
+                            <button
+                              type="button"
+                              class="btn  btn-primary"
+                              onClick={() => setFormStep(1)}
+                              style={{ right: "150px" }}
+                            >
+                              <i class="feather mr-2 icon-check-circle"></i>{" "}
+                              {"Upload Picture "}
+                            </button>
+                          )}
+                        </span>
+                        <span>
+                          <button
+                            type="submit"
+                            class="btn  btn-primary"
+                            style={{ float: "right" }}
+                          >
+                            {loading ? (
+                              <i className="fa fa-spinner fa-spin"></i>
+                            ) : (
+                              <i class="feather mr-2 icon-check-circle"></i>
+                            )}{" "}
+                            {isAddMode
+                              ? "Submit"
+                              : driverId
+                              ? "Assign Driver"
+                              : "Update"}
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </form>
+                )}
+                {formStep === 1 && (
+                  <UploadImages
+                    title={`Upload Vehicle pictures`}
+                    refId={vehicleId}
+                  />
+                )}
               </div>
             </div>
           </div>
