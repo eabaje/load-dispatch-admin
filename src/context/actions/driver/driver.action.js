@@ -182,7 +182,7 @@ export const createDriver =
 
     const data = new FormData();
     data.append("filePicUrl", file1);
-    // data.append("fileLicenseUrl", file2);
+    data.append("fileLicenseUrl", file2);
     data.append("CompanyId", form.CompanyId);
     data.append("DriverName", form.DriverName);
     data.append("Email", form.Email);
