@@ -11,9 +11,7 @@ import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 import {
   createDriver,
-  editDriver,
-  listDriversByDriverName,
-  listDriversById,
+  editDriver
 } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
 import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
@@ -61,6 +59,51 @@ function AddDriver({ history, match }) {
 
   console.log(`docFile`, docFile);
 
+ 
+
+  useEffect(() => {
+    setCountries((countries) => (countries = Country.getAllCountries()));
+    setUser(JSON.parse(localStorage.getItem("user")));
+    // if (!isAddMode) {
+    //   fetchData(
+    //     "driver/findOne",
+    //     driverId
+    //   )((driver) => {
+    //     console.log(`driver`, IMG_URL + driver["PicUrl"]);
+    //     setUrl(driver["PicUrl"]);
+    //     imgPath = driver["PicUrl"];
+    //     //  alert(imgPath)
+    //     const fields = [
+    //       "DriverName",
+    //       "Email",
+    //       "DOB",
+    //       "Address",
+    //       "City",
+    //       "Country",
+    //       "Phone",
+    //       "PicUrl",
+    //       "Licensed",
+    //       "LicenseUrl",
+    //       "DriverDocs",
+    //     ];
+    //     fields.forEach((field) => setValue(field, driver[field]));
+    //     //  setImgUrl(driver["PicUrl"]);
+
+    //     setPickUpRegion(
+    //       (pickUpRegion) =>
+    //         // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+    //         (pickUpRegion = State.getStatesOfCountry(driver["Country"]))
+    //     );
+
+    //     setselpickUpRegion(driver["Region"]);
+    //   })((err) => {
+    //     enqueueSnackbar(err.message, { variant: "error" });
+    //   });
+    // }
+    console.log(`isAddMode`, isAddMode);
+   
+  }, []);
+
   const {
     register,
     formState: { errors },
@@ -76,48 +119,6 @@ function AddDriver({ history, match }) {
     },
   } = useContext(GlobalContext);
 
-  useEffect(() => {
-    setCountries((countries) => (countries = Country.getAllCountries()));
-    setUser(JSON.parse(localStorage.getItem("user")));
-    console.log(`isAddMode`, isAddMode);
-    if (!isAddMode) {
-      fetchData(
-        "driver/findOne",
-        driverId
-      )((driver) => {
-        console.log(`driver`, IMG_URL + driver["PicUrl"]);
-        setUrl(driver["PicUrl"]);
-        imgPath = driver["PicUrl"];
-        //  alert(imgPath)
-        const fields = [
-          "DriverName",
-          "Email",
-          "DOB",
-          "Address",
-          "City",
-          "Country",
-          "Phone",
-          "PicUrl",
-          "Licensed",
-          "LicenseUrl",
-          "DriverDocs",
-        ];
-        fields.forEach((field) => setValue(field, driver[field]));
-        //  setImgUrl(driver["PicUrl"]);
-
-        setPickUpRegion(
-          (pickUpRegion) =>
-            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-            (pickUpRegion = State.getStatesOfCountry(driver["Country"]))
-        );
-
-        setselpickUpRegion(driver["Region"]);
-      })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
-    }
-  }, []);
-
   function onSubmit(formdata) {
     // console.log(`formdata`, formdata);
     return isAddMode
@@ -127,24 +128,7 @@ function AddDriver({ history, match }) {
 
   const CreateDriver = (data) => {
     data.CompanyId = user.CompanyId;
-    //  e.preventDefault();
-
-    // console.log(`form`, data);
-    // uploadImage(picFile)((url) => {
-    //   data.PicUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
-
-    // uploadDocuments(docFile)((url) => {
-    //   data.LicenseUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
+   
     console.log(`form`, data);
     createDriver(data, picFile, docFile)(driverDispatch)((res) => {
       if (res) {
@@ -163,23 +147,7 @@ function AddDriver({ history, match }) {
   };
 
   const UpdateDriver = (data) => {
-    //  e.preventDefault();
-
-    // uploadImage(picFile)((url) => {
-    //   data.PicUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
-
-    // uploadDocuments(docFile)((url) => {
-    //   data.LicenseUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
+    
 
     editDriver(data, picFile, docFile)(driverDispatch)((res) => {
       console.log(`data`, data);

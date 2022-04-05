@@ -181,8 +181,7 @@ export const createDriver =
     // formdata.append("LicenseUrl", docFile);
 
     const data = new FormData();
-    data.append("filePicUrl", file1);
-    data.append("fileLicenseUrl", file2);
+   
     data.append("CompanyId", form.CompanyId);
     data.append("DriverName", form.DriverName);
     data.append("Email", form.Email);
@@ -193,8 +192,8 @@ export const createDriver =
     data.append("Region", form.Region);
     data.append("Country", form.Country);
     data.append("Licensed", form.Licensed);
-    // data.append("Country", form.Country);
-    // data.append("Country", file2.Country);
+    data.append("filePicUrl", file1);
+    data.append("fileLicenseUrl", file2);
     console.log(`form-action`, data);
     dispatch({
       type: CREATE_DRIVER_REQUEST,

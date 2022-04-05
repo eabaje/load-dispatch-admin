@@ -37,18 +37,7 @@ const drivers = (state, { type, payload }) => {
           error: null,
         },
 
-        Drivers: {
-          ...state.Drivers,
-          loading: false,
-          data: state.Drivers.data.map((item) => {
-            if (item.DriverId === payload.id) {
-              return payload;
-            } else {
-              return item;
-            }
-          }),
-          error: null,
-        },
+       
       };
     }
 
