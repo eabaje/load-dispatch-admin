@@ -18,7 +18,7 @@ export default function ImageUpload(props) {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
-  const measureRef = React.useRef();
+
 
   const _selectFile = async (e) => {
     setPreviewImage("");
@@ -31,6 +31,7 @@ export default function ImageUpload(props) {
 
   useEffect(() => {
     //  alert(props.refId);
+    if(refId!==undefined){
     getDriverImg(refId).then((files) => {
       const photos = files.data.data;
 
@@ -40,6 +41,7 @@ export default function ImageUpload(props) {
       //  alert(imageGallery);
       console.log("imageInfos", imageInfo);
     });
+  }
   }, []);
 
   return (
@@ -50,10 +52,14 @@ export default function ImageUpload(props) {
             <img className="preview" src={previewImage} alt="" />
           </div>
         )}
-        {imageInfo && (
+        {imageInfo ? (
           <div>
             <img className="preview" src={IMG_URL + imageInfo.PicUrl} alt="" />
           </div>
+        ):( 
+
+          <div className="preview">Please select an Image for Preview</div>
+
         )}
 
         {/* <div className="imgPreview">{$imagePreview}</div> */}

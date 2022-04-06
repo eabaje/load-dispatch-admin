@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
-import { useHistory } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 //import { yupResolver } from 'react-hook-form-resolvers';
@@ -14,7 +13,6 @@ import {
   editDriver
 } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
-import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
 import "bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -64,42 +62,42 @@ function AddDriver({ history, match }) {
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
     setUser(JSON.parse(localStorage.getItem("user")));
-    // if (!isAddMode) {
-    //   fetchData(
-    //     "driver/findOne",
-    //     driverId
-    //   )((driver) => {
-    //     console.log(`driver`, IMG_URL + driver["PicUrl"]);
-    //     setUrl(driver["PicUrl"]);
-    //     imgPath = driver["PicUrl"];
-    //     //  alert(imgPath)
-    //     const fields = [
-    //       "DriverName",
-    //       "Email",
-    //       "DOB",
-    //       "Address",
-    //       "City",
-    //       "Country",
-    //       "Phone",
-    //       "PicUrl",
-    //       "Licensed",
-    //       "LicenseUrl",
-    //       "DriverDocs",
-    //     ];
-    //     fields.forEach((field) => setValue(field, driver[field]));
-    //     //  setImgUrl(driver["PicUrl"]);
+    if (!isAddMode) {
+      fetchData(
+        "driver/findOne",
+        driverId
+      )((driver) => {
+        console.log(`driver`, IMG_URL + driver["PicUrl"]);
+        setUrl(driver["PicUrl"]);
+        imgPath = driver["PicUrl"];
+        //  alert(imgPath)
+        const fields = [
+          "DriverName",
+          "Email",
+          "DOB",
+          "Address",
+          "City",
+          "Country",
+          "Phone",
+          "PicUrl",
+          "Licensed",
+          "LicenseUrl",
+          "DriverDocs",
+        ];
+        fields.forEach((field) => setValue(field, driver[field]));
+        //  setImgUrl(driver["PicUrl"]);
 
-    //     setPickUpRegion(
-    //       (pickUpRegion) =>
-    //         // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
-    //         (pickUpRegion = State.getStatesOfCountry(driver["Country"]))
-    //     );
+        setPickUpRegion(
+          (pickUpRegion) =>
+            // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
+            (pickUpRegion = State.getStatesOfCountry(driver["Country"]))
+        );
 
-    //     setselpickUpRegion(driver["Region"]);
-    //   })((err) => {
-    //     enqueueSnackbar(err.message, { variant: "error" });
-    //   });
-    // }
+        setselpickUpRegion(driver["Region"]);
+      })((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
+    }
     console.log(`isAddMode`, isAddMode);
    
   }, []);
