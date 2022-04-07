@@ -47,20 +47,22 @@ export default function ImageUpload(props) {
   return (
     <>
       <div className="previewComponent" style={{ float: "right" }}>
-        {previewImage && (
+        {previewImage ? (
           <div>
             <img className="preview" src={previewImage} alt="" />
           </div>
-        )}
-        {imageInfo ? (
+        ):(
           <div>
-            <img className="preview" src={IMG_URL + imageInfo.PicUrl} alt="" />
-          </div>
-        ):( 
+            {Object.keys(imageInfo).length == 0 ? (
+               <div className="preview">Please select an Image for Preview</div>
+            ):(
+             
+              <img className="preview" src={IMG_URL + imageInfo.PicUrl} alt="" />
+            )}
+            </div>
+          )
 
-          <div className="preview">Please select an Image for Preview</div>
-
-        )}
+          }
 
         {/* <div className="imgPreview">{$imagePreview}</div> */}
         <input

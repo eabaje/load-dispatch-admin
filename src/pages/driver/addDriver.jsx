@@ -19,6 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomButton from "../../components/button/customButton";
 import { fetchData } from "../../helpers/query";
 import { IMG_URL } from "../../constants";
+import { Link } from "react-router-dom";
 
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
@@ -31,6 +32,7 @@ function AddDriver({ history, match }) {
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [picFile, setpicFile] = useState(null);
   const [docFile, setdocFile] = useState(null);
+  const [docUrl, setdocUrl] = useState(null);
   const [user, setUser] = useState({});
   const [url, setUrl] = useState(null);
   const [selPickUpRegion, setselpickUpRegion] = useState("");
@@ -86,7 +88,7 @@ function AddDriver({ history, match }) {
         ];
         fields.forEach((field) => setValue(field, driver[field]));
         //  setImgUrl(driver["PicUrl"]);
-
+        setdocUrl(IMG_URL+ driver.DriverDocs)
         setPickUpRegion(
           (pickUpRegion) =>
             // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
@@ -98,7 +100,7 @@ function AddDriver({ history, match }) {
         enqueueSnackbar(err.message, { variant: "error" });
       });
     }
-    console.log(`isAddMode`, isAddMode);
+    console.log(`docUrl`, docUrl);
    
   }, []);
 
@@ -399,12 +401,25 @@ function AddDriver({ history, match }) {
                         {...register("fileLicenseUrl")}
                         onChange={(e) => onChangeDocHandler(e)}
                       />
+                    
+                      
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-info"> </h5>
+                      <h5 class="alert alert-info"> 
+                      { docUrl&& (
+                      <Link to={`${docUrl}`} target="_blank" title="View PDF">
+                      Check license
+                        </Link>
+
+                      )
+ 
+
+                      }
+                      
+                      </h5>
                     </div>
                   </div>
                   <div class="form-group"></div>

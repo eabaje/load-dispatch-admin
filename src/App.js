@@ -41,6 +41,8 @@ import AssignDriverVehicle from "./pages/vehicle/AssignDriverVehicle";
 import ListPayment from "./pages/payment/Listpayment";
 import AddUserRole from "./pages/user/AddUserRole";
 import ListProfileDriver from "./pages/driver/ListProfileDriver";
+import Pdfviewer from "./components/pdf/pdfviewer";
+import NoLayout from "./layout/noLayout";
 
 const App = () => {
   const {
@@ -76,7 +78,18 @@ const App = () => {
       />
     );
   };
-
+  const NoLayoutRoute = ({ component: Component, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={(matchProps) => (
+          <NoLayout>
+            <Component {...matchProps} />
+          </NoLayout>
+        )}
+      />
+    );
+  };
   const AppLayoutRoute = ({ component: Component, ...rest }) => {
     if (!isAuthenticated()) {
       //window.location.href = '/signin'
@@ -111,6 +124,11 @@ const App = () => {
           <>
             <AppLayoutRoute exact path="/shipper" component={Shipper} />
             <AppLayoutRoute exact path="/dashboard" component={Home} />
+            <NoLayoutRoute
+              exact
+              path="/view-pdf/:filePath"
+              component={Pdfviewer}
+            />
             <AppLayoutRoute
               exact
               path="/add-shipment"
@@ -122,6 +140,7 @@ const App = () => {
               path="/add-shipment-upload"
               component={UploadShipment}
             />
+
             {/* <AppLayoutRoute
               key="my-shipments-info"
               exact
