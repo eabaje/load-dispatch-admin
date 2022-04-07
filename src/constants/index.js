@@ -6,7 +6,7 @@ export const API_URL = "http://localhost:8000/api/";
 
 export const LOG_OUT = "https://load-dispatch-admin.vercel.app";
 
-export const IMG_URL = "http://localhost:8000/pics/";
+export const IMG_URL = "http://localhost:8000/uploads/";
 
 //export const IMG_URL = "https://loadboard-api.herokuapp.com/pics/";
 
