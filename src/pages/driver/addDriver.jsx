@@ -10,7 +10,7 @@ import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 import {
   createDriver,
-  editDriver
+  editDriver,
 } from "../../context/actions/driver/driver.action";
 import ImageUpload from "../../components/upload/uploadImage";
 import "bootstrap";
@@ -59,8 +59,6 @@ function AddDriver({ history, match }) {
 
   console.log(`docFile`, docFile);
 
- 
-
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
     setUser(JSON.parse(localStorage.getItem("user")));
@@ -88,7 +86,7 @@ function AddDriver({ history, match }) {
         ];
         fields.forEach((field) => setValue(field, driver[field]));
         //  setImgUrl(driver["PicUrl"]);
-        setdocUrl(IMG_URL+ driver.DriverDocs)
+        setdocUrl(IMG_URL + driver.DriverDocs);
         setPickUpRegion(
           (pickUpRegion) =>
             // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
@@ -101,7 +99,6 @@ function AddDriver({ history, match }) {
       });
     }
     console.log(`docUrl`, docUrl);
-   
   }, []);
 
   const {
@@ -128,7 +125,7 @@ function AddDriver({ history, match }) {
 
   const CreateDriver = (data) => {
     data.CompanyId = user.CompanyId;
-   
+
     console.log(`form`, data);
     createDriver(data, picFile, docFile)(driverDispatch)((res) => {
       if (res) {
@@ -147,8 +144,6 @@ function AddDriver({ history, match }) {
   };
 
   const UpdateDriver = (data) => {
-    
-
     editDriver(data, picFile, docFile)(driverDispatch)((res) => {
       console.log(`data`, data);
       if (res.message === "Success") {
@@ -224,7 +219,10 @@ function AddDriver({ history, match }) {
                   />
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload refId={driverId} onChangePicHandler={onChangePicHandler}/>
+                      <ImageUpload
+                        refId={driverId}
+                        onChangePicHandler={onChangePicHandler}
+                      />
                     </div>
                   </div>
                   <div class="form-group row">
@@ -401,24 +399,18 @@ function AddDriver({ history, match }) {
                         {...register("fileLicenseUrl")}
                         onChange={(e) => onChangeDocHandler(e)}
                       />
-                    
-                      
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <h5 class="alert alert-info"> 
-                      { docUrl&& (
-                      <Link to={`${docUrl}`} target="_blank" title="View PDF">
-                      Check license
-                        </Link>
-
-                      )
- 
-
-                      }
-                      
+                      <h5 class="alert alert-info">
+                        {docUrl && (
+                          <a href={`${docUrl}`} target="_blank">
+                            {" "}
+                            Check license
+                          </a>
+                        )}
                       </h5>
                     </div>
                   </div>

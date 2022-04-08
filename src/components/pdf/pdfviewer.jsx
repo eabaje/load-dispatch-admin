@@ -1,42 +1,51 @@
-import React, { useState } from 'react';
-import { Document, Page } from 'react-pdf';
-
+import React, { useState } from "react";
+import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 export default function Pdfviewer(props) {
-    const { pdfLink} = props;
-    const [numPages, setnumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
+  const { pdfLink } = props;
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
 
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
 
-  const	onDocumentLoadSuccess = ({ numPages }) => {
-		setnumPages({ numPages });
-	};
+  function changePage(offSet) {
+    setPageNumber((prevPageNumber) => prevPageNumber + offSet);
+  }
 
-  const	goToPrevPage = () =>
-    setPageNumber(() => ({ pageNumber: pageNumber - 1 }));
- const	goToNextPage = () =>
-    setPageNumber(() => ({ pageNumber: pageNumber + 1 }));
+  function previousPage() {
+    changePage(-1);
+  }
 
-	
+  function nextPage() {
+    changePage(+1);
+  }
 
-		return (
-			<div>
-				<nav>
-					<button onClick={this.goToPrevPage}>Prev</button>
-					<button onClick={this.goToNextPage}>Next</button>
-				</nav>
-
-				<div style={{ width: 600 }}>
-					<Document
-						file={pdfLink}
-						onLoadSuccess={onDocumentLoadSuccess}
-					>
-						<Page pageNumber={pageNumber} width={600} />
-					</Document>
-				</div>
-
-				<p>
-					Page {pageNumber} of {numPages}
-				</p>
-			</div>
-		);
+  return (
+    <>
+      <Document
+        file={pdfLink}
+        // options={{ workerSrc: "/pdf.worker.js" }}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
+        <Page pageNumber={pageNumber} />
+      </Document>
+      <div>
+        <p>
+          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+        </p>
+        <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
+          Previous
+        </button>
+        <button
+          type="button"
+          disabled={pageNumber >= numPages}
+          onClick={nextPage}
+        >
+          Next
+        </button>
+      </div>
+    </>
+  );
 }
