@@ -24,6 +24,7 @@
     "jquery": "^3.6.0",
     "little-state-machine": "^4.2.0",
     "notistack": "^1.0.9",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.4",
     "react-country-region-selector": "^3.4.0",
