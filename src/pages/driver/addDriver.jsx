@@ -2,9 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { useSnackbar } from "notistack";
 import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-//import { yupResolver } from 'react-hook-form-resolvers';
-import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
@@ -19,11 +16,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomButton from "../../components/button/customButton";
 import { fetchData } from "../../helpers/query";
 import { IMG_URL } from "../../constants";
-import { Link } from "react-router-dom";
 import CustomPopup from "../../components/popup/popup.component";
 import Pdfviewer from "../../components/pdf/pdfviewer";
 import UpdateFileUpload from "../../components/upload/edit-file-upload";
-import { compose } from "@mui/system";
 
 function AddDriver({ history, match }) {
   const { driverId } = match.params;

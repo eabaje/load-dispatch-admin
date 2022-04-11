@@ -1,9 +1,12 @@
-import React, { useState, useCallback, useEffect, Component } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import { getFiles, UpdateDriverFile } from "../../helpers/uploadImage";
-//import Gallery from "react-photo-gallery";
-
-//import "react-image-gallery/styles/css/image-gallery.css";
-
+import { GlobalContext } from "../../context/Provider";
+import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
+import {
+  createDriver,
+  editDriver,
+  UploadDriverFile,
+} from "../../context/actions/driver/driver.action";
 import { IMG_URL } from "../../constants";
 
 export default function UpdateFileUpload(props) {
@@ -21,6 +24,13 @@ export default function UpdateFileUpload(props) {
   ]);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
+
+  const {
+    driverDispatch,
+    driverState: {
+      createDriver: { error, loading },
+    },
+  } = useContext(GlobalContext);
 
   const measureRef = React.useRef();
 
@@ -45,33 +55,52 @@ export default function UpdateFileUpload(props) {
 
   function upload() {
     setProgress(0);
-
-    UpdateDriverFile(
+    UploadDriverFile(
       currentFile,
       props.refId,
       props.fileType,
-      props.comapnyId,
+      props.companyId,
       props.email,
       (event) => {
         setProgress(Math.round((100 * event.loaded) / event.total));
       }
-    )
-      .then((response) => {
-        setMessage(response.data.message);
+    )(driverDispatch)((res) => {
+      setProgress(0);
+      setMessage(res.data.message);
+    })((err) => {
+      setProgress(0);
+      setMessage(`Could not upload the ${props.fileType}!`);
+      setCurrentFile(undefined);
+    });
 
-        //  return getFiles(props.refId);
-      })
-      .then((files) => {
-        setImageInfos(files.data.data);
-        return getFiles(props.refId);
+    //   UpdateDriverFile(
+    //     currentFile,
+    //     props.refId,
+    //     props.fileType,
+    //     props.companyId,
+    //     props.email,
+    //     (event) => {
+    //       setProgress(Math.round((100 * event.loaded) / event.total));
+    //     }
+    //   )
+    //     .then((response) => {
 
-        //  console.log("imageInfos", this.state.imageInfos);
-      })
-      .catch((err) => {
-        setProgress(0);
-        setMessage("Could not upload the image!");
-        setCurrentFile(undefined);
-      });
+    //       setProgress(0);
+    //       setMessage(response.data.message);
+
+    //       //  return getFiles(props.refId);
+    //     })
+    //     // .then((files) => {
+    //     //   setImageInfos(files.data.data);
+    //     //   return getFiles(props.refId);
+
+    //     //   //  console.log("imageInfos", this.state.imageInfos);
+    //     // })
+    //     .catch((err) => {
+    //       setProgress(0);
+    //       setMessage("Could not upload the image!");
+    //       setCurrentFile(undefined);
+    //     });
   }
   // {({ measureRef }) => {
   //   if (width < 1) {

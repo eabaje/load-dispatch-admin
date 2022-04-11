@@ -222,6 +222,53 @@ export const createDriver =
       });
   };
 
+export const UploadDriverFile =
+  (file, refId, fileType, companyId, email, onUploadProgress) =>
+  (dispatch) =>
+  (onSuccess) =>
+  (onError) => {
+    // const formdata = new FormData();
+    // formdata.append("PicUrl", picFile);
+    // formdata.append("LicenseUrl", docFile);
+
+    let formData = new FormData();
+    //alert(referenceId);
+    formData.append("DriverId", refId);
+    formData.append("FileType", fileType);
+    formData.append("CompanyId", companyId);
+    formData.append("Email", email);
+    formData.append("file", file);
+
+    dispatch({
+      type: CREATE_DRIVER_REQUEST,
+    });
+    axios
+      .post("/driver/updateFile", formData, {
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
+        onUploadProgress,
+      })
+      .then((res) => {
+        dispatch({
+          type: CREATE_DRIVER_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess(res.data);
+      })
+      .catch((err) => {
+        const message = err.response ? err.response.data : CONNECTION_ERROR;
+
+        dispatch({
+          type: CREATE_DRIVER_FAIL,
+          payload: message,
+        });
+
+        onError(message);
+      });
+  };
+
 export const editDriver =
   (form, file1 = null, file2 = null) =>
   (dispatch) =>
