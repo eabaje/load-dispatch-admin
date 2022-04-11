@@ -1,13 +1,9 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
 import { getFiles, UpdateDriverFile } from "../../helpers/uploadImage";
-import { GlobalContext } from "../../context/Provider";
-import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
-import {
-  createDriver,
-  editDriver,
-  UploadDriverFile,
-} from "../../context/actions/driver/driver.action";
+import { GlobalContext } from "../../context/Provider"
+
 import { IMG_URL } from "../../constants";
+import { UploadUserFile } from "../../context/actions/user/user.action";
 
 export default function UpdateFileUpload(props) {
   const { refId, popupCloseHandlerImage } = props;
@@ -26,9 +22,9 @@ export default function UpdateFileUpload(props) {
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
   const {
-    driverDispatch,
-    driverState: {
-      createDriver: { error, loading },
+    userDispatch,
+    userState: {
+      createUser: { error, loading },
     },
   } = useContext(GlobalContext);
 
@@ -47,7 +43,7 @@ export default function UpdateFileUpload(props) {
 
   function upload() {
     setProgress(0);
-    UploadDriverFile(
+    UploadUserFile(
       currentFile,
       props.refId,
       props.fileType,
@@ -56,7 +52,7 @@ export default function UpdateFileUpload(props) {
       (event) => {
         setProgress(Math.round((100 * event.loaded) / event.total));
       }
-    )(driverDispatch)((res) => {
+    )(userDispatch)((res) => {
       setProgress(0);
       setMessage(res.data.message);
     })((err) => {

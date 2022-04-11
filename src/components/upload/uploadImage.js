@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect, Component } from "react";
-import { getDriverImg, getFiles, uploadMedia } from "../../helpers/uploadImage";
+import { getDriverImg, getFiles, getImg, uploadMedia } from "../../helpers/uploadImage";
 import { IMG_URL } from "../../constants";
 
 export default function ImageUpload(props) {
-  const { refId, onChangePicHandler } = props;
+  const { refId, onChangePicHandler,url } = props;
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");
   const [previewImage, setPreviewImage] = useState("");
@@ -30,7 +30,7 @@ export default function ImageUpload(props) {
   useEffect(() => {
     //  alert(props.refId);
     if (refId !== undefined) {
-      getDriverImg(refId).then((files) => {
+      getImg(refId,url).then((files) => {
         const photos = files.data.data;
 
         //  alert(newMarkers);

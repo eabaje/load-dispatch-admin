@@ -12,21 +12,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 
-import { fetchData, fetchDataAll } from "../../helpers/query";
+import { fetchData } from "../../helpers/query";
 
 import { GlobalContext } from "../../context/Provider";
 import {
-  listUsersByUserId,
   editUser,
   resetPassword,
   updateCompany,
+  UploadUserFile,
 } from "../../context/actions/user/user.action";
-import { uploadDocuments, uploadImage } from "../../helpers/uploadImage";
+
 import ImageUpload from "../../components/upload/uploadImage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomButton from "../../components/button/customButton";
 import { SPECIALIZATION_TYPE } from "../../constants/enum";
+import CustomPopup from "../../components/popup/popup.component";
+import UpdateFileUpload from "../../components/upload/edit-file-upload";
 
 function UserProfile({ history, match }) {
   const { userId } = match.params;
@@ -41,6 +43,8 @@ function UserProfile({ history, match }) {
 
   const [IsEdit, setEdit] = useState(false);
   const [country, setCountry] = useState("");
+  const [companyId, setcompanyId] = useState("");
+  const [email, setEmail] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [region, setRegion] = useState([]);
@@ -50,7 +54,7 @@ function UserProfile({ history, match }) {
   const [imgUrl, setImgUrl] = useState("");
   const [selPickUpRegion, setselpickUpRegion] = useState("");
   const [value, setValues] = useState("");
-
+  const [visibilityImage, setVisibilityImage] = useState(false);
   function onChange(event) {
     setValues(event.target.value);
     // state.companyUser.Specilaization =
@@ -93,7 +97,9 @@ function UserProfile({ history, match }) {
         (pickUpRegion = State.getStatesOfCountry(e.target.value))
     );
   };
-
+  const popupCloseHandlerImage = (e) => {
+    setVisibilityImage(e);
+  };
   const onChangePicHandler = async (e) => {
     setpicFile((picFile) => e.target.files[0]);
   };
@@ -143,6 +149,7 @@ function UserProfile({ history, match }) {
         "Website",
       ];
       fields2.forEach((field2) => setValue2(field2, company[field2]));
+     
     })((error) => {
       enqueueSnackbar(error.message, {
         variant: "error",
@@ -169,6 +176,8 @@ function UserProfile({ history, match }) {
         "PicUrl",
       ];
       fields.forEach((field) => setValue(field, user[field]));
+      setEmail(user["Email"]);
+      setcompanyId(user["CompanyId"]);
       setPickUpRegion(
         (pickUpRegion) =>
           // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
@@ -187,31 +196,28 @@ function UserProfile({ history, match }) {
 
   function onSubmit(formdata) {
     // console.log(`formdata`, formdata);
-    return isAddMode ? UploadImage(formdata) : UpdateDriver(userId, formdata);
+    return isAddMode ? null : UpdateDriver(userId, formdata);
   }
 
-  const UploadImage = (data) => {
-    data.CompanyId = user.CompanyId;
-  };
+  // const UploadImage = (data) => {
+  //   data.CompanyId = user.CompanyId;
+    
+  //   UploadUserFile()(userDispatch)((res) => {
+  //     console.log(`data`, data);
+
+  //     enqueueSnackbar(`Updated  Driver-${res.data.DriverName} successfully`, {
+  //       variant: "success",
+  //     });
+  //   })((error) => {
+  //     enqueueSnackbar(error.message, {
+  //       variant: "error",
+  //     });
+  //   });
+  // };
+  
 
   const UpdateDriver = (data) => {
-    //  e.preventDefault();
-
-    // uploadImage(picFile)((url) => {
-    //   data.PicUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
-
-    // uploadDocuments(docFile)((url) => {
-    //   data.LicenseUrl = url;
-    // })((err) => {
-    //   enqueueSnackbar(`Error:-${err.message} `, {
-    //     variant: "error",
-    //   });
-    // });
+   
 
     editUser(data)(userDispatch)((res) => {
       console.log(`data`, data);
@@ -227,7 +233,7 @@ function UserProfile({ history, match }) {
   };
 
   function onChangePassword(formdata) {
-    resetPassword(data)(userDispatch)((res) => {
+    resetPassword(formdata)(userDispatch)((res) => {
       enqueueSnackbar(`Updated  Password successfully`, {
         variant: "success",
       });
@@ -239,7 +245,7 @@ function UserProfile({ history, match }) {
   }
 
   function onChangeCompany(formdata) {
-    updateCompany(data, data.CompanyId)(userDispatch)((res) => {
+    updateCompany(formdata, formdata.CompanyId)(userDispatch)((res) => {
       enqueueSnackbar(`Updated  Company Profile successfully`, {
         variant: "success",
       });
@@ -388,10 +394,35 @@ function UserProfile({ history, match }) {
 
                               <div class="form-group row">
                                 <div class="col-md-12 ">
-                                  <ImageUpload
-                                    url={imgUrl}
-                                    onChangePicHandler={onChangePicHandler}
-                                  />
+                                <ImageUpload
+                          refId={userId}
+                          show={userId ? false : true}
+                          url='/user/findOne/'
+                          onChangePicHandler={onChangePicHandler}
+                        />
+                        <a
+                          href="#"
+                          onClick={(e) => setVisibilityImage(!visibilityImage)}
+                        >
+                          <i className="first fas fa-pen"></i>
+                        </a>
+                    
+
+                      {visibilityImage && (
+                        <CustomPopup
+                          onClose={popupCloseHandlerImage}
+                          show={visibilityImage}
+                          title="Upload File"
+                        >
+                          <UpdateFileUpload
+                            refId={userId}
+                            fileType="image"
+                            email={email}
+                            companyId={companyId}
+                            popupCloseHandlerImage={popupCloseHandlerImage}
+                          />
+                        </CustomPopup>
+                      )}
                                 </div>
                               </div>
                               <div class="form-group row">
