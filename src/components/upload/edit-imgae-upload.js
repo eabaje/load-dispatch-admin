@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, Component } from "react";
 import { getDriverImg, getFiles, uploadMedia } from "../../helpers/uploadImage";
 import { IMG_URL } from "../../constants";
 
-export default function ImageUpload(props) {
+export default function UpdateImageUpload(props) {
   const { refId, onChangePicHandler } = props;
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");
@@ -69,14 +69,12 @@ export default function ImageUpload(props) {
           type="file"
           id="filePicUrl"
           name="filePicUrl"
-          style={{
-            visibility: props.show ? "visible" : "hidden",
-          }}
           onChange={(e) => {
             _selectFile(e);
             onChangePicHandler(e);
           }}
         />
+        <button onClick={this.resetFile}>Upload</button>
       </div>
     </>
   );

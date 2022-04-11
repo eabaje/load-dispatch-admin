@@ -49,12 +49,34 @@ export const uploadMedia = (file, referenceId, onUploadProgress) => {
   });
 };
 
+export const UpdateDriverFile = (
+  file,
+  referenceId,
+  fileType,
+  companyId,
+  email,
+  onUploadProgress
+) => {
+  let formData = new FormData();
+  //alert(referenceId);
+  formData.append("DriverId", referenceId);
+  formData.append("FileType", fileType);
+  formData.append("CompanyId", companyId);
+  formData.append("Email", email);
+  formData.append("file", file);
+
+  return axios.post("/driver/updateFile", formData, {
+    // headers: {
+    //   "Content-Type": "multipart/form-data",
+    // },
+    onUploadProgress,
+  });
+};
+
 export const getFiles = (referenceId) => {
- 
   return axios.get(`/upload/getFiles/${referenceId}`);
 };
 
 export const getDriverImg = (driverId) => {
-
   return axios.get(`/driver/findOne/${driverId}`);
 };

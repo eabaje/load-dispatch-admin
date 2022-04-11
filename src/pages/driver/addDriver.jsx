@@ -20,6 +20,10 @@ import CustomButton from "../../components/button/customButton";
 import { fetchData } from "../../helpers/query";
 import { IMG_URL } from "../../constants";
 import { Link } from "react-router-dom";
+import CustomPopup from "../../components/popup/popup.component";
+import Pdfviewer from "../../components/pdf/pdfviewer";
+import UpdateFileUpload from "../../components/upload/edit-file-upload";
+import { compose } from "@mui/system";
 
 function AddDriver({ history, match }) {
   const { driverId } = match.params;
@@ -28,15 +32,32 @@ function AddDriver({ history, match }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [IsEdit, setEdit] = useState(false);
   const [country, setCountry] = useState("");
+  const [companyId, setcompanyId] = useState("");
+  const [email, setEmail] = useState("");
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [picFile, setpicFile] = useState(null);
   const [docFile, setdocFile] = useState(null);
   const [docUrl, setdocUrl] = useState(null);
+  const [doc, setdoc] = useState(null);
   const [user, setUser] = useState({});
   const [url, setUrl] = useState(null);
   const [selPickUpRegion, setselpickUpRegion] = useState("");
+  const [visibility, setVisibility] = useState(false);
+  const [visibilityImage, setVisibilityImage] = useState(false);
+  const [visibilityFile, setVisibilityFile] = useState(false);
   // const onSubmit = (data) => console.log(data);
+
+  const popupCloseHandler = (e) => {
+    setVisibility(e);
+  };
+  const popupCloseHandlerImage = (e) => {
+    setVisibilityImage(e);
+  };
+
+  const popupCloseHandlerFile = (e) => {
+    setVisibilityFile(e);
+  };
 
   const selectPickUpCountry = async (e) => {
     setCountry((country) => e.target.value);
@@ -86,7 +107,12 @@ function AddDriver({ history, match }) {
         ];
         fields.forEach((field) => setValue(field, driver[field]));
         //  setImgUrl(driver["PicUrl"]);
+        setEmail(driver["Email"]);
+        setcompanyId(driver["CompanyId"]);
         setdocUrl(IMG_URL + driver.DriverDocs);
+
+        const splitdoc = driver.DriverDocs.split("/");
+        setdoc(splitdoc[2]);
         setPickUpRegion(
           (pickUpRegion) =>
             // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
@@ -219,10 +245,39 @@ function AddDriver({ history, match }) {
                   />
                   <div class="form-group row">
                     <div class="col-md-12 ">
-                      <ImageUpload
-                        refId={driverId}
-                        onChangePicHandler={onChangePicHandler}
-                      />
+                      <span>
+                        {" "}
+                        <ImageUpload
+                          refId={driverId}
+                          show={driverId ? false : true}
+                          onChangePicHandler={onChangePicHandler}
+                        />
+                        <a
+                          href="#"
+                          onClick={(e) => setVisibilityImage(!visibilityImage)}
+                        >
+                          <i className="first fas fa-pen"></i>
+                        </a>
+                      </span>
+
+                      {visibilityImage && (
+                        <CustomPopup
+                          onClose={popupCloseHandlerImage}
+                          show={visibilityImage}
+                          title="Upload File"
+                        >
+                          <UpdateFileUpload
+                            refId={driverId}
+                            fileType="image"
+                            email={email}
+                            companyId={companyId}
+                            popupCloseHandlerImage={popupCloseHandlerImage}
+                          />
+                        </CustomPopup>
+                      )}
+                    </div>
+                    <div class="col-md-2">
+                      <span> </span>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -387,33 +442,72 @@ function AddDriver({ history, match }) {
                         />
                       </div>
                     </div>
-                    <label class="col-form-label col-md-2">
-                      Attach Drivers License
-                    </label>
-                    <div class="col-md-4">
-                      <input
-                        className="form-control"
-                        type="file"
-                        id="fileLicenseUrl"
-                        name="fileLicenseUrl"
-                        {...register("fileLicenseUrl")}
-                        onChange={(e) => onChangeDocHandler(e)}
-                      />
-                    </div>
+                    {driverId ? (
+                      <div class="col-md-6 ">
+                        {docUrl && (
+                          <a
+                            href="#"
+                            onClick={(e) => setVisibility(!visibility)}
+                          >
+                            {doc} <i className="first fas fa-download"></i>
+                          </a>
+                        )}
+
+                        {visibility && (
+                          <CustomPopup
+                            onClose={popupCloseHandler}
+                            show={visibility}
+                            title="PDF Viewer"
+                          >
+                            <Pdfviewer pdfLink={docUrl} />
+                          </CustomPopup>
+                        )}
+
+                        <a
+                          href="#"
+                          onClick={(e) => setVisibilityFile(!visibilityFile)}
+                        >
+                          <i className="first fas fa-pen"></i>
+                        </a>
+
+                        {visibilityFile && (
+                          <CustomPopup
+                            onClose={popupCloseHandler}
+                            show={visibilityFile}
+                            title="Upload File"
+                          >
+                            <UpdateFileUpload
+                              refId={driverId}
+                              fileType="file"
+                              email={email}
+                              companyId={companyId}
+                            />
+                          </CustomPopup>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        {" "}
+                        <label class="col-form-label col-md-2">
+                          Attach Drivers License
+                        </label>
+                        <div class="col-md-4">
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="fileLicenseUrl"
+                            name="fileLicenseUrl"
+                            {...register("fileLicenseUrl")}
+                            onChange={(e) => onChangeDocHandler(e)}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
 
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info">
-                        {docUrl && (
-                          <a href={`${docUrl}`} target="_blank">
-                            {" "}
-                            Check license
-                          </a>
-                          
-                        )}
-                      </h5>
-                    </div>
+                  <div class="form-group row alert alert-info">
+                    <div class="col-md-8 "></div>
+                    <div class="col-md-4 "></div>
                   </div>
                   <div class="form-group"></div>
 

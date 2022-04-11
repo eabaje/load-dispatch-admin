@@ -26,7 +26,7 @@ export default function Pdfviewer(props) {
     <>
       <Document
         file={pdfLink}
-        // options={{ workerSrc: "/pdf.worker.js" }}
+        options={{ workerSrc: "/pdf.worker.js" }}
         onLoadSuccess={onDocumentLoadSuccess}
       >
         <Page pageNumber={pageNumber} />
