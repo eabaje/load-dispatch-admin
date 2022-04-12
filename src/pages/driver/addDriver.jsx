@@ -179,7 +179,6 @@ function AddDriver({ history, match }) {
     });
   };
 
-
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => {
     return (
       <div class="input-group mb-3">
@@ -246,7 +245,8 @@ function AddDriver({ history, match }) {
                         <ImageUpload
                           refId={driverId}
                           show={driverId ? false : true}
-                          url='/driver/findOne/'
+                          url="/driver/findOne/"
+                          fieldName="PicUrl"
                           onChangePicHandler={onChangePicHandler}
                         />
                         <a

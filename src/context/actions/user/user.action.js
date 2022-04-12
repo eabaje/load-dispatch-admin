@@ -179,7 +179,7 @@ export const editUser =
 
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;
-        dispatch({ type: CREATE_USER_FAIL, payload: message });
+        dispatch({ type: EDIT_USER_FAIL, payload: message });
         onError(message);
       });
   };
@@ -189,11 +189,11 @@ export const resetPassword =
     dispatch({ type: CREATE_USER_REQUEST });
 
     axios
-      .put(`/auth/reset/${form.Email}`, form)
+      .put(`/auth/reset`, form)
 
       .then((res) => {
         dispatch({
-          type: EDIT_USER_SUCCESS,
+          type: CREATE_USER_SUCCESS,
           payload: res.data,
         });
         onSuccess(res.data);
@@ -201,12 +201,12 @@ export const resetPassword =
 
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;
-        dispatch({ type: EDIT_USER_FAIL, payload: message });
+        dispatch({ type: CREATE_USER_FAIL, payload: message });
         onError(message);
       });
   };
 
-  export const UploadUserFile =
+export const UploadUserFile =
   (file, refId, fileType, companyId, email, onUploadProgress) =>
   (dispatch) =>
   (onSuccess) =>

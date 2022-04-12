@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
 import { getFiles, UpdateDriverFile } from "../../helpers/uploadImage";
-import { GlobalContext } from "../../context/Provider"
+import { GlobalContext } from "../../context/Provider";
 
 import { IMG_URL } from "../../constants";
 import { UploadUserFile } from "../../context/actions/user/user.action";
 
-export default function UpdateFileUpload(props) {
+export default function UpdateUserFileUpload(props) {
   const { refId, popupCloseHandlerImage } = props;
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");
@@ -38,8 +38,6 @@ export default function UpdateFileUpload(props) {
     setProgress(0);
     setMessage("");
   };
-
-  
 
   function upload() {
     setProgress(0);

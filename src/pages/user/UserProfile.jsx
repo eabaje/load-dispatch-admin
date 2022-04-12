@@ -29,6 +29,7 @@ import CustomButton from "../../components/button/customButton";
 import { SPECIALIZATION_TYPE } from "../../constants/enum";
 import CustomPopup from "../../components/popup/popup.component";
 import UpdateFileUpload from "../../components/upload/edit-file-upload";
+import UpdateUserFileUpload from "../../components/upload/edit-user-file-upload";
 
 function UserProfile({ history, match }) {
   const { userId } = match.params;
@@ -149,7 +150,6 @@ function UserProfile({ history, match }) {
         "Website",
       ];
       fields2.forEach((field2) => setValue2(field2, company[field2]));
-     
     })((error) => {
       enqueueSnackbar(error.message, {
         variant: "error",
@@ -201,7 +201,7 @@ function UserProfile({ history, match }) {
 
   // const UploadImage = (data) => {
   //   data.CompanyId = user.CompanyId;
-    
+
   //   UploadUserFile()(userDispatch)((res) => {
   //     console.log(`data`, data);
 
@@ -214,11 +214,8 @@ function UserProfile({ history, match }) {
   //     });
   //   });
   // };
-  
 
   const UpdateDriver = (data) => {
-   
-
     editUser(data)(userDispatch)((res) => {
       console.log(`data`, data);
 
@@ -233,6 +230,8 @@ function UserProfile({ history, match }) {
   };
 
   function onChangePassword(formdata) {
+    formdata.Email = profile?.Email;
+    console.log("fromPasword", formdata);
     resetPassword(formdata)(userDispatch)((res) => {
       enqueueSnackbar(`Updated  Password successfully`, {
         variant: "success",
@@ -394,35 +393,39 @@ function UserProfile({ history, match }) {
 
                               <div class="form-group row">
                                 <div class="col-md-12 ">
-                                <ImageUpload
-                          refId={userId}
-                          show={userId ? false : true}
-                          url='/user/findOne/'
-                          onChangePicHandler={onChangePicHandler}
-                        />
-                        <a
-                          href="#"
-                          onClick={(e) => setVisibilityImage(!visibilityImage)}
-                        >
-                          <i className="first fas fa-pen"></i>
-                        </a>
-                    
+                                  <ImageUpload
+                                    refId={userId}
+                                    show={userId ? false : true}
+                                    url="/user/findOne/"
+                                    fieldName="UserPicUrl"
+                                    onChangePicHandler={onChangePicHandler}
+                                  />
+                                  <a
+                                    href="#"
+                                    onClick={(e) =>
+                                      setVisibilityImage(!visibilityImage)
+                                    }
+                                  >
+                                    <i className="first fas fa-pen"></i>
+                                  </a>
 
-                      {visibilityImage && (
-                        <CustomPopup
-                          onClose={popupCloseHandlerImage}
-                          show={visibilityImage}
-                          title="Upload File"
-                        >
-                          <UpdateFileUpload
-                            refId={userId}
-                            fileType="image"
-                            email={email}
-                            companyId={companyId}
-                            popupCloseHandlerImage={popupCloseHandlerImage}
-                          />
-                        </CustomPopup>
-                      )}
+                                  {visibilityImage && (
+                                    <CustomPopup
+                                      onClose={popupCloseHandlerImage}
+                                      show={visibilityImage}
+                                      title="Upload File"
+                                    >
+                                      <UpdateUserFileUpload
+                                        refId={userId}
+                                        fileType="image"
+                                        email={email}
+                                        companyId={companyId}
+                                        popupCloseHandlerImage={
+                                          popupCloseHandlerImage
+                                        }
+                                      />
+                                    </CustomPopup>
+                                  )}
                                 </div>
                               </div>
                               <div class="form-group row">
