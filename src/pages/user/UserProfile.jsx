@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-import { API_URL } from "../../constants";
+import { API_URL, IMG_URL } from "../../constants";
 import { getError } from "../../utils/error";
 import $ from "jquery";
 import { useForm, Controller } from "react-hook-form";
@@ -199,21 +199,6 @@ function UserProfile({ history, match }) {
     return isAddMode ? null : UpdateDriver(userId, formdata);
   }
 
-  // const UploadImage = (data) => {
-  //   data.CompanyId = user.CompanyId;
-
-  //   UploadUserFile()(userDispatch)((res) => {
-  //     console.log(`data`, data);
-
-  //     enqueueSnackbar(`Updated  Driver-${res.data.DriverName} successfully`, {
-  //       variant: "success",
-  //     });
-  //   })((error) => {
-  //     enqueueSnackbar(error.message, {
-  //       variant: "error",
-  //     });
-  //   });
-  // };
 
   const UpdateDriver = (data) => {
     editUser(data)(userDispatch)((res) => {
@@ -319,8 +304,8 @@ function UserProfile({ history, match }) {
                             <div class="user-image">
                               <img
                                 src={
-                                  profile?.PicUrl
-                                    ? profile?.PicUrl
+                                  profile?.UserPicUrl
+                                    ? IMG_URL+profile?.UserPicUrl
                                     : "https://bootdey.com/img/Content/avatar/avatar7.png"
                                 }
                                 class="img-radius"

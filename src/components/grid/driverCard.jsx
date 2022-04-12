@@ -30,14 +30,12 @@ function DriverCard(props) {
    
    
              <div class="card p-3 py-6">
-                 <div class="text-center"> <img src={IMG_URL+driver?.PicUrl} width="100" class="rounded-circle"/> </div>
+                 <div class="text-center"> <img src={ driver.PicUrl? IMG_URL + driver?.PicUrl :"https://bootdey.com/img/Content/avatar/avatar7.png"} width="100" class="rounded-circle"/> </div>
                  <div class="text-center mt-3"> <span class="bg-secondary p-1 px-4 rounded text-white">{driver?.DriverName}</span>
-                     <h6 class="mt-2 mb-0">{driver.Company?.CompanyName}</h6> <span>{driver?.Phone}</span>
-                     
-                     
+                     <h6 class="mt-2 mb-0">{driver.Company?.CompanyName}</h6> <span><i class="fa fa-phone-square" aria-hidden="true"></i> {driver?.Phone}</span>
                     
-                     <div class="row about-list">
-                                <div class="col-md-6">
+                     <div class="row about-list ">
+                                <div class="col-md-12">
                                    
                                     <div class="media">
                                         <label>Age(yrs)</label>
@@ -64,7 +62,7 @@ function DriverCard(props) {
                          <li><i class="fa fa-linkedin"></i></li>
                          <li><i class="fa fa-google"></i></li>
                      </ul>
-                     <div class="buttons"> <button class="btn btn-outline-primary px-4">Message</button> <button class="btn btn-primary px-4 ms-3">Contact</button> </div>
+                     <div class="buttons"> <button class="btn btn-outline-primary px-4">Message</button>  </div>
                  </div>
              </div>
         

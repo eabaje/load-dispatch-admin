@@ -179,11 +179,7 @@ const NavBarAdmin = () => {
                     </Link>
                    
                   </li>
-                  <li>
-                    <Link to={"/add-trip"} title=" Create Trip Record">
-                      Create Trip Record
-                    </Link>
-                  </li>
+                
                 </ul>
               </li>
 
