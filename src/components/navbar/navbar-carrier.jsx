@@ -122,7 +122,10 @@ const NavBarCarrier = () => {
                 </a>
                 <ul className="pcoded-submenu">
                   <li>
-                    <Link to={`/list-carrier-drivers-info/${user.CompanyId}`} title=" List Drivers">
+                    <Link
+                      to={`/list-carrier-drivers-info/${user.CompanyId}`}
+                      title=" List Drivers"
+                    >
                       List Drivers
                     </Link>
                   </li>
@@ -134,30 +137,20 @@ const NavBarCarrier = () => {
                       Create Driver Profile
                     </Link>
                   </li>
-                 
                 </ul>
               </li>
 
-              <li className="nav-item pcoded-hasmenu">
+              <li className="nav-item">
                 <a href="#!" className="nav-link ">
                   <span className="pcoded-micon">
                     <i className="first fas fa-road"></i>
                   </span>
-                  <span className="pcoded-mtext">Trip Management</span>
-                </a>
-                <ul className="pcoded-submenu">
-                  <li>
+                  <span className="pcoded-mtext">
                     <Link to={"/list-trip"} title=" List All Trips">
-                      List All Trips
+                      Check Trips Made
                     </Link>
-                  
-                  </li>
-                  {/* <li>
-                    <Link to={"/add-trip"} title=" Create Trip Record">
-                      Create Trip Record
-                    </Link>
-                  </li> */}
-                </ul>
+                  </span>
+                </a>
               </li>
             </ul>
           </div>

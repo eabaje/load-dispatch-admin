@@ -1,5 +1,5 @@
 import React from "react";
-import { LOG_IN } from "../../constants";
+import { IMG_URL, LOG_IN } from "../../constants";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../../context/Provider";
 import { signout } from "../../context/actions/auth/auth.action";
@@ -195,9 +195,9 @@ function TopHeaderBar() {
                       <div class="pro-head">
                         <img
                           src={
-                            user?.PicUrl
-                              ? user?.PicUrl
-                              : "assets/images/user/avatar-1.jpg"
+                            user.UserPicUrl
+                              ? IMG_URL + user?.UserPicUrl
+                              : "https://bootdey.com/img/Content/avatar/avatar7.png"
                           }
                           class="img-radius"
                           alt=""

@@ -95,8 +95,7 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      <>
-        {" "}
+      params?.UserId === row.UserId && params?.roles === "carrier" && (
         <Link
           to={"/edit-carrier-info/" + row.CarrierId}
           className="btn btn-sm"
@@ -104,23 +103,33 @@ export const columns = (params) => [
         >
           <i className="first fas fa-pen"></i>
         </Link>
-      </>,
+      ),
 
-      <Link
-        to={"/add-vehicle-to-carrier/"+  row.CompanyId + "/" + row.CarrierId + "/" + row.CarrierType}
-        className="btn btn-sm"
-        title="Add Vehicle to carrier"
-      >
-        <i className="first fas fa-car"></i>
-      </Link>,
-
-      <Link
-        to={"/list-carrier-vehicles/" + row.CarrierId + "/" + row.CarrierType}
-        className="btn btn-sm"
-        title="List all Carrier Vehicle "
-      >
-        <i className="first fas fa-truck"></i>
-      </Link>,
+      params?.UserId === row.UserId && params?.roles === "carrier" && (
+        <Link
+          to={
+            "/add-vehicle-to-carrier/" +
+            row.CompanyId +
+            "/" +
+            row.CarrierId +
+            "/" +
+            row.CarrierType
+          }
+          className="btn btn-sm"
+          title="Add Vehicle to carrier"
+        >
+          <i className="first fas fa-car"></i>
+        </Link>
+      ),
+      params?.UserId === row.UserId && params?.roles === "carrier" && (
+        <Link
+          to={"/list-carrier-vehicles/" + row.CarrierId + "/" + row.CarrierType}
+          className="btn btn-sm"
+          title="List all Carrier Vehicle "
+        >
+          <i className="first fas fa-truck"></i>
+        </Link>
+      ),
       params?.roles === "admin" && (
         <Link
           to={"/delete-data/Carriers/" + row.CarrierId}

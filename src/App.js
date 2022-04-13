@@ -43,6 +43,7 @@ import AddUserRole from "./pages/user/AddUserRole";
 import ListProfileDriver from "./pages/driver/ListProfileDriver";
 import Pdfviewer from "./components/pdf/pdfviewer";
 import NoLayout from "./layout/noLayout";
+import DriverDetail from "./pages/driver/DriverDetail";
 
 const App = () => {
   const {
@@ -92,8 +93,8 @@ const App = () => {
   };
   const AppLayoutRoute = ({ component: Component, ...rest }) => {
     if (!isAuthenticated()) {
-      //window.location.href = '/signin'
-      history.push("/signin");
+      window.location.href = "/signin";
+      // history.push("/signin");
     }
 
     return (
@@ -260,7 +261,7 @@ const App = () => {
               path="/list-carrier-vehicles/:carrierId/:carrierType"
               component={ListVehicle}
             />
-              <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/list-company-vehicles/:companyId"
               component={ListVehicle}
@@ -285,16 +286,22 @@ const App = () => {
               path="/list-drivers-info"
               component={ListDriver}
             />
-          <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/list-carrier-drivers-info/:companyId"
               component={ListDriver}
             />
 
-              <AppLayoutRoute
+            <AppLayoutRoute
               exact
               path="/list-drivers-profile"
               component={ListProfileDriver}
+            />
+
+            <AppLayoutRoute
+              exact
+              path="/list-driver-detail/:driverId"
+              component={DriverDetail}
             />
             <AppLayoutRoute exact path="/add-trip" component={AddTrip} />
             <AppLayoutRoute exact path="/edit-trip" component={EditTrip} />

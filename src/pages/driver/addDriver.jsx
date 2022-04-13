@@ -141,7 +141,7 @@ function AddDriver({ history, match }) {
     // console.log(`formdata`, formdata);
     return isAddMode
       ? CreateDriver(formdata)
-      : UpdateDriver(driverId, formdata);
+      : UpdateDriver(formdata, driverId);
   }
 
   const CreateDriver = (data) => {
@@ -164,10 +164,12 @@ function AddDriver({ history, match }) {
     });
   };
 
-  const UpdateDriver = (data) => {
-    editDriver(data, picFile, docFile)(driverDispatch)((res) => {
-      console.log(`data`, data);
-      if (res.message === "Success") {
+  const UpdateDriver = (data, driverId) => {
+    data.CompanyId = user.CompanyId;
+
+    editDriver(data, driverId)(driverDispatch)((res) => {
+      console.log(`res`, res);
+      if (res) {
         enqueueSnackbar(`Updated  Driver-${res.data.DriverName} successfully`, {
           variant: "success",
         });
@@ -249,12 +251,16 @@ function AddDriver({ history, match }) {
                           fieldName="PicUrl"
                           onChangePicHandler={onChangePicHandler}
                         />
-                        <a
-                          href="#"
-                          onClick={(e) => setVisibilityImage(!visibilityImage)}
-                        >
-                          <i className="first fas fa-pen"></i>
-                        </a>
+                        {driverId && (
+                          <a
+                            href="#"
+                            onClick={(e) =>
+                              setVisibilityImage(!visibilityImage)
+                            }
+                          >
+                            <i className="first fas fa-pen"></i>
+                          </a>
+                        )}
                       </span>
 
                       {visibilityImage && (
@@ -403,7 +409,12 @@ function AddDriver({ history, match }) {
                       >
                         <option value=""> Select Region/State </option>
                         {pickUpRegion.map((item) => (
-                          <option value={item.isoCode}>{item.name}</option>
+                          <option
+                            selected={selPickUpRegion === item.isoCode}
+                            value={item.isoCode}
+                          >
+                            {item.name}
+                          </option>
                         ))}
                       </select>
                     </div>

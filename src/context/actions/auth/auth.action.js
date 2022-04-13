@@ -61,6 +61,7 @@ export const signin = (form, dispatch) => {
 
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("user", JSON.stringify(res.data));
+    //  console.log("res.data", res.data);
   } catch (error) {
     dispatch({
       type: LOGIN_FAIL,
@@ -85,7 +86,7 @@ export const signin2 = (form) => (dispatch) => (onSuccess) => (onError) => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
-      console.log(`res`, res);
+      // console.log(`res`, res);
       onSuccess(res.data);
     })
     .catch((err) => {
@@ -95,7 +96,7 @@ export const signin2 = (form) => (dispatch) => (onSuccess) => (onError) => {
 
       dispatch({
         type: LOGIN_FAIL,
-        payload: err,
+        payload: message,
       });
 
       onError(message);

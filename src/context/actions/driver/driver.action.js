@@ -270,10 +270,7 @@ export const UploadDriverFile =
   };
 
 export const editDriver =
-  (form, file1 = null, file2 = null) =>
-  (dispatch) =>
-  (onSuccess) =>
-  (onError) => {
+  (form, driverId) => (dispatch) => (onSuccess) => (onError) => {
     const requestPayload = {
       CompanyId: form.CompanyId || "",
       DriverName: form.DriverName || "",
@@ -288,30 +285,30 @@ export const editDriver =
       DriverDocs: form.DriverDocs || "",
       PicUrl: form.PicUrl || null,
     };
-    const data = new FormData();
-    if (file1 !== null) data.append("filePicUrl", file1);
-    if (file2 !== null) data.append("fileLicenseUrl", file2);
+    console.log("requestPayload :>> ", form);
+    let formData = new FormData();
+    // if (file1 !== null) data.append("filePicUrl", file1);
+    // if (file2 !== null) data.append("fileLicenseUrl", file2);
     // data.append("filePicUrl", file1);
     // data.append("fileLicenseUrl", file2);
-    data.append("DriverId", form.DriverId);
-    data.append("CompanyId", form.CompanyId);
-    data.append("DriverName", form.DriverName);
-    data.append("Email", form.Email);
-    data.append("Phone", form.Phone);
-    data.append("DOB", form.DOB);
-    data.append("Address", form.Address);
-    data.append("City", form.City);
-    data.append("Region", form.Region);
-    data.append("Country", form.Country);
-    data.append("Licensed", form.Licensed);
+    formData.append("DriverId", driverId);
+    formData.append("CompanyId", form.CompanyId);
+    formData.append("DriverName", form.DriverName);
+    formData.append("Email", form.Email);
+    formData.append("Phone", form.Phone);
+    formData.append("DOB", form.DOB);
+    formData.append("Address", form.Address);
+    formData.append("City", form.City);
+    formData.append("Region", form.Region);
+    formData.append("Country", form.Country);
+    formData.append("Licensed", form.Licensed);
 
-    console.log("requestPayload :>> ", data);
     dispatch({
       type: EDIT_DRIVER_REQUEST,
     });
 
     axios
-      .put(`/driver/update/${form.DriverId}`, data)
+      .put(`/driver/update/${driverId}`, form)
       .then((res) => {
         dispatch({
           type: EDIT_DRIVER_SUCCESS,
@@ -321,7 +318,6 @@ export const editDriver =
         onSuccess(res.data);
       })
       .catch((err) => {
-        console.log("err", err.response);
         const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({
           type: CREATE_DRIVER_FAIL,
