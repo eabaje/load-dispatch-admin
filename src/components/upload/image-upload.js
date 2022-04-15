@@ -1,11 +1,6 @@
 import React, { useState, useCallback, useEffect, Component } from "react";
 import { getFiles, uploadMedia } from "../../helpers/uploadImage";
-//import Gallery from "react-photo-gallery";
 import Gallery from "react-grid-gallery";
-//import Carousel, { Modal, ModalGateway } from "react-images";
-import Measure from "react-measure";
-//import "react-image-gallery/styles/css/image-gallery.css";
-
 import { IMG_URL } from "../../constants";
 
 export default function UploadImages(props) {
@@ -54,7 +49,7 @@ export default function UploadImages(props) {
       setImageInfos(files.data.data);
       setImageGallery(newMarkers);
       //  alert(imageGallery);
-      //  console.log("imageInfos", imageGallery);
+       console.log("imageInfos", imageGallery);
     });
   }, []);
 
@@ -79,6 +74,7 @@ export default function UploadImages(props) {
         setProgress(0);
         setMessage("Could not upload the image!");
         setCurrentFile(undefined);
+        console.log('err', err)
       });
   }
   // {({ measureRef }) => {
@@ -121,43 +117,56 @@ export default function UploadImages(props) {
           } */}
       <div>
         <div className="row">
-          <div className="col-8">
-            <h5>{props.title ? props.title : `Upload pictures or images`}</h5>
+          <div className="col-12">
+           <span style={{display:'inline-block'}}> <h5>{props.title ? props.title : `Upload pictures or images`}</h5></span> 
+           {props.backArrow && (
+
+            <span style={{display:'inline-block',float:'right'}}> <i class="fa fa-arrow-left" aria-hidden="true" title="Go back" onClick={props.SetFormStep}></i></span>
+
+           )}
+          
             <hr />
-            <input
-              type="file"
-              name="file-5[]"
-              id="file-5"
-              className="inputfile inputfile-4"
-              onChange={selectFile}
-            />
-            <label htmlFor="file-5">
-              <figure>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="17"
-                  viewBox="0 0 20 17"
-                >
-                  <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z" />
-                </svg>
-              </figure>
-              {/* <span>
-              {this.state.uploading
-                ? this.state.loaded + "%"
-                : this.state.message}
-            </span> */}
-            </label>
-            <br />
-            <div style={{ "padding-left": "40px" }}>
-              <button
-                className="btn btn-success btn-sm "
-                disabled={!currentFile}
-                onClick={upload}
-              >
-                Upload
-              </button>
-            </div>
+            {(props.role !=='shipper') &&(
+                  <>
+
+                      <input
+                      type="file"
+                      name="file-5[]"
+                      id="file-5"
+                      className="inputfile inputfile-4"
+                      onChange={selectFile}
+                      />
+                      <label htmlFor="file-5">
+                      <figure>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="17"
+                          viewBox="0 0 20 17"
+                        >
+                          <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z" />
+                        </svg>
+                      </figure>
+                      {/* <span>
+                      {this.state.uploading
+                        ? this.state.loaded + "%"
+                        : this.state.message}
+                      </span> */}
+                      </label>
+                      <br />
+                      <div style={{ "padding-left": "40px" }}>
+                      <button
+                        className="btn btn-success btn-sm "
+                        disabled={!currentFile}
+                        onClick={upload}
+                      >
+                        Upload
+                      </button>
+                      </div>
+                    </>
+
+            )}
+           
           </div>
         </div>
 

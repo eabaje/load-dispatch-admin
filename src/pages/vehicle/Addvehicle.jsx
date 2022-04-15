@@ -3,15 +3,11 @@ import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-//import { yupResolver } from 'react-hook-form-resolvers';
-import * as Yup from "yup";
 import { Country, State } from "country-state-city";
 import { GlobalContext } from "../../context/Provider";
 import { LOAD_TYPE, LOAD_CAPACITY, LOAD_UNIT } from "../../constants/enum";
 import {
   createVehicle,
-  listVehiclesByVehicleId,
   editVehicle,
 } from "../../context/actions/vehicle/vehicle.action";
 import { fetchData, fetchDataAll } from "../../helpers/query";
@@ -78,6 +74,11 @@ function AddVehicle({ history, match }) {
       enqueueSnackbar(err, { variant: "error" });
     });
   }
+    const SetFormStep=()=>{
+
+      setFormStep(0);
+
+    }
 
   function EditVehicle(data, id) {
     editVehicle(data, id)(vehicleDispatch)((res) => {
@@ -486,8 +487,10 @@ function AddVehicle({ history, match }) {
                 )}
                 {formStep === 1 && (
                   <UploadImages
-                    title={`Upload Vehicle pictures`}
+                    title={`Upload Vehicle Pictures`}
                     refId={vehicleId}
+                    backArrow={'back'}
+                    SetFormStep={SetFormStep}
                   />
                 )}
               </div>

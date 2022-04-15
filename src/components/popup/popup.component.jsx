@@ -22,7 +22,8 @@ const CustomPopup = (props) => {
       className="overlay"
     >
       <div className="popup">
-        <h2>{props.title}</h2>
+        {props.title && ( <h2>{props.title}</h2>)}
+       
         <span className="close" onClick={closeHandler}>
           &times;
         </span>
@@ -33,7 +34,7 @@ const CustomPopup = (props) => {
 };
 
 CustomPopup.propTypes = {
-  title: PropTypes.string.isRequired,
+  // title: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

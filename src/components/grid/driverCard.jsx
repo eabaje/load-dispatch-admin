@@ -101,7 +101,7 @@ function DriverCard(props) {
             </button>{" "}
             <Link
               className="btn btn-outline-primary px-4"
-              to={`list-carrier-drivers-info/${driver.driverId}`}
+              to={`list-driver-detail/${driver.DriverId}`}
               title=" "
             >
               <i class="feather icon-log-out"></i> Check It Out

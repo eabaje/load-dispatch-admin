@@ -5,7 +5,7 @@ import { GlobalContext } from "../../context/Provider";
 import { IMG_URL } from "../../constants";
 import { UploadUserFile } from "../../context/actions/user/user.action";
 
-export default function UpdateUserFileUpload(props) {
+export default function UpdateUserFileUpload(props){
   const { refId, popupCloseHandlerImage } = props;
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");

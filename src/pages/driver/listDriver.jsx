@@ -20,9 +20,7 @@ function ListDriver({ history, match }) {
 
   // GET request function to your Mock API
   const fetchData = async () => {
-    // fetch(`${INVENTORY_API_URL}`)
-    //   .then((res) => res.json())
-    //   .then((json) => setData(json));
+   
     try {
      
       const lnk= companyId ? `${API_URL}driver/findAllDriversByCompany/${companyId}`: `${API_URL}driver/findAll`;

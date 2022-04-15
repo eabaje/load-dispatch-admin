@@ -25232,9 +25232,10 @@ background-size: cover;
     right: 0;
     background: rgba(0, 0, 0, 0.7);
     transition: opacity 500ms;
+    z-index: 1;
   }
   .popup {
-    margin: 70px auto;
+    margin: 80px auto;
     padding: 20px;
     background: #fff;
     border-radius: 5px;
@@ -25263,6 +25264,7 @@ background-size: cover;
     color: #000;
   }
   .popup .content {
+    margin-top: 10px;
     max-height: 30%;
     overflow: auto;
   }

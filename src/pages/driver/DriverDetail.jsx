@@ -122,7 +122,7 @@ function DriverDetail({ history, match }) {
                               {profile?.Address}
                             </h7>
                             <p class="text-muted">
-                              {profile?.User.IsActivated && "Active"}
+                              {profile?.IsActivated && "Active"}
                               {profile?.DOB && "| Born " + profile?.DOB}
                             </p>
                           </div>
@@ -152,7 +152,7 @@ function DriverDetail({ history, match }) {
                       >
                         <div class="card-body">
                           <div class="col-md-12 ">
-                            <UploadImages refId={driverId} />
+                            <UploadImages title={'Check pictures of vehicle'} refId={driverId} role={user?.roles}/>
                           </div>
                         </div>
                       </div>

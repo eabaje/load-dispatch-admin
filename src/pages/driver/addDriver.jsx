@@ -20,7 +20,7 @@ import CustomPopup from "../../components/popup/popup.component";
 import Pdfviewer from "../../components/pdf/pdfviewer";
 import UpdateFileUpload from "../../components/upload/edit-file-upload";
 
-function AddDriver({ history, match }) {
+const AddDriver=({ history, match }) => {
   const { driverId } = match.params;
   const isAddMode = !driverId;
   let imgPath = "";
@@ -106,8 +106,8 @@ function AddDriver({ history, match }) {
         setcompanyId(driver["CompanyId"]);
         setdocUrl(IMG_URL + driver.DriverDocs);
 
-        const splitdoc = driver.DriverDocs.split("/");
-        setdoc(splitdoc[2]);
+        const splitdoc = driver?.DriverDocs ? driver.DriverDocs.split("/"): null;
+        if (splitdoc!==null){(setdoc(splitdoc[2]))} ;
         setPickUpRegion(
           (pickUpRegion) =>
             // (region = JSON.stringify(State.getStatesOfCountry(e.target.value)))
@@ -258,7 +258,7 @@ function AddDriver({ history, match }) {
                               setVisibilityImage(!visibilityImage)
                             }
                           >
-                            <i className="first fas fa-pen"></i>
+                            <i className="first fas fa-pen" title="Update your picture"></i>
                           </a>
                         )}
                       </span>
@@ -267,7 +267,7 @@ function AddDriver({ history, match }) {
                         <CustomPopup
                           onClose={popupCloseHandlerImage}
                           show={visibilityImage}
-                          title="Upload File"
+                         
                         >
                           <UpdateFileUpload
                             refId={driverId}
@@ -457,7 +457,7 @@ function AddDriver({ history, match }) {
                             href="#"
                             onClick={(e) => setVisibility(!visibility)}
                           >
-                            {doc} <i className="first fas fa-download"></i>
+                            {doc} <i className="first fas fa-download" title="View PDF File"></i>
                           </a>
                         )}
 
@@ -465,7 +465,7 @@ function AddDriver({ history, match }) {
                           <CustomPopup
                             onClose={popupCloseHandler}
                             show={visibility}
-                            title="PDF Viewer"
+                           
                           >
                             <Pdfviewer pdfLink={docUrl} />
                           </CustomPopup>
@@ -475,14 +475,14 @@ function AddDriver({ history, match }) {
                           href="#"
                           onClick={(e) => setVisibilityFile(!visibilityFile)}
                         >
-                          <i className="first fas fa-pen"></i>
+                          <i className="first fas fa-pen" title="Upload PDF File"></i>
                         </a>
 
                         {visibilityFile && (
                           <CustomPopup
                             onClose={popupCloseHandler}
                             show={visibilityFile}
-                            title="Upload File"
+                           
                           >
                             <UpdateFileUpload
                               refId={driverId}
