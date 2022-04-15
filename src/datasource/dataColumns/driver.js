@@ -21,7 +21,7 @@ export const columns = (params) => [
   {
     id: 3,
     name: "Vehicle Number",
-    selector: (row) => row.Vehicle.VehicleNumber,
+    selector: (row) => row.Vehicles.VehicleId,
     sortable: true,
     reorder: true,
   },
