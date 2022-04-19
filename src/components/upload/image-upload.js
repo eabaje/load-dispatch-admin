@@ -1,14 +1,17 @@
 import React, { useState, useCallback, useEffect, Component } from "react";
 import { getFiles, uploadMedia } from "../../helpers/uploadImage";
 import Gallery from "react-grid-gallery";
-import { IMG_URL } from "../../constants";
+import { IMG_URL, PIC_URL } from "../../constants";
 
 export default function UploadImages(props) {
+  const{ refId,title,backArrow,role,SetFormStep}=props;
+ 
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");
   const [previewImage, setPreviewImage] = useState("");
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
+  
   const [imageInfos, setImageInfos] = useState([]);
   const [imageGallery, setImageGallery] = useState([
     {
@@ -36,27 +39,31 @@ export default function UploadImages(props) {
     setCurrentImage(0);
     setViewerIsOpen(false);
   };
-
+ 
   useEffect(() => {
-    //  alert(props.refId);
-    getFiles(props.refId).then((files) => {
-      const photos = files.data.data;
-      let newMarkers = photos.map((el) => ({
-        src: IMG_URL + el.url,
-        thumbnail: IMG_URL + el.ThumbUrl,
-      }));
-      //  alert(newMarkers);
-      setImageInfos(files.data.data);
-      setImageGallery(newMarkers);
-      //  alert(imageGallery);
-       console.log("imageInfos", imageGallery);
-    });
+
+      alert(refId);
+      console.log("props.refId",refId );
+      if (refId !== undefined){
+        getFiles(refId).then((files) => {
+          const photos = files.data.data;
+          let newMarkers = photos.map((el) => ({
+            src: PIC_URL + el.url,
+            thumbnail: PIC_URL + el.ThumbUrl,
+          }));
+          //  alert(newMarkers);
+          setImageInfos(files.data.data);
+          setImageGallery(newMarkers);
+          //  alert(imageGallery);
+          console.log("imageInfos", imageGallery);
+      });
+  }
   }, []);
 
   function upload() {
     setProgress(0);
 
-    uploadMedia(currentFile, props.refId, (event) => {
+    uploadMedia(currentFile, refId, (event) => {
       setProgress(Math.round((100 * event.loaded) / event.total));
     })
       .then((response) => {
@@ -66,7 +73,7 @@ export default function UploadImages(props) {
       })
       .then((files) => {
         setImageInfos(files.data.data);
-        return getFiles(props.refId);
+        return getFiles(refId);
 
         //  console.log("imageInfos", this.state.imageInfos);
       })
@@ -118,15 +125,15 @@ export default function UploadImages(props) {
       <div>
         <div className="row">
           <div className="col-12">
-           <span style={{display:'inline-block'}}> <h5>{props.title ? props.title : `Upload pictures or images`}</h5></span> 
-           {props.backArrow && (
+           <span style={{display:'inline-block'}}> <h5>{title ? title : `Upload pictures or images`}</h5></span> 
+           {backArrow && (
 
-            <span style={{display:'inline-block',float:'right'}}> <i class="fa fa-arrow-left" aria-hidden="true" title="Go back" onClick={props.SetFormStep}></i></span>
+            <span style={{display:'inline-block',float:'right'}}> <i class="fa fa-arrow-left" aria-hidden="true" title="Go back" onClick={SetFormStep}></i></span>
 
            )}
           
             <hr />
-            {(props.role !=='shipper') &&(
+            {(role !=='shipper') &&(
                   <>
 
                       <input

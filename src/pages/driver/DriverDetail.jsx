@@ -12,9 +12,11 @@ import { GlobalContext } from "../../context/Provider";
 import { AssignShipmentsToDriver } from "../../context/actions/shipment/shipment.action";
 function DriverDetail({ history, match }) {
   const { driverId } = match.params;
+  const { vehicleId } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [profile, setProfile] = useState([]);
+  const [profile, setProfile] = useState({});
+  const [refId, setRefId] = useState();
   const [user, setUser] = useState({});
 
   // Calling the function on component mount
@@ -24,6 +26,17 @@ function DriverDetail({ history, match }) {
       driverId
     )((driver) => {
       setProfile(driver);
+      setRefId(driver?.Vehicles[0].VehicleId)
+      console.log(driver?.Vehicles[0].VehicleId)
+    //   for(var key in driver?.Vehicles) {
+    //     // examples
+      
+      
+    //     console.log( driver[key]["Vehicles"].VehicleId );
+    //  }
+
+
+
     })((err) => {
       enqueueSnackbar(err.message, { variant: "error" });
     });
@@ -66,11 +79,12 @@ function DriverDetail({ history, match }) {
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header alert alert-info">
-            <h3>Driver </h3>
+            <h3>Connect with Driver </h3>
             <hr />
             <ul>
-              <li>View and Edit User Profile</li>
-              <li>Change User Password</li>
+              <li>View the driver Profile</li>
+              <li>Check the truck images </li>
+              <li>Send a request </li>
             </ul>
           </div>
           <div class="card-body table-border-style">
@@ -120,6 +134,7 @@ function DriverDetail({ history, match }) {
                             </h6>
                             <h7 class="f-w-600 m-t-25 m-b-10">
                               {profile?.Address}
+                              {profile?.Vehicles?.map(vehicles => <>{vehicles?.VehicleId}</>)}
                             </h7>
                             <p class="text-muted">
                               {profile?.IsActivated && "Active"}
@@ -152,7 +167,7 @@ function DriverDetail({ history, match }) {
                       >
                         <div class="card-body">
                           <div class="col-md-12 ">
-                            <UploadImages title={'Check pictures of vehicle'} refId={driverId} role={user?.roles}/>
+                            <UploadImages title={'Check pictures of vehicle'} refId= {vehicleId} role={user?.roles}/>
                           </div>
                         </div>
                       </div>
@@ -188,33 +203,26 @@ function DriverDetail({ history, match }) {
                               class="form-control"
                               {...register("Email")}
                             />
-                            <div class="form-group row">
-                              <label class="col-form-label col-md-2">
-                                Password
-                              </label>
-                              <div class="col-md-10">
-                                <input
-                                  name="Password"
-                                  class="form-control"
-                                  placeholder="Password"
-                                  {...register("Password", {
-                                    required: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-
-                            <div class="form-group row">
-                              <div class="col-md-12">
-                                <h5 class="alert alert-info"> </h5>
-                              </div>
-                            </div>
-                            <div class="form-group"></div>
-
                             <div class="form-row">
-                              <div class="col-sm-10 "></div>
-                              <div class="right" style={{ float: "right" }}>
-                                <button
+                                  <div class="col-sm-10 ">
+                                    <div class="form-check">
+                                      <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        value=""
+                                        id="invalidCheck"
+                                        required
+                                      />
+                                      <label class="form-check-label" for="invalidCheck">
+                                        I am interested in engaging your services
+                                      </label>
+                                      <div class="invalid-feedback">
+                                        You must agree before submitting.
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="right" style={{ float: "right" }}>
+                                  <button
                                   type="submit"
                                   class="btn  btn-primary"
                                   style={{ float: "right" }}
@@ -226,6 +234,15 @@ function DriverDetail({ history, match }) {
                                   )}
                                   {"Submit "}
                                 </button>
+                                  </div>
+                                </div>
+
+                           
+
+                            <div class="form-row">
+                              <div class="col-sm-10 "></div>
+                              <div class="right" style={{ float: "right" }}>
+                               
                               </div>
                             </div>
                           </form>

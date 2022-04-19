@@ -8,7 +8,11 @@ export const LOG_OUT = "https://load-dispatch-admin.vercel.app";
 
 export const IMG_URL = "http://localhost:8000/uploads/";
 
-//export const IMG_URL = "https://loadboard-api.herokuapp.com/pics/";
+export const PIC_URL = "http://localhost:8000/uploads/pics/";
+
+//export const IMG_URL = "https://loadboard-api.herokuapp.com/uploads/";
+
+//export const PIC_URL = "https://loadboard-api.herokuapp.com/pics/";
 
 //export const DOC_URL = "http://localhost:8000/docs/";
 

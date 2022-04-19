@@ -20,8 +20,8 @@ export const columns = (params) => [
   },
   {
     id: 3,
-    name: "Vehicle Number",
-    selector: (row) => row.Vehicles.VehicleId,
+    name: "Assigned Vehicle Number",
+    selector: (row) =>  row.Vehicles[0]['AssignDrivers'].Assigned===true? row.Vehicles[0]['VehicleNumber']:"",
     sortable: true,
     reorder: true,
   },
@@ -113,7 +113,7 @@ export const columns = (params) => [
   {
     id: 12,
     name: "Created Date",
-    selector: (row) => row.createdAt,
+    selector: (row) => row.createdAt? Date.parse(row.createdAt):row.createdAt,
     sortable: true,
     right: true,
     reorder: true,
@@ -122,7 +122,7 @@ export const columns = (params) => [
   {
     id: 13,
     name: "Updated Date",
-    selector: (row) => row.updatedAt,
+    selector: (row) => row.updatedAt? Date.parse(row.updatedAt):row.updatedAt,
     sortable: true,
     right: true,
     reorder: true,

@@ -300,7 +300,7 @@ const App = () => {
 
             <AppLayoutRoute
               exact
-              path="/list-driver-detail/:driverId"
+              path="/list-driver-detail/:driverId/:vehicleId"
               component={DriverDetail}
             />
             <AppLayoutRoute exact path="/add-trip" component={AddTrip} />

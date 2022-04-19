@@ -24,26 +24,29 @@ function ListProfileDriver() {
   console.log("data", data);
   return (
     <>
-      {data.length > 0 ? (
-         <div class="container mt-5">
-         <div class="row d-flex justify-content-center">
-             <div class="col-md-12">
-        <Container fluid className="grid">
-          <Row>
-         
-            {data.map((item) => (
-              
-              <Col className="col-lg-6 ">
-                <DriverCard key={item.DriverId} driver={item} />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-        </div>
-     </div>
- </div>
-      ) : (
+      {data.length < 1 ? (
         <h4 class="alert alert-info">No driver record found</h4>
+      ) : (
+        
+        <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+       <Container fluid className="grid">
+         <Row>
+        
+           {data
+           .filter((item) => item?.Vehicles[0]['AssignDrivers'].Assigned===true)
+           .map((item) => (
+             
+             <Col className="col-lg-6 ">
+               <DriverCard key={item.DriverId} driver={item} />
+             </Col>
+           ))}
+         </Row>
+       </Container>
+       </div>
+    </div>
+</div>
       )}
     </>
   );
