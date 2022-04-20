@@ -7,10 +7,11 @@ import {
   REGISTER_SUCCESS,
   CLEAR_AUTH_STATE,
 } from "../../../constants/actionTypes";
-import axios from "../../../helpers/axiosInstance";
+
 import Axios from "axios";
 import { API_URL } from "../../../constants";
 import { CONNECTION_ERROR } from "../../../constants/api";
+import axiosInstance from "../../../helpers/axiosInstance-2";
 
 export const register =
   (form) => async (dispatch) => (onSuccess) => (onError) => {
@@ -31,7 +32,7 @@ export const register =
 
     dispatch({ type: REGISTER_REQUEST, payload: form });
 
-    axios
+    axiosInstance()
       .post("auth/register", form)
       .then((res) => {
         dispatch({ type: REGISTER_SUCCESS, payload: res.data });
@@ -79,7 +80,7 @@ export const signin2 = (form) => (dispatch) => (onSuccess) => (onError) => {
   dispatch({
     type: LOGIN_REQUEST,
   });
-  axios
+  axiosInstance()
     .post(`auth/signin`, requestPayload)
     .then((res) => {
       dispatch({

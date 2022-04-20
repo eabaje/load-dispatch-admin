@@ -32,6 +32,7 @@ function ListCarrier({ history, match }) {
 
   // Calling the function on component mount
   useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
     if (data.length === 0) {
       listCarriers()(carrierDispatch)((res) => {
         // setData(res.data);
@@ -41,10 +42,10 @@ function ListCarrier({ history, match }) {
     }
 
     //  fetchData();
-    console.log(`data`, data);
-    setUser(JSON.parse(localStorage.getItem("user")));
+   
+   
   }, []);
-
+  console.log(`data`, JSON.parse(localStorage.getItem("user")));
   return (
     <>
       <div class="row">

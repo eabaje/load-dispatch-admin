@@ -31,9 +31,9 @@ export default (history = null) => {
         localStorage.removeItem("token");
 
         if (history) {
-          history.push("/auth/login");
+          history.push("/sigin");
         } else {
-          window.location = "/auth/login";
+          window.location = "/sigin";
         }
       } else {
         return new Promise((resolve, reject) => {

@@ -2,6 +2,9 @@ import React, { useState, useCallback, useEffect, Component } from "react";
 import { getFiles, uploadMedia } from "../../helpers/uploadImage";
 import Gallery from "react-grid-gallery";
 import { IMG_URL, PIC_URL } from "../../constants";
+import CustomPopup from "../popup/popup.component";
+import UpdateFileUpload from "./edit-file-upload";
+import UploadWidget from "./upload-widget";
 
 export default function UploadImages(props) {
   const{ refId,title,backArrow,role,SetFormStep}=props;
@@ -20,6 +23,13 @@ export default function UploadImages(props) {
   ]);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
+  const [visibilityImage, setVisibilityImage] = useState(false);
+ 
+  
+  const popupCloseHandlerImage = (e) => {
+    setVisibilityImage(e);
+  };
+
 
   const measureRef = React.useRef();
 
@@ -42,8 +52,8 @@ export default function UploadImages(props) {
  
   useEffect(() => {
 
-      alert(refId);
-      console.log("props.refId",refId );
+    
+     // console.log("props.refId",refId );
       if (refId !== undefined){
         getFiles(refId).then((files) => {
           const photos = files.data.data;
@@ -102,26 +112,7 @@ export default function UploadImages(props) {
 
   return (
     <>
-      {/* <Measure
-        bounds
-        onResize={(contentRect) =>
-          setWidth({ width: contentRect.bounds.width })
-        }
-      >
-        {({ measureRef }) => {
-          if (width < 1) {
-            return <div ref={measureRef} />;
-          }
-          let columns = 1;
-          if (width >= 480) {
-            columns = 2;
-          }
-          if (width >= 1024) {
-            columns = 3;
-          }
-          if (width >= 1824) {
-            columns = 4;
-          } */}
+     
       <div>
         <div className="row">
           <div className="col-12">
@@ -205,15 +196,7 @@ export default function UploadImages(props) {
         )}
 
         <div className="card mt-3">
-          {/* <div className="card-header">List of Files</div>
-          <ul className="list-group list-group-flush">
-            {imageInfos &&
-              imageInfos.map((img, index) => (
-                <li className="list-group-item" key={index}>
-                  <a href={img.url}>{img.FileName}</a>
-                </li>
-              ))}
-          </ul> */}
+         
           <div ref={measureRef} style={{ height: 500, overflow: "scroll" }}>
             <Gallery
               images={imageGallery}
@@ -223,33 +206,45 @@ export default function UploadImages(props) {
               // currentImage={3}
               // isOpen={ true}
             />
-            {/*  <Gallery photos={imageGallery} onClick={openLightbox} />
-                <ModalGateway>
-                  {viewerIsOpen ? (
-                    <Modal onClose={closeLightbox}>
-                      <Carousel
-                        currentIndex={currentImage}
-                        views={imageGallery.map((x) => ({
-                          ...x,
-                          srcset: x.srcSet,
-                          caption: x.title,
-                        }))}
-                      />
-                    </Modal>
-                  ) : null}
-                </ModalGateway>
-                 <Lightbox
-            onClick={this.openLightbox}
-            images={imageInfos}
-            onClose={this.closeLightbox}
-            onClickPrev={this.gotoPrevious}
-            onClickNext={this.gotoNext}
-            currentImage={this.state.currentImage}
-            isOpen={this.state.lightboxIsOpen}
-          />
-        */}
+        
           </div>
-        </div>
+
+          {(role !=='shipper') &&(
+            <>
+           <div className="card-header">List of Files</div>
+          <ul className="list-group list-group-flush">
+            {imageInfos &&
+              imageInfos.map((img, index) => (
+                
+                <li className="list-group-item" key={index}>
+
+                <img src={PIC_URL+img.ThumbUrl} className="previewImg"/>  <a href={img.url}>{img.FileName}</a>&nbsp; <i class="fa fa-pen" aria-hidden="true" style={{cursor:'hand'}} title="Edit Picture"   onClick={(e) =>
+                              setVisibilityImage(!visibilityImage)
+                            }></i>
+                            &nbsp;|&nbsp;
+                            <i class="fa fa-trash" aria-hidden="true" title="Delete Picture"  onClick={SetFormStep}></i>
+                </li>
+              ))}
+          </ul>
+
+          {visibilityImage && (
+                        <CustomPopup
+                          onClose={popupCloseHandlerImage}
+                          show={visibilityImage}
+                         
+                        >
+                        
+                           <UploadWidget 
+                           refId={ props.refId} 
+                           fileType={'image'}
+                          
+                           popupCloseHandlerImage={popupCloseHandlerImage} />
+                        </CustomPopup>
+                      )}
+                     </>
+          )}
+      
+         </div>
       </div>
       ;
       {/* }}

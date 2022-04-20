@@ -95,7 +95,7 @@ export const columns = (params) => [
     sortable: false,
     selector: "null",
     cell: (row) => [
-      params?.UserId === row.UserId && params?.roles === "carrier" && (
+      params?.roles === "carrier" && (
         <Link
           to={"/edit-carrier-info/" + row.CarrierId}
           className="btn btn-sm"
@@ -105,7 +105,7 @@ export const columns = (params) => [
         </Link>
       ),
 
-      params?.UserId === row.UserId && params?.roles === "carrier" && (
+       params?.roles === "carrier" && (
         <Link
           to={
             "/add-vehicle-to-carrier/" +
@@ -121,7 +121,7 @@ export const columns = (params) => [
           <i className="first fas fa-car"></i>
         </Link>
       ),
-      params?.UserId === row.UserId && params?.roles === "carrier" && (
+      params?.roles === "carrier" && (
         <Link
           to={"/list-carrier-vehicles/" + row.CarrierId + "/" + row.CarrierType}
           className="btn btn-sm"
