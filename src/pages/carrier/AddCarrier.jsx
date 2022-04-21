@@ -253,15 +253,7 @@ function AddCarrier({ history, match }) {
                     </div>
                   </div>
 
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h6 class="alert alert-info">
-                        After posting the basic information about your
-                        service.kindly go to <b>List Carrier info</b> and add
-                        your fleet.
-                      </h6>
-                    </div>
-                  </div>
+                
 
                   <div class="form-row">
                     <div class="col-sm-10 ">
