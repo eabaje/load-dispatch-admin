@@ -7,7 +7,7 @@ import UpdateFileUpload from "./edit-file-upload";
 import UploadWidget from "./upload-widget";
 
 export default function UploadImages(props) {
-  const{ refId,title,backArrow,role,SetFormStep}=props;
+  const{ refId,title,backArrow,role,SetFormStep,uploadType}=props;
  
   const [width, setWidth] = useState(-1);
   const [currentFile, setCurrentFile] = useState("");
@@ -31,7 +31,8 @@ export default function UploadImages(props) {
   };
 
 
-  const measureRef = React.useRef();
+  const editRef = React.useRef();
+  const delRef = React.useRef();
 
   const selectFile = async (e) => {
     setCurrentFile(e.target.files[0]);
@@ -58,8 +59,8 @@ export default function UploadImages(props) {
         getFiles(refId).then((files) => {
           const photos = files.data.data;
           let newMarkers = photos.map((el) => ({
-            src: PIC_URL + el.url,
-            thumbnail: PIC_URL + el.ThumbUrl,
+            src: PIC_URL + el.ImgPath,
+            thumbnail: PIC_URL + el.ThumbPath,
           }));
           //  alert(newMarkers);
           setImageInfos(files.data.data);
@@ -73,7 +74,7 @@ export default function UploadImages(props) {
   function upload() {
     setProgress(0);
 
-    uploadMedia(currentFile, refId, (event) => {
+    uploadMedia(uploadType,currentFile, refId, (event) => {
       setProgress(Math.round((100 * event.loaded) / event.total));
     })
       .then((response) => {
@@ -94,21 +95,7 @@ export default function UploadImages(props) {
         console.log('err', err)
       });
   }
-  // {({ measureRef }) => {
-  //   if (width < 1) {
-  //     return <div ref={measureRef} />;
-  //   }
-  //   let columns = 1;
-  //   if (width >= 480) {
-  //     columns = 2;
-  //   }
-  //   if (width >= 1024) {
-  //     columns = 3;
-  //   }
-  //   if (width >= 1824) {
-  //     columns = 4;
-  //   }
-  // }
+  
 
   return (
     <>
@@ -218,11 +205,11 @@ export default function UploadImages(props) {
                 
                 <li className="list-group-item" key={index}>
 
-                <img src={PIC_URL+img.ThumbUrl} className="previewImg"/>  <a href={img.url}>{img.FileName}</a>&nbsp; <i class="fa fa-pen" aria-hidden="true" style={{cursor:'hand'}} title="Edit Picture"   onClick={(e) =>
+                <img src={PIC_URL+img.ThumbPath} className="previewImg"/>  <a href={img.ImgPath}>{img.FileName}</a>&nbsp; <i class="fa fa-pen" aria-hidden="true" style={{cursor:'hand'}} title="Edit Picture" ref={editRef} defaultValue={img.MediaId}   onClick={(e) =>
                               setVisibilityImage(!visibilityImage)
                             }></i>
                             &nbsp;|&nbsp;
-                            <i class="fa fa-trash" aria-hidden="true" title="Delete Picture"  onClick={SetFormStep}></i>
+                            <i class="fa fa-trash" aria-hidden="true" title="Delete Picture"  onClick={SetFormStep} ref={delRef} defaultValue={img.MediaId} ></i>
                 </li>
               ))}
           </ul>
@@ -237,7 +224,8 @@ export default function UploadImages(props) {
                            <UploadWidget 
                            refId={ props.refId} 
                            fileType={'image'}
-                          
+                           uploadType={uploadType}
+                           mediaId={editRef.current.defaultValue}
                            popupCloseHandlerImage={popupCloseHandlerImage} />
                         </CustomPopup>
                       )}
