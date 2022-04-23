@@ -160,7 +160,7 @@ function UserProfile({ history, match }) {
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
     fetchData(
-      "user/findOne",
+      "user/findOneAssigned",
       userId
     )((user) => {
       setProfile(user);

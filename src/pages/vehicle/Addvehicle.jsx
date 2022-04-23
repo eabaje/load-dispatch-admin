@@ -62,7 +62,7 @@ function AddVehicle({ history, match }) {
   }
 
   function CreateVehicle(formdata) {
-    console.log(`formdata`, formdata);
+  //  console.log(`formdata`, formdata);
     createVehicle(formdata)(vehicleDispatch)((res) => {
       enqueueSnackbar(res.message, {
         variant: "success",
@@ -491,6 +491,7 @@ function AddVehicle({ history, match }) {
                     refId={vehicleId}
                     backArrow={'back'}
                     SetFormStep={SetFormStep}
+                    uploadType={'vehicle'}
                   />
                 )}
               </div>

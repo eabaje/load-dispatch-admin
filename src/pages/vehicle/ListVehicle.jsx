@@ -64,7 +64,7 @@ function ListVehicle({ history, match }) {
    
     
   }, []);
-  console.log(`data`, data);
+ // console.log(`data`, data);
  
   return (
     <div class="row">

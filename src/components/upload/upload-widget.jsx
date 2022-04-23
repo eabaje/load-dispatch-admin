@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { uploadMedia } from "../../helpers/uploadImage";
+import { UpdateMedia, uploadMedia } from "../../helpers/uploadImage";
 
 
 export default function UploadWidget(props) {
-  const { refId,popupCloseHandlerImage,upload } = props;
+  const { refId,popupCloseHandlerImage,upload,uploadType,mediaId } = props;
   const [width, setWidth] = useState(-1);
    const [currentFileWidget, setCurrentFileWidget] = useState("");
   const [previewImageWidget, setPreviewImageWidget] = useState("");
@@ -26,7 +26,7 @@ export default function UploadWidget(props) {
   function uploadImage() {
     setProgressWidget(0);
 
-    uploadMedia(currentFileWidget, refId, (event) => {
+    UpdateMedia(uploadType,currentFileWidget,mediaId, refId, (event) => {
       setMessageWidget(Math.round((100 * event.loaded) / event.total));
     })
       .then((response) => {

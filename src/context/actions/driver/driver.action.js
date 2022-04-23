@@ -39,7 +39,7 @@ export const listDriversByCompany =
       .get(`/driver/findAllDriversByCompany/${companyId}`)
       .then((res) => {
         dispatch({ type: GET_DRIVERS_SUCCESS, payload: res.data });
-        console.log("from", res.data);
+      
         onSuccess(res.data);
       })
       .catch((err) => {
@@ -356,8 +356,8 @@ export const assignDriverToVehicle =
           type: CREATE_DRIVER_SUCCESS,
           payload: res.data,
         });
-        console.log("assignedResult", res.data);
-        onSuccess(res.data);
+      //  console.log("assignedResult", res.data);
+    
       })
       .catch((err) => {
         console.log("err", err.response);

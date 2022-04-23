@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../constants/enum";
+import { API_URL } from "../constants/index";
 
 export const fetchData = (url, param) =>(onSucess) =>(onError)=> {
   

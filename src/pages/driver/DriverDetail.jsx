@@ -22,7 +22,7 @@ function DriverDetail({ history, match }) {
   // Calling the function on component mount
   useEffect(() => {
     fetchData(
-      "driver/findOne",
+      "driver/findOneAssigned",
       driverId
     )((driver) => {
       setProfile(driver);

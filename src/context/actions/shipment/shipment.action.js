@@ -264,7 +264,7 @@ export const listShipmentsInterest =
       .get(`/shipment/findAllShipmentsInterest/`)
       .then((res) => {
         dispatch({ type: GET_INTERESTS_SUCCESS, payload: res.data });
-        console.log(`res.data`, res.data);
+      
         onSuccess(res.data);
       })
 

@@ -18,13 +18,13 @@ export const columns = (params) => [
     sortable: true,
     reorder: true,
   },
-  // {
-  //   id: 3,
-  //   name: "Assigned Vehicle Number",
-  //   selector: (row) =>  row?.Vehicles[0]['AssignDrivers'].Assigned===true? row?.Vehicles[0]['VehicleNumber']:"",
-  //   sortable: true,
-  //   reorder: true,
-  // },
+  {
+    id: 3,
+    name: "Assigned Vehicle Number",
+    selector: (row) =>  row?.Vehicles[0]['AssignDrivers'].Assigned===true? row?.Vehicles[0]['VehicleNumber']:"",
+    sortable: true,
+    reorder: true,
+  },
   {
     id: 4,
     name: "Address",

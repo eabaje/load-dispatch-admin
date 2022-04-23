@@ -35,13 +35,31 @@ export const uploadDocuments = (file) => (onSuccess) => (onError) => {
     });
 };
 
-export const uploadMedia = (file, referenceId, onUploadProgress) => {
+export const uploadMedia = (uploadType='shipment',file, referenceId, onUploadProgress) => {
   let formData = new FormData();
   //alert(referenceId);
+  formData.append("UploadType", uploadType);
   formData.append("RefId", referenceId);
   formData.append("file", file);
 
   return axios.post("/upload/uploadImageWithData", formData, {
+    // headers: {
+    //   "Content-Type": "multipart/form-data",
+    // },
+    onUploadProgress,
+  });
+};
+
+export const UpdateMedia = (uploadType='shipment',file,mediaId, referenceId, onUploadProgress) => {
+  let formData = new FormData();
+  //alert(referenceId);
+  formData.append("UploadType", uploadType);
+  formData.append("RefId", referenceId);
+  formData.append("MediaId", mediaId);
+  formData.append("file", file);
+ 
+
+  return axios.post("/upload/updateImageWithData", formData, {
     // headers: {
     //   "Content-Type": "multipart/form-data",
     // },

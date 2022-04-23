@@ -12,7 +12,13 @@ export const LOG_OUT = "https://load-dispatch-admin.vercel.app";
 
 export const IMG_URL = "https://loadboard-api.herokuapp.com/uploads/";
 
-export const PIC_URL = "https://loadboard-api.herokuapp.com/pics/";
+export const PROFILE_IMG_URL = "https://loadboard-api.herokuapp.com/profiles/";
+
+export const VEHICLE_IMG_URL = "https://loadboard-api.herokuapp.com/vehicles/";
+
+export const SHIPMENT_IMG_URL = "https://loadboard-api.herokuapp.com/shipments/";
+
+export const PIC_URL = "https://loadboard-api.herokuapp.com/";
 
 //export const DOC_URL = "http://localhost:8000/docs/";
 

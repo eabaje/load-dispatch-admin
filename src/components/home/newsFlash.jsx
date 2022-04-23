@@ -34,11 +34,11 @@ function NewsFlash() {
         //  enqueueSnackbar(err, { variant: "error" });
       });
     }
-    setDataLength(dataShipment.data?.length);
-    setDataLengthInterest(dataInterest.data?.length);
+    // setDataLength(dataShipment.data?.length);
+    // setDataLengthInterest(dataInterest.data?.length);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
-  console.log(`data`, dataLengthInterest);
+  //console.log(`data`, dataLengthInterest);
   return (
     <>
       <div class="grey-bg container-fluid">
@@ -67,7 +67,7 @@ function NewsFlash() {
                         </Link>
                       </div>
                       <div class="align-self-center">
-                        <h6>{dataLength}</h6>
+                        <h6>{dataShipment.data?.length}</h6>
                       </div>
                     </div>
                   </div>
@@ -90,7 +90,7 @@ function NewsFlash() {
                         </Link>
                       </div>
                       <div class="align-self-center">
-                        <h6>{dataLengthInterest}</h6>
+                        <h6>{dataInterest.data?.length}</h6>
                       </div>
                     </div>
                   </div>
