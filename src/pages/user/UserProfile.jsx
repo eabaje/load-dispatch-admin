@@ -262,7 +262,7 @@ function UserProfile({ history, match }) {
   });
   console.log("data", profile);
   return (
-    <div>
+  
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header alert alert-info">
@@ -912,7 +912,7 @@ function UserProfile({ history, match }) {
           </div>
         </div>
       </div>
-    </div>
+  
   );
 }
 

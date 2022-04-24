@@ -64,7 +64,7 @@ function ListSubscription() {
   // };
 
   return (
-    <div>
+   
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header alert alert-info">
@@ -99,7 +99,7 @@ function ListSubscription() {
           </div>
         </div>
       </div>
-    </div>
+ 
   );
 }
 

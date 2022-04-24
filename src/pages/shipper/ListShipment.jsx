@@ -83,7 +83,7 @@ function ListShipment({ history, match }) {
   console.log(`userid`, userId);
   console.log(`data`, data2);
   return (
-    <div>
+    
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header alert alert-info">
@@ -159,7 +159,7 @@ function ListShipment({ history, match }) {
           </div>
         </div>
       </div>
-    </div>
+    
   );
 }
 

@@ -22,7 +22,7 @@ function Home() {
   }, []);
   return (
     <>
-      <div class="row">
+    
         <div class="col-md-8">
           <div class="card">
             <div class="card-body">
@@ -43,7 +43,7 @@ function Home() {
         <div class="col-md-4">
           <SideLink />
         </div>
-      </div>
+    
 
       <div class="row">
         <div class="col-sm-12">

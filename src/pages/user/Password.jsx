@@ -97,7 +97,7 @@ function AddUserRole({ history, match }) {
 
   return (
     <>
-      <div class="row">
+      
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
@@ -198,7 +198,7 @@ function AddUserRole({ history, match }) {
             </div>
           </div>
         </div>
-      </div>
+     
     </>
   );
 }

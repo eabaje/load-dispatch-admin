@@ -42,7 +42,7 @@ function UserList({ history, match }) {
   }, []);
   console.log("user", data);
   return (
-    <div>
+   
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header ">
@@ -84,7 +84,7 @@ function UserList({ history, match }) {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 }
 

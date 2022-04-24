@@ -203,7 +203,7 @@ const AddDriver=({ history, match }) => {
   });
   return (
     <>
-      <div class="row">
+     
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
@@ -546,7 +546,7 @@ const AddDriver=({ history, match }) => {
             </div>
           </div>
         </div>
-      </div>
+      
     </>
   );
 }

@@ -48,7 +48,7 @@ function ListCarrier({ history, match }) {
   console.log(`data`, JSON.parse(localStorage.getItem("user")));
   return (
     <>
-      <div class="row">
+    
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header alert alert-info">
@@ -99,7 +99,7 @@ function ListCarrier({ history, match }) {
             </div>
           </div>
         </div>
-      </div>
+     
     </>
   );
 }

@@ -238,7 +238,7 @@ function AddUserSubscription({ history, match }) {
   // pk_test_c06524a4666917095175d12761920ec03b4ebb35
   return (
     <>
-      <div class="row">
+    
         <div class="col-md-12">
           <div class="card">
             <div class="card-header alert alert-info">
@@ -404,7 +404,7 @@ function AddUserSubscription({ history, match }) {
             </div>
           </div>
         </div>
-      </div>
+     
     </>
   );
 }

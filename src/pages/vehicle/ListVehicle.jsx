@@ -67,7 +67,7 @@ function ListVehicle({ history, match }) {
  // console.log(`data`, data);
  
   return (
-    <div class="row">
+    
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header alert alert-info">
@@ -102,7 +102,7 @@ function ListVehicle({ history, match }) {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 }
 

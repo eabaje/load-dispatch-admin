@@ -49,7 +49,7 @@ function ListDriver({ history, match }) {
   };
   return (
     <>
-      <div class="row">
+     
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header alert alert-info">
@@ -86,7 +86,7 @@ function ListDriver({ history, match }) {
             </div>
           </div>
         </div>
-      </div>
+     
     </>
   );
 }

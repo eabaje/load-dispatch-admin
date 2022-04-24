@@ -51,11 +51,11 @@ function UserSubscription({ history, match }) {
         enqueueSnackbar(err.message, { variant: "error" });
       });
     }
-    console.log(`loading`, loading);
+   // console.log(`loading`, loading);
   }, []);
-  console.log(`data`, data);
+//  console.log(`data`, data);
   return (
-    <div>
+   
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header alert alert-info">
@@ -106,7 +106,7 @@ function UserSubscription({ history, match }) {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 }
 
