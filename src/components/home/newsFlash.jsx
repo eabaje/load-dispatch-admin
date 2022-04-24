@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import {
   listShipments,
@@ -9,6 +10,7 @@ import { GlobalContext } from "../../context/Provider";
 function NewsFlash() {
   // const [dataShipment, setDataShipment] = useState([]);
   // const [dataInterest, setDataInterest] = useState([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [dataLength, setDataLength] = useState(0);
   const [dataLengthInterest, setDataLengthInterest] = useState(0);
   const [user, setUser] = useState({});
@@ -25,18 +27,17 @@ function NewsFlash() {
       listShipments()(shipmentDispatch)((res) => {
         //  setDataShipment(res);
       })((err) => {
-          enqueueSnackbar(err, { variant: "error" });
+        enqueueSnackbar(err, { variant: "error" });
       });
 
       listShipmentsInterest()(shipmentDispatch)((res) => {
         // setDataInterest(res.data);
       })((err) => {
-          enqueueSnackbar(err, { variant: "error" });
+        enqueueSnackbar(err, { variant: "error" });
       });
     }
     // setDataLength(dataShipment.data?.length);
     // setDataLengthInterest(dataInterest.data?.length);
-   
   }, []);
   //console.log(`data`, dataLengthInterest);
   return (

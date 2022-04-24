@@ -79,11 +79,6 @@ const NavBarShipper = () => {
                       My Vehicles
                     </Link>
                   </li>
-                  <li>
-                    <Link to={"/list-carriers"} title="Connect with carriers">
-                      Connect with carriers
-                    </Link>
-                  </li>
                 </ul>
               </li>
 
@@ -92,11 +87,12 @@ const NavBarShipper = () => {
                   <span className="pcoded-micon">
                     <i className="first fas fa-users"></i>
                   </span>
-                  <span className="pcoded-mtext"><Link to={"/list-drivers-profile"} title="List Drivers">
-                  Connect with Drivers
-                    </Link></span>
+                  <span className="pcoded-mtext">
+                    <Link to={"/list-drivers-profile"} title="List Drivers">
+                      Connect with Drivers
+                    </Link>
+                  </span>
                 </a>
-               
               </li>
             </ul>
           </div>
