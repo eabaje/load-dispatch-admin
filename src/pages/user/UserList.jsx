@@ -40,7 +40,7 @@ function UserList({ history, match }) {
       });
     }
   }, []);
-  console.log("user", data);
+ // console.log("user", data);
   return (
    
       <div class="col-xl-12">

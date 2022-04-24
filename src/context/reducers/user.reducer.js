@@ -141,7 +141,7 @@ const user = (state, { type, payload }) => {
         },
       };
     case CREATE_USER_SUBSCRIPTION_SUCCESS:
-      console.log(`payload`, payload);
+   
 
       return {
         ...state,
@@ -329,7 +329,7 @@ const user = (state, { type, payload }) => {
         },
       };
     case CREATE_USER_SUCCESS:
-      console.log(`payload`, payload);
+    
 
       return {
         ...state,
@@ -352,7 +352,7 @@ const user = (state, { type, payload }) => {
       };
 
     case GET_USERS_SUCCESS:
-      console.log(`payload`, payload);
+     
       return {
         ...state,
         Users: {
@@ -454,8 +454,7 @@ const user = (state, { type, payload }) => {
         },
       };
     case CREATE_COMPANY_SUCCESS:
-      console.log(`payload`, payload);
-
+     
       return {
         ...state,
         createCompany: {
