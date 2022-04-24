@@ -19,6 +19,8 @@ import {
   menuItemsDriver,
   menuItemsShipper,
 } from "./vertical/sidebarData";
+import { IMG_URL } from "../../constants";
+import { ROLES } from "../../constants/enum";
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,9 +43,9 @@ const NavBar = () => {
   const handleMenu = () => {
     $(document).ready(function () {
       $("#pcoded").pcodedmenu({
-        themelayout: "horizontal",
-        MenuTrigger: "hover",
-        SubMenuTrigger: "hover",
+        // themelayout: "vertical",
+        MenuTrigger: "click",
+        SubMenuTrigger: "click",
       });
     });
   };
@@ -68,12 +70,16 @@ const NavBar = () => {
               <div class="main-menu-header">
                 <img
                   class="img-radius"
-                  src="assets/images/user/avatar-2.jpg"
+                  src={
+                    user.UserPicUrl
+                      ? IMG_URL + user?.UserPicUrl
+                      : "https://bootdey.com/img/Content/avatar/avatar7.png"
+                  }
                   alt="User-Profile-Image"
                 />
                 <div class="user-details">
                   <div id="more-details">
-                    UX Designer <i class="fa fa-caret-down"></i>
+                  {ROLES.find((item) => item.value === user?.roles)?.text} <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
               </div>
@@ -128,6 +134,4 @@ const NavBar = () => {
 
 export default NavBar;
 
-const Navbar1 = () => {
-  return <></>;
-};
+

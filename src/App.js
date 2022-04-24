@@ -306,7 +306,7 @@ const App = () => {
             <AppLayoutRoute exact path="/add-trip" component={AddTrip} />
             <AppLayoutRoute exact path="/edit-trip" component={EditTrip} />
             <AppLayoutRoute exact path="/list-trip" component={ListTrip} />
-
+            <AppLayoutRoute exact path="/list-trip/:companyId" component={ListTrip} />
             <AppLayoutRoute
               exact
               path="/add-subscription"

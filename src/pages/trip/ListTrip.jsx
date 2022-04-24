@@ -36,7 +36,7 @@ function ListTrip() {
   }, []);
 
   return (
-    <div>
+    
       <div class="col-xl-12">
         <div class="card">
           <div class="card-header ">
@@ -70,7 +70,7 @@ function ListTrip() {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 }
 

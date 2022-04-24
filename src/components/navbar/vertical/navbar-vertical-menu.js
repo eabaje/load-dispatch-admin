@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 
 import Submenu from "./navbar-vertical-submenu";
@@ -44,7 +45,13 @@ const Menu = ({ items,user }) => {
     >
       {items.submenu ? (
         <>
-          <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-layout"></i></span><span class="pcoded-mtext">{items.title}</span></a>
+         <a href="#!" className="nav-link ">
+                  <span className="pcoded-micon">
+                    <i className={items.icon}></i>
+                  </span>
+                  <span className="pcoded-mtext">{items.title}</span>
+                </a>
+        
           <Submenu
             submenus={items.submenu}
             user={user}
@@ -53,7 +60,10 @@ const Menu = ({ items,user }) => {
         </>
       ) : (<>
        
-        <a href={items.path} class="nav-link "><span class="pcoded-micon"><i class={items.icon}></i></span><span class="pcoded-mtext">{items.title}</span></a>
+       <Link to={items.path} title={items.title} className="nav-link ">
+       <span class="pcoded-micon"><i class={items.icon}></i></span><span class="pcoded-mtext">{items.title}</span>       
+                    </Link>{" "}
+       
     </>  )}
     </li>
   );
