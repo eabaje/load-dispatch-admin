@@ -25,18 +25,18 @@ function NewsFlash() {
       listShipments()(shipmentDispatch)((res) => {
         //  setDataShipment(res);
       })((err) => {
-        //  enqueueSnackbar(err, { variant: "error" });
+          enqueueSnackbar(err, { variant: "error" });
       });
 
       listShipmentsInterest()(shipmentDispatch)((res) => {
         // setDataInterest(res.data);
       })((err) => {
-        //  enqueueSnackbar(err, { variant: "error" });
+          enqueueSnackbar(err, { variant: "error" });
       });
     }
     // setDataLength(dataShipment.data?.length);
     // setDataLengthInterest(dataInterest.data?.length);
-    setUser(JSON.parse(localStorage.getItem("user")));
+   
   }, []);
   //console.log(`data`, dataLengthInterest);
   return (
