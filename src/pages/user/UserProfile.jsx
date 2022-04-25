@@ -160,7 +160,7 @@ function UserProfile({ history, match }) {
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
     fetchData(
-      "user/findOneAssigned",
+      "user/findOne",
       userId
     )((user) => {
       setProfile(user);
@@ -202,7 +202,7 @@ function UserProfile({ history, match }) {
 
   const UpdateDriver = (data) => {
     editUser(data)(userDispatch)((res) => {
-      console.log(`data`, data);
+    //  console.log(`data`, data);
 
       enqueueSnackbar(`Updated  Driver-${res.data.DriverName} successfully`, {
         variant: "success",
@@ -216,7 +216,7 @@ function UserProfile({ history, match }) {
 
   function onChangePassword(formdata) {
     formdata.Email = profile?.Email;
-    console.log("fromPasword", formdata);
+   // console.log("fromPasword", formdata);
     resetPassword(formdata)(userDispatch)((res) => {
       enqueueSnackbar(`Updated  Password successfully`, {
         variant: "success",
@@ -260,7 +260,7 @@ function UserProfile({ history, match }) {
       </div>
     );
   });
-  console.log("data", profile);
+ // console.log("data", profile);
   return (
   
       <div class="col-xl-12">

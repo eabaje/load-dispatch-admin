@@ -4,7 +4,7 @@ import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
 export const columns = (params) => [
   {
-    id: 7,
+    id: 1,
     name: "FullName",
     selector: (row) => row.FullName,
     sortable: true,
@@ -12,28 +12,28 @@ export const columns = (params) => [
   },
 
   {
-    id: 1,
+    id: 2,
     name: "Company",
     selector: (row) => row.Company.CompanyName,
     sortable: true,
     reorder: true,
   },
   {
-    id: 2,
+    id: 3,
     name: "Contact Email",
     selector: (row) => row.Email,
     sortable: true,
     reorder: true,
   },
   {
-    id: 3,
+    id: 4,
     name: "Contact Phone",
     selector: (row) => row.Phone,
     sortable: true,
     reorder: true,
   },
   {
-    id: 4,
+    id: 5,
     name: "Address",
     selector: (row) => row.Address,
     sortable: true,
@@ -41,7 +41,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 5,
+    id: 6,
     name: "IsActivated?",
     selector: (row) => (
       <Form.Check
@@ -56,7 +56,7 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 6,
+    id: 7,
     name: "AcceptTerms?",
     selector: (row) => (
       <Form.Check
@@ -72,7 +72,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 10,
+    id: 8,
     name: "Country",
     selector: (row) =>
       row.Country ? Country.getCountryByCode(row.Country).name : row.Country,
@@ -80,7 +80,7 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 11,
+    id: 9,
     name: "Region",
     selector: (row) =>
       row.Region
@@ -91,7 +91,7 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 5,
+    id: 10,
     name: "Payment Method",
     selector: (row) => row.PaymentMethod,
     sortable: true,
@@ -99,7 +99,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 12,
+    id: 11,
     name: "Role",
     selector: (row) => row.Company.CompanyType,
     sortable: true,
@@ -108,7 +108,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 14,
+    id: 12,
     name: "Created Date",
     selector: (row) => row.createdAt,
     sortable: true,
@@ -125,6 +125,7 @@ export const columns = (params) => [
   },
 
   {
+    id: 14,
     name: "Action",
     sortable: false,
     selector: "null",
