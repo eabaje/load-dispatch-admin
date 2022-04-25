@@ -10,7 +10,7 @@ import { GlobalContext } from "../../context/Provider";
 function NewsFlash() {
   // const [dataShipment, setDataShipment] = useState([]);
   // const [dataInterest, setDataInterest] = useState([]);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [dataLength, setDataLength] = useState(0);
   const [dataLengthInterest, setDataLengthInterest] = useState(0);
   const [user, setUser] = useState({});

@@ -26,7 +26,6 @@ export const listSubscriptions = () => (dispatch) => {
     .then((res) => {
       dispatch({ type: GET_SUBSCRIBES_SUCCESS, payload: res.data });
       // onSuccess(res.data);
-      console.log(`res.data`, res.data);
     })
     .catch((error) => {
       const message = error.response

@@ -73,13 +73,13 @@ function AddUserSubscription({ history, match }) {
   } = useContext(GlobalContext);
 
   const onChangeSubcriptionHandler = async (e) => {
-    // alert(parseInt(e.target.value));
-    if (!isNaN(parseInt(e.target.value))) {
-      return false;
+    if (isNaN(parseInt(e.target.value))) {
+      return;
     }
 
     if (parseInt(e.target.value) === subscribeUser.SubscribeId) {
       setsubscriptionChange(false);
+
       // setAmt(0.0);
       getSubscriptionAmt(e.target.value);
       subscriptionChange === true || subscriptionChange(false);
@@ -233,178 +233,174 @@ function AddUserSubscription({ history, match }) {
       });
     }
   }, []);
-  console.log(`subscribeUser`, subscribeUser);
-  console.log("amt", amt);
+  // console.log(`subscribeUser`, subscribeUser);
+  // console.log("amt", amt);
   // pk_test_c06524a4666917095175d12761920ec03b4ebb35
   return (
     <>
-    
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header alert alert-info">
-              <h2>User Subscription Form</h2>
-            </div>
-            <div class="card-body">
-              <div class="col-md-12 ">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <input
-                    type="hidden"
-                    name="UserId"
-                    value={subscribeUser?.UserId}
-                    class="form-control"
-                  />
-                  <input
-                    type="hidden"
-                    name="Email"
-                    value={subscribeUser?.User?.Email}
-                    class="form-control"
-                  />
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header alert alert-info">
+            <h2>User Subscription Form</h2>
+          </div>
+          <div class="card-body">
+            <div class="col-md-12 ">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <input
+                  type="hidden"
+                  name="UserId"
+                  value={subscribeUser?.UserId}
+                  class="form-control"
+                />
+                <input
+                  type="hidden"
+                  name="Email"
+                  value={subscribeUser?.User?.Email}
+                  class="form-control"
+                />
 
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">
-                      Subscription Type
-                    </label>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">
+                    Subscription Type
+                  </label>
 
-                    <div class="col-sm-4">
-                      <select
-                        id="SubscriptionType"
-                        name="SubscriptionType"
-                        class="form-control"
-                        ref={subscribeRef}
-                        {...register("SubscriptionType", {
-                          required: true,
-                        })}
-                        required
-                        onChange={(e) => onChangeSubcriptionHandler(e)}
-                      >
-                        <option selected>Select Subscription Type</option>
+                  <div class="col-sm-4">
+                    <select
+                      id="SubscriptionType"
+                      name="SubscriptionType"
+                      class="form-control"
+                      ref={subscribeRef}
+                      {...register("SubscriptionType", {
+                        required: true,
+                      })}
+                      required
+                      onChange={(e) => onChangeSubcriptionHandler(e)}
+                    >
+                      <option selected>Select Subscription Type</option>
 
-                        {subscriptionType.map((item) => (
-                          <option
-                            key={item?.SubscribeId}
-                            selected={
-                              subscribeUser?.SubscribeId === item?.SubscribeId
-                            }
-                            value={item?.SubscribeId}
-                          >
-                            {item?.SubscriptionName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <label class="col-sm-2 col-form-label">Full Name</label>
-
-                    <div class="col-sm-4">
-                      <input
-                        name="FullName"
-                        class="form-control"
-                        value={subscribeUser?.User?.FullName}
-                        placeholder="User Name"
-                        {...register("FullName", {
-                          required: true,
-                        })}
-                        required
-                      />
-                    </div>
+                      {subscriptionType.map((item) => (
+                        <option
+                          key={item?.SubscribeId}
+                          selected={
+                            subscribeUser?.SubscribeId === item?.SubscribeId
+                          }
+                          value={item?.SubscribeId}
+                        >
+                          {item?.SubscriptionName}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  {subscriptionChange === true ? (
-                    <></>
-                  ) : (
-                    <>
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">
-                          Start Date
-                        </label>
-                        <div class="col-sm-2">
-                          <input
-                            name="StartDate"
-                            type="text"
-                            class="form-control"
-                            placeholder="Start Date"
-                            {...register("StartDate")}
-                            required
-                          />
-                        </div>
+                  <label class="col-sm-2 col-form-label">Full Name</label>
 
-                        <label class="col-sm-2 col-form-label">End Date</label>
-                        <div class="col-sm-2">
-                          <input
-                            name="EndDate"
-                            type="text"
-                            class="form-control"
-                            placeholder="End Date"
-                            {...register("EndDate")}
-                            required
-                          />
-                        </div>
-                        {/* <div class="col-sm-2"> Active?</div> */}
-                        <label class="col-sm-2 col-form-label">Active?</label>
-                        <div class="col-md-2">
-                          <div class="form-check">
-                            <input
-                              class="form-check-input-custom"
-                              name="Active"
-                              type="checkbox"
-                              id="Active"
-                              {...register("Active")}
-                              required
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  <div class="form-group row">
-                    <div class="col-md-12">
-                      <h5 class="alert alert-info"> </h5>
-                    </div>
+                  <div class="col-sm-4">
+                    <input
+                      name="FullName"
+                      class="form-control"
+                      value={subscribeUser?.User?.FullName}
+                      placeholder="User Name"
+                      {...register("FullName", {
+                        required: true,
+                      })}
+                      required
+                    />
                   </div>
-                  <div class="form-group"></div>
-
-                  <div class="form-row">
-                    <div class="col-sm-8 ">
-                      <div class="form-check">
+                </div>
+                {subscriptionChange === true ? (
+                  <></>
+                ) : (
+                  <>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">Start Date</label>
+                      <div class="col-sm-2">
                         <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="IsValid"
-                          value=""
-                          id="invalidCheck"
+                          name="StartDate"
+                          type="text"
+                          class="form-control"
+                          placeholder="Start Date"
+                          {...register("StartDate")}
                           required
                         />
-                        <label class="form-check-label" for="invalidCheck">
-                          I confirm all information entered are accurate
-                        </label>
-                        <div class="invalid-feedback">
-                          You must agree before submitting.
+                      </div>
+
+                      <label class="col-sm-2 col-form-label">End Date</label>
+                      <div class="col-sm-2">
+                        <input
+                          name="EndDate"
+                          type="text"
+                          class="form-control"
+                          placeholder="End Date"
+                          {...register("EndDate")}
+                          required
+                        />
+                      </div>
+                      {/* <div class="col-sm-2"> Active?</div> */}
+                      <label class="col-sm-2 col-form-label">Active?</label>
+                      <div class="col-md-2">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input-custom"
+                            name="Active"
+                            type="checkbox"
+                            id="Active"
+                            {...register("Active")}
+                            required
+                          />
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-4 right" style={{ float: "right" }}>
-                      <button
-                        type="submit"
-                        class="btn  btn-primary"
-                        style={{ float: "right" }}
-                      >
-                        {loading ? (
-                          <i className="fa fa-spinner fa-spin"></i>
-                        ) : (
-                          <i class="feather mr-2 icon-check-circle"></i>
-                        )}{" "}
-                        {isAddMode
-                          ? "Submit"
-                          : subscriptionChange
-                          ? "Change Subscription"
-                          : "Renew Subscription"}
-                      </button>
+                  </>
+                )}
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <h5 class="alert alert-info"> </h5>
+                  </div>
+                </div>
+                <div class="form-group"></div>
+
+                <div class="form-row">
+                  <div class="col-sm-8 ">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="IsValid"
+                        value=""
+                        id="invalidCheck"
+                        required
+                      />
+                      <label class="form-check-label" for="invalidCheck">
+                        I confirm all information entered are accurate
+                      </label>
+                      <div class="invalid-feedback">
+                        You must agree before submitting.
+                      </div>
                     </div>
                   </div>
-                </form>
-              </div>
+                  <div class="col-md-4 right" style={{ float: "right" }}>
+                    <button
+                      type="submit"
+                      class="btn  btn-primary"
+                      style={{ float: "right" }}
+                    >
+                      {loading ? (
+                        <i className="fa fa-spinner fa-spin"></i>
+                      ) : (
+                        <i class="feather mr-2 icon-check-circle"></i>
+                      )}{" "}
+                      {isAddMode
+                        ? "Submit"
+                        : subscriptionChange
+                        ? "Change Subscription"
+                        : "Renew Subscription"}
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-     
+      </div>
     </>
   );
 }
