@@ -3,45 +3,15 @@ import { Link } from "react-router-dom";
 
 import Submenu from "./navbar-vertical-submenu";
 
-const Menu = ({ items, user }) => {
-  const [dropdown, setDropdown] = useState(false);
-
-  let ref = useRef();
-
-  useEffect(() => {
-    // const handler = (event) => {
-    //   if (dropdown && ref.current && !ref.current.contains(event.target)) {
-    //     setDropdown(false);
-    //   }
-    // };
-    // document.addEventListener("mousedown", handler);
-    // document.addEventListener("touchstart", handler);
-    // return () => {
-    //   // Cleanup the event listener
-    //   document.removeEventListener("mousedown", handler);
-    //   document.removeEventListener("touchstart", handler);
-    //   // onMouseEnter={onMouseEnter}
-    //  // onMouseLeave={onMouseLeave}
-    //};
-  }, []);
-
-  const onMouseEnter = () => {
-    window.innerWidth > 960 && setDropdown(true);
-  };
-
-  const onMouseLeave = () => {
-    window.innerWidth > 960 && setDropdown(false);
-  };
-
+const Menu = ({ id, items, user }) => {
   return (
     <li
-      id={items.key}
+      id={id}
       className={items.submenu ? "nav-item pcoded-hasmenu" : "nav-item"}
-      ref={ref}
     >
       {items.submenu ? (
         <>
-          <a href="#!" className="nav-link ">
+          <a href="javascript:void()" className="nav-link ">
             <span className="pcoded-micon">
               <i className={items.icon}></i>
             </span>

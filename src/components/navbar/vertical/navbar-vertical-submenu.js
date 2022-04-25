@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Submenu = ({ submenus, user }) => {
+const Submenu = ({ submenus }) => {
   // depthLevel = depthLevel + 1;depthLevel > 0 ?: ""
   const dropdownClass = "pcoded-submenu";
   return (

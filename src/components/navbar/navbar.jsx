@@ -23,7 +23,6 @@ import { IMG_URL } from "../../constants";
 import { ROLES } from "../../constants/enum";
 
 const NavBar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState({});
 
   const {
@@ -42,6 +41,7 @@ const NavBar = () => {
 
   const handleMenu = () => {
     $(document).ready(function () {
+      alert("I am about to be loaded");
       $("#pcoded").pcodedmenu({
         // themelayout: "vertical",
         MenuTrigger: "click",
@@ -52,6 +52,8 @@ const NavBar = () => {
   useEffect(() => {
     handleMenu();
     setUser(JSON.parse(localStorage.getItem("user")));
+
+    return;
   }, []);
 
   return (
@@ -79,7 +81,8 @@ const NavBar = () => {
                 />
                 <div class="user-details">
                   <div id="more-details">
-                  {ROLES.find((item) => item.value === user?.roles)?.text} <i class="fa fa-caret-down"></i>
+                    {ROLES.find((item) => item.value === user?.roles)?.text}{" "}
+                    <i class="fa fa-caret-down"></i>
                   </div>
                 </div>
               </div>
@@ -107,22 +110,22 @@ const NavBar = () => {
             <ul class="nav pcoded-inner-navbar ">
               {user.roles === "carrier" &&
                 menuItemsCarrier(user).map((menu, index) => {
-                  return <Menu items={menu} user={user} />;
+                  return <Menu id={index} items={menu} user={user} />;
                 })}
 
               {user.roles === "driver" &&
                 menuItemsDriver(user).map((menu, index) => {
-                  return <Menu items={menu} user={user} />;
+                  return <Menu id={index} items={menu} user={user} />;
                 })}
 
               {user.roles === "shipper" &&
                 menuItemsShipper(user).map((menu, index) => {
-                  return <Menu items={menu} user={user} />;
+                  return <Menu id={index} items={menu} user={user} />;
                 })}
 
               {user.roles === "admin" &&
                 menuItemsAdmin(user).map((menu, index) => {
-                  return <Menu items={menu} user={user} />;
+                  return <Menu id={index} items={menu} user={user} />;
                 })}
             </ul>
           </div>
@@ -133,5 +136,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-

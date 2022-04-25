@@ -42,32 +42,39 @@ function ListCarrier({ history, match }) {
     }
 
     //  fetchData();
-   
-   
   }, []);
-  console.log(`data`, JSON.parse(localStorage.getItem("user")));
+  // console.log(`data`, JSON.parse(localStorage.getItem("user")));
   return (
     <>
-    
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header alert alert-info">
-              <h4>View List of carriers</h4>
-              <hr />
-              <ul>
-                <li>Edit and delete Vehicle</li>
-                <li>Assign Drivers to Vehicle</li>
-              </ul>
-            </div>
-            <div class="card-body table-border-style">
-              <div class="table-responsive">
-                {/* <DataTableExtensions {...tableData}> */}
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header alert alert-info">
+            <h4>View List of carriers</h4>
+            <hr />
+            <ul>
+              <li>Edit and delete Vehicle</li>
+              <li>Assign Drivers to Vehicle</li>
+            </ul>
+          </div>
+          <div class="card-body table-border-style">
+            <div class="table-responsive">
+              {/* <DataTableExtensions {...tableData}> */}
 
-                {loading ? (
-                  <LoadingBox />
-                ) : (
-                  <DataTableExtensions
-                    exportHeaders
+              {loading ? (
+                <LoadingBox />
+              ) : (
+                <DataTableExtensions
+                  exportHeaders
+                  columns={columns(user)}
+                  data={
+                    companyId
+                      ? data.data?.filter(
+                          (item) => item?.CompanyId === parseInt(companyId)
+                        )
+                      : data?.data
+                  }
+                >
+                  <DataTable
                     columns={columns(user)}
                     data={
                       companyId
@@ -76,30 +83,19 @@ function ListCarrier({ history, match }) {
                           )
                         : data?.data
                     }
-                  >
-                    <DataTable
-                      columns={columns(user)}
-                      data={
-                        companyId
-                          ? data.data?.filter(
-                              (item) => item?.CompanyId === parseInt(companyId)
-                            )
-                          : data?.data
-                      }
-                      className="table table-striped table-bordered table-hover table-checkable"
-                      defaultSortField={1}
-                      sortIcon={<ChevronsDown />}
-                      defaultSortAsc={true}
-                      pagination
-                      highlightOnHover
-                    />
-                  </DataTableExtensions>
-                )}
-              </div>
+                    className="table table-striped table-bordered table-hover table-checkable"
+                    defaultSortField={1}
+                    sortIcon={<ChevronsDown />}
+                    defaultSortAsc={true}
+                    pagination
+                    highlightOnHover
+                  />
+                </DataTableExtensions>
+              )}
             </div>
           </div>
         </div>
-     
+      </div>
     </>
   );
 }
