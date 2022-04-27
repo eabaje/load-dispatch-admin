@@ -727,22 +727,22 @@ $(window).scroll(function () {
 
 // wave effect start
 
-// $.ripple(
-//   ".btn, .pcoded-navbar a,.pcoded-header .navbar-nav > li > .dropdown > a,.page-link, .nav .nav-link",
-//   {
-//     debug: false, // Turn Ripple.js logging on/off
-//     on: "mousedown", // The event to trigger a ripple effect
-//     opacity: 0.4, // The opacity of the ripple
-//     color: "auto", // Set the background color. If set to "auto", it will use the text color
-//     multi: false, // Allow multiple ripples per element
-//     duration: 0.7, // The duration of the ripple
-//     // Filter function for modifying the speed of the ripple
-//     rate: function (pxPerSecond) {
-//       return pxPerSecond;
-//     },
-//     easing: "linear", // The CSS3 easing function of the ripple
-//   }
-// );
+$.ripple(
+  ".btn, .pcoded-navbar a,.pcoded-header .navbar-nav > li > .dropdown > a,.page-link, .nav .nav-link",
+  {
+    debug: false, // Turn Ripple.js logging on/off
+    on: "mousedown", // The event to trigger a ripple effect
+    opacity: 0.4, // The opacity of the ripple
+    color: "auto", // Set the background color. If set to "auto", it will use the text color
+    multi: false, // Allow multiple ripples per element
+    duration: 0.7, // The duration of the ripple
+    // Filter function for modifying the speed of the ripple
+    rate: function (pxPerSecond) {
+      return pxPerSecond;
+    },
+    easing: "linear", // The CSS3 easing function of the ripple
+  }
+);
 // wave effect end
 // more-details start
 $("#more-details").on("click", function () {
