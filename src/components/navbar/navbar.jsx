@@ -40,20 +40,47 @@ const NavBar = () => {
   // const splitLocation = pathname.split("/");
 
   const handleMenu = () => {
+    var vw = $(window)[0].innerWidth;
     $(document).ready(function () {
-      alert("I am about to be loaded");
+
+    
       $("#pcoded").pcodedmenu({
         // themelayout: "vertical",
         MenuTrigger: "click",
         SubMenuTrigger: "click",
       });
+   
+
+    $("#mobile-collapse,#mobile-collapse1").click(function (e) {
+      var vw = $(window)[0].innerWidth;
+      if (vw < 992) {
+        $(".pcoded-navbar").toggleClass("mob-open");
+        e.stopPropagation();
+      }
     });
+
+    $(".mobile-menu").on('click', function() {
+      var $this = $(this);
+      $this.toggleClass('on');
+  });
+  $("#mobile-collapse").on('click', function() {
+      if (vw > 991) {
+          $(".pcoded-navbar:not(.theme-horizontal)").toggleClass("navbar-collapsed");
+      }
+  });
+
+
+
+
+});
+
   };
   useEffect(() => {
+    let controller = new AbortController();
+
     handleMenu();
     setUser(JSON.parse(localStorage.getItem("user")));
-
-    return;
+    return () => controller?.abort();
   }, []);
 
   return (

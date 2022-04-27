@@ -6,12 +6,12 @@ import Submenu from "./navbar-vertical-submenu";
 const Menu = ({ id, items, user }) => {
   return (
     <li
-      id={id}
+      key={id}
       className={items.submenu ? "nav-item pcoded-hasmenu" : "nav-item"}
     >
       {items.submenu ? (
         <>
-          <a href="javascript:void()" className="nav-link ">
+          <a href="#" className="nav-link ">
             <span className="pcoded-micon">
               <i className={items.icon}></i>
             </span>
