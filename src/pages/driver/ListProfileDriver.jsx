@@ -12,7 +12,8 @@ function ListProfileDriver() {
   const [user, setUser] = useState({});
 
   // Calling the function on component mount
-  useEffect(() => {
+  const loadData=()=>{
+
     fetchDataAll("driver/findAllAssignedDrivers")((driver) => {
       setData(driver);
     })((err) => {
@@ -20,8 +21,18 @@ function ListProfileDriver() {
     });
 
     setUser(JSON.parse(localStorage.getItem("user")));
+
+
+  }
+  useEffect(() => {
+   
+
+    let controller = new AbortController();
+    loadData();
+    return () => controller?.abort();
+   
   }, []);
-  console.log("data", data);
+
   return (
     <>
       {data.length < 1 ? (
