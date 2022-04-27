@@ -26,6 +26,7 @@ function Login() {
   const {
     register,
     formState: { errors },
+    reset,
     handleSubmit,
   } = useForm();
 
@@ -54,6 +55,7 @@ function Login() {
     signin2(formdata)(authDispatch)((success) => {
       history.push("/dashboard");
     })((err) => {
+      reset("");
       console.log(`err`, err);
       enqueueSnackbar(err, { variant: "error" });
     });

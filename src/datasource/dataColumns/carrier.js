@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { LOAD_CAPACITY, LOAD_TYPE } from "../../constants/enum";
 export const columns = (params) => [
   {
+    id: 1,
     name: "",
     sortable: false,
     selector: "null",
@@ -48,14 +49,14 @@ export const columns = (params) => [
   },
   
   {
-    id: 1,
+    id: 2,
     name: "Company",
     selector: (row) => row.Company.CompanyName,
     sortable: true,
     reorder: true,
   },
   {
-    id: 2,
+    id: 3,
     name: "Carrier Type",
     selector: (row) =>
       LOAD_TYPE.find((item) => item.value === row.CarrierType).text,
@@ -63,7 +64,7 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 3,
+    id: 4,
     name: "Fleet Type",
     selector: (row) =>
       LOAD_CAPACITY.find((item) => item.value === row.FleetType).text,
@@ -71,7 +72,7 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 4,
+    id: 5,
     name: "Fleet Number",
     selector: (row) => row.FleetNumber,
     sortable: true,
@@ -79,7 +80,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 5,
+    id: 6,
     name: "Licensed?",
     selector: (row) => (
       <Form.Check
@@ -95,21 +96,21 @@ export const columns = (params) => [
   },
 
   {
-    id: 10,
+    id: 7,
     name: "AboutUs",
     selector: (row) => row.AboutUs,
     sortable: true,
     reorder: true,
   },
   {
-    id: 11,
+    id: 8,
     name: "Service Description",
     selector: (row) => row.ServiceDescription,
     sortable: true,
     reorder: true,
   },
   {
-    id: 5,
+    id: 9,
     name: "Rating",
     selector: (row) => row.Rating,
     sortable: true,
@@ -117,7 +118,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 12,
+    id: 10,
     name: "Created Date",
     selector: (row) => row.createdAt,
     sortable: true,
@@ -126,7 +127,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 13,
+    id: 11,
     name: "Updated Date",
     selector: (row) => row.updatedAt,
     sortable: true,
@@ -135,6 +136,7 @@ export const columns = (params) => [
   },
 
   {
+    id: 12,
     name: "Action",
     sortable: false,
     selector: "null",
