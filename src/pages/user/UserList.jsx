@@ -30,15 +30,29 @@ function UserList({ history, match }) {
       Users: { data, loading }, //loading
     },
   } = useContext(GlobalContext);
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+
+  const loadData=()=>{
+
     if (data.length === 0) {
       listUsers()(userDispatch)((res) => {
-        // setUser(res.data);
+        setData(res.data);
       })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
+        enqueueSnackbar(err, { variant: "error" });
       });
     }
+
+  setUser(JSON.parse(localStorage.getItem("user")));
+
+  }
+
+  useEffect(() => {
+
+    let controller = new AbortController();
+    loadData();
+    return () => controller?.abort();
+
+  
+   
   }, []);
  // console.log("user", data);
   return (

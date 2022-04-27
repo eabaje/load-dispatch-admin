@@ -15,11 +15,11 @@ function Home() {
   const {
     authState: { error, user, isLoggedIn },
   } = useContext(GlobalContext);
-  React.useEffect(() => {
-    if (!isAuthenticated()) {
-      history.push("/signin");
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (!isAuthenticated()) {
+  //     history.push("/signin");
+  //   }
+  // }, []);
   return (
     <>
     

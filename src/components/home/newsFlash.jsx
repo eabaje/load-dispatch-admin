@@ -22,8 +22,9 @@ function NewsFlash() {
     },
   } = useContext(GlobalContext);
 
-  useEffect(() => {
-    let controller = new AbortController();
+  const loadData=()=>{
+
+   
     if (dataShipment.length === 0) {
       listShipments()(shipmentDispatch)((res) => {
         //  setDataShipment(res);
@@ -32,28 +33,27 @@ function NewsFlash() {
       });
 
     
-    }
-    return () => controller?.abort();
-    // setDataLength(dataShipment.data?.length);
-    // setDataLengthInterest(dataInterest.data?.length);
-  }, []);
-
-
-  useEffect(() => {
-    let controller = new AbortController();
-    if (dataShipment.length === 0) {
-     
-
       listShipmentsInterest()(shipmentDispatch)((res) => {
         // setDataInterest(res.data);
       })((err) => {
         enqueueSnackbar(err, { variant: "error" });
       });
+
     }
+
+
+  }
+
+  useEffect(() => {
+    let controller = new AbortController();
+    loadData();
     return () => controller?.abort();
     // setDataLength(dataShipment.data?.length);
     // setDataLengthInterest(dataInterest.data?.length);
   }, []);
+
+
+ 
   //console.log(`data`, dataLengthInterest);
   return (
     <>

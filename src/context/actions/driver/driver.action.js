@@ -196,7 +196,7 @@ export const createDriver =
     // data.append("fileLicenseUrl", file2);
     if (file1 !== null) data.append("filePicUrl", file1);
     if (file2 !== null) data.append("fileLicenseUrl", file2);
-    console.log(`form-action`, data);
+   // console.log(`form-action`, data);
     dispatch({
       type: CREATE_DRIVER_REQUEST,
     });
@@ -285,7 +285,7 @@ export const editDriver =
       DriverDocs: form.DriverDocs || "",
       PicUrl: form.PicUrl || null,
     };
-    console.log("requestPayload :>> ", form);
+   // console.log("requestPayload :>> ", form);
     let formData = new FormData();
     // if (file1 !== null) data.append("filePicUrl", file1);
     // if (file2 !== null) data.append("fileLicenseUrl", file2);
@@ -360,7 +360,7 @@ export const assignDriverToVehicle =
     
       })
       .catch((err) => {
-        console.log("err", err.response);
+       // console.log("err", err.response);
         const message = err.response ? err.response.data : CONNECTION_ERROR;
         dispatch({
           type: CREATE_DRIVER_FAIL,

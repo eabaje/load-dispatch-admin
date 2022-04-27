@@ -200,6 +200,7 @@ function AddUserSubscription({ history, match }) {
   }
 
   useEffect(() => {
+    let controller = new AbortController();
     setUser(JSON.parse(localStorage.getItem("user")));
 
     if (!isAddMode) {
@@ -232,6 +233,8 @@ function AddUserSubscription({ history, match }) {
         });
       });
     }
+
+    return () => controller?.abort();
   }, []);
   // console.log(`subscribeUser`, subscribeUser);
   // console.log("amt", amt);

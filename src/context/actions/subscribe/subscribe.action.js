@@ -156,7 +156,7 @@ export const editSubscription =
     axios
       .put(`/subscription/update/${subscriptionId}`, form)
       .then((res) => {
-        console.log(`response`, res.data);
+     //   console.log(`response`, res.data);
         dispatch({
           type: EDIT_SUBSCRIBE_SUCCESS,
           payload: res.data,

@@ -32,8 +32,8 @@ function ListCompany({ history, match }) {
     },
   } = useContext(GlobalContext);
 
-  // Calling the function on component mount
-  useEffect(() => {
+  const loadData=()=>{
+
     if (data.length === 0) {
       listCompanys()(userDispatch)((res) => {
         setData(res.data);
@@ -42,9 +42,16 @@ function ListCompany({ history, match }) {
       });
     }
 
-    //  fetchData();
-    console.log(`data`, data);
-    setUser(JSON.parse(localStorage.getItem("user")));
+ setUser(JSON.parse(localStorage.getItem("user")));
+
+  }
+  // Calling the function on component mount
+  useEffect(() => {
+    let controller = new AbortController();
+    loadData();
+    return () => controller?.abort();
+   
+   
   }, []);
 
   const tableData = {
@@ -53,7 +60,7 @@ function ListCompany({ history, match }) {
   };
   return (
     <>
-      <div class="row">
+    
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header alert alert-info">
@@ -102,7 +109,7 @@ function ListCompany({ history, match }) {
             </div>
           </div>
         </div>
-      </div>
+   
     </>
   );
 }

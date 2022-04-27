@@ -334,7 +334,7 @@ export const listUserSubscriptionByUserId =
         dispatch({ type: GET_USER_SUBSCRIPTIONS_SUCCESS, payload: res.data });
 
         onSuccess(res.data);
-        console.log(`res.data`, res.data);
+      //  console.log(`res.data`, res.data);
       })
       .catch((err) => {
         const message = err.response ? err.response.data : CONNECTION_ERROR;

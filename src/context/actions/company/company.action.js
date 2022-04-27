@@ -24,7 +24,7 @@ export const listCompanys = () => (dispatch) => (onSuccess) => (onError) => {
     .get(`/user/companyAll/`)
     .then((res) => {
       dispatch({ type: GET_COMPANYS_SUCCESS, payload: res.data });
-      console.log(`res.data`, res.data);
+    //  console.log(`res.data`, res.data);
       onSuccess(res.data);
     })
 
