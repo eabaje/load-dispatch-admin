@@ -4,6 +4,50 @@ import { Link } from "react-router-dom";
 import { LOAD_CAPACITY, LOAD_TYPE } from "../../constants/enum";
 export const columns = (params) => [
   {
+    name: "",
+    sortable: false,
+    selector: "null",
+    cell: (row) => [
+      params?.roles === "carrier" && (
+        <Link
+          to={"/edit-carrier-info/" + row.CarrierId}
+          className="btn btn-sm"
+          title="Add  Carrier Info"
+        >
+          <i className="first fas fa-plus"></i>
+        </Link>
+      ),
+
+       params?.roles === "carrier" && (
+        <Link
+          to={
+            "/add-vehicle-to-carrier/" +
+            row.CompanyId +
+            "/" +
+            row.CarrierId +
+            "/" +
+            row.CarrierType
+          }
+          className="btn btn-sm"
+          title="Add Vehicle to carrier"
+        >
+          <i className="first fas fa-car"></i>
+        </Link>
+      ),
+      params?.roles === "carrier" && (
+        <Link
+          to={"/list-carrier-vehicles/" + row.CarrierId + "/" + row.CarrierType}
+          className="btn btn-sm"
+          title="List all Carrier Vehicle "
+        >
+          <i className="first fas fa-truck"></i>
+        </Link>
+      )
+     
+    ],
+  },
+  
+  {
     id: 1,
     name: "Company",
     selector: (row) => row.Company.CompanyName,
