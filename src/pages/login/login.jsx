@@ -53,10 +53,14 @@ function Login() {
     //  console.log("state:", formdata);
 
     signin2(formdata)(authDispatch)((success) => {
+      // const userId=success.data.UserId;
+      // history.push(`/user-profile/${userId}`);
+
       history.push("/dashboard");
+     
     })((err) => {
-      reset("");
-      console.log(`err`, err);
+      document.forms[0].reset();
+      
       enqueueSnackbar(err, { variant: "error" });
     });
   };
@@ -64,13 +68,13 @@ function Login() {
   return (
     <div>
       <form onSubmit={handleSubmit(SubmitForm)}>
-        <div class="form-group mb-3">
-          <label class="floating-label" for="Email">
+        <div className="form-group mb-3">
+          <label className="floating-label" htmlFor="Email">
             Email address
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             name="Email"
             {...register("Email", {
               required: true,
@@ -78,34 +82,34 @@ function Login() {
             required
           />
         </div>
-        <div class="form-group mb-4">
-          <label class="floating-label" for="Password">
+        <div className="form-group mb-4">
+          <label className="floating-label" htmlFor="Password">
             Password
           </label>
           <input
             type="password"
-            class="form-control"
+            className="form-control"
             name="Password"
             {...register("Password")}
             required
           />
         </div>
-        <div class="custom-control custom-checkbox text-left mb-4 mt-2">
+        <div className="custom-control custom-checkbox text-left mb-4 mt-2">
           <input
             type="checkbox"
-            class="custom-control-input"
+            className="custom-control-input"
             id="customCheck1"
           />
-          <label class="custom-control-label" for="customCheck1">
+          <label className="custom-control-label" htmlFor="customCheck1">
             Save credentials.
           </label>
         </div>
-        <button class="btn btn-block btn-primary mb-4">
+        <button className="btn btn-block btn-primary mb-4">
           {loading && <i className="fa fa-spinner fa-spin"></i>} Signin
         </button>
-        <p class="mb-2 text-muted">
+        <p className="mb-2 text-muted">
           Forgot password?{" "}
-          <a href="/reset-password" class="f-w-400">
+          <a href="/reset-password" className="f-w-400">
             Reset
           </a>
         </p>

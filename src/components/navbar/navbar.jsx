@@ -40,6 +40,12 @@ const NavBar = () => {
   // const splitLocation = pathname.split("/");
 
   const handleMenu = () => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+    togglemenu();
+    // if ($('body').hasclassName('layout-6') || $('body').hasclassName('layout-7')) {
+    //     togglemenulayout();
+    // }
+   // menuhrres();
     var vw = $(window)[0].innerWidth;
     $(document).ready(function () {
 
@@ -74,12 +80,33 @@ const NavBar = () => {
 
 });
 
+$(window).resize(function() {
+  togglemenu();
+ // menuhrres();
+  // if ($('body').hasclass('layout-6') || $('body').hasclass('layout-7')) {
+  //     togglemenulayout();
+  // }
+});
+
+function togglemenu() {
+  var vw = $(window)[0].innerWidth;
+  if ($(".pcoded-navbar").hasClass('theme-horizontal') == false) {
+      if (vw <= 1200 && vw >= 992) {
+          $(".pcoded-navbar:not(.theme-horizontal)").addClass("navbar-collapsed");
+      }
+      if (vw < 992) {
+          $(".pcoded-navbar:not(.theme-horizontal)").removeClass("navbar-collapsed");
+      }
+  }
+}
+
+
   };
   useEffect(() => {
-    let controller = new AbortController();
+   let controller = new AbortController();
 
-    handleMenu();
-    setUser(JSON.parse(localStorage.getItem("user")));
+   handleMenu();
+  //  setUser(JSON.parse(localStorage.getItem("user")));
     return () => controller?.abort();
   }, []);
 
@@ -92,55 +119,55 @@ const NavBar = () => {
         (user.roles === "audit" && <NavBarAdmin />) ||
         (user.roles === "admin" && <NavBarAdmin />) || <NavBarPublic />} */}
 
-      <nav class="pcoded-navbar menu-light ">
-        <div class="navbar-wrapper  ">
-          <div class="navbar-content scroll-div ">
-            <div class="">
-              <div class="main-menu-header">
+      <nav className="pcoded-navbar menu-light ">
+        <div className="navbar-wrapper  ">
+          <div className="navbar-content scroll-div ">
+            <div className="">
+              <div className="main-menu-header">
                 <img
-                  class="img-radius"
+                  className="img-radius"
                   src={
-                    user.UserPicUrl
+                    user?.UserPicUrl
                       ? IMG_URL + user?.UserPicUrl
                       : "https://bootdey.com/img/Content/avatar/avatar7.png"
                   }
                   alt="User-Profile-Image"
                 />
-                <div class="user-details">
+                <div className="user-details">
                   <div id="more-details">
-                    {ROLES.find((item) => item.value === user?.roles)?.text}{" "}
-                    <i class="fa fa-caret-down"></i>
+                    {/* {ROLES.find((item) => item.value === user?.roles)?.text}{" "} */}
+                    <i className="fa fa-caret-down"></i>
                   </div>
                 </div>
               </div>
-              <div class="collapse" id="nav-user-link">
-                <ul class="list-unstyled">
-                  <li class="list-group-item">
+              <div className="collapse" id="nav-user-link">
+                <ul className="list-unstyled">
+                  <li className="list-group-item">
                     <a href="user-profile.html">
-                      <i class="feather icon-user m-r-5"></i>View Profile
+                      <i className="feather icon-user m-r-5"></i>View Profile
                     </a>
                   </li>
-                  <li class="list-group-item">
+                  <li className="list-group-item">
                     <a href="#!">
-                      <i class="feather icon-settings m-r-5"></i>Settings
+                      <i className="feather icon-settings m-r-5"></i>Settings
                     </a>
                   </li>
-                  <li class="list-group-item">
+                  <li className="list-group-item">
                     <a href="auth-normal-sign-in.html">
-                      <i class="feather icon-log-out m-r-5"></i>Logout
+                      <i className="feather icon-log-out m-r-5"></i>Logout
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
 
-            <ul class="nav pcoded-inner-navbar ">
+            <ul className="nav pcoded-inner-navbar ">
               {user.roles === "carrier" &&
                 menuItemsCarrier(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
                 })}
 
-              {user.roles === "driver" &&
+              {/* {user.roles === "driver" &&
                 menuItemsDriver(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
                 })}
@@ -153,7 +180,7 @@ const NavBar = () => {
               {user.roles === "admin" &&
                 menuItemsAdmin(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
-                })}
+                })} */}
             </ul>
           </div>
         </div>

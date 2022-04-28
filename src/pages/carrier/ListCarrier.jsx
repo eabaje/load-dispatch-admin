@@ -29,17 +29,24 @@ function ListCarrier({ history, match }) {
   } = useContext(GlobalContext);
 
   // GET request function to your Mock API
+  const loadData=()=>{
 
-  // Calling the function on component mount
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
     if (data.length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+   
       listCarriers()(carrierDispatch)((res) => {
         // setData(res.data);
       })((err) => {
         enqueueSnackbar(err, { variant: "error" });
       });
     }
+
+  }
+  // Calling the function on component mount
+  useEffect(() => {
+    let controller = new AbortController();
+    loadData();
+    return () => controller?.abort();
 
     //  fetchData();
   }, []);

@@ -8,18 +8,18 @@ const divStyle = {
 };
 const AuthLayout = ({ children }) => (
   <div>
-    <div class="auth-wrapper" style={divStyle}>
-      <div class="auth-content">
-        <div class="card">
-          <div class="row align-items-center text-center">
-            <div class="col-md-12">
-              <div class=" card-body">
+    <div className="auth-wrapper" style={divStyle}>
+      <div className="auth-content">
+        <div className="card">
+          <div className="row align-items-center text-center">
+            <div className="col-md-12">
+              <div className=" card-body">
                 <img
                   src="assets/images/logo-small-prod.png"
                   alt=""
-                  class="logo-main"
+                  className="logo-main"
                 />
-                <h4 class="mb-3 f-w-700">Global Load Dispatch</h4>
+                <h4 className="mb-3 f-w-700">Global Load Dispatch</h4>
 
                 {children}
               </div>

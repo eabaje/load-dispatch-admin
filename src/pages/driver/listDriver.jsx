@@ -39,7 +39,7 @@ function ListDriver({ history, match }) {
   // Calling the function on component mount
   useEffect(() => {
     fetchData();
-    console.log(`data`, data);
+  //  console.log(`data`, data);
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 

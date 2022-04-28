@@ -6,6 +6,7 @@ import Submenu from "./navbar-vertical-submenu";
 const Menu = ({ id, items, user }) => {
   return (
     <li
+    id={id}
       key={id}
       className={items.submenu ? "nav-item pcoded-hasmenu" : "nav-item"}
     >
@@ -23,10 +24,10 @@ const Menu = ({ id, items, user }) => {
       ) : (
         <>
           <Link to={items.path} title={items.title} className="nav-link ">
-            <span class="pcoded-micon">
-              <i class={items.icon}></i>
+            <span className="pcoded-micon">
+              <i className={items.icon}></i>
             </span>
-            <span class="pcoded-mtext">{items.title}</span>
+            <span className="pcoded-mtext">{items.title}</span>
           </Link>{" "}
         </>
       )}

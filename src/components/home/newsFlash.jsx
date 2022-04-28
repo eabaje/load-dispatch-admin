@@ -57,32 +57,32 @@ function NewsFlash() {
   //console.log(`data`, dataLengthInterest);
   return (
     <>
-      <div class="grey-bg container-fluid">
+      <div className="grey-bg container-fluid">
         <section id="stats-subtitle">
-          <div class="row">
-            <div class="col-12 mt-3 mb-1">
-              <h4 class="text-uppercase">DASHBOARD SUMMARY</h4>
+          <div className="row">
+            <div className="col-12 mt-3 mb-1">
+              <h4 className="text-uppercase">DASHBOARD SUMMARY</h4>
               <hr />
               {/* <p>Statistics on minimal cards with Title &amp; Sub Title.</p> */}
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-xl-6 col-md-12">
-              <div class="card overflow-hidden">
-                <div class="card-content">
-                  <div class="card-body cleartfix">
-                    <div class="media align-items-stretch">
-                      <div class="align-self-center">
-                        <i class="icon-bag primary font-large-2 mr-2"></i>
+          <div className="row">
+            <div className="col-xl-6 col-md-12">
+              <div className="card overflow-hidden">
+                <div className="card-content">
+                  <div className="card-body cleartfix">
+                    <div className="media align-items-stretch">
+                      <div className="align-self-center">
+                        <i className="icon-bag primary font-large-2 mr-2"></i>
                       </div>
-                      <div class="media-body">
+                      <div className="media-body">
                         <h6>Total Shipment Post</h6>
                         <Link to={"/list-all-shipments"}>
                           <span>click for more details</span>
                         </Link>
                       </div>
-                      <div class="align-self-center">
+                      <div className="align-self-center">
                         <h6>{dataShipment.data?.length}</h6>
                       </div>
                     </div>
@@ -91,21 +91,21 @@ function NewsFlash() {
               </div>
             </div>
 
-            <div class="col-xl-6 col-md-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body cleartfix">
-                    <div class="media align-items-stretch">
-                      <div class="align-self-center">
-                        <i class="icon-like warning font-large-2 mr-2"></i>
+            <div className="col-xl-6 col-md-12">
+              <div className="card">
+                <div className="card-content">
+                  <div className="card-body cleartfix">
+                    <div className="media align-items-stretch">
+                      <div className="align-self-center">
+                        <i className="icon-like warning font-large-2 mr-2"></i>
                       </div>
-                      <div class="media-body">
+                      <div className="media-body">
                         <h6>Total Shipment Interest</h6>
                         <Link to={"/list-all-shipments-interest"}>
                           <span>click for more details</span>
                         </Link>
                       </div>
-                      <div class="align-self-center">
+                      <div className="align-self-center">
                         <h6>{dataInterest.data?.length}</h6>
                       </div>
                     </div>
@@ -115,22 +115,22 @@ function NewsFlash() {
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-xl-6 col-md-12">
-              <div class="card overflow-hidden">
-                <div class="card-content">
-                  <div class="card-body cleartfix">
-                    <div class="media align-items-stretch">
-                      <div class="align-self-center">
-                        <i class="icon-drawer primary font-large-2 mr-2"></i>
+          <div className="row">
+            <div className="col-xl-6 col-md-12">
+              <div className="card overflow-hidden">
+                <div className="card-content">
+                  <div className="card-body cleartfix">
+                    <div className="media align-items-stretch">
+                      <div className="align-self-center">
+                        <i className="icon-drawer primary font-large-2 mr-2"></i>
                       </div>
-                      <div class="media-body">
+                      <div className="media-body">
                         <h6>Total Shipment Assigned</h6>
                         <Link to={"/list-all-shipments-assigned"}>
                           <span>click for more details</span>
                         </Link>
                       </div>
-                      <div class="align-self-center">
+                      <div className="align-self-center">
                         <h6>
                           {
                             dataShipment.data?.filter(
@@ -145,21 +145,21 @@ function NewsFlash() {
               </div>
             </div>
 
-            <div class="col-xl-6 col-md-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body cleartfix">
-                    <div class="media align-items-stretch">
-                      <div class="align-self-center">
-                        <i class="icon-plane warning font-large-2 mr-2"></i>
+            <div className="col-xl-6 col-md-12">
+              <div className="card">
+                <div className="card-content">
+                  <div className="card-body cleartfix">
+                    <div className="media align-items-stretch">
+                      <div className="align-self-center">
+                        <i className="icon-plane warning font-large-2 mr-2"></i>
                       </div>
-                      <div class="media-body">
+                      <div className="media-body">
                         <h6>Total Shipment Delivered </h6>
                         <Link to={"/list-all-shipments-sent"}>
                           <span>click for more details</span>
                         </Link>
                       </div>
-                      <div class="align-self-center">
+                      <div className="align-self-center">
                         <h6>
                           {
                             dataShipment.data?.filter(

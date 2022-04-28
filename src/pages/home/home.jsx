@@ -23,14 +23,14 @@ function Home() {
   return (
     <>
     
-        <div class="col-md-8">
-          <div class="card">
-            <div class="card-body">
-              <div class="alert alert-info " role="alert">
+        <div className="col-md-8">
+          <div className="card">
+            <div className="card-body">
+              <div className="alert alert-info " role="alert">
                 <NewsFlash />
               </div>
 
-              {/* <h3 class="text-uppercase">Latest News</h3>
+              {/* <h3 className="text-uppercase">Latest News</h3>
               <p>
                 <strong>Getting Started</strong>
                 <br />
@@ -40,21 +40,21 @@ function Home() {
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div className="col-md-4">
           <SideLink />
         </div>
     
 
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header">
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="card">
+            <div className="card-header">
               <h5>Recent Request for Load Boarding</h5>
             </div>
-            <div class="card-body">
+            <div className="card-body">
               {/* <TickerFeed /> */}
-              <div class="alert alert-info mb-0" role="alert">
-                <p class="mb-0">
+              <div className="alert alert-info mb-0" role="alert">
+                <p className="mb-0">
                   It is best suited for those applications where you required
                   your navigation is set to be a Horizontal way with fixed width
                   container.

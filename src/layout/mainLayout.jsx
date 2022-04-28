@@ -5,26 +5,26 @@ const MainLayout = ({ children }) => {
   return (
     <>
       <Header />
-      <div class="pcoded-main-container">
-        {/* <div class="pcoded-wrapper container"> */}
-        <div class="pcoded-content">
-          <div class="page-header">
-            <div class="page-block">
-              <div class="row align-items-center">
-                <div class="col-md-12">
-                  <div class="page-header-title">
-                    {/* <h5 class="m-b-10">Alert</h5> */}
+      <div className="pcoded-main-container">
+        {/* <div className="pcoded-wrapper container"> */}
+        <div className="pcoded-content">
+          <div className="page-header">
+            <div className="page-block">
+              <div className="row align-items-center">
+                <div className="col-md-12">
+                  <div className="page-header-title">
+                    {/* <h5 className="m-b-10">Alert</h5> */}
                   </div>
-                  <ul class="breadcrumb">
-                    <li class="breadcrumb-item">
+                  <ul className="breadcrumb">
+                    <li className="breadcrumb-item">
                       <a href="/dashboard">
-                        <i class="feather icon-home"></i>
+                        <i className="feather icon-home"></i>
                       </a>
                     </li>
-                    {/* <li class="breadcrumb-item">
+                    {/* <li className="breadcrumb-item">
                       <a href="#!">Basic Components</a>
                     </li>
-                    <li class="breadcrumb-item">
+                    <li className="breadcrumb-item">
                       <a href="#!">Alert</a>
                     </li> */}
                   </ul>
@@ -32,10 +32,10 @@ const MainLayout = ({ children }) => {
               </div>
             </div>
           </div>
-          {/* <div class="pcoded-inner-content">
-              <div class="main-body"> 
-                <div class="page-wrapper">*/}
-          <div class="row">{children}</div>
+          {/* <div className="pcoded-inner-content">
+              <div className="main-body"> 
+                <div className="page-wrapper">*/}
+          <div className="row">{children}</div>
 
           {/* </div>
               </div>
