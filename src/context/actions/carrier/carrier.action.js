@@ -55,7 +55,7 @@ export const listCarriersById = (carrierId) => (dispatch) => (onSuccess) => {
   axios
     .get(`/carrier/findOne/${carrierId}`)
     .then((res) => {
-    //  console.log(`carrier_data`, res.data);
+      //  console.log(`carrier_data`, res.data);
       dispatch({
         type: GET_CARRIERS_SUCCESS,
         payload: res.data,
@@ -72,6 +72,33 @@ export const listCarriersById = (carrierId) => (dispatch) => (onSuccess) => {
       });
     });
 };
+
+export const listCarriersByCompany =
+  (companyId) => (dispatch) => (onSuccess) => {
+    dispatch({
+      type: GET_CARRIERS_REQUEST,
+    });
+
+    axios
+      .get(`/carrier/findByCompany/${companyId}`)
+      .then((res) => {
+        //  console.log(`carrier_data`, res.data);
+        dispatch({
+          type: GET_CARRIERS_SUCCESS,
+          payload: res.data,
+        });
+
+        onSuccess();
+      })
+      .catch((err) => {
+        dispatch({
+          type: GET_CARRIERS_FAIL,
+          payload: err.message
+            ? err.message
+            : { error: "Something went wrong, try again" },
+        });
+      });
+  };
 
 export const listCarriersByVehicle = (vehicleId) => async (dispatch) => {
   dispatch({

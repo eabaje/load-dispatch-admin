@@ -6,8 +6,8 @@ import React from "react";
 function Header() {
   return (
     <>
-      <NavBar />
       <TopHeaderBar />
+      <NavBar />
       {/*   <div class="page-header">
         <div class="page-block">
           <div class="row align-items-center">

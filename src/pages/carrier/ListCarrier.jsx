@@ -13,7 +13,10 @@ import Form from "react-bootstrap/Form";
 import "react-data-table-component-extensions/dist/index.css";
 import { columns } from "../../datasource/dataColumns/carrier";
 import { GlobalContext } from "../../context/Provider";
-import { listCarriers } from "../../context/actions/carrier/carrier.action";
+import {
+  listCarriers,
+  listCarriersById,
+} from "../../context/actions/carrier/carrier.action";
 import LoadingBox from "../../components/notification/loadingbox";
 
 function ListCarrier({ history, match }) {
@@ -21,6 +24,7 @@ function ListCarrier({ history, match }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
+
   const {
     carrierDispatch,
     carrierState: {
@@ -29,49 +33,59 @@ function ListCarrier({ history, match }) {
   } = useContext(GlobalContext);
 
   // GET request function to your Mock API
-  const loadData=()=>{
-
-    if (data.length === 0) {
-      setUser(JSON.parse(localStorage.getItem("user")));
-   
-      listCarriers()(carrierDispatch)((res) => {
-        // setData(res.data);
-      })((err) => {
-        enqueueSnackbar(err, { variant: "error" });
-      });
-    }
-
-  }
+  const loadData = () => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+    companyId
+      ? listCarriersById(companyId)(carrierDispatch)((res) => {
+          // setData(res.data);
+        })((err) => {
+          enqueueSnackbar(err, { variant: "error" });
+        })
+      : listCarriers()(carrierDispatch)((res) => {
+          // setData(res.data);
+        })((err) => {
+          enqueueSnackbar(err, { variant: "error" });
+        });
+  };
   // Calling the function on component mount
   useEffect(() => {
-    let controller = new AbortController();
-    loadData();
-    return () => controller?.abort();
+    if (data.length === 0) {
+      loadData();
+    }
 
     //  fetchData();
   }, []);
   // console.log(`data`, JSON.parse(localStorage.getItem("user")));
   return (
-    <>
-      <div class="col-sm-12">
-        <div class="card">
-          <div class="card-header alert alert-info">
-            <h4>View List of carriers</h4>
-            <hr />
-            <ul>
-              <li>Edit and delete Vehicle</li>
-              <li>Assign Drivers to Vehicle</li>
-            </ul>
-          </div>
-          <div class="card-body table-border-style">
-            <div class="table-responsive">
-              {/* <DataTableExtensions {...tableData}> */}
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header alert alert-info">
+          <h4>View List of carriers</h4>
+          <hr />
+          <ul>
+            <li>Edit and delete Vehicle</li>
+            <li>Assign Drivers to Vehicle</li>
+          </ul>
+        </div>
+        <div class="card-body table-border-style">
+          <div class="table-responsive">
+            {/* <DataTableExtensions {...tableData}> */}
 
-              {loading ? (
-                <LoadingBox />
-              ) : (
-                <DataTableExtensions
-                  exportHeaders
+            {loading ? (
+              <LoadingBox />
+            ) : (
+              <DataTableExtensions
+                exportHeaders
+                columns={columns(user)}
+                data={
+                  companyId
+                    ? data.data?.filter(
+                        (item) => item?.CompanyId === parseInt(companyId)
+                      )
+                    : data?.data
+                }
+              >
+                <DataTable
                   columns={columns(user)}
                   data={
                     companyId
@@ -80,30 +94,19 @@ function ListCarrier({ history, match }) {
                         )
                       : data?.data
                   }
-                >
-                  <DataTable
-                    columns={columns(user)}
-                    data={
-                      companyId
-                        ? data.data?.filter(
-                            (item) => item?.CompanyId === parseInt(companyId)
-                          )
-                        : data?.data
-                    }
-                    className="table table-striped table-bordered table-hover table-checkable"
-                    defaultSortField={1}
-                    sortIcon={<ChevronsDown />}
-                    defaultSortAsc={true}
-                    pagination
-                    highlightOnHover
-                  />
-                </DataTableExtensions>
-              )}
-            </div>
+                  className="table table-striped table-bordered table-hover table-checkable"
+                  defaultSortField={1}
+                  sortIcon={<ChevronsDown />}
+                  defaultSortAsc={true}
+                  pagination
+                  highlightOnHover
+                />
+              </DataTableExtensions>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

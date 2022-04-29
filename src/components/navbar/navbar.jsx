@@ -40,73 +40,71 @@ const NavBar = () => {
   // const splitLocation = pathname.split("/");
 
   const handleMenu = () => {
-    setUser(JSON.parse(localStorage.getItem("user")));
     togglemenu();
     // if ($('body').hasclassName('layout-6') || $('body').hasclassName('layout-7')) {
     //     togglemenulayout();
     // }
-   // menuhrres();
+    // menuhrres();
     var vw = $(window)[0].innerWidth;
     $(document).ready(function () {
-
-    
       $("#pcoded").pcodedmenu({
         // themelayout: "vertical",
         MenuTrigger: "click",
         SubMenuTrigger: "click",
       });
-   
 
-    $("#mobile-collapse,#mobile-collapse1").click(function (e) {
-      var vw = $(window)[0].innerWidth;
-      if (vw < 992) {
-        $(".pcoded-navbar").toggleClass("mob-open");
-        e.stopPropagation();
-      }
+      $("#mobile-collapse,#mobile-collapse1").click(function (e) {
+        var vw = $(window)[0].innerWidth;
+        if (vw < 992) {
+          $(".pcoded-navbar").toggleClass("mob-open");
+          e.stopPropagation();
+        }
+      });
+
+      $(".mobile-menu").on("click", function () {
+        var $this = $(this);
+        $this.toggleClass("on");
+      });
+      $("#mobile-collapse").on("click", function () {
+        if (vw > 991) {
+          $(".pcoded-navbar:not(.theme-horizontal)").toggleClass(
+            "navbar-collapsed"
+          );
+        }
+      });
     });
 
-    $(".mobile-menu").on('click', function() {
-      var $this = $(this);
-      $this.toggleClass('on');
-  });
-  $("#mobile-collapse").on('click', function() {
-      if (vw > 991) {
-          $(".pcoded-navbar:not(.theme-horizontal)").toggleClass("navbar-collapsed");
+    // $(window).resize(function () {
+    // togglemenu();
+    // menuhrres();
+    // if ($('body').hasclass('layout-6') || $('body').hasclass('layout-7')) {
+    //     togglemenulayout();
+    // }
+    //  });
+
+    function togglemenu() {
+      var vw = $(window)[0].innerWidth;
+      if ($(".pcoded-navbar").hasClass("theme-horizontal") === false) {
+        if (vw <= 1200 && vw >= 992) {
+          $(".pcoded-navbar:not(.theme-horizontal)").addClass(
+            "navbar-collapsed"
+          );
+        }
+        if (vw < 992) {
+          $(".pcoded-navbar:not(.theme-horizontal)").removeClass(
+            "navbar-collapsed"
+          );
+        }
       }
-  });
+    }
 
-
-
-
-});
-
-$(window).resize(function() {
-  togglemenu();
- // menuhrres();
-  // if ($('body').hasclass('layout-6') || $('body').hasclass('layout-7')) {
-  //     togglemenulayout();
-  // }
-});
-
-function togglemenu() {
-  var vw = $(window)[0].innerWidth;
-  if ($(".pcoded-navbar").hasClass('theme-horizontal') == false) {
-      if (vw <= 1200 && vw >= 992) {
-          $(".pcoded-navbar:not(.theme-horizontal)").addClass("navbar-collapsed");
-      }
-      if (vw < 992) {
-          $(".pcoded-navbar:not(.theme-horizontal)").removeClass("navbar-collapsed");
-      }
-  }
-}
-
-
+    setUser(JSON.parse(localStorage.getItem("user")));
   };
   useEffect(() => {
-   let controller = new AbortController();
+    let controller = new AbortController();
 
-   handleMenu();
-  //  setUser(JSON.parse(localStorage.getItem("user")));
+    handleMenu();
+    //  setUser(JSON.parse(localStorage.getItem("user")));
     return () => controller?.abort();
   }, []);
 
