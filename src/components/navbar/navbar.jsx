@@ -100,13 +100,14 @@ const NavBar = () => {
 
     setUser(JSON.parse(localStorage.getItem("user")));
   };
+  const a = 1;
   useEffect(() => {
     let controller = new AbortController();
 
     handleMenu();
     //  setUser(JSON.parse(localStorage.getItem("user")));
     return () => controller?.abort();
-  }, []);
+  }, [a]);
 
   return (
     <>
