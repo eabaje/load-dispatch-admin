@@ -1,14 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Camera, Trash, Truck, List, Edit, ChevronsDown } from "react-feather";
 import { useState } from "react";
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import { Link, useHistory } from "react-router-dom";
-import { API_URL } from "../../constants";
-import { getError } from "../../utils/error";
-import $ from "jquery";
-import { fetchDataAll } from "../../helpers/query";
-import shipmentState from "../../context/initialStates/shipment.state";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
@@ -20,7 +14,7 @@ import {
   showInterest,
 } from "../../context/actions/shipment/shipment.action";
 import LoadingBox from "../../components/notification/loadingbox";
-import { Button, Modal } from "react-bootstrap";
+
 
 function ListShipment({ history, match }) {
   const { userId } = match.params;
@@ -47,38 +41,32 @@ function ListShipment({ history, match }) {
     setShow(!show);
   }
 
+  const loadData = () => {
+   
+    userId
+      ? listShipments()(shipmentDispatch)((res) => {
+          // setData(res.data);
+        })((err) => {
+          enqueueSnackbar(err, { variant: "error" });
+        })
+      : listShipments()(shipmentDispatch)((res) => {
+          // setData(res.data);
+        })((err) => {
+          enqueueSnackbar(err, { variant: "error" });
+        });
+
+
+       // setData(data.data?.filter((item) => item.UserId === userId));
+  };
+
   useEffect(() => {
-    if (data.length === 0) {
-      listShipments()(shipmentDispatch)((res) => {
-        // if(userId){
-        // setData(res.data?.filter((item) => item?.UserId === userId));
-        // }
-        // else{
-        // setData(res.data);
-        // }
-        // setData(res.data?.filter((item) => item?.UserId === userId);
-      })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
-    }
-
-    if (data.length === 0 && userId) {
-      listShipments()(shipmentDispatch)((res) => {
-        // if(userId){
-        // setData(res.data?.filter((item) => item?.UserId === userId));
-        // }
-        // else{
-        // setData(res.data);
-        // }
-        // setData(res.data?.filter((item) => item?.UserId === userId);
-      })((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
-    }
-
-    setData(data.data?.filter((item) => item.UserId === userId));
-
     setUser(JSON.parse(localStorage.getItem("user")));
+    if (data.length === 0) {
+      loadData();
+
+
+    }
+   
   }, []);
   // console.log(`userid`, userId);
   // console.log(`data`, data2);

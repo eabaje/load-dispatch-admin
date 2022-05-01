@@ -28,6 +28,7 @@ function ListTrip() {
   // Calling the function on component mount
   useEffect(() => {
     if (data.length === 0) {
+      setUser(JSON.parse(localStorage.getItem("user")));
       listTrips()(tripDispatch);
       ((result) => {})((err) => {
         enqueueSnackbar(err.message, { variant: "error" });

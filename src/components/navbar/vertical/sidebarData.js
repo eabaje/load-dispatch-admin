@@ -74,9 +74,14 @@ const menuItemsCarrier = (user) => [
         path: `/add-shipment`,
       },
       {
-        title: "List carrier Info",
-        path: `/list-carriers-info/${user.CompanyId}`,
+        title: "List all Shipments",
+        path: `/list-all-shipments`,
       },
+      {
+        title: "My Shipments",
+        path: `/my-shipments-info/${user.UserId}`,
+      },
+     
       {
         title: "Vehicle List",
         path: `/list-vehicles-info/${user.CompanyId}`,
@@ -87,6 +92,10 @@ const menuItemsCarrier = (user) => [
     title: "Carrier",
     icon: "first fas fa-truck",
     submenu: [
+       {
+        title: "List carrier Info",
+        path: `/list-carriers-info/${user.CompanyId}`,
+      },
       {
         title: "Create carrier Info",
         path: `/add-carrier`,

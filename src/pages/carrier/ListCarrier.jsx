@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -15,12 +16,14 @@ import { columns } from "../../datasource/dataColumns/carrier";
 import { GlobalContext } from "../../context/Provider";
 import {
   listCarriers,
+  listCarriersByCompany,
   listCarriersById,
 } from "../../context/actions/carrier/carrier.action";
 import LoadingBox from "../../components/notification/loadingbox";
 
-function ListCarrier({ history, match }) {
-  const { companyId } = match.params;
+function ListCarrier() {
+ // const { companyId } = match.params; { history, match }
+  const { companyId } = useParams();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
   const [user, setUser] = useState({});
@@ -34,9 +37,9 @@ function ListCarrier({ history, match }) {
 
   // GET request function to your Mock API
   const loadData = () => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+   
     companyId
-      ? listCarriersById(companyId)(carrierDispatch)((res) => {
+      ? listCarriersByCompany(companyId)(carrierDispatch)((res) => {
           // setData(res.data);
         })((err) => {
           enqueueSnackbar(err, { variant: "error" });
@@ -49,6 +52,7 @@ function ListCarrier({ history, match }) {
   };
   // Calling the function on component mount
   useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
     if (data.length === 0) {
       loadData();
     }
@@ -57,9 +61,9 @@ function ListCarrier({ history, match }) {
   }, []);
   // console.log(`data`, JSON.parse(localStorage.getItem("user")));
   return (
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-header alert alert-info">
+    <div className="col-sm-12">
+      <div className="card">
+        <div className="card-header alert alert-info">
           <h4>View List of carriers</h4>
           <hr />
           <ul>
@@ -67,8 +71,8 @@ function ListCarrier({ history, match }) {
             <li>Assign Drivers to Vehicle</li>
           </ul>
         </div>
-        <div class="card-body table-border-style">
-          <div class="table-responsive">
+        <div className="card-body table-border-style">
+          <div className="table-responsive">
             {/* <DataTableExtensions {...tableData}> */}
 
             {loading ? (
@@ -94,7 +98,7 @@ function ListCarrier({ history, match }) {
                         )
                       : data?.data
                   }
-                  className="table table-striped table-bordered table-hover table-checkable"
+                  classNameName="table table-striped table-bordered table-hover table-checkable"
                   defaultSortField={1}
                   sortIcon={<ChevronsDown />}
                   defaultSortAsc={true}

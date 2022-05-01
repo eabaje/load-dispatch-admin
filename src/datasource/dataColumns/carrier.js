@@ -5,7 +5,7 @@ import { LOAD_CAPACITY, LOAD_TYPE } from "../../constants/enum";
 export const columns = (params) => [
   {
     id: 1,
-    name: "",
+    name: "Action",
     sortable: false,
     selector: "null",
     cell: (row) => [

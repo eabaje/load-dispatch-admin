@@ -88,14 +88,14 @@ export const columns = (params) => [
     reorder: true,
   },
   {
-    id: 10,
+    id: 11,
     name: "License Url",
     selector: (row) => row.LicenseUrl,
     sortable: true,
     reorder: true,
   },
   {
-    id: 10,
+    id: 12,
     name: "Rating",
     selector: (row) => row.Rating,
     sortable: true,
@@ -103,7 +103,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 11,
+    id: 13,
     name: "Driver Docs",
     selector: (row) => row.DriverDocs,
     sortable: true,
@@ -111,7 +111,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 12,
+    id: 14,
     name: "Created Date",
     selector: (row) => row.createdAt? Date.parse(row.createdAt):row.createdAt,
     sortable: true,
@@ -120,7 +120,7 @@ export const columns = (params) => [
   },
 
   {
-    id: 13,
+    id: 15,
     name: "Updated Date",
     selector: (row) => row.updatedAt? Date.parse(row.updatedAt):row.updatedAt,
     sortable: true,

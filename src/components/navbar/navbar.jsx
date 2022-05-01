@@ -166,7 +166,7 @@ const NavBar = () => {
                   return <Menu id={index} items={menu} user={user} />;
                 })}
 
-              {/* {user.roles === "driver" &&
+              {user.roles === "driver" &&
                 menuItemsDriver(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
                 })}
@@ -179,7 +179,7 @@ const NavBar = () => {
               {user.roles === "admin" &&
                 menuItemsAdmin(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
-                })} */}
+                })}
             </ul>
           </div>
         </div>
