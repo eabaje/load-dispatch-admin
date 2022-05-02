@@ -24,15 +24,27 @@ function ListTrip() {
       Trips: { data, loading }, //loading
     },
   } = useContext(GlobalContext);
+  const loadData = () => {
+   
+    // userId
+    //   ? listShipments()(shipmentDispatch)((result) => {})((err) => {
+    //     enqueueSnackbar(err, { variant: "error" });
+    //   })
+    //   : listShipments()(shipmentDispatch)((result) => {})((err) => {
+    //     enqueueSnackbar(err, { variant: "error" });
+    //   });
 
+      listTrips()(tripDispatch)
+      ((result) => {})((err) => {
+        enqueueSnackbar(err.message, { variant: "error" });
+      });
+       // setData(data.data?.filter((item) => item.UserId === userId));
+  };
   // Calling the function on component mount
   useEffect(() => {
     if (data.length === 0) {
       setUser(JSON.parse(localStorage.getItem("user")));
-      listTrips()(tripDispatch);
-      ((result) => {})((err) => {
-        enqueueSnackbar(err.message, { variant: "error" });
-      });
+      loadData();
     }
   }, []);
 

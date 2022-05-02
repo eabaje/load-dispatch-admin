@@ -44,29 +44,25 @@ function ListShipment({ history, match }) {
   const loadData = () => {
    
     userId
-      ? listShipments()(shipmentDispatch)((res) => {
-          // setData(res.data);
-        })((err) => {
-          enqueueSnackbar(err, { variant: "error" });
-        })
-      : listShipments()(shipmentDispatch)((res) => {
-          // setData(res.data);
-        })((err) => {
-          enqueueSnackbar(err, { variant: "error" });
-        });
+      ? listShipments()(shipmentDispatch)((result) => {})((err) => {
+        enqueueSnackbar(err, { variant: "error" });
+      })
+      : listShipments()(shipmentDispatch)((result) => {})((err) => {
+        enqueueSnackbar(err, { variant: "error" });
+      });;
 
 
        // setData(data.data?.filter((item) => item.UserId === userId));
   };
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+   
     if (data.length === 0) {
       loadData();
 
 
     }
-   
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   // console.log(`userid`, userId);
   // console.log(`data`, data2);
@@ -136,14 +132,7 @@ function ListShipment({ history, match }) {
                 </DataTableExtensions>
               )}
             </div>
-            {/* <Modal show={show} onHide={() => handleModal()}>
-              <Modal.Header closeButton>Check your interest</Modal.Header>
-              <Modal.Body>{show}</Modal.Body>
-              <Modal.Footer>
-                <Button onClick={() => handleModal()}>Close</Button>
-                <Button onClick={() => handleModal()}>Save</Button>
-              </Modal.Footer>
-            </Modal> */}
+           
           </div>
         </div>
       </div>

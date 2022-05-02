@@ -305,6 +305,11 @@ const App = () => {
               path="/list-trip/:companyId"
               component={ListTrip}
             />
+             <AppLayoutRoute
+              exact
+              path="/list-trip-info/:driverId"
+              component={ListTrip}
+            />
             <AppLayoutRoute
               exact
               path="/add-subscription"
