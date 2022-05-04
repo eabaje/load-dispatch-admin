@@ -52,11 +52,11 @@ function Login() {
     // e.preventDefault();
     //  console.log("state:", formdata);
 
-    signin2(formdata)(authDispatch)((success) => {
+    signin2(formdata)(authDispatch)((res) => {
       // const userId=success.data.UserId;
-      // history.push(`/user-profile/${userId}`);
-
-      history.push("/dashboard");
+       history.push(`/user-profile/${res.user.UserId}`);
+      // alert(res.user.UserId)
+      // history.push(`/dashboard`);
      
     })((err) => {
       document.forms[0].reset();

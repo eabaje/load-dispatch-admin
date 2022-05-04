@@ -188,14 +188,16 @@ function AddCarrier({ history, match }) {
                     <label class="col-sm-2 col-form-label">Fleet Number</label>
 
                     <div class="col-sm-4">
-                      <input
-                        name="FleetNumber"
-                        class="form-control"
-                        placeholder="Fleet Number"
-                        {...register("FleetNumber", {
-                          required: true,
-                        })}
-                      />
+                     
+                       <select required="required" class="form-control" name="FleetNumber" id="FleetNumber" >
+                        <option value=""></option>
+                        <option  value="0-2">0-2</option>
+                        <option  value="3-5">3-5</option>
+                        <option  value="5-10">5-10</option>
+                        <option  value="11-20">11-20</option>
+                        <option  value="> 20" >20+</option>
+                        {...register("FleetNumber")}
+                      </select>
                     </div>
                     <label class="col-sm-2 col-form-label">Licensed?</label>
                     <div class="col-sm-4">

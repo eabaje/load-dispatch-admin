@@ -1,58 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
-import {
-  listShipments,
-  listShipmentsInterest,
-} from "../../context/actions/shipment/shipment.action";
-import { GlobalContext } from "../../context/Provider";
-
-function NewsFlash() {
-  // const [dataShipment, setDataShipment] = useState([]);
-  // const [dataInterest, setDataInterest] = useState([]);
-  const { enqueueSnackbar } = useSnackbar();
-  const [dataLength, setDataLength] = useState(0);
-  const [dataLengthInterest, setDataLengthInterest] = useState(0);
-  const [user, setUser] = useState({});
-  const {
-    shipmentDispatch,
-    shipmentState: {
-      Shipments: { data: dataShipment },
-      Interests: { data: dataInterest }, //loading
-    },
-  } = useContext(GlobalContext);
-
-  const loadData=()=>{
-
-   
-    if (dataShipment.length === 0) {
-      listShipments()(shipmentDispatch)((res) => {
-        //  setDataShipment(res);
-      })((err) => {
-        enqueueSnackbar(err, { variant: "error" });
-      });
-
-    
-      listShipmentsInterest()(shipmentDispatch)((res) => {
-        // setDataInterest(res.data);
-      })((err) => {
-        enqueueSnackbar(err, { variant: "error" });
-      });
-
-    }
 
 
-  }
-
-  useEffect(() => {
-    let controller = new AbortController();
-    loadData();
-    return () => controller?.abort();
-    // setDataLength(dataShipment.data?.length);
-    // setDataLengthInterest(dataInterest.data?.length);
-  }, []);
-
-
+function NewsFlash(
+  dataShipment,dataInterest) {
+ 
+ 
+ 
  
   //console.log(`data`, dataLengthInterest);
   return (

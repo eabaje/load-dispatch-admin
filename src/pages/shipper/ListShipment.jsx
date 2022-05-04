@@ -44,7 +44,7 @@ function ListShipment({ history, match }) {
   const loadData = () => {
    
     userId
-      ? listShipments()(shipmentDispatch)((result) => {})((err) => {
+      ?   listShipments()(shipmentDispatch)((result) => {})((err) => {
         enqueueSnackbar(err, { variant: "error" });
       })
       : listShipments()(shipmentDispatch)((result) => {})((err) => {

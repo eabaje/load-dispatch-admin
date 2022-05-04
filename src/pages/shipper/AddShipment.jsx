@@ -371,6 +371,7 @@ function AddShipment({ history, match }) {
 
                       <div class="col-sm-3">
                         <input
+                        type="number"
                           name="Qty"
                           readOnly={readOnly}
                           class="form-control"

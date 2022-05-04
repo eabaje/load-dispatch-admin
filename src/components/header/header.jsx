@@ -4,9 +4,11 @@ import TopHeaderBar from "./top-header-bar";
 import React from "react";
 
 function Header() {
+
+ 
   return (
     <>
-      <TopHeaderBar />
+      <TopHeaderBar   />
       <NavBar />
       {/*   <div class="page-header">
         <div class="page-block">

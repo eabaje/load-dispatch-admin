@@ -1,6 +1,5 @@
-import React from "react";
+import React,{useContext} from "react";
 import { IMG_URL, LOG_IN } from "../../constants";
-import { useContext, useState } from "react";
 import { GlobalContext } from "../../context/Provider";
 import { signout } from "../../context/actions/auth/auth.action";
 import { Link } from "react-router-dom";
@@ -9,41 +8,16 @@ import { ROLES } from "../../constants/enum";
 function TopHeaderBar() {
   const {
     authDispatch,
-    authState: { isLoggedIn },
+    authState: {user, isLoggedIn },
   } = useContext(GlobalContext);
 
-  const [isAuthenticated, setIsAuthenticated] = React.useState(isLoggedIn);
-  const [authLoaded, setAuthLoaded] = React.useState(false);
-  const [user, setUser] = useState({});
+ 
 
-  const getUser = async () => {
-    try {
-      setUser(await JSON.parse(localStorage.getItem("user")));
-      if (user) {
-        setAuthLoaded(true);
-
-        setIsAuthenticated(true);
-      } else {
-        setAuthLoaded(true);
-
-        setIsAuthenticated(false);
-
-        window.location = "/signin";
-      }
-    } catch (error) {}
-  };
-  React.useEffect(() => {
-    let controller = new AbortController();
-      getUser();
-    return () => controller?.abort();
-
-  
-  }, []);
-  // console.log(`User`, user);
-  const LogOut = () => {
+ 
+   
+  const logOut = () => {
     signout()(authDispatch);
   };
-
   return (
     <>
       {" "}
@@ -214,7 +188,7 @@ function TopHeaderBar() {
 
                       <Link
                         to={`#`}
-                        onClick={LogOut}
+                        onClick={logOut}
                         className="dud-logout"
                         title=" Logout"
                       >

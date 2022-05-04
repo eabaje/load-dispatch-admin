@@ -23,10 +23,10 @@ import { IMG_URL } from "../../constants";
 import { ROLES } from "../../constants/enum";
 
 const NavBar = () => {
-  const [user, setUser] = useState({});
+ 
 
   const {
-    authState: { isLoggedIn },
+    authState: { user,isLoggedIn },
   } = useContext(GlobalContext);
   //  const { dispatch } = useContext(AuthContext);
 
@@ -98,7 +98,7 @@ const NavBar = () => {
       }
     }
 
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
   };
   const a = 1;
   useEffect(() => {

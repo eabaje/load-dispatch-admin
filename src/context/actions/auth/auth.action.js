@@ -87,7 +87,7 @@ export const signin2 = (form) => (dispatch) => (onSuccess) => (onError) => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
-      // console.log(`res`, res);
+       console.log(`res`, res);
       onSuccess(res.data);
     })
     .catch((err) => {
