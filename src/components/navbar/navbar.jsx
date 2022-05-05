@@ -108,7 +108,7 @@ const NavBar = () => {
     //  setUser(JSON.parse(localStorage.getItem("user")));
     return () => controller?.abort();
   }, [a]);
-
+console.log('user', user)
   return (
     <>
       {/* {(user.roles === "carrier" && <NavBarCarrier />) ||
