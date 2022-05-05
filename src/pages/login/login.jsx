@@ -54,7 +54,9 @@ function Login() {
 
     signin2(formdata)(authDispatch)((res) => {
       // const userId=success.data.UserId;
-       history.push(`/user-profile/${res.user.UserId}`);
+      res.user.isActivated===true ?
+      history.push(`/dashboard`)
+       : history.push(`/user-profile/${res.user.UserId}`)
       // alert(res.user.UserId)
       // history.push(`/dashboard`);
      

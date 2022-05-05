@@ -1,3 +1,25 @@
+
+
+
+
+const menuItemsPublic = (user) => [
+  {
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: "first fas fa-home",
+  },
+  {
+    title: "Renew your Subscription",
+    path: `/user-subscription/${user.UserId}`,
+    icon: "first fas fa-users",
+  },
+  
+ 
+];
+
+
+
+
 const menuItemsDriver = (user) => [
   {
     title: "Dashboard",
@@ -222,4 +244,4 @@ const menuItemsAdmin = (user) => [
   },
 ];
 
-export { menuItemsDriver, menuItemsCarrier, menuItemsAdmin, menuItemsShipper };
+export {menuItemsPublic,menuItemsDriver, menuItemsCarrier, menuItemsAdmin, menuItemsShipper };

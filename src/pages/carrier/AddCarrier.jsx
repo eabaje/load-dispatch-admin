@@ -31,8 +31,11 @@ function AddCarrier({ history, match }) {
   // console.log(`params`, match.params);
   console.log(`isAddMode`, isAddMode);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const {
+    authState: { user,isLoggedIn },
+  } = useContext(GlobalContext);
 
-  const [user, setUser] = useState({});
+ 
 
   const {
     register,
@@ -58,10 +61,19 @@ function AddCarrier({ history, match }) {
     formdata.CompanyId = user.CompanyId;
 
     createCarrier(formdata)(carrierDispatch)((res) => {
-      if (res.message) {
+      if (res) {
         enqueueSnackbar(res.message, {
           variant: "success",
         });
+        setTimeout(() => {
+          closeSnackbar(res.message, {
+            variant: "success",
+          });
+          history.push(`add-vehicle-to-carrier/${user.CompanyId}/${res.data.CarrierId}/${res.data.CarrierType}`)
+        }, 5000);
+      
+    
+
       }
     })((err) => {
       enqueueSnackbar(err, {
@@ -83,7 +95,7 @@ function AddCarrier({ history, match }) {
     });
   }
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
 
     if (!isAddMode) {
       // console.log(`object`, fetchData("carrier/findOne", carrierId));
