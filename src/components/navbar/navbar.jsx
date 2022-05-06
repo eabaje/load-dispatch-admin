@@ -15,6 +15,7 @@ import NavBarPublic from "./navbar-public";
 import Menu from "./vertical/navbar-vertical-menu";
 import {
   menuItemsAdmin,
+  menuItemsAudit,
   menuItemsCarrier,
   menuItemsDriver,
   menuItemsPublic,
@@ -23,11 +24,11 @@ import {
 import { IMG_URL } from "../../constants";
 import { ROLES } from "../../constants/enum";
 
-const NavBar = () => {
+const NavBar = (history) => {
  
 
   const {
-    authState: { user,isLoggedIn },
+    authState: { user},
   } = useContext(GlobalContext);
   //  const { dispatch } = useContext(AuthContext);
 
@@ -103,11 +104,12 @@ const NavBar = () => {
   };
   const a = 1;
   useEffect(() => {
-    let controller = new AbortController();
+    //let controller = new AbortController();
 
     handleMenu();
+    user===null &&  history.push(`sigin`)
     //  setUser(JSON.parse(localStorage.getItem("user")));
-    return () => controller?.abort();
+  //  return () => controller?.abort();
   }, [a]);
 console.log('user', user)
   return (
@@ -162,9 +164,9 @@ console.log('user', user)
             </div>
 
             <ul className="nav pcoded-inner-navbar ">
-                  {
+                  {/* {
                   user.isActivated === false && user.roles !== "admin" 
-                  ? menuItemsPublic(user).map((menu, index) => {
+                  ? menuItemsAudit(user).map((menu, index) => {
                     return <Menu id={index} items={menu} user={user} />
                   })
                   : user.isExpired === true 
@@ -189,17 +191,14 @@ console.log('user', user)
                   })
                   :
                   user.roles === "admin" 
-                  ?
+                  &&
                   menuItemsAdmin(user).map((menu, index) => {
                     return <Menu id={index} items={menu} user={user} />;
                   })
-                  :
-                  menuItemsPublic(user).map((menu, index) => {
-                    return <Menu id={index} items={menu} user={user} />
-                  })
-                }
+                  
+                } */}
                
-            {/* {user.isActivated === false &&
+            {user.isActivated === false &&
                 menuItemsPublic(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
                 })}
@@ -227,7 +226,7 @@ console.log('user', user)
               {user.roles === "admin" &&
                 menuItemsAdmin(user).map((menu, index) => {
                   return <Menu id={index} items={menu} user={user} />;
-                })} */}
+                })}
             </ul>
           </div>
         </div>

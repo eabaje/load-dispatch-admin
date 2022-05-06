@@ -17,7 +17,9 @@ import { listTrips } from "../../context/actions/trip/trip.action";
 function ListTrip() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   // const [data, setData] = useState([]);
-  const [user, setUser] = useState({});
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     tripDispatch,
     tripState: {
@@ -43,7 +45,7 @@ function ListTrip() {
   // Calling the function on component mount
   useEffect(() => {
     if (data.length === 0) {
-      setUser(JSON.parse(localStorage.getItem("user")));
+     
       loadData();
     }
   }, []);

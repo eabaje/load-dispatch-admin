@@ -41,12 +41,14 @@ function AddShipment({ history, match }) {
   const [selpickUpRegion, setselpickUpRegion] = useState("");
   const [seldeliveryRegion, setseldeliveryRegion] = useState("");
 
-  const [user, setUser] = useState({});
+ 
   const [readOnly, setReadOnly] = useState(false);
   const [formStep, setFormStep] = useState(0);
   const [refId, setRefId] = useState("");
   // const onSubmit = (data) => console.log(data);
-
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const selectPickUpCountry = async (e) => {
     setCountry((country) => e.target.value);
 
@@ -71,8 +73,7 @@ function AddShipment({ history, match }) {
     if (isReadOnly) setReadOnly(!readOnly);
     setCountries((countries) => (countries = Country.getAllCountries()));
 
-    setUser(JSON.parse(localStorage.getItem("user")));
-
+   
     // console.log(`user`, user.CompanyId);
     if (!isAddMode) {
       // console.log(`object`, fetchData("shipment/findOne", shipmentId));

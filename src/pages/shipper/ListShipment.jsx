@@ -23,11 +23,13 @@ function ListShipment({ history, match }) {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+ // const [user, setUser] = useState({});
   const [show, setShow] = useState(false);
   const [shipmentName, setshipmentName] = useState("");
   const [shipmentId, setshipmentId] = useState("");
-
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     shipmentDispatch,
     shipmentState: {
@@ -62,7 +64,7 @@ function ListShipment({ history, match }) {
 
 
     }
-    setUser(JSON.parse(localStorage.getItem("user")));
+  //  setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   // console.log(`userid`, userId);
   // console.log(`data`, data2);
