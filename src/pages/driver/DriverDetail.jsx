@@ -17,8 +17,11 @@ function DriverDetail({ history, match }) {
 
   const [profile, setProfile] = useState({});
   const [refId, setRefId] = useState();
-  const [user, setUser] = useState({});
+ 
 
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   // Calling the function on component mount
   useEffect(() => {
     fetchData(
@@ -41,7 +44,7 @@ function DriverDetail({ history, match }) {
       enqueueSnackbar(err.message, { variant: "error" });
     });
 
-    setUser(JSON.parse(localStorage.getItem("user")));
+ 
   }, []);
 
   const {

@@ -67,7 +67,7 @@ function ListShipment({ history, match }) {
   //  setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   // console.log(`userid`, userId);
-  // console.log(`data`, data2);
+ 
   return (
     
       <div class="col-xl-12">

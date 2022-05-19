@@ -35,13 +35,16 @@ const AddDriver=({ history, match }) => {
   const [docFile, setdocFile] = useState(null);
   const [docUrl, setdocUrl] = useState(null);
   const [doc, setdoc] = useState(null);
-  const [user, setUser] = useState({});
   const [url, setUrl] = useState(null);
   const [selPickUpRegion, setselpickUpRegion] = useState("");
   const [visibility, setVisibility] = useState(false);
   const [visibilityImage, setVisibilityImage] = useState(false);
   const [visibilityFile, setVisibilityFile] = useState(false);
   // const onSubmit = (data) => console.log(data);
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
+
 
   const popupCloseHandler = (e) => {
     setVisibility(e);
@@ -77,7 +80,7 @@ const AddDriver=({ history, match }) => {
 
   useEffect(() => {
     setCountries((countries) => (countries = Country.getAllCountries()));
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
     if (!isAddMode) {
       fetchData(
         "driver/findOne",

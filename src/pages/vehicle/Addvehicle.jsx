@@ -38,6 +38,10 @@ function AddVehicle({ history, match }) {
   } = useForm();
 
   const {
+    authState: { user },
+  } = useContext(GlobalContext)
+
+  const {
     vehicleDispatch,
     vehicleState: {
       createVehicle: { loading },
@@ -101,11 +105,11 @@ function AddVehicle({ history, match }) {
     });
   }
 
-  const [user, setUser] = useState({});
+
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
 
     if (driverdata.length === 0) {
       if (driverId) {

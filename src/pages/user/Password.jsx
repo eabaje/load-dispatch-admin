@@ -39,7 +39,7 @@ function AddUserRole({ history, match }) {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [user, setUser] = useState({});
+  
   const [subscribeUser, setSubscribeUser] = useState({});
   const [data, setData] = useState([]);
   const [subscriptionType, setsubscriptionType] = useState([]);
@@ -52,7 +52,10 @@ function AddUserRole({ history, match }) {
     watch,
     control,
   } = useForm({ mode: "onChange" });
-
+ 
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     userDispatch,
     userState: {
@@ -75,7 +78,7 @@ function AddUserRole({ history, match }) {
   }
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+ 
 
     if (!isAddMode) {
       fetchData(
@@ -93,8 +96,7 @@ function AddUserRole({ history, match }) {
       });
     }
   }, []);
-  console.log(`subscribeUser`, subscribeUser);
-
+ 
   return (
     <>
       

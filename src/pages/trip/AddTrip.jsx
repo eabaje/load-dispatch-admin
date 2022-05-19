@@ -31,16 +31,17 @@ function AddTrip({ history, match }) {
 
   const [selpickUpRegion, setselpickUpRegion] = useState("");
   const [seldeliveryRegion, setseldeliveryRegion] = useState("");
-  const [user, setUser] = useState({});
+ 
   const [readOnly, setReadOnly] = useState(false);
   // const onSubmit = (data) => console.log(data);
-
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   useEffect(() => {
     if (isReadOnly) setReadOnly(!readOnly);
     setCountries((countries) => (countries = Country.getAllCountries()));
 
-    setUser(JSON.parse(localStorage.getItem("user")));
-
+  
     // console.log(`user`, user.CompanyId);
     if (!isAddMode) {
       fetchData(

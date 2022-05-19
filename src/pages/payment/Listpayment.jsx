@@ -21,11 +21,15 @@ function ListPayment({ history, match }) {
   const { toDate } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+ 
 
   // GET request function to your Mock API
 
   // Calling the function on component mount
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
+
   const {
     paymentDispatch,
     paymentState: {
@@ -47,7 +51,7 @@ function ListPayment({ history, match }) {
         enqueueSnackbar(err.message, { variant: "error" });
       });
 
-      setUser(JSON.parse(localStorage.getItem("user")));
+   
     }
   }, []);
   return (

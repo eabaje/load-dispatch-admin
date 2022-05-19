@@ -37,11 +37,8 @@ function AddShipment({ history, match }) {
   const [countries, setCountries] = useState([]);
   const [pickUpRegion, setPickUpRegion] = useState([]);
   const [deliveryRegion, setdeliveryRegion] = useState([]);
-
   const [selpickUpRegion, setselpickUpRegion] = useState("");
   const [seldeliveryRegion, setseldeliveryRegion] = useState("");
-
- 
   const [readOnly, setReadOnly] = useState(false);
   const [formStep, setFormStep] = useState(0);
   const [refId, setRefId] = useState("");
@@ -207,7 +204,7 @@ function AddShipment({ history, match }) {
     // formData.append("UserId", userId);
     formdata.CompanyId = user.CompanyId;
     formdata.UserId = user.UserId;
-    console.log(`form`, formdata);
+   // console.log(`form`, formdata);
 
     showInterest(formdata)(shipmentDispatch)((res) => {
       if (res) {

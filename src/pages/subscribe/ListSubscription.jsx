@@ -21,8 +21,11 @@ import LoadingBox from "../../components/notification/loadingbox";
 function ListSubscription() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+
   // const [loading, setLoading] = useState(true);
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
 
   const {
     subscribeDispatch,
@@ -46,22 +49,10 @@ function ListSubscription() {
         enqueueSnackbar(err.message, { variant: "error" });
       });
     }
-    setUser(JSON.parse(localStorage.getItem("user")));
+
   }, []);
 
-  // Calling the function on component mount
-  // useEffect(() => {
-  //   fetchDataAll("subscription/findAll")((subscribe) => {
-  //     setLoading(false);
-  //     setData(subscribe);
-  //   })((err) => {});
-  //   console.log(`data`, data);
-  //   setUser(JSON.parse(localStorage.getItem("user")));
-  // }, []);
-  // const tableData = {
-  //   columns,
-  //   data.data,
-  // };
+  
 
   return (
    

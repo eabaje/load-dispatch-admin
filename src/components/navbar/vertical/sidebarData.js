@@ -101,8 +101,15 @@ const menuItemsCarrier = (user) => [
     icon: "first fas fa-home",
   },
   {
+    title: "My Shipments",
+    path:`/my-shipments-info/${user.UserId}`,
+    icon: "first fas fa-car",
+  },
+  {
     title: "Ship Vehicles",
     icon: "first fas fa-car",
+   
+
     submenu: [
       {
         title: "Post a Vehicle",

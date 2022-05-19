@@ -4,8 +4,7 @@ import { SnackbarProvider } from "notistack";
 import "./index.css";
 import App from "./App";
 import GlobalProvider from "./context/Provider";
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
+
 import reportWebVitals from "./reportWebVitals";
 import Slide from "@material-ui/core/Slide";
 

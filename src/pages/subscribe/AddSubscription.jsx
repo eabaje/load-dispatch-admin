@@ -26,7 +26,6 @@ function AddSubscription({ history, match }) {
   const isAddMode = !subscribeId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [user, setUser] = useState({});
   const [data, setData] = useState([]);
 
   const {
@@ -37,6 +36,10 @@ function AddSubscription({ history, match }) {
     watch,
     control,
   } = useForm({ mode: "onChange" });
+
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
 
   const {
     subscribeDispatch,
@@ -85,7 +88,7 @@ function AddSubscription({ history, match }) {
   }
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
 
     if (!isAddMode) {
       fetchData(

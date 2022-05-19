@@ -26,8 +26,10 @@ function ListCarrier() {
   const { companyId } = useParams();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
-
+ 
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     carrierDispatch,
     carrierState: {
@@ -52,7 +54,7 @@ function ListCarrier() {
   };
   // Calling the function on component mount
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+   
     if (data.length === 0) {
       loadData();
     }

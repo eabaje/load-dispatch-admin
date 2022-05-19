@@ -26,7 +26,10 @@ function ListVehicle({ history, match }) {
   const isAddMode = !vehicleId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
 
   const {
     vehicleDispatch,
@@ -37,7 +40,7 @@ function ListVehicle({ history, match }) {
 
   // Calling the function on component mount
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+   
     if (data.length === 0) {
     if (carrierType) {
      

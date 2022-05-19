@@ -28,7 +28,7 @@ function UserSubscription({ history, match }) {
   const isSingleMode = !subscribeId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [res, setData] = useState([]);
-  const [user, setUser] = useState({});
+  
   // const [loading, setLoading] = useState(false);
   console.log(`userSubscriptionId`, subscribeId);
   console.log(`isSingleMode`, isSingleMode);
@@ -37,6 +37,9 @@ function UserSubscription({ history, match }) {
   // enqueueSnackbar(getError(err), { variant: "error" });
   // Calling the function on component mount
   const {
+    authState: { user },
+  } = useContext(GlobalContext)
+  const {
     userDispatch,
     userState: {
       UserSubscriptions: { data, loading },
@@ -44,7 +47,7 @@ function UserSubscription({ history, match }) {
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
 
     if (data.length === 0) {
       listUserSubscriptions()(userDispatch)((res) => {})((err) => {

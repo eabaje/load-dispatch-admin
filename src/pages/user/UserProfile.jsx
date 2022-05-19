@@ -36,8 +36,7 @@ function UserProfile({ history, match }) {
   const isSingleMode = !userId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
-  const [profile, setProfile] = useState({});
+   const [profile, setProfile] = useState({});
   const [companyInfo, setCompanyInfo] = useState({});
 
   const isAddMode = !userId;
@@ -129,7 +128,9 @@ function UserProfile({ history, match }) {
     userDispatch,
     userState: { User: data, loading },
   } = useContext(GlobalContext);
-
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const getCompany = (companyId) => {
     fetchData(
       "user/findCompany",
@@ -191,7 +192,7 @@ function UserProfile({ history, match }) {
       });
     });
 
-    setUser(JSON.parse(localStorage.getItem("user")));
+    
   }, []);
 
   function onSubmit(formdata) {

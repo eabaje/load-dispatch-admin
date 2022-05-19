@@ -22,7 +22,10 @@ function UserList({ history, match }) {
   const isSingleMode = !userId;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+ 
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     userDispatch,
 
@@ -41,7 +44,7 @@ function UserList({ history, match }) {
       });
     }
 
-  setUser(JSON.parse(localStorage.getItem("user")));
+ 
 
   }
 

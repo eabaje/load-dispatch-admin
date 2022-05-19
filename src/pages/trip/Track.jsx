@@ -1,6 +1,11 @@
 import React from "react";
-
+import { GlobalContext } from "../../context/Provider";
 function Track() {
+
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
+
   return (
     <>
       <article class="card">

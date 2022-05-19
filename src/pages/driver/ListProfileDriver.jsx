@@ -1,16 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useContext } from "react";
 import { useState } from "react";
 import { Container, Row, Col } from "react-grid";
 import { useSnackbar } from "notistack";
 import { API_URL } from "../../constants";
 import { fetchDataAll } from "../../helpers/query";
+import { GlobalContext } from "../../context/Provider";
 import DriverCard from "../../components/grid/driverCard";
 function ListProfileDriver() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [data, setData] = useState([]);
-  const [user, setUser] = useState({});
-
+  
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   // Calling the function on component mount
   const loadData=()=>{
 
@@ -20,7 +23,7 @@ function ListProfileDriver() {
       enqueueSnackbar(err.message, { variant: "error" });
     });
 
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
 
 
   }

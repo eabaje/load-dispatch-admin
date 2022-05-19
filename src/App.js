@@ -204,8 +204,7 @@ const App = () => {
 
             <AppLayoutRoute
               key="list-carriers-info/:companyId"
-              exact
-              path="/list-carriers-info/:companyId"
+               path="/list-carriers-info/:companyId"
               component={ListCarrier}
             />
             <AppLayoutRoute

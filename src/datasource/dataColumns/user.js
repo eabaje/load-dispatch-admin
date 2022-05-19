@@ -1,6 +1,5 @@
+import {Form} from "react-bootstrap"
 import { Country, State } from "country-state-city";
-import { Form } from "react-bootstrap";
-import { Edit } from "react-feather";
 import { Link } from "react-router-dom";
 export const columns = (params) => [
   {

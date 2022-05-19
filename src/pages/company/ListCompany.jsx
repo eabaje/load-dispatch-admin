@@ -24,7 +24,11 @@ function ListCompany({ history, match }) {
   const { companyId } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+ 
+
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     userDispatch,
     userState: {
@@ -42,8 +46,7 @@ function ListCompany({ history, match }) {
       });
     }
 
- setUser(JSON.parse(localStorage.getItem("user")));
-
+ 
   }
   // Calling the function on component mount
   useEffect(() => {

@@ -107,11 +107,11 @@ const NavBar = (history) => {
     //let controller = new AbortController();
 
     handleMenu();
-    user===null &&  history.push(`sigin`)
+   // user===null &&  history.push(`sigin`)
     //  setUser(JSON.parse(localStorage.getItem("user")));
   //  return () => controller?.abort();
   }, [a]);
-console.log('user', user)
+
   return (
     <>
       {/* {(user.roles === "carrier" && <NavBarCarrier />) ||

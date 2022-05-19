@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useContext } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -8,6 +8,7 @@ import { getError } from "../../utils/error";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import Form from "react-bootstrap/Form";
+import { GlobalContext } from "../../context/Provider";
 import "react-data-table-component-extensions/dist/index.css";
 import { columns } from "../../datasource/dataColumns/driver";
 import { ChevronsDown } from "react-feather";
@@ -16,8 +17,10 @@ function ListDriver({ history, match }) {
   const { companyId } = match.params;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
-  const [user, setUser] = useState({});
-
+ 
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   // GET request function to your Mock API
   const fetchData = async () => {
    
@@ -40,7 +43,7 @@ function ListDriver({ history, match }) {
   useEffect(() => {
     fetchData();
   //  console.log(`data`, data);
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
   }, []);
 
   const tableData = {

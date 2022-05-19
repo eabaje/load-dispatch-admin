@@ -98,7 +98,7 @@ function UploadShipment({ history, match }) {
 
     uploadImage(picFile)((url) => {
       data.PicUrl = url;
-      alert(url);
+    
     })((err) => {
       enqueueSnackbar(`Error:-${err.message} `, {
         variant: "error",

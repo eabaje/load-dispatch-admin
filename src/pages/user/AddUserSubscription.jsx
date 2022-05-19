@@ -35,7 +35,7 @@ function AddUserSubscription({ history, match }) {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [user, setUser] = useState({});
+
   const [subscribeUser, setSubscribeUser] = useState({});
   const [data, setData] = useState([]);
   const [subscriptionType, setsubscriptionType] = useState([]);
@@ -58,7 +58,9 @@ function AddUserSubscription({ history, match }) {
     watch,
     control,
   } = useForm({ mode: "onChange" });
-
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     userDispatch,
     userState: {
@@ -201,7 +203,7 @@ function AddUserSubscription({ history, match }) {
 
   useEffect(() => {
     let controller = new AbortController();
-    setUser(JSON.parse(localStorage.getItem("user")));
+  
 
     if (!isAddMode) {
       fetchDataAll("subscription/findAll")((subscription) => {

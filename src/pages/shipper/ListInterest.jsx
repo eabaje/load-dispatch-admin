@@ -24,11 +24,13 @@ import { Button, Modal } from "react-bootstrap";
 function ListInterest() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [data2, setData] = useState([]);
-  const [user, setUser] = useState({});
+
   const [show, setShow] = useState(false);
   const [shipmentName, setshipmentName] = useState("");
   const [shipmentId, setshipmentId] = useState("");
-
+  const {
+    authState: { user },
+  } = useContext(GlobalContext)
   const {
     shipmentDispatch,
     shipmentState: {
@@ -60,7 +62,7 @@ function ListInterest() {
       });
     }
 
-    setUser(JSON.parse(localStorage.getItem("user")));
+ 
   }, []);
 
   return (
